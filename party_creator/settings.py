@@ -31,9 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 MY_APPS = [
     "django_extensions",
-    "account",
-    "announcement",
-    "party_wizard",
+    "account.apps.AccountConfig",
+    "announcement.apps.AnnouncementConfig",
+    "party_wizard.apps.PartyWizardConfig",
 ]
 
 
@@ -102,7 +102,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "pl"
+LANGUAGES = (
+    ("pl", "polski"),
+    ("en", "angielski"),
+)
 
 TIME_ZONE = "Europe/Warsaw"  #'UTC'
 
