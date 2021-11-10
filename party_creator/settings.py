@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 MY_APPS = [
     "django_extensions",
+    "account",
+    "announcement",
+    "party_wizard",
 ]
 
 
@@ -99,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = ["pl-pl", "en-us"]
+LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "Europe/Warsaw"  #'UTC'
 
@@ -121,10 +124,10 @@ LOGOUT_URL = "account:logout"
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/2.2/howto/static-files/#configuring-static-files
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR, "staticfiles"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # location where the media (profile pic) are stored
-MEDIA_ROOT = BASE_DIR, "media"
+MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"  # url that will serve media files
 
 # Default primary key field type
