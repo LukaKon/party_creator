@@ -1,2 +1,2 @@
-# party_creator]
-test
+# party_creator
+Party organisation web service
