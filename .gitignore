@@ -141,6 +141,7 @@ dmypy.json
 .idea/**/uiDesigner.xml
 .idea/**/gradle.xml
 .idea/**/libraries
+.idea/watcherTasks.xml
 *.iws /out/
 
 # Visual Studio Code #
