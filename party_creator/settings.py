@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+MY_APPS = [
+    "django_extensions",
+]
 
 
 
@@ -39,7 +42,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-]
+] + MY_APPS
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -55,15 +60,15 @@ ROOT_URLCONF = 'party_creator.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -94,9 +99,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = ["pl-pl", "en-us"]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Warsaw"  #'UTC'
 
 USE_I18N = True
 
@@ -104,12 +109,23 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = "account.User"
+
+LOGIN_REDIRECT_URL = "gallery:home"  # TODO: here should be home page
+LOGIN_URL = "account:login"
+LOGOUT_URL = "account:logout"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
+# https://docs.djangoproject.com/en/2.2/howto/static-files/#configuring-static-files
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR, "staticfiles"
 
+# location where the media (profile pic) are stored
+MEDIA_ROOT = BASE_DIR, "media"
+MEDIA_URL = "/media/"  # url that will serve media files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
