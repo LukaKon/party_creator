@@ -1,1 +1,159 @@
-test
+/* Remove the margin in all browsers. */
+body {
+    margin: 0;
+}
+
+/* Render the `main` element consistently in IE. */
+main {
+    display: block;
+}
+
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ **/
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+header {
+    position: relative;
+}
+
+header.header--main-page {
+    /* background-image: url(../images/header-bg.jpg); */
+    background-position: bottom left -30vh;
+    background-repeat: no-repeat;
+    background-size: 70vw;
+    height: 100vh;
+}
+
+header nav {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 1.8rem;
+}
+
+header nav ul.nav--actions {
+    font-size: 1.4rem;
+    color: #737373;
+    margin: 30px 0 8px;
+}
+
+header nav ul.nav--actions .logged-user {
+    padding-right: 30px;
+    position: relative;
+    cursor: pointer;
+}
+
+header nav ul.nav--actions .logged-user:after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* background-image: url(../images/icon-gear.png); */
+    background-size: cover;
+}
+
+header nav ul.nav--actions .logged-user ul {
+    display: none;
+    position: absolute;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    text-align: right;
+    background-color: #fff;
+    padding: 12px 0 0;
+    font-size: 1.4rem;
+    width: 120px;
+    right: 0;
+}
+
+header nav ul.nav--actions .logged-user ul li {
+    border-left: 1px solid #3c3c3c;
+    border-right: 1px solid #3c3c3c;
+}
+
+header nav ul.nav--actions .logged-user ul li:first-of-type {
+    border-top: 1px solid #3c3c3c;
+}
+
+header nav ul.nav--actions .logged-user ul li:last-of-type {
+    border-bottom: 1px solid #3c3c3c;
+}
+
+header nav ul.nav--actions .logged-user ul a {
+    display: inline-block;
+    padding: 6px;
+}
+
+header nav ul.nav--actions .logged-user:hover ul {
+    display: block;
+}
+
+header nav ul li {
+    padding: 0 5px;
+}
+
+header nav ul li:last-of-type {
+    padding-right: 0;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.container--70 {
+    width: 70vw;
+}
+
+.btn {
+    display: inline-block;
+    font-size: 1.6rem;
+    padding: 1em 1.666em;
+    border: 1px solid #3c3c3c;
+    text-align: center;
+    -webkit-transition: border-color 0.2s ease-in-out;
+    -o-transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .btn:hover {
+  border-color: #f9c910;
+}
+
+/* line 16, scss/modules/_buttons.scss */
+.btn--large {
+  font-size: 3.6rem;
+  line-height: 1.35em;
+  text-transform: uppercase;
+  padding: 0.5em 1.666em;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
