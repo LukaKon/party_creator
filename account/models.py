@@ -11,6 +11,7 @@ upload_to_pattern = FilePattern(
 )
 
 class UserManager(BaseUserManager):
+    """User Manager to create a user with email as login field"""
     def create_user(self, email, password, **kwargs):
         if not email:
             raise ValueError(_("The Email must be set"))
@@ -33,6 +34,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    """User with email as a login field. Added flag 'is_moderator' for future. """
     username = None
     email = models.EmailField(_("email address"), unique=True)
     is_moderator = models.BooleanField(default=False)

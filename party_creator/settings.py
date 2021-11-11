@@ -117,8 +117,7 @@ USE_L10N = True
 USE_TZ = True
 
 AUTH_USER_MODEL = "account.User"
-
-LOGIN_REDIRECT_URL = "gallery:home"  # TODO: here should be home page
+LOGIN_REDIRECT_URL = "announcement:home"
 LOGIN_URL = "account:login"
 LOGOUT_URL = "account:logout"
 
