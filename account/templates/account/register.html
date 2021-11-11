@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST" action="">
+        {% csrf_token %}
+        {% include 'base_form.html' %}
+        <input type="submit" value="Zarejestruj się">
+    </form>
+{% endblock %}
