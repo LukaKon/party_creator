@@ -4,7 +4,11 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 import stdimage
+from dynamic_filenames import FilePattern
 
+upload_to_pattern = FilePattern(
+    filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
+)
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password, **kwargs):
@@ -33,12 +37,16 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     is_moderator = models.BooleanField(default=False)
     image = stdimage.StdImageField(
-        upload_to="media/account",
+        null=True,
+        blank=True,
+        default="deafault.jpg",
+        upload_to=upload_to_pattern,
         variations={
             "large": (600, 400),
             "thumbnail": (100, 100, True),
             "medium": (300, 200),
         },
+        delete_orphans=True,
     )
 
     USERNAME_FIELD = "email"

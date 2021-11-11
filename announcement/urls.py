@@ -4,4 +4,6 @@ from django.contrib.auth import views as auth_views
 
 app_name = "announcement"
 
-urlpatterns = []
+urlpatterns = [
+    path('',views.HomeView.as_view(),name='home'),
+]
