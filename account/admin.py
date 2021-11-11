@@ -1,14 +1,14 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+# from django.contrib.auth.admin import UserAdmin
 
-from account.forms import UserChangeForm, UserCreationForm
+# from account.forms import UserChangeForm, UserCreationForm
 from account.models import User
 
 
-class UserAdmin(UserAdmin):
-    add_form = UserCreationForm
-    form = UserChangeForm
-    model = User
+class UserAdmin(User):
+#     add_form = UserCreationForm
+#     form = UserChangeForm
+    model = User # ???
     list_display = (
         "email",
         "is_staff",
@@ -37,4 +37,4 @@ class UserAdmin(UserAdmin):
     ordering = ("email",)
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(User,) #UserAdmin)
