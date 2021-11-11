@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from account.models import User
 
 class CreationUserForm(UserCreationForm):
+    """Create User form."""
     def __init__(self, *args, **kwargs):
         super(CreationUserForm, self).__init__(*args, **kwargs)
         self.fields["first_name"].required = False
@@ -19,7 +20,14 @@ class CreationUserForm(UserCreationForm):
 
     class Meta():
         model = User
-        fields = ("first_name", "last_name", "email", "password1", "password2")
+        fields = (
+            'image',
+            "first_name",
+             "last_name",
+              "email",
+              "password1",
+              "password2"
+              )
         widgets = (
             {
                 'first_name': forms.TextInput(attrs={'autofocus': True, 'placeholder': 'Imię'}),
