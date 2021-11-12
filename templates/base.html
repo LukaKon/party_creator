@@ -17,32 +17,30 @@
 </head>
 
 <body>
-  <header class="header--main-page">
+  <header class="">
     <div class="container-sm position-relative">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light end-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!--login/registration-->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item dropdown">
-
               {% if request.user.is_authenticated %}
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Witaj {{ user.first_name }}
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'account:profile' pk=user.pk %}">Profil</a></li>
-                {% if request.user.is_superuser %}
-                <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel
-                    administracyjny</a></li>
-                {% endif %}
-                <li><a class="dropdown-item" href="#">Ustawienia</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="{% url 'account:logout' %}">Wyloguj się</a></li>
-              </ul>
-              {% else %}
+                Witaj {{ user.first_name }} <img src="{{ user.image.thumbnail.url }}" alt="">
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'account:profile' pk=user.pk %}">Profil</a></li>
+                  {% if request.user.is_superuser %}
+                  <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel
+                      administracyjny</a></li>
+                  {% endif %}
+                  <li><a class="dropdown-item" href="#">Ustawienia</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="{% url 'account:logout' %}">Wyloguj się</a></li>
+                </ul>
+                {% else %}
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'account:login' %}">Zaloguj
                 się</a>
@@ -53,42 +51,39 @@
             </li>
             {% endif %}
             </li>
-            {% comment %} <li class="nav-item">
-              <a class="nav-link disabled">Disabled</a>
-            </li> {% endcomment %}
           </ul>
-          {% comment %} <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form> {% endcomment %}
+
         </div>
     </div>
     </nav>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark end">
-      <!--menu-->
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'announcement:home' %}">Strona główna</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">Kreator
-                przyjęć</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">O nas</a>
-            </li>
-            {% comment %} <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li> {% endcomment %}
-          </ul>
-        </div>
-    </nav>
+    <div class="container-sm position-relative">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark end">
+        <!--menu-->
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'announcement:home' %}">Strona główna</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">Kreator
+                  przyjęć</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">O nas</a>
+              </li>
+              {% comment %} <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li> {% endcomment %}
+            </ul>
+          </div>
+      </nav>
+    </div>
   </header>
 
   {% block content %}
@@ -121,87 +116,18 @@
       </section>
       <!-- Section: Social media -->
 
-      <!-- Section: Form -->
-      <section class="">
-        <form action="" method="POST">
-          {% csrf_token %}
-          <!--Grid row-->
-          <div class="row d-flex justify-content-center">
-            <!--Grid column-->
-            <div class="col-auto">
-              <p class="pt-2">
-                <strong>Chcesz otrzymywać świeże ieformacje?</strong>
-              </p>
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-md-5 col-12">
-              <!-- Email input -->
-              <div class="form-outline form-white mb-4">
-                <input type="email" id="newsletter_mail" class="form-control" />
-                <label class="form-label" for="newsletter_mail">Adres email</label>
-              </div>
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-auto">
-              <!-- Submit button -->
-              <button type="submit" class="btn btn-outline-light mb-4">
-                Zapisz się!
-              </button>
-            </div>
-            <!--Grid column-->
-          </div>
-          <!--Grid row-->
-        </form>
-      </section>
-      <!-- Section: Form -->
 
       <!-- Section: Text -->
       <section class="mb-4">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
-          repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
-          eum harum corrupti dicta, aliquam sequi voluptate quas.
+          Jesteśmy firmą, która rozkręciła nie jedną imprezę :) Możesz nam zaufać, znamy się na dobrej zabawie!
         </p>
       </section>
       <!-- Section: Text -->
 
-      <section id="contact" class="contact bottom-0 end-20">
-        <form action="" method="POST">
-          {% csrf_token %}
-          <!-- Grid row -->
-          <div class="row d-flex justify-content-center">
-            <!-- Grid column -->
-            <div class="col-auto">
-              <p class="pt-2">
-                <h4>Napisz do nas:</h4>
-              </p>
-            </div>
+      {% block foot_newsletter %}
 
-            {% if request.user.is_authenticated %}
-            <!-- Grid column -->
-            Adres zalogowanego użytkownika
-            {% else %}
-            <!-- Grid column -->
-            <div class="col-md-5 col-12">
-              <!-- Email -->
-              <input type="email" class="form-control" id="message_mail" placeholder="Twój email...">
-            </div>
-            <!-- Grid column -->
-            {% endif %}
-
-            <!-- Grid column -->
-            <div class="mb-3">
-              <!-- Message -->
-              <textarea class="form-control" id="message" placeholder="Wiadomość..." rows="3" cols="30"></textarea>
-            </div>
-          </div>
-        </form>
-      </section>
-
+      {% endblock foot_newsletter %}
 
       <!-- Section: Links -->
       <section class="">
@@ -209,14 +135,14 @@
         <div class="row">
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
+            <h5 class="text-uppercase">Klienci</h5>
 
             <ul class="list-unstyled mb-0">
               <li>
-                <a href="#!" class="text-white">Link 1</a>
+                <a href="#!" class="text-white">Jak to działa</a>
               </li>
               <li>
-                <a href="#!" class="text-white">Link 2</a>
+                <a href="{% url 'announcement:contact' %}" class="text-white">Kontakt</a>
               </li>
             </ul>
           </div>
@@ -224,48 +150,19 @@
 
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
+            <h5 class="text-uppercase">Partnerzy</h5>
 
             <ul class="list-unstyled mb-0">
               <li>
-                <a href="#!" class="text-white">Link 1</a>
+                <a href="#!" class="text-white">Dodaj swój lokal</a>
               </li>
               <li>
-                <a href="#!" class="text-white">Link 2</a>
+                <a href="#!" class="text-white">Zaloguj się do panelu</a>
               </li>
             </ul>
           </div>
           <!--Grid column-->
 
-          <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
-
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#!" class="text-white">Link 1</a>
-              </li>
-              <li>
-                <a href="#!" class="text-white">Link 2</a>
-              </li>
-            </ul>
-          </div>
-          <!--Grid column-->
-
-          <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
-
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#!" class="text-white">Link 1</a>
-              </li>
-              <li>
-                <a href="#!" class="text-white">Link 2</a>
-              </li>
-            </ul>
-          </div>
-          <!--Grid column-->
         </div>
         <!--Grid row-->
       </section>

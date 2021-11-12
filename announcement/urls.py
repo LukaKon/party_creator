@@ -6,5 +6,6 @@ app_name = "announcement"
 
 urlpatterns = [
     path('',views.HomeView.as_view(),name='home'),
+    path('contact/',views.ContactView.as_view(),name='contact'),
     path('category/',views.CategoryListView.as_view(),name='category_list'),
 ]
