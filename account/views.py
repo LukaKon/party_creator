@@ -1,6 +1,6 @@
 from django.contrib.auth.views import LoginView, LogoutView, get_user_model
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
 import account.forms as forms
 
@@ -21,3 +21,8 @@ class LoginUserView(LoginView):
 class LogoutUserView(LogoutView):
     template_name = "account/logout.html"
     next_page = "announcement:home"
+
+
+class ProfileView(DetailView):
+    model = get_user_model()
+    template_name = "account/profile.html"

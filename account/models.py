@@ -41,7 +41,7 @@ class User(AbstractUser):
     image = stdimage.StdImageField(
         null=True,
         blank=True,
-        default="deafault.jpg",
+        default='account/user/default.jpg', # TODO Łukasz, czy da się tu zrobic pattern do tego katalogu?
         upload_to=upload_to_pattern,
         variations={
             "large": (600, 400),
