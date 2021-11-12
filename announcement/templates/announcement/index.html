@@ -6,13 +6,15 @@
     background-image: url('{% static 'images/search_party.jpg' %}');
     height: 30vh;
   ">
-  <nav class="navbar navbar-light bg-dark start-50 translate-middle">
-    <form class="container-fluid">
-      <div class="input-group">
-        <span class="input-group-text" id="search">Podaj lokalizację</span>
-        <input type="text" class="form-control" placeholder="Wyszukaj" aria-label="query" aria-describedby="search">
-      </div>
-    </form>
-  </nav>
+  <div class="justify-content-center">
+    <nav class="navbar navbar-light bg-dark start-50 translate-middle">
+      <form class="container-fluid">
+        <div class="input-group">
+          <span class="input-group-text" id="search">Podaj lokalizację</span>
+          <input type="text" class="form-control" placeholder="Wyszukaj" aria-label="query" aria-describedby="search">
+        </div>
+      </form>
+    </nav>
+  </div>
 </div>
 {% endblock content %}
