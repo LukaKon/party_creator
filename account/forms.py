@@ -1,9 +1,10 @@
 from django import forms
+from django.db import transaction
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 
-from account.models import User
+from account.models import User, Firma
 
 class CreationUserForm(UserCreationForm):
     """Create User form."""
@@ -20,7 +21,7 @@ class CreationUserForm(UserCreationForm):
 
     class Meta():
         model = User
-        fields = ("image", "first_name", "last_name", "email", "password1", "password2")
+        fields = ("image", "first_name", "last_name", "email", "password1", "password2", "is_firma")
         widgets = {
             "first_name": forms.TextInput(
                 attrs={"autofocus": True, "placeholder": "Imię"}
@@ -61,3 +62,9 @@ class LoginUserForm(AuthenticationForm):
     )
 
     field_order = ["email", "password"]
+
+
+class FirmaForm(forms.ModelForm):
+    class Meta():
+        model = Firma
+        fields = ('name',)

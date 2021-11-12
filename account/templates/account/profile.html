@@ -3,6 +3,7 @@
 {% block title %}Profil{% endblock %}
 {% load static %}
 {% block content %}
+
     Avatar: <img alt="My image" src="{{ object.image.thumbnail.url }}"/><br>
     Imie: {{ object.first_name }}<br>
     Nazwisko: {{ object.last_name }}<br>
