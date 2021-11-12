@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Rejestracja{% endblock title %}
 {% block content %}
+<div class="container-sm text-center">
+    <img src="{% static 'images/register.jpg' %}" class="rounded mx-auto d-block" alt="...">
+    <h2>Zarejestruj się:</h2>
 <form method="POST" action="" enctype="multipart/form-data" class="row g-3">
-    <div class="row mb-3">
-        <label for="image" class="col-sm-2 col-form-label">Awatar</label>
-        <input type="file" class="" id="image" name="image">
-    </div>
+
+    <div class="input-group mb-3">
+  <label class="input-group-text" for="avatar">Awatar</label>
+  <input type="file" class="form-control" id="avatar">
+</div>
 
     <div class="input-group mb-3">
         <span class="input-group-text" id="first_name">Imię:</span>
@@ -42,4 +47,5 @@
     </div>
     {% csrf_token %}
 </form>
+</div>
 {% endblock %}

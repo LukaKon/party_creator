@@ -18,29 +18,8 @@
 
 <body>
   <header class="header--main-page">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <!--menu-->
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'announcement:home' %}">Strona główna</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">Kreator
-                przyjęć</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">O nas</a>
-            </li>
-            {% comment %} <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li> {% endcomment %}
-          </ul>
-        </div>
-
+    <div class="container-sm position-relative">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light end-0">
         <!--login/registration-->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -83,18 +62,41 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form> {% endcomment %}
         </div>
-      </div>
+    </div>
+    </nav>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark end">
+      <!--menu-->
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'announcement:home' %}">Strona główna</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">Kreator
+                przyjęć</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">O nas</a>
+            </li>
+            {% comment %} <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li> {% endcomment %}
+          </ul>
+        </div>
     </nav>
   </header>
-  <div class="">
+
   {% block content %}
 
   {% endblock content %}
 
-  </div>
-
-  <footer>
-    <div id="contact" class="contact">
+  <footer class="position-relative">
+    <div id="contact" class="contact bottom-0 end-20">
       <h2>Skontaktuj się z nami</h2>
       <h3>Formularz kontaktowy</h3>
       <form class="form--contact">
