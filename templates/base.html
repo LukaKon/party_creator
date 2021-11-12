@@ -95,29 +95,193 @@
 
   {% endblock content %}
 
-  <footer class="position-relative">
-    <div id="contact" class="contact bottom-0 end-20">
-      <h2>Skontaktuj się z nami</h2>
-      <h3>Formularz kontaktowy</h3>
-      <form class="form--contact">
-        <div class="form-group form-group--50"><input type="text" name="name" placeholder="Imię" /></div>
-        <div class="form-group form-group--50"><input type="text" name="surname" placeholder="Nazwisko" /></div>
+  <!-- Footer -->
+  <footer class="bg-dark text-center text-white">
+    <!-- Grid container -->
+    <div class="container p-4">
+      <!-- Section: Social media -->
+      <section class="mb-4">
+        <!-- Facebook -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook-f"></i></a>
 
-        <div class="form-group"><textarea name="message" placeholder="Wiadomość" rows="1"></textarea></div>
+        <!-- Twitter -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
 
-        <button class="btn btn-light" type="submit">Wyślij</button>
-      </form>
+        <!-- Google -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
+
+        <!-- Instagram -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
+
+        <!-- Linkedin -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-linkedin-in"></i></a>
+
+        <!-- Github -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
+      </section>
+      <!-- Section: Social media -->
+
+      <!-- Section: Form -->
+      <section class="">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <!--Grid row-->
+          <div class="row d-flex justify-content-center">
+            <!--Grid column-->
+            <div class="col-auto">
+              <p class="pt-2">
+                <strong>Chcesz otrzymywać świeże ieformacje?</strong>
+              </p>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-5 col-12">
+              <!-- Email input -->
+              <div class="form-outline form-white mb-4">
+                <input type="email" id="newsletter_mail" class="form-control" />
+                <label class="form-label" for="newsletter_mail">Adres email</label>
+              </div>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-auto">
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-outline-light mb-4">
+                Zapisz się!
+              </button>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </form>
+      </section>
+      <!-- Section: Form -->
+
+      <!-- Section: Text -->
+      <section class="mb-4">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
+          repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
+          eum harum corrupti dicta, aliquam sequi voluptate quas.
+        </p>
+      </section>
+      <!-- Section: Text -->
+
+      <section id="contact" class="contact bottom-0 end-20">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <!-- Grid row -->
+          <div class="row d-flex justify-content-center">
+            <!-- Grid column -->
+            <div class="col-auto">
+              <p class="pt-2">
+                <h4>Napisz do nas:</h4>
+              </p>
+            </div>
+
+            {% if request.user.is_authenticated %}
+            <!-- Grid column -->
+            Adres zalogowanego użytkownika
+            {% else %}
+            <!-- Grid column -->
+            <div class="col-md-5 col-12">
+              <!-- Email -->
+              <input type="email" class="form-control" id="message_mail" placeholder="Twój email...">
+            </div>
+            <!-- Grid column -->
+            {% endif %}
+
+            <!-- Grid column -->
+            <div class="mb-3">
+              <!-- Message -->
+              <textarea class="form-control" id="message" placeholder="Wiadomość..." rows="3" cols="30"></textarea>
+            </div>
+          </div>
+        </form>
+      </section>
+
+
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row">
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Links</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Links</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Links</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Links</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+        </div>
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
     </div>
-    <div class="bottom-line">
-      <span class="bottom-line--copy">Copyright &copy; 2021</span>
-      <div class="bottom-line--icons">
-        {% comment %} <a href="#" class="btn btn--small"><img src="{% static 'images/icon-facebook.svg' %}" /></a>
-        {% endcomment %}
-        {% comment %} <a href="#" class="btn btn--small"><img src="{% static 'images/icon-instagram.svg' %}" /></a>
-        {% endcomment %}
-      </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
     </div>
+    <!-- Copyright -->
   </footer>
+  <!-- Footer -->
+
   <!-- Optional JavaScript; choose one of the two! -->
 
   <!-- Option 1: Bootstrap Bundle with Popper -->
