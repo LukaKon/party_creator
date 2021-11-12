@@ -1,9 +1,51 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block title %}Rejestracja{% endblock title %}
 {% block content %}
-    <form method="POST" action="">
-        {% csrf_token %}
-        {% include 'base_form.html' %}
-        <input type="submit" value="Zarejestruj się">
-    </form>
+<div class="container-sm text-center">
+    <img src="{% static 'images/register.jpg' %}" class="rounded mx-auto d-block" alt="...">
+    <h2>Zarejestruj się:</h2>
+<form method="POST" action="" enctype="multipart/form-data" class="row g-3">
+
+    <div class="input-group mb-3">
+  <label class="input-group-text" for="avatar">Awatar</label>
+  <input type="file" class="form-control" id="avatar">
+</div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="first_name">Imię:</span>
+        <input type="text" class="form-control" id="first_name" placeholder="Podaj imię..." aria-label="Imię:"
+            aria-describedby="first_name" name="first_name">
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="last_name">Nazwisko:</span>
+        <input type="text" class="form-control" id="last_name" placeholder="Podaj nazwisko..." aria-label="Nazwisko:"
+            aria-describedby="last_name" name="last_name">
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="email">Email:</span>
+        <input type="email" class="form-control" id="email" placeholder="Podaj email..." aria-label="Email:"
+            aria-describedby="email" name="email">
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="password1">Hasło:</span>
+        <input type="password" class="form-control" id="password1" placeholder="Hasło..." aria-label="Hasło:"
+            aria-describedby="password1" name="password1">
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="password2">Powtórz hasło:</span>
+        <input type="password" class="form-control" id="password2" placeholder="Powtórz hasło..."
+            aria-label="Powtórz hasło:" aria-describedby="password2" name="password2">
+    </div>
+
+    <div class="row mb-3">
+        <button type="submit" class="btn btn-primary">Zarejestruj się</button>
+    </div>
+    {% csrf_token %}
+</form>
+</div>
 {% endblock %}

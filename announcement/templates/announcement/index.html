@@ -1,15 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Home{% endblock title %}
 {% block content %}
-CONTENT<br>
-    - okno wyszukiwania<br>
-    - losowe lokale<br>
-    <nav class="navbar navbar-light bg-dark">
-  <form class="container-fluid">
-    <div class="input-group">
-      <span class="input-group-text" id="basic-addon1">Podaj lokalizację</span>
-      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-    </div>
-  </form>
-</nav>
+<div class="bg-image d-flex justify-content-center align-items-center" style="
+    background-image: url('{% static 'images/search_party.jpg' %}');
+    height: 30vh;
+  ">
+  <nav class="navbar navbar-light bg-dark start-50 translate-middle">
+    <form class="container-fluid">
+      <div class="input-group">
+        <span class="input-group-text" id="search">Podaj lokalizację</span>
+        <input type="text" class="form-control" placeholder="Wyszukaj" aria-label="query" aria-describedby="search">
+      </div>
+    </form>
+  </nav>
+</div>
 {% endblock content %}
