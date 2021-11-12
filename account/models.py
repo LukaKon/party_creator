@@ -41,7 +41,7 @@ class User(AbstractUser):
     image = stdimage.StdImageField(
         null=True,
         blank=True,
-        default='account/user/default.jpg', # TODO Łukasz, czy da się tu zrobic pattern do tego katalogu?
+        default='default.jpg',
         upload_to=upload_to_pattern,
         variations={
             "large": (600, 400),
@@ -50,8 +50,13 @@ class User(AbstractUser):
         },
         delete_orphans=True,
     )
+    is_firma = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+
+class Firma(models.Model):
+    name = models.CharField(max_length=255)

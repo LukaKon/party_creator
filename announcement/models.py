@@ -23,7 +23,7 @@ class Announcement(models.Model):
     image = stdimage.StdImageField(
         null=True,
         blank=True,
-        default="deafault.jpg",
+        default="default.jpg",
         upload_to=upload_to_pattern,
         variations={
             "large": (600, 400),
