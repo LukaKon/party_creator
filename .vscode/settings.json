@@ -1,3 +1,126 @@
 {
-    "python.pythonPath": "venv/bin/python"
+    "workbench.settings.editor": "json",
+    "workbench.settings.openDefaultSettings": true,
+    "workbench.settings.useSplitJSON": true,
+    // "python.formatting.provider": "autopep8",
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "/home/lk/vm/programing/Python/party_creator/venv/bin/darker",
+    "python.formatting.blackArgs": ["--diff","--isort"],
+
+    "editor.fontSize": 14,
+    "terminal.integrated.fontSize": 14,
+
+    "diffEditor.renderSideBySide": true,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "editor.formatOnSave": true,
+    "cSpell.enableFiletypes": ["!markdown", "!python", "dockerfile"],
+    // "yaml.schemas": {
+    //     "file:///home/lk/.vscode/extensions/atlassian.atlascode-2.9.1/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    // },
+    // "atlascode.jira.enabled": true,
+    // "atlascode.bitbucket.enabled": true,
+    // "atlascode.jira.jqlList": [
+    //     {
+    //         "id": "91cef398-4ff8-4fde-b4f7-edc65863d070",
+    //         "enabled": true,
+    //         "name": "My team-1587722908351 Issues",
+    //         "query": "assignee = currentUser() ORDER BY lastViewed DESC",
+    //         "siteId": "2aa2e4d9-2dac-45cb-be20-1bb4995d3785",
+    //         "monitor": true
+    //     }
+    // ],
+    // "atlascode.jira.lastCreateSiteAndProject": {
+    //     "siteId": "2aa2e4d9-2dac-45cb-be20-1bb4995d3785",
+    //     "projectKey": ""
+    // },
+    "workbench.editor.showTabs": true,
+    "breadcrumbs.enabled": true,
+    "workbench.sideBar.location": "left",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.suggestSelection": "first",
+    // "vsintellicode.modify.editor.suggestSelection": "choseToUpdateConfiguration",
+    "python.languageServer": "Pylance",
+    "editor.lineNumbers": "relative",
+    "editor.acceptSuggestionOnEnter": "smart",
+    "update.mode": "manual",
+    // "liveServer.settings.donotShowInfoMsg": true,
+    "editor.tabCompletion": "on",
+    "cSpell.language": "en,pl-PL",
+    "workbench.startupEditor": "welcomePage",
+    "python.pythonPath": "/usr/bin/python3",
+    "editor.mouseWheelZoom": true,
+    "explorer.confirmDelete": false,
+
+    "auto-rename-tag.activationOnLanguage": ["html", "xml", "javascript"],
+    "terminal.integrated.tabs.enabled": true,
+    "terminal.explorerKind": "external",
+
+    "workbench.editor.enablePreview": false,
+    "javascript.format.semicolons": "insert",
+    "editor.trimAutoWhitespace": false,
+    "files.trimTrailingWhitespace": true,
+    "editor.autoClosingBrackets": "always",
+    "[python]": {
+        // "gitlens.codeLens.symbolScopes": ["!Module"],
+        "editor.wordBasedSuggestions": false,
+        "editor.defaultFormatter": null
+    },
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    // "todo-tree.general.tags": [
+    //     "BUG",
+    //     "HACK",
+    //     "FIXME",
+    //     "TODO",
+    //     "XXX",
+    //     "[ ]",
+    //     "[x]"
+    // ],
+    // "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
+
+    "files.associations": {
+        "**/*.html": "html",
+        "**/templates/**/*.html": "django-html",
+        "**/templates/**/*": "django-txt",
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+    },
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    },
+    "beautify.language": {
+        "html": [
+            "htm",
+            "html",
+            "django-html",
+            "jinja-html"
+        ],
+
+    // "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    // Enable testing using pytest.
+    "python.testing.pytestEnabled": true,
+
+    "editor.linkedEditing": true,
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+
+    "prettier.tabWidth": 4,
+
+    "prettier.disableLanguages": ["django-html"],
+        "beautify.language": {
+            "html": [
+                "django-html"
+                ]
+            },
+        "[django-html]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "HookyQR.beautify"
+        }
+    },
+    "workbench.colorTheme": "Gruvbox Dark Medium"
 }

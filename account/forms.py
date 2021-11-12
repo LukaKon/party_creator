@@ -20,21 +20,14 @@ class CreationUserForm(UserCreationForm):
 
     class Meta():
         model = User
-        fields = (
-            'image',
-            "first_name",
-             "last_name",
-              "email",
-              "password1",
-              "password2"
-              )
-        widgets = (
-            {
-                'first_name': forms.TextInput(attrs={'autofocus': True, 'placeholder': 'Imię'}),
-                'last_name': forms.TextInput(attrs={'placeholder': 'Nazwisko'}),
-                'email': forms.EmailInput(attrs={'placeholder': 'E-Mail'}),
-            }
-        )
+        fields = ("image", "first_name", "last_name", "email", "password1", "password2")
+        widgets = {
+            "first_name": forms.TextInput(
+                attrs={"autofocus": True, "placeholder": "Imię"}
+            ),
+            "last_name": forms.TextInput(attrs={"placeholder": "Nazwisko"}),
+            "email": forms.EmailInput(attrs={"placeholder": "E-Mail"}),
+        }
 
 
 class LoginUserForm(AuthenticationForm):
