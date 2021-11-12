@@ -49,7 +49,7 @@
     "editor.tabCompletion": "on",
     "cSpell.language": "en,pl-PL",
     "workbench.startupEditor": "welcomePage",
-    "python.pythonPath": "/usr/bin/python3",
+    "python.pythonPath": "venv/bin/python",
     "editor.mouseWheelZoom": true,
     "explorer.confirmDelete": false,
 
