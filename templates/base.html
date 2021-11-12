@@ -31,7 +31,7 @@
                 Witaj {{ user.first_name }}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Profil</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:profile' pk=user.pk %}">Profil</a></li>
                 {% if request.user.is_superuser %}
                 <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel
                     administracyjny</a></li>
