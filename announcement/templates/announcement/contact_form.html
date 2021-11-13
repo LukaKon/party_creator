@@ -18,7 +18,7 @@
                 <!-- Grid column -->
                 <div class="col-md-5 col-12">
                     <!-- Email -->
-                    <input type="email" class="form-control" id="message_mail" placeholder="Twój email...">
+                    <input type="email" name="email" class="form-control" id="message_mail" placeholder="Twój email...">
                 </div>
                 {% endif %}
                 <!-- Grid column -->
@@ -26,14 +26,13 @@
                 <!-- Grid column -->
                 <div class="mb-3">
                     <!-- Message -->
-                    <textarea class="form-control" id="message" placeholder="Wiadomość..." rows="3"
+                    <textarea class="form-control" name="message" id="message" placeholder="Wiadomość..." rows="3"
                         cols="30"></textarea>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-outline-dark" data-mdb-ripple-color="dark">
                         Wyślij
                     </button>
-
                 </div>
         </div>
     </form>

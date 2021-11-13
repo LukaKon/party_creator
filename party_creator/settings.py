@@ -125,6 +125,9 @@ LOGIN_REDIRECT_URL = "announcement:home"
 LOGIN_URL = "account:login"
 LOGOUT_URL = "account:logout"
 
+# emails
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
