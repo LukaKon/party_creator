@@ -6,28 +6,34 @@
             <!-- Grid column -->
             <div class="col-auto">
                 <p class="pt-2">
-                    <h4>Napisz do nas:</h4>
+                <h4>Napisz do nas:</h4>
                 </p>
             </div>
 
-            {% if request.user.is_authenticated %}
             <!-- Grid column -->
-            Adres zalogowanego użytkownika
-            {% else %}
+
             <form action="" method="POST">
                 <!-- Grid column -->
-                <div class="col-md-5 col-12">
+
+{# class="col-md-5 col-12" #}
+                <div class="col-md-20">
                     <!-- Email -->
-                    <input type="email" name="email" class="form-control" id="message_mail" placeholder="Twój email...">
+                    {% if request.user.is_authenticated %}
+                        <input type="email" name="email" class="form-control" id="message_mail"
+                               value="{{ user.email }}">
+                    {% else %}
+                        <input type="email" name="email" class="form-control" id="message_mail"
+                               placeholder="Twój email...">
+                    {% endif %}
                 </div>
-                {% endif %}
+
                 <!-- Grid column -->
 
                 <!-- Grid column -->
                 <div class="mb-3">
                     <!-- Message -->
                     <textarea class="form-control" name="message" id="message" placeholder="Wiadomość..." rows="3"
-                        cols="30"></textarea>
+                              cols="30"></textarea>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-outline-dark" data-mdb-ripple-color="dark">
