@@ -21,6 +21,7 @@
     <div class="container-sm position-relative">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <!--login/registration-->
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
@@ -28,7 +29,9 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown"
                                aria-expanded="false">
+
                             Witaj {{ user.first_name }} <img src="{{ user.image.thumbnail.url }}" alt="">
+                            </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item"
                                        href="{% url 'account:profile' pk=user.pk %}">Profil</a></li>
@@ -38,7 +41,6 @@
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel
                                         administracyjny</a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="#">Ustawienia</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
