@@ -3,7 +3,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-import stdimage
+import account.utils.account as utils
 from dynamic_filenames import FilePattern
 
 upload_to_pattern = FilePattern(
@@ -38,7 +38,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
     is_moderator = models.BooleanField(default=False)
-    image = stdimage.StdImageField(
+    image = utils.stdimage_save_defaultimg(
         null=True,
         blank=True,
         default='default.jpg',

@@ -32,8 +32,8 @@ class ContactView(FormView):
                 return HttpResponse("Invalid header found.")
             return redirect("announcement:home")
 
-        form = ContactForm()
-        return render(request, "main/contact.html", {"form": form})
+        # form = ContactForm()
+        return render(request, "announcement/contact.html", {"form": form})
 
 
 class CategoryListView(ListView):
