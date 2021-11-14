@@ -57,3 +57,10 @@ class EditProfileView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('account:edit_profile', kwargs={'pk': self.request.user.pk})
+
+    def form_valid(self, form):
+        edit_user = form.save(commit=False)
+        if self.request.POST.get('image-clear') != None:
+            edit_user.image = 'default.jpg'
+        edit_user.save()
+        return super().form_valid(form)

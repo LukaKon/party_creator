@@ -30,6 +30,7 @@
                 Witaj {{ user.first_name }} <img src="{{ user.image.thumbnail.url }}" alt="">
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="{% url 'account:profile' pk=user.pk %}">Profil</a></li>
+                  <li><a class="dropdown-item" href="{% url 'account:edit_profile' pk=user.pk %}">Ustawienia konta</a></li>
                   {% if request.user.is_superuser %}
                   <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel
                       administracyjny</a></li>
@@ -142,7 +143,7 @@
                 <a href="#!" class="text-white">Jak to działa</a>
               </li>
               <li>
-                <a href="{% url 'announcement:contact' %}" class="text-white">Kontakt</a>
+{#                <a href="{% url 'announcement:contact' %}" class="text-white">Kontakt</a>#}
               </li>
             </ul>
           </div>
