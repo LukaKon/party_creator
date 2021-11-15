@@ -8,4 +8,8 @@
     Imie: {{ object.first_name }}<br>
     Nazwisko: {{ object.last_name }}<br>
     E-Mail: {{ object.email }}<br>
+    <div class="input-group mb-3">
+        <a href="{% url 'account:edit_profile' pk=user.pk %}">Edit profile</a>
+    </div>
+
 {% endblock %}
