@@ -1,6 +1,6 @@
-from django.db import migrations
 import dynamic_filenames
 import stdimage.models
+from django.db import migrations
 
 
 class Migration(migrations.Migration):

@@ -1,3 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
+from announcement import models as ann
+
+# class ImageInline(admin.TabularInline):
+#     model=ann.AnnouncementImage
+
+# @admin.register(ann.Announcement)
+# class AnnouncementAdmin(admin.ModelAdmin):
+#     inlines=[
+#         ImageInline
+#     ]
