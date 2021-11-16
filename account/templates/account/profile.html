@@ -10,8 +10,10 @@
     Nazwisko: {{ object.last_name }}<br>
     E-Mail: {{ object.email }}<br>
 </div>
-
 <div>
     <a href="{% url 'announcement:add_announcement' %}">Dodaj ogłoszenie</a>
+</div>
+<div class="input-group mb-3">
+    <a href="{% url 'account:edit_profile' pk=user.pk %}">Edit profile</a>
 </div>
 {% endblock %}
