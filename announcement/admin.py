@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from announcement import models as ann
 
 # class ImageInline(admin.TabularInline):
