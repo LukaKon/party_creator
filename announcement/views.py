@@ -60,8 +60,7 @@ class ContactView(generic.FormView):
             message = "\n".join(body.values())
 
             try:
-                send_mail(subject, message, "admin@example.com",
-                          ["admin@example.com"])
+                send_mail(subject, message, "admin@example.com", ["admin@example.com"])
             except BadHeaderError:
                 return HttpResponse("Invalid header found.")
             return redirect("announcement:home")
@@ -99,29 +98,48 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        context["form"] = self.form_class(initial={"user": user.id})
+        # context["form"] = self.form_class(initial={"user": user.id})
+        context["form"] = forms.AddAnnouncementForm(initial={"user": user.id})
 
-        context['formset'] = self.image_formset
+        context["formset"] = self.image_formset(
+            queryset=AnnouncementImage.objects.none()
+        )
         return context
 
     def post(self, request, *args, **kwargs):
         # form = self.get_form()
-        announcement_form = self.form_class(request.POST)
+        # announcement_form = self.form_class(request.POST)
+        # images_set = self.image_formset(request.POST, request.FILES)
+        # print(announcement_form.errors)
+        # if images_set.is_valid():
+        # print("images form")
+
+        # if announcement_form.is_valid() and images_set.is_valid():
+        #     print('is valid')
+        #     announcement_obj = announcement_form.save()
+
+        #     # for form in images_set.cleaned_data:
+        # for form in images_set:
+        # form.save()
+        #         # if form:
+        #         # image = form['image']
+        #         # AnnouncementImage.objects.create(
+        #         # image=image, announcement=announcement_obj)
+        # return redirect("announcement:home")
+        announcement_form = self.get_form()
         images_set = self.image_formset(request.POST, request.FILES)
-
         if announcement_form.is_valid() and images_set.is_valid():
-            announcement_obj = announcement_form.save()
-
-            for form in images_set.cleaned_data:
-                if form:
-                    image = form['image']
-                    AnnouncementImage.objects.create(
-                        image=image, announcement=announcement_obj)
-            return redirect('announcement:home')
-
-        return render(request,
-                      self.template_name,
-                      context={
-                          'form': self.form_class,
-                          'formset': self.image_formset
-                      })
+            announcement = announcement_form.save(commit=False)
+            announcement.user = self.request.user
+            announcement.save()
+            for image_form in images_set:
+                if image_form.is_valid():
+                    image = image_form.save(commit=False)
+                    image.announcement = announcement
+                    image_form.save()
+            return redirect("announcement:home")
+        return render(
+            request,
+            self.template_name,
+            context={"form": announcement_form, "formset": images_set},
+        )

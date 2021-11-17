@@ -8,7 +8,8 @@ from dynamic_filenames import FilePattern
 from account.models import User
 
 upload_to_pattern = FilePattern(
-    filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}")
+    filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
+)
 
 
 class Category(models.Model):
@@ -53,7 +54,7 @@ class Announcement(models.Model):
     date = models.DateField(auto_now=True)
 
     class Meta:
-        index_together = (("id", "slug"), )
+        index_together = (("id", "slug"),)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -61,8 +62,7 @@ class Announcement(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("announcement:announcement_details",
-                       kwargs={"slug": self.slug})
+        return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.title
@@ -85,7 +85,7 @@ class AnnouncementImage(models.Model):
     )
     announcement = models.ForeignKey(
         Announcement,
-        verbose_name='announcement_image',
+        verbose_name="announcement_image",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
