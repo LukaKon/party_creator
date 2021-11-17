@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, widgets
 
 from announcement import models
 
@@ -19,13 +19,15 @@ class ContactForm(forms.Form):
 
 class NewsletterForm(forms.ModelForm):
     """Sign up for newsletter form."""
+
     class Meta:
         model = models.Newsletter
-        fields = ("email", )
+        fields = ("email",)
 
 
 class AddAnnouncementForm(forms.ModelForm):
     """Add announcement."""
+
     class Meta:
         model = models.Announcement
         fields = (
@@ -34,28 +36,28 @@ class AddAnnouncementForm(forms.ModelForm):
             # 'images',
             "category",
             "event_type",
-            "user",
+            # "user",
         )
-        widgets = {
-            "user": forms.HiddenInput(),
-        }
+        # widgets = {
+        # "user": forms.HiddenInput(),
+        # }
 
 
 class AddImageForm(forms.ModelForm):
     """Add image to announcement."""
+
     class Meta:
         model = models.AnnouncementImage
-        fields = ("image", )
+        fields = ("image",)
+        # widgets={'image':forms.}
 
 
-FormsetImage = ImageFormSet = modelformset_factory(
+ImageFormSet = modelformset_factory(
     model=models.AnnouncementImage,
-    form=AddImageForm,
-    fields=("image", ),
-    extra=1,
+    # form=AddImageForm,
+    fields=("image",),
+    extra=0,
     max_num=10,
     min_num=1,
     can_delete=True,
 )
-
-# ImageFormSetInitial=
