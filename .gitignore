@@ -1,6 +1,3 @@
-# django media file
-media/announcement/announcementimage/*
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
