@@ -1,6 +1,7 @@
 import stdimage
 from django.db.models.fields.files import FileField
 
+
 class stdimage_save_defaultimg(stdimage.StdImageField):
     def save_form_data(self, instance, data):
         if self.delete_orphans and (data is False or data is not None) \

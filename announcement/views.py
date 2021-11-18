@@ -1,16 +1,49 @@
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, ListView, FormView
-from announcement.models import Category, Announcement
-from announcement import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse
-from django.core.mail import send_mail, BadHeaderError
+from django.shortcuts import redirect, render
+from django.views import generic
+
+from announcement import forms
+import announcement
+from announcement.models import Announcement, AnnouncementImage, Category
 
 
-class HomeView(TemplateView):
+class HomeView(generic.FormView):
     """Home page."""
-    template_name='announcement/index.html'
 
-class ContactView(FormView):
+    template_name = "announcement/index.html"
+    form_class = forms.SearchForm
+    newsletter_form = forms.NewsletterForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # TODO: give context to main page
+
+        #     context["familly"] = Announcement.objects.filter(
+        #         type="lokal", category__name="rodzinne"
+        #     )
+        #     context["business"] = Announcement.objects.filter(
+        #         type="lokal", category__name="biznesowe"
+        #     )
+        #     context["party"] = Announcement.objects.filter(
+        #         type="lokal", category__name="party"
+        #     )
+
+        context["newsletter"] = self.newsletter_form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # self.object = None
+        newsletter = self.newsletter_form(request.POST)
+        # breakpoint()
+        if newsletter.is_valid():
+            # breakpoint()
+            newsletter.save()
+        return redirect("announcement:home")
+
+
+class ContactView(generic.FormView):
     """Sending message to service owner."""
 
     template_name = "announcement/contact.html"
@@ -32,10 +65,81 @@ class ContactView(FormView):
                 return HttpResponse("Invalid header found.")
             return redirect("announcement:home")
 
-        # form = ContactForm()
+        form = ContactForm()
         return render(request, "announcement/contact.html", {"form": form})
 
 
-class CategoryListView(ListView):
+class CategoryListView(generic.ListView):
     model = Category
-    template_name = 'announcement/category_list.html'
+    template_name = "announcement/category_list.html"
+
+
+class AnnouncementListView(generic.ListView):
+    """List of announcements."""
+
+    model = Announcement
+    template_name = "announcement/announcement_list.html"
+
+
+class DetailsAnnouncementView(generic.DetailView):
+    """Announcemen details."""
+
+    model = Announcement
+    template_name = "announcement/announcement_details.html"
+
+
+class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
+    model = Announcement
+    template_name = "announcement/add_announcement.html"
+
+    form_class = forms.AddAnnouncementForm
+    image_formset = forms.ImageFormSet
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        # context["form"] = self.form_class(initial={"user": user.id})
+        context["form"] = forms.AddAnnouncementForm(initial={"user": user.id})
+
+        context["formset"] = self.image_formset(
+            queryset=AnnouncementImage.objects.none()
+        )
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # form = self.get_form()
+        # announcement_form = self.form_class(request.POST)
+        # images_set = self.image_formset(request.POST, request.FILES)
+        # print(announcement_form.errors)
+        # if images_set.is_valid():
+        # print("images form")
+
+        # if announcement_form.is_valid() and images_set.is_valid():
+        #     print('is valid')
+        #     announcement_obj = announcement_form.save()
+
+        #     # for form in images_set.cleaned_data:
+        # for form in images_set:
+        # form.save()
+        #         # if form:
+        #         # image = form['image']
+        #         # AnnouncementImage.objects.create(
+        #         # image=image, announcement=announcement_obj)
+        # return redirect("announcement:home")
+        announcement_form = self.get_form()
+        images_set = self.image_formset(request.POST, request.FILES)
+        if announcement_form.is_valid() and images_set.is_valid():
+            announcement = announcement_form.save(commit=False)
+            announcement.user = self.request.user
+            announcement.save()
+            for image_form in images_set:
+                if image_form.is_valid():
+                    image = image_form.save(commit=False)
+                    image.announcement = announcement
+                    image_form.save()
+            return redirect("announcement:home")
+        return render(
+            request,
+            self.template_name,
+            context={"form": announcement_form, "formset": images_set},
+        )

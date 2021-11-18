@@ -28,33 +28,33 @@
             <span class="input-group-text" id="email">Email:</span>
             <input type="email" class="form-control" id="email" placeholder="Podaj email..." aria-label="Email:"
                 aria-describedby="email" name="email">
-                <div class="invalid-feedback">{{ form.errors.email }}</div>
+            <div class="invalid-feedback">{{ form.errors.email }}</div>
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="password1">Hasło:</span>
             <input type="password" class="form-control" id="password1" placeholder="Hasło..." aria-label="Hasło:"
                 aria-describedby="password1" name="password1">
-                <div class="invalid-feedback">{{ form.errors.password1 }}</div>
+            <div class="invalid-feedback">{{ form.errors.password1 }}</div>
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="password2">Powtórz hasło:</span>
             <input type="password" class="form-control" id="password2" placeholder="Powtórz hasło..."
                 aria-label="Powtórz hasło:" aria-describedby="password2" name="password2">
-                <div class="invalid-feedback">{{ form.errors.password2 }}</div>
+            <div class="invalid-feedback">{{ form.errors.password2 }}</div>
         </div>
-      
-<div class="input-group mb-3">
-                {{ form.is_firma.label }}
-                {{ form.is_firma }}
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="firma_name">Nazwa firmy:</span>
-                <input type="text" class="form-control" id="firma_name" placeholder="Nazwa firmy..."
-                       aria-label="Nazwa firmy:" aria-describedby="firma_name" name="name">
-            </div>
-      
+
+        <div class="input-group mb-3">
+            {{ form.is_firma.label }}
+            {{ form.is_firma }}
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="firma_name">Nazwa firmy:</span>
+            <input type="text" class="form-control" id="firma_name" placeholder="Nazwa firmy..."
+                aria-label="Nazwa firmy:" aria-describedby="firma_name" name="name">
+        </div>
+
         <div class="row mb-3">
             <button type="submit" class="btn btn-primary">Zarejestruj się</button>
         </div>

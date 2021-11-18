@@ -23,7 +23,16 @@
   <div class="container">
     <div class="row">
       <p>Lokal na chrzciny, komunię, wesele</p>
-      {% for local in family_party_locals %}
+      {% for local in familly %}
+      <div class="col">
+        {{ local.name }}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="row">
+      <p>Impreza integracyjna i spotkania biznesowe</p>
+      {% for local in business %}
       <div class="col">
         {{ local.name }}
       </div>
@@ -32,16 +41,7 @@
 
     <div class="row">
       <p>Lokal na urodziny i imprezy ze znajomymi</p>
-      {% for local in family_party_locals %}
-      <div class="col">
-        {{ local.name }}
-      </div>
-      {% endfor %}
-    </div>
-
-    <div class="row">
-      <p>Lokal na urodziny i imprezy ze znajomymi</p>
-      {% for local in family_party_locals %}
+      {% for local in party %}
       <div class="col">
         {{ local.name }}
       </div>

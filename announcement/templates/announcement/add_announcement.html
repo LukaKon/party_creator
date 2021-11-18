@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Dodawanie ogłoszenia{% endblock title %}
+{% block content %}
+    <form action="" id="form_container" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include 'base_form.html' %}
+
+        {{ formset.management_form }}
+        {% for image in formset %}
+        <div id="div_image">
+            {{ image }}
+            {{ image.errors}}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Dodaj ogłoszenie">
+        <button id="add_form" type="button" class="btn btn-primary">Add another exercise</button>
+    </form>
+{% endblock content %}
+

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Logowanie{% endblock title %}
 {% block content %}
-    <form method="POST" action="" class="form-text form-control-sm">
-        {% csrf_token %}
-        {% include 'base_form.html' %}
-            <input type="submit" value="Zaloguj się">
-    </form>
-    <a href="{% url 'account:password_reset' %}">Przypomnij hasło</a>
+<form method="POST" action="" class="form-text form-control-sm">
+    {% csrf_token %}
+    {% include 'base_form.html' %}
+    <input type="submit" value="Zaloguj się">
+</form>
+<a href="{% url 'account:password_reset' %}">Przypomnij hasło</a>
 {% endblock %}

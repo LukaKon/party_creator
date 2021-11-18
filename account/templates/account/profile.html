@@ -4,12 +4,16 @@
 {% load static %}
 {% block content %}
 
-    Avatar: <img alt="My image" src="{{ object.image.thumbnail.url }}"/><br>
+<div>
+    Avatar: <img alt="My image" src="{{ object.image.thumbnail.url }}" /><br>
     Imie: {{ object.first_name }}<br>
     Nazwisko: {{ object.last_name }}<br>
     E-Mail: {{ object.email }}<br>
-    <div class="input-group mb-3">
-        <a href="{% url 'account:edit_profile' pk=user.pk %}">Edit profile</a>
-    </div>
-
+</div>
+<div>
+    <a href="{% url 'announcement:add_announcement' %}">Dodaj ogłoszenie</a>
+</div>
+<div class="input-group mb-3">
+    <a href="{% url 'account:edit_profile' pk=user.pk %}">Edit profile</a>
+</div>
 {% endblock %}
