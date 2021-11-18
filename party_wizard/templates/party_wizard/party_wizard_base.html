@@ -4,19 +4,21 @@
 {% block content %}
 
     {% load static %}
-
-    {
-    <div class="container">
+    <h2>Choose event:</h2>
+    <form class="container" action="" method="POST">
+    {% csrf_token %}
         <div class="row">
-            <div class="col">
-                <img src="{% static "images/chrzest.jpg" %}" class="w-75 p-3 rounded-pill" alt="test">
-            </div>
-            <div class="col">
-                <img src="{% static "images/urodziny.jpg" %}" class="w-75 p-3 rounded-pill" alt="test">
-            </div>
-            <div class="col">
-                <img src="{% static "images/wesele.jpg" %}" class="w-75 p-3 rounded-pill" alt="test">
-            </div>
+            {% for event_type in event_types %}
+                <div class="col">
+                    <button type="submit" name='event_pk' value="{{ event_type.pk }}">
+                        <img src="{{ event_type.photo.image }}" class="w-75 p-3 rounded-pill" alt="test"><br>
+                        {{ event_type.name }}
+                    </button>
+                </div>
+
+            {% endfor %}
         </div>
-    </div>
+
+
+    </form>
 {% endblock %}

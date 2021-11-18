@@ -6,34 +6,42 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('announcement', '0010_alter_category_name'),
+        ("announcement", "0010_alter_category_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='name',
+            model_name="category",
+            name="name",
             field=models.CharField(max_length=250),
         ),
         migrations.AlterIndexTogether(
-            name='announcement',
-            index_together={('id', 'slug')},
+            name="announcement",
+            index_together={("id", "slug")},
         ),
         migrations.CreateModel(
-            name='EventType',
+            name="EventType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('category', models.ManyToManyField(to='announcement.Category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("category", models.ManyToManyField(to="announcement.Category")),
             ],
         ),
         migrations.RemoveField(
-            model_name='announcement',
-            name='type',
+            model_name="announcement",
+            name="type",
         ),
         migrations.AddField(
-            model_name='announcement',
-            name='event_type',
-            field=models.ManyToManyField(to='announcement.EventType'),
+            model_name="announcement",
+            name="event_type",
+            field=models.ManyToManyField(to="announcement.EventType"),
         ),
     ]

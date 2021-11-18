@@ -9,25 +9,48 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('announcement', '0004_alter_announcement_image'),
+        ("announcement", "0004_alter_announcement_image"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Image',
+            name="Image",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', stdimage.models.StdImageField(blank=True, null=True, upload_to=dynamic_filenames.FilePattern(filename_pattern='{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}'))),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "image",
+                    stdimage.models.StdImageField(
+                        blank=True,
+                        null=True,
+                        upload_to=dynamic_filenames.FilePattern(
+                            filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
+                        ),
+                    ),
+                ),
             ],
         ),
         migrations.RemoveField(
-            model_name='announcement',
-            name='image',
+            model_name="announcement",
+            name="image",
         ),
         migrations.AddField(
-            model_name='announcement',
-            name='images',
-            field=models.ForeignKey(blank=True, default=0, on_delete=django.db.models.deletion.CASCADE, to='announcement.image', verbose_name='announcement_images'),
+            model_name="announcement",
+            name="images",
+            field=models.ForeignKey(
+                blank=True,
+                default=0,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="announcement.image",
+                verbose_name="announcement_images",
+            ),
             preserve_default=False,
         ),
     ]

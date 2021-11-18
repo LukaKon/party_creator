@@ -43,17 +43,8 @@ class AddAnnouncementForm(forms.ModelForm):
         # }
 
 
-class AddImageForm(forms.ModelForm):
-    """Add image to announcement."""
-
-    class Meta:
-        model = models.AnnouncementImage
-        fields = ("image",)
-        # widgets={'image':forms.}
-
-
 ImageFormSet = modelformset_factory(
-    model=models.AnnouncementImage,
+    model=models.Image,
     # form=AddImageForm,
     fields=("image",),
     extra=0,
