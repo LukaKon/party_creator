@@ -23,7 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("account.urls", "account")),
     path("", include("announcement.urls", "announcement")),
-    # path("", include("party_wizard.urls", "party_wizard")),
+    path("", include("party_wizard.urls", "party_wizard")),
 
 ]
 if settings.DEBUG:
