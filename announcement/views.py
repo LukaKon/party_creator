@@ -6,7 +6,7 @@ from django.views import generic
 
 from announcement import forms
 import announcement
-from announcement.models import Announcement, AnnouncementImage, Category
+from announcement.models import Announcement, Image, ServiceCategory
 
 
 class HomeView(generic.FormView):
@@ -65,12 +65,12 @@ class ContactView(generic.FormView):
                 return HttpResponse("Invalid header found.")
             return redirect("announcement:home")
 
-        form = ContactForm()
+        # form = ContactForm() # TODO Łukasz, nie nadpisuj bo będzie pusty formularz wysyłany.
         return render(request, "announcement/contact.html", {"form": form})
 
 
 class CategoryListView(generic.ListView):
-    model = Category
+    model = ServiceCategory
     template_name = "announcement/category_list.html"
 
 
@@ -101,9 +101,7 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
         # context["form"] = self.form_class(initial={"user": user.id})
         context["form"] = forms.AddAnnouncementForm(initial={"user": user.id})
 
-        context["formset"] = self.image_formset(
-            queryset=AnnouncementImage.objects.none()
-        )
+        context["formset"] = self.image_formset(queryset=Image.objects.none())
         return context
 
     def post(self, request, *args, **kwargs):

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Party Wizard{% endblock %}
+{% block content %}
+
+    {% load static %}
+    <h2>Choose event:</h2>
+    <form class="container" action="" method="POST">
+    {% csrf_token %}
+        <div class="row">
+            {% for event_type in event_types %}
+                <div class="col">
+                    <button type="submit" name='event_pk' value="{{ event_type.pk }}">
+                        <img src="{{ event_type.photo.image }}" class="w-75 p-3 rounded-pill" alt="test"><br>
+                        {{ event_type.name }}
+                    </button>
+                </div>
+
+            {% endfor %}
+        </div>
+
+
+    </form>
+{% endblock %}

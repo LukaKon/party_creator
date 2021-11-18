@@ -12,8 +12,8 @@ upload_to_pattern = FilePattern(
 )
 
 
-class Category(models.Model):
-    """Category of announcement."""
+class ServiceCategory(models.Model):
+    """Category(type) of announcement. e.g local, photograph etc. """
 
     name = models.CharField(max_length=250)
 
@@ -22,10 +22,11 @@ class Category(models.Model):
 
 
 class EventType(models.Model):
-    """Event type."""
+    """Event type. e.g weddings, baptism etc. """
 
     name = models.CharField(max_length=100)
-    category = models.ManyToManyField(Category)
+    photo = models.ForeignKey("Image", on_delete=models.SET_NULL, null=True)
+    category = models.ManyToManyField(ServiceCategory)  # ????
 
     def __str__(self):
         return self.name
@@ -46,7 +47,7 @@ class Announcement(models.Model):
     #     on_delete=models.CASCADE,
     # )
     category = models.ForeignKey(
-        Category,
+        ServiceCategory,
         verbose_name="announcement_categories",
         on_delete=models.CASCADE,
     )
@@ -68,7 +69,7 @@ class Announcement(models.Model):
         return self.title
 
 
-class AnnouncementImage(models.Model):
+class Image(models.Model):
     """Pictures attached to announcement."""
 
     image = stdimage.StdImageField(
@@ -89,10 +90,18 @@ class AnnouncementImage(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
+        related_name="image",
+    )
+    event_type = models.ForeignKey(
+        EventType,
+        verbose_name="event_type_image",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
 
 class Newsletter(models.Model):
