@@ -10,8 +10,10 @@ upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
 )
 
+
 class UserManager(BaseUserManager):
     """User Manager to create a user with email as login field"""
+
     def create_user(self, email, password, **kwargs):
         if not email:
             raise ValueError(_("The Email must be set"))
@@ -34,14 +36,15 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    """User with email as a login field. Added flag 'is_moderator' for future. """
+    """User with email as a login field. Added flag 'is_moderator' for future."""
+
     username = None
     email = models.EmailField(_("email address"), unique=True)
     is_moderator = models.BooleanField(default=False)
     image = utils.stdimage_save_defaultimg(
         null=True,
         blank=True,
-        default='default.jpg',
+        default="default.jpg",
         upload_to=upload_to_pattern,
         variations={
             "large": (600, 400),

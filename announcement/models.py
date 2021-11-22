@@ -13,7 +13,7 @@ upload_to_pattern = FilePattern(
 
 
 class ServiceCategory(models.Model):
-    """Category(type) of announcement. e.g local, photograph etc. """
+    """Category(type) of announcement. e.g local, photograph etc."""
 
     name = models.CharField(max_length=250)
 
@@ -22,11 +22,13 @@ class ServiceCategory(models.Model):
 
 
 class EventType(models.Model):
-    """Event type. e.g weddings, baptism etc. """
+    """Event type. e.g weddings, baptism etc."""
 
     name = models.CharField(max_length=100)
-    photo = models.ForeignKey("Image", on_delete=models.SET_NULL, null=True)
-    category = models.ManyToManyField(ServiceCategory)  # ????
+    photo = models.ForeignKey(
+        "Image", verbose_name="event_type_image", on_delete=models.SET_NULL, null=True
+    )
+    category = models.ManyToManyField(ServiceCategory, related_name="event_types")
 
     def __str__(self):
         return self.name
@@ -39,19 +41,12 @@ class Announcement(models.Model):
     description = models.TextField()
     slug = models.SlugField(max_length=250)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # images = models.ForeignKey(
-    #     AnnouncementImage,
-    #     verbose_name="announcement_images",
-    #     blank=True,
-    #     null=True,
-    #     on_delete=models.CASCADE,
-    # )
     category = models.ForeignKey(
         ServiceCategory,
         verbose_name="announcement_categories",
         on_delete=models.CASCADE,
     )
-    event_type = models.ManyToManyField(EventType)
+    event_type = models.ManyToManyField(EventType, related_name="announcements")
     date = models.DateField(auto_now=True)
 
     class Meta:
@@ -92,7 +87,7 @@ class Image(models.Model):
         blank=True,
         related_name="image",
     )
-    event_type = models.ForeignKey(
+    event_type = models.OneToOneField(
         EventType,
         verbose_name="event_type_image",
         on_delete=models.CASCADE,

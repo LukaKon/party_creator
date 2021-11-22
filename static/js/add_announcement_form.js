@@ -1,7 +1,10 @@
-console.log("js");
+console.log("JS for add_announcement form loaded...");
+
+const addImageBtn = document.querySelector("#add_image");
+const submitFormBtn=document.querySelector('[type=submit]');
+
 let exercise = document.querySelectorAll("#div_image");
 let container = document.querySelector("#form_container");
-let addButton = document.querySelector("#add_form");
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
 
 let formNum = exercise.length - 1;
