@@ -1,4 +1,5 @@
 from django.urls import path
+
 import party_wizard.views as views
 
 app_name = "party_wizard"

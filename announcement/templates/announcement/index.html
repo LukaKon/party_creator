@@ -10,8 +10,12 @@
     <nav class="navbar navbar-light bg-dark start-50 translate-middle">
       <form class="container-fluid">
         <div class="input-group">
-          <span class="input-group-text" id="search">Podaj lokalizację</span>
-          <input type="text" class="form-control" placeholder="Wyszukaj" aria-label="query" aria-describedby="search">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <span class="input-group-text" id="search">Podaj lokalizację</span>
+            <input type="text" class="form-control" placeholder="Wyszukaj" aria-label="query" aria-describedby="search">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Szukaj</button>
+          </form>
         </div>
       </form>
     </nav>

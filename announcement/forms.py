@@ -33,22 +33,36 @@ class AddAnnouncementForm(forms.ModelForm):
         fields = (
             "title",
             "description",
-            # 'images',
             "category",
             "event_type",
-            # "user",
         )
-        # widgets = {
-        # "user": forms.HiddenInput(),
-        # }
-
-
-ImageFormSet = modelformset_factory(
-    model=models.Image,
-    # form=AddImageForm,
-    fields=("image",),
-    extra=0,
-    max_num=10,
-    min_num=1,
-    can_delete=True,
-)
+        widgets = {
+            # "user": forms.HiddenInput(),
+            "title": forms.TextInput(
+                attrs={
+                    # "label": "Tytuł:",
+                    "class": "form-control",
+                    "placeholder": "tytuł...",
+                    "aria-label": "title",
+                    "aria-describedby": "title",
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "opis...",
+                    "aria-label": "description",
+                    "aria-describedby": "description",
+                    "cols": 30,
+                    "rows": 3,
+                }
+            ),
+            "category": forms.Select(
+                attrs={
+                    # "class": "form-control",
+                    "class": "form-select",
+                    "aria-label": "category",
+                    "aria-describedby": "category",
+                },
+            ),
+        }
