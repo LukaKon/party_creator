@@ -9,6 +9,7 @@ from account.models import Firma, User
 
 class CreationUserForm(UserCreationForm):
     """Create User form."""
+
     def __init__(self, *args, **kwargs):
         super(CreationUserForm, self).__init__(*args, **kwargs)
         self.fields["first_name"].required = False
@@ -20,9 +21,17 @@ class CreationUserForm(UserCreationForm):
             attrs={"placeholder": "Powtórz hasło"}
         )
 
-    class Meta():
+    class Meta:
         model = User
-        fields = ("image", "first_name", "last_name", "email", "password1", "password2", "is_firma")
+        fields = (
+            "image",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+            "is_firma",
+        )
         widgets = {
             "first_name": forms.TextInput(
                 attrs={"autofocus": True, "placeholder": "Imię"}
@@ -66,6 +75,6 @@ class LoginUserForm(AuthenticationForm):
 
 
 class FirmaForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = Firma
-        fields = ('name',)
+        fields = ("name",)

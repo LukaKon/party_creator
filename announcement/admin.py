@@ -11,7 +11,18 @@ from .models import Announcement, EventType, Image, Newsletter, ServiceCategory
 #         ImageInline
 #     ]
 
-admin.site.register(Announcement)
+
+class AnnouncementAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "description",
+    )
+    prepopulated_fields = {"slug": ("title",)}
+
+
+admin.site.register(Announcement, AnnouncementAdmin)
+
+# admin.site.register(Announcement)
 admin.site.register(ServiceCategory)
 admin.site.register(Image)
 admin.site.register(EventType)

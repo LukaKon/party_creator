@@ -21,4 +21,9 @@ urlpatterns = [
         views.DetailsAnnouncementView.as_view(),
         name="announcement_details",
     ),
+    path(
+        "update_announcement/<slug:slug>/",
+        views.AnnouncementUpdateView.as_view(),
+        name="update_announcement",
+    ),
 ]

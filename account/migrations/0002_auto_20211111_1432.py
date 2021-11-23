@@ -9,25 +9,42 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0001_initial'),
+        ("account", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='UserAdmin',
+            name="UserAdmin",
             fields=[
-                ('user_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='account.user')),
+                (
+                    "user_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="account.user",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
-                'abstract': False,
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
+                "abstract": False,
             },
-            bases=('account.user',),
+            bases=("account.user",),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='image',
-            field=stdimage.models.StdImageField(blank=True, default='deafault.jpg', null=True, upload_to=dynamic_filenames.FilePattern(filename_pattern='{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}')),
+            model_name="user",
+            name="image",
+            field=stdimage.models.StdImageField(
+                blank=True,
+                default="deafault.jpg",
+                null=True,
+                upload_to=dynamic_filenames.FilePattern(
+                    filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
+                ),
+            ),
         ),
     ]

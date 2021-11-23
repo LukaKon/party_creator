@@ -17,23 +17,55 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=250)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=250)),
             ],
         ),
         migrations.CreateModel(
-            name='Announcement',
+            name="Announcement",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200)),
-                ('description', models.TextField()),
-                ('slug', models.SlugField(max_length=250)),
-                ('date', models.DateField(auto_now=True)),
-                ('image', stdimage.models.StdImageField(blank=True, default='deafault.jpg', null=True, upload_to=dynamic_filenames.FilePattern(filename_pattern='{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}'))),
-                ('category', models.ManyToManyField(to='announcement.Category')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=200)),
+                ("description", models.TextField()),
+                ("slug", models.SlugField(max_length=250)),
+                ("date", models.DateField(auto_now=True)),
+                (
+                    "image",
+                    stdimage.models.StdImageField(
+                        blank=True,
+                        default="deafault.jpg",
+                        null=True,
+                        upload_to=dynamic_filenames.FilePattern(
+                            filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
+                        ),
+                    ),
+                ),
+                ("category", models.ManyToManyField(to="announcement.Category")),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

@@ -8,13 +8,20 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('announcement', '0003_alter_announcement_image'),
+        ("announcement", "0003_alter_announcement_image"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='announcement',
-            name='image',
-            field=stdimage.models.StdImageField(blank=True, default='default.jpg', null=True, upload_to=dynamic_filenames.FilePattern(filename_pattern='{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}')),
+            model_name="announcement",
+            name="image",
+            field=stdimage.models.StdImageField(
+                blank=True,
+                default="default.jpg",
+                null=True,
+                upload_to=dynamic_filenames.FilePattern(
+                    filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
+                ),
+            ),
         ),
     ]

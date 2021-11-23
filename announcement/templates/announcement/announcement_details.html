@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Sczegóły ogłoszenia{% endblock title %}
 {% block content %}
-{{ object.title }}
+<h2>
+    {{ announcement.title }}
+</h2>
+<br>
+{{ announcement.description }}
+
+<!--TODO: Show 'edit' functionality only to owner-->
+{% comment %} {% if request.user.is_authenticated and request.user == object.user %} {% endcomment %}
+{% if user.is_authenticated and user == object.user %}
+<br>
+<a href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj ogłoszenie</a>
 {% endblock content %}

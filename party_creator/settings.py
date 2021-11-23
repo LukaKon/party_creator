@@ -22,13 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#c13jyes32=3z7r@=4b0@tngds9va)a6a3#@_m6)!%&8t_va@5'
+SECRET_KEY = "django-insecure-#c13jyes32=3z7r@=4b0@tngds9va)a6a3#@_m6)!%&8t_va@5"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #development only
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
 
 ALLOWED_HOSTS = []
@@ -43,7 +43,6 @@ MY_APPS = [
 ]
 
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -52,7 +51,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ] + MY_APPS
-
 
 
 MIDDLEWARE = [
@@ -65,7 +63,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'party_creator.urls'
+ROOT_URLCONF = "party_creator.urls"
 
 TEMPLATES = [
     {
@@ -83,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'party_creator.wsgi.application'
+WSGI_APPLICATION = "party_creator.wsgi.application"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -91,16 +89,16 @@ WSGI_APPLICATION = 'party_creator.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -155,4 +153,3 @@ except ModuleNotFoundError:
     exit(0)
 
 GOOGLE_API_KEY = party_creator.local_settings.GOOGLE_API_KEY
-

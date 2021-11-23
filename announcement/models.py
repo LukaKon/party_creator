@@ -7,6 +7,8 @@ from dynamic_filenames import FilePattern
 
 from account.models import User
 
+from .utils import unique_slug_generator
+
 upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
 )
@@ -39,7 +41,7 @@ class Announcement(models.Model):
 
     title = models.CharField(max_length=200)
     description = models.TextField()
-    slug = models.SlugField(max_length=250)
+    slug = models.SlugField(unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(
         ServiceCategory,
@@ -54,7 +56,7 @@ class Announcement(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = unique_slug_generator(self)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
