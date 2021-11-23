@@ -24,7 +24,6 @@ urlpatterns = [
     path("", include("account.urls", "account")),
     path("", include("announcement.urls", "announcement")),
     path("", include("party_wizard.urls", "party_wizard")),
-
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

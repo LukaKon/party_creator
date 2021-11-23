@@ -1,9 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView, get_user_model
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 
 import account.forms as forms
 from account.models import User
+from announcement.models import Announcement
 
 
 class RegisterView(CreateView):
@@ -14,14 +16,14 @@ class RegisterView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['firma_form'] = forms.FirmaForm
+        context["firma_form"] = forms.FirmaForm
         return context
 
-    def post(self ,*args, **kwargs):
+    def post(self, *args, **kwargs):
         self.object = None
         form = self.get_form()
         if form.is_valid():
-            if self.request.POST.get('is_firma'):
+            if self.request.POST.get("is_firma"):
                 form_firma = forms.FirmaForm(self.request.POST)
                 if form_firma.is_valid():
                     form_firma.save()
@@ -41,9 +43,17 @@ class LogoutUserView(LogoutView):
     next_page = "announcement:home"
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
+    """Details of user account."""
+
     model = User
     template_name = "account/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context["announcements"] = Announcement.objects.filter(user=user)
+        return context
 
 
 class EditProfileView(UpdateView):
@@ -56,11 +66,11 @@ class EditProfileView(UpdateView):
         return queryset
 
     def get_success_url(self):
-        return reverse_lazy('account:edit_profile', kwargs={'pk': self.request.user.pk})
+        return reverse_lazy("account:edit_profile", kwargs={"pk": self.request.user.pk})
 
     def form_valid(self, form):
         edit_user = form.save(commit=False)
-        if self.request.POST.get('image-clear') != None:
-            edit_user.image = 'default.jpg'
+        if self.request.POST.get("image-clear") != None:
+            edit_user.image = "default.jpg"
         edit_user.save()
         return super().form_valid(form)

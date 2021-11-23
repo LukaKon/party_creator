@@ -86,6 +86,7 @@ class DetailsAnnouncementView(generic.DetailView):
 
     model = Announcement
     template_name = "announcement/announcement_details.html"
+    context_object_name = "announcement"
 
 
 class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
@@ -110,7 +111,7 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
                     image=image,
                     announcement=announcement,
                 )
-            return redirect("announcement:home")
+            return redirect("account:profile", kwargs={"pk": self.request.user.id})
 
         return render(
             request,
@@ -119,3 +120,16 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
                 "form": announcement_form,
             },
         )
+
+
+class AnnouncementUpdateView(LoginRequiredMixin, generic.UpdateView):
+    """Update announcement."""
+
+    model = Announcement
+    template_name = "announcement/update_announcement.html"
+    fields = (
+        "title",
+        "description",
+        "category",
+        "event_type",
+    )
