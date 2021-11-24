@@ -5,24 +5,26 @@
     <div class="row">
         <h2>Edycja ogłoszenia</h2>
     </div>
-
+    <!--TODO: Why if with users don't work???-->
+    object: {{ object.user }}
+    user: {{ user }}
+    {% comment %} {% if user==object.user %}true {% else %}false{% endif %} {% endcomment %}
+    {% if user.is_authenticated %}
+    {% comment %} and user=object.user {% endcomment %}
     <div class="row">
         <form action="" id="form_container" method="POST" enctype="multipart/form-data" class="row g-3">
             {% csrf_token %}
 
-
-            <div class="row text-center">
+            <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="input-group mb-3">
-                        <label class="input-group-text" for="title">Tytuł</label>
-                        <input required="false" type="text" class="form-control" id="title"
-                            placeholder="Tytuł ogłoszenia..." aria-label="Tytuł:" aria-describedby="title"
-                            aria-required="true" name="title">
-                        <div class="invalid-feedback">{{ form.errors.title }}</div>
+                        <span class="input-group-text" for="{{ form.title.id_for_label }}">Tytuł</span>
+                        {{ form.title }}
+                        {% comment %} <div class="invalid-feedback">{{ form.errors.description }}</div>
+                        {% endcomment %}
                     </div>
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-lg-6 col-md-12">
@@ -80,6 +82,13 @@
                     <!-- <input type="submit" value="Dodaj ogłoszenie"> -->
                 </div>
             </div>
-    </form>
-</div>
-{% endblock content %}
+        </form>
+        {% else %}
+        <div>
+            <h1>
+                Nie możesz edytować. Nie jesteś zalogowany/a.
+            </h1>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock content %}

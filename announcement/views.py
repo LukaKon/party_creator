@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from django.views import generic
 
 import announcement
@@ -111,7 +111,10 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
                     image=image,
                     announcement=announcement,
                 )
-            return redirect("account:profile", kwargs={"pk": self.request.user.id})
+            print("user id: ", self.request.user.id)
+            return redirect(
+                reverse("account:profile", kwargs={"pk": self.request.user.pk})
+            )
 
         return render(
             request,

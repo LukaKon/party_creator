@@ -6,26 +6,28 @@
 
 <div>
     Avatar: <img alt="My image" src="{{ object.image.thumbnail.url }}" /><br>
-    Imie: {{ object.first_name }}<br>
-    Nazwisko: {{ object.last_name }}<br>
-    E-Mail: {{ object.email }}<br>
+    Imie: {{ user_data.first_name }}<br>
+    Nazwisko: {{ user_data.last_name }}<br>
+    E-Mail: {{ user_data.email }}<br>
 </div>
 <div>
     <a href="{% url 'announcement:add_announcement' %}">Dodaj ogłoszenie</a>
 </div>
+
+{% if user.is_authenticated and user == user_data %}
 <div class="input-group mb-3">
     <a href="{% url 'account:edit_profile' pk=user.pk %}">Edit profile</a>
 </div>
+{% endif %}
 
 <div>
     Ogłoszenia wystawione przez Ciebie:
     <ul>
         {% for announcement in  announcements %}
         <li>
-            <a href="{% url 'announcement:announcement_details' slug=announcement.slug %}">{{ announcement.title }}</a>
-            <!--TODO: Show 'edit' functionality only to owner-->
-            {% comment %} {% if request.user.is_authenticated and request.user == object.user %} {% endcomment %}
-            {% if user.is_authenticated and user == object.user %}
+            <a
+                href="{% url 'announcement:announcement_details' slug=announcement.slug %}">{{ announcement.title }}</a><br>
+            {% if user.is_authenticated and user == user_data %}
             <br>
             <a href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj ogłoszenie</a>
             {% endif %}
