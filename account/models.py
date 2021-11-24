@@ -48,8 +48,9 @@ class User(AbstractUser):
         upload_to=upload_to_pattern,
         variations={
             "large": (600, 400),
-            "thumbnail": (100, 100, True),
             "medium": (300, 200),
+            "small": (100, 100),
+            "thumbnail": (30, 30, True),
         },
         delete_orphans=True,
     )
@@ -59,6 +60,9 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+    def __str__(self):
+        return self.email
 
 
 class Firma(models.Model):

@@ -48,10 +48,11 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
     model = User
     template_name = "account/profile.html"
+    context_object_name = "user_data"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.request.user
+        user = self.get_object().pk
         context["announcements"] = Announcement.objects.filter(user=user)
         return context
 
