@@ -1,0 +1,67 @@
+<div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" for="{{ form.title.id_for_label }}">Tytuł</span>
+                        {{ form.title }}
+                        {% comment %} <div class="invalid-feedback">{{ form.errors.description }}</div>
+                        {% endcomment %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" for="{{ form.description.id_for_label }}">Opis</span>
+                        {{ form.description }}
+                        {% comment %} <div class="invalid-feedback">{{ form.errors.description }}</div>
+                        {% endcomment %}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-4 col-md-12">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" for="{{ form.category.id_for_label }}">Kategoria</span>
+                        {{ form.category }}
+                        {% comment %} <select class="form-select" id="{{ form.category.id_for_label }}" name="category">
+                            <option value="nic">wybierz</option>
+                            {% for cat in form.category %}
+                            <option value="{{ cat.pk }}">{{ cat.pk }}</option>
+                            {% endfor %}
+                        </select> {% endcomment %}
+                        {% comment %} <div class="invalid-feedback">{{ form.errors.category }}</div>
+                        {% endcomment %}
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="{{ form.event_type.id_for_label }}">Typ imprezy</label>
+                        {{ form.event_type }}
+                        {% comment %} <div class="invalid-feedback">{{ form.errors.event_type }}</div>
+                        {% endcomment %}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row text-center">
+                <div class="col-lg-6 col-md-12">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="images">Zdjęcia</label>
+                        <input type="file" multiple class="form-control" id="images" placeholder="Wybierz zdjęcia..."
+                            aria-label="Zdjęcia:" aria-describedby="images" name="images">
+                        {% comment %} <div class="invalid-feedback">{{ form.errors.title }}</div> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-2 col-md-12">
+                    <button type="submit" class="btn btn-primary">Zapisz</button>
+                    <!-- <input type="submit" value="Dodaj ogłoszenie"> -->
+                </div>
+            </div>
