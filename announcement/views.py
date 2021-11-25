@@ -111,7 +111,6 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
                     image=image,
                     announcement=announcement,
                 )
-            print("user id: ", self.request.user.id)
             return redirect(
                 reverse("account:profile", kwargs={"pk": self.request.user.pk})
             )
@@ -127,6 +126,18 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
 
 class AnnouncementUpdateView(LoginRequiredMixin, generic.UpdateView):
     """Update announcement."""
+
+    def get_queryset(self):
+        queryset = Announcement.objects.filter(user_id=self.request.user.id)
+        return queryset
+
+        # TODO: DISPATCH NOT CHECKED!!!
+
+    def dispatch(self, request, *args, **kwargs):
+        if obj.pk != self.request.user.pk:
+            # TODO: create html;
+            return HttpResponse("CZEGO TU SZUKASZ XDD")
+        return super().dispatch(request, *args, **kwargs)
 
     model = Announcement
     template_name = "announcement/update_announcement.html"
