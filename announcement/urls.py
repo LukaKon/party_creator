@@ -23,7 +23,13 @@ urlpatterns = [
     ),
     path(
         "update_announcement/<slug:slug>/",
-        views.AnnouncementUpdateView.as_view(),
+        views.UpdateAnnouncementView.as_view(),
         name="update_announcement",
     ),
+    path(
+        "delete_announcement/<slug:slug>/",
+        views.DeleteAnnouncemenView.as_view(),
+        name="delete_announcement",
+    ),
+    # path("announcement_list/"),
 ]

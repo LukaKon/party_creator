@@ -2,11 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, reverse
+from django.urls import reverse_lazy
 from django.views import generic
 
-import announcement
 from announcement import forms
-from announcement.models import Announcement, Image, ServiceCategory
+
+from .models import Announcement, Image, ServiceCategory
+from .utils.announcement import mixins
 
 
 class HomeView(generic.FormView):
@@ -65,7 +67,6 @@ class ContactView(generic.FormView):
                 return HttpResponse("Invalid header found.")
             return redirect("announcement:home")
 
-        # form = ContactForm() # TODO Łukasz, nie nadpisuj bo będzie pusty formularz wysyłany.
         return render(request, "announcement/contact.html", {"form": form})
 
 
@@ -124,20 +125,8 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
         )
 
 
-class AnnouncementUpdateView(LoginRequiredMixin, generic.UpdateView):
+class UpdateAnnouncementView(LoginRequiredMixin, mixins.UserAccessMixin, generic.UpdateView):
     """Update announcement."""
-
-    def get_queryset(self):
-        queryset = Announcement.objects.filter(user_id=self.request.user.id)
-        return queryset
-
-        # TODO: DISPATCH NOT CHECKED!!!
-
-    def dispatch(self, request, *args, **kwargs):
-        if obj.pk != self.request.user.pk:
-            # TODO: create html;
-            return HttpResponse("CZEGO TU SZUKASZ XDD")
-        return super().dispatch(request, *args, **kwargs)
 
     model = Announcement
     template_name = "announcement/update_announcement.html"
@@ -147,3 +136,30 @@ class AnnouncementUpdateView(LoginRequiredMixin, generic.UpdateView):
         "category",
         "event_type",
     )
+
+    # def test_func(self):
+    #     return self.get_object().user == self.request.user
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     if not self.get_test_func()():
+            # return HttpResponse("CZEGO TU SZUKASZ XDD")
+        # return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = Announcement.objects.filter(user_id=self.request.user.id)
+        return queryset
+
+    def get_success_url(self):
+        """Return the URL to redirect to after processing a valid form."""
+        return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
+
+
+class DeleteAnnouncemenView(LoginRequiredMixin,mixins.UserAccessMixin, generic.DeleteView):
+    """Remove announcement."""
+
+    model = Announcement
+    template_name = "announcement/delete_announcement.html"
+
+    def get_success_url(self):
+        """Return the URL to redirect to after processing a valid form."""
+        return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
