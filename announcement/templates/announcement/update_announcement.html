@@ -5,24 +5,11 @@
     <div class="row">
         <h2>Edycja ogłoszenia</h2>
     </div>
-    <!--TODO: Why if with users don't work???-->
-    object: {{ object.user }}
-    user: {{ user }}
-    {% comment %} {% if user==object.user %}true {% else %}false{% endif %} {% endcomment %}
-    {% if user.is_authenticated %}
-    {% comment %} and user=object.user {% endcomment %}
     <div class="row">
         <form action="" id="form_container" method="POST" enctype="multipart/form-data" class="row g-3">
             {% csrf_token %}
             {% include 'announcement/create_update_form_fields.html' %}
         </form>
-        {% else %}
-        <div>
-            <h1>
-            <!--TODO: not working yet-->
-                Nie możesz edytować. Nie jesteś zalogowany/a.
-            </h1>
-        </div>
-        {% endif %}
     </div>
-    {% endblock content %}
+</div>
+{% endblock content %}

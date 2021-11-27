@@ -7,12 +7,9 @@
 <br>
 {{ announcement.description }}
 
-<!--TODO: Show 'edit' functionality only to owner-->
-{% comment %} {% if request.user.is_authenticated and request.user == object.user %} {% endcomment %}
-            req us:{{ request.user }}<br>
-            obj us:{{ object.user }}
 {% if user.is_authenticated and user == object.user %}
 <br>
-<a href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj ogłoszenie</a>
+<a href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj</a>
+<a href="{% url 'announcement:delete_announcement' slug=announcement.slug %}">Usuń</a>
 {% endif %}
 {% endblock content %}
