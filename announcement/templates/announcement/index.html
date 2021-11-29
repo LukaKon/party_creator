@@ -23,39 +23,58 @@
 </div>
 
 <div>
-  LISTA Z LOSOWYMI LOKALAMI (5x3?)
+  LISTA Z LOSOWYMI LOKALAMI
+  <!--TODO: display random image-->
   <div class="container">
     <div class="row">
-      <p>Lokal na chrzciny, komunię, wesele</p>
-      {% for local in familly %}
+      <p>Lokal na chrzciny, komunie, wesele</p>
+      {% for ann in weddings %}
       <div class="col">
-        {{ local.name }}
+        <div class="row">
+          <a href="{% url 'announcement:announcement_details' slug=ann.slug %}"><img src="{{ ann.image.small.url }}"
+              alt=""></a>
+        </div>
+        <div class="row">
+          <a href="{% url 'announcement:announcement_details' slug=ann.slug %}">{{ ann.title }}</a>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
 
-    <div class="row">
-      <p>Impreza integracyjna i spotkania biznesowe</p>
-      {% for local in business %}
-      <div class="col">
-        {{ local.name }}
+      <div class="row">
+        <p>Impreza integracyjna i spotkania biznesowe</p>
+        {% for ann in business %}
+        <div class="col">
+          <div class="row">
+            <a href="{% url 'announcement:announcement_details' slug=ann.slug %}"><img src="{{ ann.image.small.url }}"
+                alt=""></a>
+          </div>
+          <div class="row">
+            <a href="{% url 'announcement:announcement_details' slug=ann.slug %}">{{ ann.title }}</a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="row">
+          <p>Lokal na urodziny i imprezy ze znajomymi</p>
+          {% for ann in party %}
+          for:{% for img in ann.image.all %}{{ img}}{% endfor %}
+              {% comment %} {{ iamge }} {% endcomment %}
+            {% comment %} images:{{ ann.image.small }} {% endcomment %}
+          <div class="col">
+            <div class="row">
+              <a href="{% url 'announcement:announcement_details' slug=ann.slug %}"><img src="{{ ann.image.small.url }}"
+                  alt=""></a>
+            </div>
+            <div class="row">
+              <a href="{% url 'announcement:announcement_details' slug=ann.slug %}">{{ ann.title }}</a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
-      {% endfor %}
-    </div>
 
-    <div class="row">
-      <p>Lokal na urodziny i imprezy ze znajomymi</p>
-      {% for local in party %}
-      <div class="col">
-        {{ local.name }}
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>
+      {% endblock content %}
 
-{% endblock content %}
-
-{% block foot_newsletter %}
-{% include 'newsletter_form.html' %}
-{% endblock foot_newsletter %}
+      {% block foot_newsletter %}
+      {% include 'newsletter_form.html' %}
+      {% endblock foot_newsletter %}

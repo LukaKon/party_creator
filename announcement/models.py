@@ -4,6 +4,7 @@ from django.shortcuts import reverse
 from dynamic_filenames import FilePattern
 
 from account.models import User
+
 from .utils.announcement import unique_slug_generator
 
 upload_to_pattern = FilePattern(
