@@ -1,10 +1,46 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Logowanie{% endblock title %}
 {% block content %}
-<form method="POST" action="" class="form-text form-control-sm">
-    {% csrf_token %}
-    {% include 'base_form.html' %}
-    <input type="submit" value="Zaloguj się">
-</form>
-<a href="{% url 'account:password_reset' %}">Przypomnij hasło</a>
+<div class="container text-center">
+    <img src="{% static 'images/login.jpg'%}" class="rounded mx-auto d-block" alt="">
+    <h2>Zaloguj się</h2><br>
+    <form method="POST" action="" class="row">
+        {% csrf_token %}
+
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" for="{{ form.email.id_for_label }}">Email</span>
+                    {{ form.email }}
+                    {% comment %} <div class="invalid-feedback">{{ form.errors.description }}</div>
+                    {% endcomment %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" for="{{ form.password.id_for_label }}">Hasło</span>
+                    {{ form.password }}
+                    {% comment %} <div class="invalid-feedback">{{ form.errors.description }}</div>
+                    {% endcomment %}
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="d-grid gap-2 col-4 mx-auto">
+                <button type="submit" class="btn btn-primary">Zaloguj się</button>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="row justify-content-center">
+        <div class="d-grid gap-2 col-4 mx-auto">
+            <a href="{% url 'account:password_reset' %}">Przypomnij hasło</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

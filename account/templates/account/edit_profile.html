@@ -3,54 +3,53 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-    <h2>Edytuj profil:</h2>
+<h2>Edytuj profil:</h2>
 
-    <form method="POST" action="" enctype="multipart/form-data" class="row g-3">
-        {% csrf_token %}
+<form method="POST" action="" enctype="multipart/form-data" class="row g-3">
+    {% csrf_token %}
 
+    <div class="input-group mb-3">
+        Avatar: <img alt="My image" src="{{ object.image.thumbnail.url }}" />
+        {% ifequal object.image.thumbnail.url '/media/default.thumbnail.jpg' %}
+        {% else %}
         <div class="input-group mb-3">
-            Avatar: <img alt="My image" src="{{ object.image.thumbnail.url }}"/>
-            {% ifequal object.image.thumbnail.url '/media/default.thumbnail.jpg' %}
-            {% else %}
-                <div class="input-group mb-3">
-                    <label for="image-clear_id"> Usuń awatar</label> &nbsp&nbsp
-                    <input type="checkbox" name="image-clear" id="image-clear_id">
-                </div>
-            {% endifequal %}
+            <label for="image-clear_id"> Usuń awatar</label> &nbsp&nbsp
+            <input type="checkbox" name="image-clear" id="image-clear_id">
         </div>
+        {% endifequal %}
+    </div>
 
-        <div class="input-group mb-3">
-            <label for="avatar"></label>
-            <input type="file" class="form-control" id="avatar" name="image" accept="image/*">
-        </div>
+    <div class="input-group mb-3">
+        <label for="avatar"></label>
+        <input type="file" class="form-control" id="avatar" name="image" accept="image/*">
+    </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="first_name">Imię:</span>
-            <input type="text" class="form-control" id="first_name" value="{{ object.first_name }}" aria-label="Imię:"
-                   aria-describedby="first_name" name="first_name">
-        </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="first_name">Imię:</span>
+        <input type="text" class="form-control" id="first_name" value="{{ object.first_name }}" aria-label="Imię:"
+            aria-describedby="first_name" name="first_name">
+    </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="last_name">Nazwisko:</span>
-            <input type="text" class="form-control" id="last_name" value="{{ object.last_name }}"
-                   aria-label="Nazwisko:"
-                   aria-describedby="last_name" name="last_name">
-        </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="last_name">Nazwisko:</span>
+        <input type="text" class="form-control" id="last_name" value="{{ object.last_name }}" aria-label="Nazwisko:"
+            aria-describedby="last_name" name="last_name">
+    </div>
 
-        <div class="input-group mb-3">
+    <div class="input-group mb-3">
 
-            <span class="input-group-text" id="email">Email:</span>
-            <input type="email" class="form-control" id="email" value="{{ object.email }}" aria-label="Email:"
-                   aria-describedby="email" name="email">
-        </div>
+        <span class="input-group-text" id="email">Email:</span>
+        <input type="email" class="form-control" id="email" value="{{ object.email }}" aria-label="Email:"
+            aria-describedby="email" name="email">
+    </div>
 
-        <div class="input-group mb-3">
-            <a href="{% url 'account:password_change' %}">Change password</a>
-        </div>
+    <div class="input-group mb-3">
+        <a href="{% url 'account:password_change' %}">Change password</a>
+    </div>
 
-        <div class="row mb-3">
-            <button type="submit" class="btn btn-primary">Zapisz profil</button>
-        </div>
+    <div class="row mb-3">
+        <button type="submit" class="btn btn-primary">Zapisz profil</button>
+    </div>
 
-    </form>
+</form>
 {% endblock %}

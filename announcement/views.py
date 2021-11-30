@@ -9,7 +9,7 @@ from django.views import generic
 
 from announcement import forms
 
-from .models import Announcement, Image, ServiceCategory,EventType
+from .models import Announcement, EventType, Image, ServiceCategory
 from .utils.announcement import mixins
 
 
@@ -33,13 +33,13 @@ class HomeView(generic.FormView):
         # TODO: events type names change to english names in this view and database
 
         # weddings = Announcement.objects.filter(event_type__name="wesele")
-        weddings=EventType.objects.get(name='wesele').announcements.all()
+        weddings = EventType.objects.get(name="wesele").announcements.all()
         context["weddings"] = self.sample_generator(weddings)
 
-        business = EventType.objects.get(name='integracja').announcements.all()
+        business = EventType.objects.get(name="integracja").announcements.all()
         context["business"] = self.sample_generator(business)
 
-        party = EventType.objects.get(name='party').announcements.all()
+        party = EventType.objects.get(name="party").announcements.all()
         context["party"] = self.sample_generator(party)
 
         #     context["business"] = Announcement.objects.filter(
