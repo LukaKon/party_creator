@@ -15,10 +15,10 @@ class CreationUserForm(UserCreationForm):
         self.fields["first_name"].required = False
         self.fields["last_name"].required = False
         self.fields["password1"].widget = forms.PasswordInput(
-            attrs={"placeholder": "Hasło"}
+            attrs={"placeholder": "hasło..."}
         )
         self.fields["password2"].widget = forms.PasswordInput(
-            attrs={"placeholder": "Powtórz hasło"}
+            attrs={"placeholder": "powtórz hasło..."}
         )
 
     class Meta:
@@ -34,10 +34,46 @@ class CreationUserForm(UserCreationForm):
         )
         widgets = {
             "first_name": forms.TextInput(
-                attrs={"autofocus": True, "placeholder": "Imię"}
+                attrs={
+                    "autofocus": True,
+                    "class": "form-control",
+                    "placeholder": "imię...",
+                    "aria-label": "first_name",
+                    "aria-describedby": "first_name",
+                }
             ),
-            "last_name": forms.TextInput(attrs={"placeholder": "Nazwisko"}),
-            "email": forms.EmailInput(attrs={"placeholder": "E-Mail"}),
+            "last_name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "nazwisko...",
+                    "aria-label": "last_name",
+                    "aria-describedby": "last_name",
+                }
+            ),
+            "email": forms.EmailInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "e-mail...",
+                    "aria-label": "email",
+                    "aria-describedby": "email",
+                }
+            ),
+            'password1':forms.PasswordInput(
+                attrs={
+                    'class':'form-control',
+                    # 'placeholder':'hasło...',
+                    "aria-label": "password1",
+                    "aria-describedby": "password1",
+                }
+            ),
+            'password2':forms.PasswordInput(
+                attrs={
+                    'class':'form-control',
+                    # 'placeholder':'powtórz hasło...',
+                    "aria-label": "password2",
+                    "aria-describedby": "password2",
+                }
+            ),
         }
 
 
