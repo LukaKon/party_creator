@@ -2,6 +2,10 @@
 {% load static %}
 {% block title %}Home{% endblock title %}
 {% block content %}
+<div>
+  slideshow
+  {% include 'announcement/slideshow.html' %}
+</div>
 <div class="bg-image d-flex justify-content-center align-items-center" style="
     background-image: url('{% static 'images/search_party.jpg' %}');
     height: 30vh;
@@ -23,7 +27,7 @@
 </div>
 
 <div>
-  LISTA Z LOSOWYMI LOKALAMI
+  LISTA Z LOSOWYMI OGŁOSZENIAMI PODZIELONYMI NA KATEGORIE
   <!--TODO: display random image-->
   <div class="container">
     <div class="row">
@@ -57,7 +61,7 @@
         <div class="row">
           <p>Lokal na urodziny i imprezy ze znajomymi</p>
           {% for ann in party %}
-          for:{% for img in ann.image.all %}{{ img}}{% endfor %}
+          for:{% for img in ann.image.all %}{{ img.imge.small.url }}{% endfor %}
               {% comment %} {{ iamge }} {% endcomment %}
             {% comment %} images:{{ ann.image.small }} {% endcomment %}
           <div class="col">

@@ -58,17 +58,17 @@ class CreationUserForm(UserCreationForm):
                     "aria-describedby": "email",
                 }
             ),
-            'password1':forms.PasswordInput(
+            "password1": forms.PasswordInput(
                 attrs={
-                    'class':'form-control',
+                    "class": "form-control",
                     # 'placeholder':'hasło...',
                     "aria-label": "password1",
                     "aria-describedby": "password1",
                 }
             ),
-            'password2':forms.PasswordInput(
+            "password2": forms.PasswordInput(
                 attrs={
-                    'class':'form-control',
+                    "class": "form-control",
                     # 'placeholder':'powtórz hasło...',
                     "aria-label": "password2",
                     "aria-describedby": "password2",

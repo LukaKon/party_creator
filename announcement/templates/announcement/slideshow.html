@@ -1,0 +1,21 @@
+<div class="card">
+    {% for image in images %}
+    <div class="card_part card_part-{{ forloop.counter }}">
+        <img src="{{ image.image.small.url }}" alt="" />
+    </div>
+    {% endfor %}
+
+    <!-- Photo 2 -->
+    <div class="card_part card_part-two">
+
+    </div>
+
+    <!-- Photo 3 -->
+    <div class="card_part card_part-three">
+    </div>
+
+    <!-- Photo 4 -->
+    <div class="card_part card_part-four">
+    </div>
+
+</div>
