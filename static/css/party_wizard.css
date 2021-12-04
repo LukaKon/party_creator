@@ -1,0 +1,6 @@
+.form--steps form .active {
+	 display: block;
+}
+ .form--steps form > div {
+	 display: none;
+}

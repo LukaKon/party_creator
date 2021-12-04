@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}List To Do{% endblock %}
+{% block content %}
+    {% for category in categories %}
+
+        <a href="{% url "party_wizard:"|add:category  %}">{{ category }}</a>
+        <div class="progress" style=" background-color: rgba(11,95,144,0.47); width: 50%">
+  <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+</div>
+    {% endfor %}
+{% endblock %}

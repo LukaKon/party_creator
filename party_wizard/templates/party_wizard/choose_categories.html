@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Attractions{% endblock %}
+{% block link_css %}
+    <link rel="stylesheet" href="{% static 'css/party_wizard.css' %}"/> {% endblock %}
+{% block content %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="active">
+            <p>Co chcesz zorganizować na imprezie:</p>
+            <select id="categories" name="categories" multiple>
+                {% for service_category in service_categories %}
+                    <option value="{{ service_category.name }}">{{ service_category.name }}</option>
+                {% endfor %}
+            </select>
+            <br>
+        </div>
+        <input type="submit" value="Dalej">
+    </form>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/party_wizard.js' %}"></script>
+{% endblock %}

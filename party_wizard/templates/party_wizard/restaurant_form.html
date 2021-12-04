@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Attractions{% endblock %}
+{% block link_css %}
+    <link rel="stylesheet" href="{% static 'css/party_wizard.css' %}"/> {% endblock %}
+{% block content %}
+
+    <section class="form--steps">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div data-step="1" class="active">
+                {#                Do zrobienia - dynamiczne wyszukiwanie lokalizacji #}
+                <label for="location">Podaj lokalizację w której chcesz zorganizować imprezę:</label>
+                <input id="location" type="text">
+                <label for="radius">Podaj w jakim obrębie kilometrów wyszukiwać:</label>
+                <input id="radius" type="number">
+                <label for="price">
+                    Cena:
+                </label>
+                <select id="price">
+                    <option value="1">Tanio</option>
+                    <option value="2">Umiarkowanie</option>
+                    <option value="3">Drogo</option>
+                    <option value="4">Bardzo drogo</option>
+                </select>
+                <div class="button-div">
+                    <input id="nextStep" type="button" value="Dalej">
+                    <input id="save" type="button" value="Zapisz Formularz">
+                </div>
+            </div>
+
+            <div data-step="2">
+                <p>test data-step2</p>
+                <div class="button-div">
+                    <input id="nextStep" type="button" value="Dalej">
+                    <input id="previousStep" type="button" value="Cofnij">
+                    <input id="save" type="button" value="Zapisz Formularz">
+                </div>
+            </div>
+
+            <div data-step="3">
+                <p>test data-step3</p>
+                <div class="button-div">
+                    <input id="previousStep" type="button" value="Cofnij">
+                    <input id="save" type="button" value="Zapisz Formularz">
+                </div>
+            </div>
+
+        </form>
+
+    </section>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/party_wizard.js' %}"></script>
+    {#    <script async#}
+    {#            src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap">#}
+    {#    </script>#}
+
+{% endblock %}
