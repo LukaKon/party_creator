@@ -2,61 +2,92 @@
 {% load static %}
 {% block title %}Rejestracja{% endblock title %}
 {% block content %}
-
 <div class="container-sm text-center">
     <img src="{% static 'images/register.jpg' %}" class="rounded mx-auto d-block" alt="...">
     <h2>Zarejestruj się:</h2>
     <form method="POST" action="" enctype="multipart/form-data" class="row g-3">
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="avatar">Awatar</label>
-            <input type="file" class="form-control" id="avatar" name="image" accept="image/*">
+
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="avatar" for="{{ form.avatar.id_for_label }}">Awatar</label>
+                        <input type="file" class="form-control" id="avatar" name="image" accept="image/*">
+                </div>
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="first_name">Imię:</span>
-            <input type="text" class="form-control" id="first_name" placeholder="Podaj imię..." aria-label="Imię:"
-                aria-describedby="first_name" name="first_name">
+
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" for="{{ form.first_name.id_for_label }}">Imię:</span>
+                    {{ form.first_name }}
+                </div>
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="last_name">Nazwisko:</span>
-            <input type="text" class="form-control" id="last_name" placeholder="Podaj nazwisko..."
-                aria-label="Nazwisko:" aria-describedby="last_name" name="last_name">
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" for="{{ form.last_name.id_for_label }}">Nazwisko:</span>
+                    {{ form.last_name }}
+                </div>
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="email">Email:</span>
-            <input type="email" class="form-control" id="email" placeholder="Podaj email..." aria-label="Email:"
-                aria-describedby="email" name="email">
-            <div class="invalid-feedback">{{ form.errors.email }}</div>
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" for="{{ form.email.id_for_label}}">Email:</span>
+                    {{ form.email }}
+                    <div class="invalid-feedback">{{ form.errors.email }}</div>
+                </div>
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="password1">Hasło:</span>
-            <input type="password" class="form-control" id="password1" placeholder="Hasło..." aria-label="Hasło:"
-                aria-describedby="password1" name="password1">
-            <div class="invalid-feedback">{{ form.errors.password1 }}</div>
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" for="{{ form.password1.id_for_label }}">Hasło:</span>
+                    {{ form.password1 }}
+                    <div class="invalid-feedback">{{ form.errors.password1 }}</div>
+                </div>
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="password2">Powtórz hasło:</span>
-            <input type="password" class="form-control" id="password2" placeholder="Powtórz hasło..."
-                aria-label="Powtórz hasło:" aria-describedby="password2" name="password2">
-            <div class="invalid-feedback">{{ form.errors.password2 }}</div>
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" for="{{ form.password2.id_for_label }}">Powtórz hasło:</span>
+                    {{ form.password2 }}
+                    <div class="invalid-feedback">{{ form.errors.password2 }}</div>
+                </div>
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            {{ form.is_firma.label }}
-            {{ form.is_firma }}
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="firma_name">Nazwa firmy:</span>
-            <input type="text" class="form-control" id="firma_name" placeholder="Nazwa firmy..."
-                aria-label="Nazwa firmy:" aria-describedby="firma_name" name="name">
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    {{ form.is_firma.label }}
+                    {{ form.is_firma }}
+                </div>
+            </div>
         </div>
 
-        <div class="row mb-3">
-            <button type="submit" class="btn btn-primary">Zarejestruj się</button>
+        <div class="row justify-content-center">
+            <div class="col col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="firma_name">Nazwa firmy:</span>
+                    <input type="text" class="form-control" id="firma_name" placeholder="Nazwa firmy..."
+                        aria-label="Nazwa firmy:" aria-describedby="firma_name" name="name">
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="d-grid gap-2 col-4 mx-auto">
+                <button type="submit" class="btn btn-primary">Zarejestruj się</button>
+            </div>
         </div>
         {% csrf_token %}
     </form>

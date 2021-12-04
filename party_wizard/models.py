@@ -1,6 +1,4 @@
 from django.db import models
-from account.models import User
-
 
 class FormModel(models.Model):
     form_party = models.JSONField()

@@ -1,13 +1,11 @@
 import stdimage
 from django.db import models
 from django.shortcuts import reverse
-from django.utils.text import slugify
-from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
 
 from account.models import User
 
-from .utils import unique_slug_generator
+from .utils.announcement import unique_slug_generator
 
 upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
@@ -49,10 +47,11 @@ class Announcement(models.Model):
         on_delete=models.CASCADE,
     )
     event_type = models.ManyToManyField(EventType, related_name="announcements")
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
 
     class Meta:
         index_together = (("id", "slug"),)
+        ordering = ("-date",)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -74,9 +73,9 @@ class Image(models.Model):
         blank=True,
         upload_to=upload_to_pattern,
         variations={
-            "large": (1024, 768),
-            "medium": (800, 600),
-            "small": (640, 480),
+            "large": (800, 600),
+            "medium": (640, 480),
+            "small": (480, 320),
             "thumbnail": (100, 100, True),
         },
         delete_orphans=True,

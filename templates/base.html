@@ -9,28 +9,25 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>{% block title %}BASE{% endblock title %}</title>
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    {% block link_css %}
-        {% comment %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-        {% endcomment %}
-    {% endblock %}
+    <title>{% block title %}BASE{% endblock title %}</title>
+    {% comment %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% endcomment %}
 </head>
 
 <body>
-<header class="">
-    <div class="container-sm position-relative">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <!--login/registration-->
+    <header class="">
+        <div class="container-sm position-relative">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <!--login/registration-->
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        {% if request.user.is_authenticated %}
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            {% if request.user.is_authenticated %}
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
+                                data-bs-toggle="dropdown" aria-expanded="false">
 
                                 Witaj {{ user.email }} <img src="{{ user.image.thumbnail.url }}" alt="">
                             </a>
@@ -38,10 +35,10 @@
                                 <li><a class="dropdown-item" href="{% url 'account:profile' pk=user.pk %}">Profil</a>
                                 </li>
                                 <li><a class="dropdown-item"
-                                       href="{% url 'account:edit_profile' pk=user.pk %}">Ustawienia
-                                    konta</a></li>
+                                        href="{% url 'account:edit_profile' pk=user.pk %}">Ustawienia
+                                        konta</a></li>
                                 {% if request.user.is_superuser %}
-                                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel
+                                <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel
                                         administracyjny</a></li>
                                 {% endif %}
                                 <li>
@@ -53,176 +50,172 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page"
-                                       href="{% url 'account:login' %}">Zaloguj
+                                        href="{% url 'account:login' %}">Zaloguj
                                         się</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page"
-                                       href="{% url 'account:register' %}">Zarejestruj
+                                        href="{% url 'account:register' %}">Zarejestruj
                                         się</a>
                                 </li>
                             </ul>
-                        {% endif %}
-                    </li>
-                </ul>
+                            {% endif %}
+                        </li>
+                    </ul>
 
-            </div>
-    </div>
-    </nav>
-    </div>
+                </div>
+        </div>
+        </nav>
+        </div>
 
-    <div class="container-sm position-relative">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark end">
-            <!--menu-->
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'announcement:home' %}">Strona główna</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        <div class="container-sm position-relative">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark end">
+                <!--menu-->
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'announcement:home' %}">Strona główna</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'party_wizard:choose_event' %}">Kreator
-                                przyjęć</a>
-                        </li>
-                        <li class="nav-nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'announcement:add_announcement' %}">Dodaj ogłoszenie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">O
-                                nas</a>
-                        </li>
-                        {% comment %} <li class="nav-item">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page"
+                                    href="{% url 'party_wizard:party_wizard' %}">Kreator
+                                    przyjęć</a>
+                            </li>
+                            <li class="nav-nav-item">
+                                <a class="nav-link active" aria-current="page"
+                                    href="{% url 'announcement:add_announcement' %}">Dodaj ogłoszenie</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">O
+                                    nas</a>
+                            </li>
+                            {% comment %} <li class="nav-item">
                                 <a class="nav-link" href="#">Link</a>
                             </li> {% endcomment %}
-                    </ul>
+                        </ul>
+                    </div>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}
+
+    {% endblock content %}
+
+    <!-- Footer -->
+    <footer class="bg-dark text-center text-white">
+        <!-- Grid container -->
+        <div class="container p-4">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-facebook-f"></i></a>
+
+                <!-- Twitter -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-twitter"></i></a>
+
+                <!-- Google -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-google"></i></a>
+
+                <!-- Instagram -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-instagram"></i></a>
+
+                <!-- Linkedin -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-linkedin-in"></i></a>
+
+                <!-- Github -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-github"></i></a>
+            </section>
+            <!-- Section: Social media -->
+
+
+            <!-- Section: Text -->
+            <section class="mb-4">
+                <p>
+                    Jesteśmy firmą, która rozkręciła nie jedną imprezę :) Możesz nam zaufać, znamy się na dobrej
+                    zabawie!
+                </p>
+            </section>
+            <!-- Section: Text -->
+
+            {% block foot_newsletter %}
+
+            {% endblock foot_newsletter %}
+
+            <!-- Section: Links -->
+            <section class="">
+                <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">Klienci</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#!" class="text-white">Jak to działa</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'announcement:contact' %}" class="text-white">Kontakt</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">Partnerzy</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="{% url 'announcement:add_announcement' %}" class="text-white">Dodaj swoje ogłoszenie</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'account:login' %}" class="text-white">Zaloguj się do panelu</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
                 </div>
-        </nav>
-    </div>
-</header>
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+        </div>
+        <!-- Grid container -->
 
-{% block content %}
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2020 Copyright:
+            <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
 
-{% endblock content %}
+    <!-- Optional JavaScript; choose one of the two! -->
 
-<!-- Footer -->
-<footer class="bg-dark text-center text-white">
-    <!-- Grid container -->
-    <div class="container p-4">
-        <!-- Section: Social media -->
-        <section class="mb-4">
-            <!-- Facebook -->
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                    class="fab fa-facebook-f"></i></a>
-
-            <!-- Twitter -->
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                    class="fab fa-twitter"></i></a>
-
-            <!-- Google -->
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                    class="fab fa-google"></i></a>
-
-            <!-- Instagram -->
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                    class="fab fa-instagram"></i></a>
-
-            <!-- Linkedin -->
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                    class="fab fa-linkedin-in"></i></a>
-
-            <!-- Github -->
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                    class="fab fa-github"></i></a>
-        </section>
-        <!-- Section: Social media -->
-
-
-        <!-- Section: Text -->
-        <section class="mb-4">
-            <p>
-                Jesteśmy firmą, która rozkręciła nie jedną imprezę :) Możesz nam zaufać, znamy się na dobrej
-                zabawie!
-            </p>
-        </section>
-        <!-- Section: Text -->
-
-        {% block foot_newsletter %}
-
-        {% endblock foot_newsletter %}
-
-        <!-- Section: Links -->
-        <section class="">
-            <!--Grid row-->
-            <div class="row">
-                <!--Grid column-->
-                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h5 class="text-uppercase">Klienci</h5>
-
-                    <ul class="list-unstyled mb-0">
-                        <li>
-                            <a href="#!" class="text-white">Jak to działa</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'announcement:contact' %}" class="text-white">Kontakt</a>
-                        </li>
-                    </ul>
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h5 class="text-uppercase">Partnerzy</h5>
-
-                    <ul class="list-unstyled mb-0">
-                        <li>
-                            <a href="{% url 'announcement:add_announcement' %}" class="text-white">Dodaj swoje
-                                ogłoszenie</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'account:login' %}" class="text-white">Zaloguj się do panelu</a>
-                        </li>
-                    </ul>
-                </div>
-                <!--Grid column-->
-
-            </div>
-            <!--Grid row-->
-        </section>
-        <!-- Section: Links -->
-    </div>
-    <!-- Grid container -->
-
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2020 Copyright:
-        <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
-</footer>
-<!-- Footer -->
-
-<!-- Optional JavaScript; choose one of the two! -->
-
-<!-- Option 1: Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
-</script>
+    </script>
 
-<!-- Option 2: Separate Popper and Bootstrap JS -->
-<!--
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 -->
-<script src="{% static 'js/app.js' %}"></script>
-<script src="{% static 'js/add_announcement_form.js' %}"></script>
-
-
-{% block script %}{% endblock %}
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/add_announcement_form.js' %}"></script>
 </body>
 
 </html>
