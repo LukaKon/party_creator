@@ -2,60 +2,40 @@
 {% load static %}
 {% block title %}Home{% endblock title %}
 {% block content %}
-<div class="bg-image d-flex justify-content-center align-items-center" style="
-    background-image: url('{% static 'images/search_party.jpg' %}');
-    height: 30vh;
-  ">
-  <div class="justify-content-center">
-    <nav class="navbar navbar-light bg-dark start-50 translate-middle">
-      <form class="container-fluid">
-        <div class="input-group">
-          <form action="" method="POST">
-            {% csrf_token %}
-            <span class="input-group-text" id="search">Podaj lokalizację</span>
-            <input type="text" class="form-control" placeholder="Wyszukaj" aria-label="query" aria-describedby="search">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Szukaj</button>
-          </form>
+
+    <!--slideshow-->
+    <div class="container">
+        {% include 'announcement/slideshow.html' %}
+    </div>
+    <div class="bg-image d-flex justify-content-center align-items-center" style="
+            background-image: url('{% static 'images/search_party.jpg' %}');
+            height: 30vh;
+            ">
+        <div class="justify-content-center">
+            <nav class="navbar navbar-light bg-dark start-50 translate-middle">
+                <form class="container-fluid">
+                    <div class="input-group">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <span class="input-group-text" id="search">Podaj lokalizację</span>
+                            <input type="text" class="form-control" placeholder="Wyszukaj" aria-label="query"
+                                   aria-describedby="search">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Szukaj</button>
+                        </form>
+                    </div>
+                </form>
+            </nav>
         </div>
-      </form>
-    </nav>
-  </div>
-</div>
-
-<div>
-  LISTA Z LOSOWYMI LOKALAMI (5x3?)
-  <div class="container">
-    <div class="row">
-      <p>Lokal na chrzciny, komunię, wesele</p>
-      {% for local in familly %}
-      <div class="col">
-        {{ local.name }}
-      </div>
-      {% endfor %}
     </div>
 
-    <div class="row">
-      <p>Impreza integracyjna i spotkania biznesowe</p>
-      {% for local in business %}
-      <div class="col">
-        {{ local.name }}
-      </div>
-      {% endfor %}
+    <!--LISTA Z LOSOWYMI OGŁOSZENIAMI PODZIELONYMI NA KATEGORIE-->
+    <div class="container justify-content-center">
+        {% include 'announcement/random_announcements.html' %}
     </div>
 
-    <div class="row">
-      <p>Lokal na urodziny i imprezy ze znajomymi</p>
-      {% for local in party %}
-      <div class="col">
-        {{ local.name }}
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>
 
 {% endblock content %}
 
 {% block foot_newsletter %}
-{% include 'newsletter_form.html' %}
+    {% include 'newsletter_form.html' %}
 {% endblock foot_newsletter %}

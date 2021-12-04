@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse
@@ -7,7 +9,7 @@ from django.views import generic
 
 from announcement import forms
 
-from .models import Announcement, Image, ServiceCategory
+from .models import Announcement, EventType, Image, ServiceCategory
 from .utils.announcement import mixins
 
 
@@ -18,13 +20,34 @@ class HomeView(generic.FormView):
     form_class = forms.SearchForm
     newsletter_form = forms.NewsletterForm
 
+    @staticmethod
+    def sample_generator(query, samp=2):
+        if query.count() <= samp:
+            return query
+        else:
+            return random.sample(list(query), k=samp)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # TODO: give context to main page
 
-        #     context["familly"] = Announcement.objects.filter(
-        #         type="lokal", category__name="rodzinne"
-        #     )
+        slider_iamges = Image.objects.all()
+        context["slider_images"] = self.sample_generator(slider_iamges, samp=5)
+
+        # TODO: events type names change to english names in this view and database
+        # weddings = Announcement.objects.filter(event_type__name="wesele")
+        # weddings = EventType.objects.get(name="wesele").announcements.all()
+        weddings = Image.objects.filter(announcement__event_type__name="wesele")
+        # print('wed:',weddings)
+        context["weddings"] = self.sample_generator(weddings)
+
+        # business = EventType.objects.get(name="integracja").announcements.all()
+        business = Image.objects.filter(announcement__event_type__name="integracja")
+        context["business"] = self.sample_generator(business)
+
+        # party = EventType.objects.get(name="party").announcements.all()
+        party = Image.objects.filter(announcement__event_type__name="party")
+        context["party"] = self.sample_generator(party)
+
         #     context["business"] = Announcement.objects.filter(
         #         type="lokal", category__name="biznesowe"
         #     )
@@ -71,6 +94,8 @@ class ContactView(generic.FormView):
 
 
 class CategoryListView(generic.ListView):
+    """List of categories."""  # TODO: Do we need this???
+
     model = ServiceCategory
     template_name = "announcement/category_list.html"
 
@@ -107,7 +132,6 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
             announcement.save()
 
             for image in images_set:
-
                 Image.objects.create(
                     image=image,
                     announcement=announcement,
@@ -125,7 +149,9 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
         )
 
 
-class UpdateAnnouncementView(LoginRequiredMixin, mixins.UserAccessMixin, generic.UpdateView):
+class UpdateAnnouncementView(
+    LoginRequiredMixin, mixins.UserAccessMixin, generic.UpdateView
+):
     """Update announcement."""
 
     model = Announcement
@@ -142,8 +168,8 @@ class UpdateAnnouncementView(LoginRequiredMixin, mixins.UserAccessMixin, generic
 
     # def dispatch(self, request, *args, **kwargs):
     #     if not self.get_test_func()():
-            # return HttpResponse("CZEGO TU SZUKASZ XDD")
-        # return super().dispatch(request, *args, **kwargs)
+    # return HttpResponse("CZEGO TU SZUKASZ XDD")
+    # return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Announcement.objects.filter(user_id=self.request.user.id)
@@ -154,7 +180,9 @@ class UpdateAnnouncementView(LoginRequiredMixin, mixins.UserAccessMixin, generic
         return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
 
 
-class DeleteAnnouncemenView(LoginRequiredMixin,mixins.UserAccessMixin, generic.DeleteView):
+class DeleteAnnouncemenView(
+    LoginRequiredMixin, mixins.UserAccessMixin, generic.DeleteView
+):
     """Remove announcement."""
 
     model = Announcement

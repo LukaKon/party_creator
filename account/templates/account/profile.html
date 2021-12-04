@@ -19,13 +19,37 @@
     <a href="{% url 'account:edit_profile' pk=user.pk %}">Edytuj profil</a>
 </div>
 {% endif %}
-
+{# if todo list exist #}
+<div>
+    TODO wesele:
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+            lokal:
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+            kapela: <a href="">"Cygan i świta"</a>
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+            tort:<a href="">"Cukiernia Oleńka"</a>
+        </label>
+    </div>
+</div>
+{# endif #}
+{% if announcements %}
 <div>
     Twoje ogłoszenia:
     <ul>
         {% for announcement in  announcements %}
         <li>
-            <a href="{% url 'announcement:announcement_details' slug=announcement.slug %}">{{ announcement.title }}</a><br>
+            <a
+                href="{% url 'announcement:announcement_details' slug=announcement.slug %}">{{ announcement.title }}</a><br>
             <small>{{ announcement.date }}</small>
             {% if user.is_authenticated and user == user_data %}
             <br>
@@ -36,4 +60,5 @@
         {% endfor %}
     </ul>
 </div>
+{% endif %}
 {% endblock %}

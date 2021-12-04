@@ -1,0 +1,62 @@
+<div class="container">
+
+    <div class="row">
+        <div class="row">
+            <p>Chrzciny, komunia, wesele</p>
+        </div>
+        <div class="row">
+            {% for img in weddings %}
+                <div class="col">
+                    <div class="row">
+                        <a href="{% url 'announcement:announcement_details' slug=img.announcement.slug %}"><img
+                                src="{{ img.image.thumbnail.url }}" alt=""></a>
+                    </div>
+                    <div class="row">
+                        <a href="{% url 'announcement:announcement_details' slug=img.announcement.slug %}">{{ img.announcement.title }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row">
+            <p>Impreza integracyjna i spotkania biznesowe</p>
+        </div>
+        <div class="row">
+            {% for img in business %}
+                <div class="col">
+                    <div class="row">
+                        <a href="{% url 'announcement:announcement_details' slug=img.announcement.slug %}"><img
+                                src="{{ img.image.thumbnail.url }}" alt=""></a>
+                    </div>
+                    <div class="row">
+                        <a
+                                href="{% url 'announcement:announcement_details' slug=img.announcement.slug %}">{{ img.announcement.title }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row">
+            <p>Urodziny i imprezy ze znajomymi</p>
+        </div>
+        <div class="row">
+            {% for img in party %}
+                <div class="col">
+                    <div class="row">
+                        <a href="{% url 'announcement:announcement_details' slug=img.announcement.slug %}"><img
+                                src="{{ img.image.thumbnail.url }}" alt=""></a>
+                    </div>
+                    <div class="row">
+                        <a
+                                href="{% url 'announcement:announcement_details' slug=img.announcement.slug %}">{{ img.announcement.title }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
