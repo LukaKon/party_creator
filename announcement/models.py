@@ -73,9 +73,9 @@ class Image(models.Model):
         blank=True,
         upload_to=upload_to_pattern,
         variations={
-            "large": (1024, 768),
-            "medium": (800, 600),
-            "small": (640, 480),
+            "large": (800, 600),
+            "medium": (640, 480),
+            "small": (480, 320),
             "thumbnail": (100, 100, True),
         },
         delete_orphans=True,

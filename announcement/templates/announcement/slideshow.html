@@ -1,21 +1,38 @@
-<div class="card">
-    {% for image in images %}
-    <div class="card_part card_part-{{ forloop.counter }}">
-        <img src="{{ image.image.small.url }}" alt="" />
+<div id="carousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        {% for counter in slider_images %}
+        {% if forloop.first %}
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ forloop.counter0 }}" class="active"
+            aria-current="true" aria-label="Slide {{ forloop.counter0 }}"></button>
+        {% else %}
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ forloop.counter0 }}"
+            aria-label="Slide {{ forloop.counter0 }}"></button>
+        {% endif %}
+        {% endfor %}
     </div>
-    {% endfor %}
-
-    <!-- Photo 2 -->
-    <div class="card_part card_part-two">
-
+    <div class="carousel-inner">
+        {% for image in slider_images %}
+        {% if forloop.first %}
+        <div class="carousel-item active">
+            {% else %}
+            <div class="carousel-item">
+                {% endif %}
+                <a href="{%url 'announcement:announcement_details' slug=image.announcement.slug %}"><img
+                        src="{{ image.image.small.url}}" class="d-block w-100" alt="..."></a>
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{  image.announcement.title }}</h5>
+                    <p>{{ image.announcement.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
     </div>
-
-    <!-- Photo 3 -->
-    <div class="card_part card_part-three">
-    </div>
-
-    <!-- Photo 4 -->
-    <div class="card_part card_part-four">
-    </div>
-
 </div>
