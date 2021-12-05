@@ -102,7 +102,7 @@ class DetailsAnnouncementView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailsAnnouncementView, self).get_context_data(**kwargs)
         user = self.request.user.pk
-        context['owner_announcements'] = Announcement.objects.filter(user=user)
+        context["owner_announcements"] = Announcement.objects.filter(user=user)
         return context
 
 
