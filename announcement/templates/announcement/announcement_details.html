@@ -1,15 +1,71 @@
 {% extends 'base.html' %}
 {% block title %}Sczegóły ogłoszenia{% endblock title %}
 {% block content %}
-<h2>
-    {{ announcement.title }}
-</h2>
-<br>
-{{ announcement.description }}
+    <div class="container">
+        <div class="row">
+            <!--slideshow-->
+            <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    {% for image in announcement.image.all %}
+                        {% if forloop.first %}
+                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                                    class="active"
+                                    aria-current="true" aria-label="Slide {{ forloop.counter0 }}"><img
+                                    src="{{ image.image.thumbnail.url }}" alt=""></button>
+                        {% else %}
+                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                                    aria-label="Slide {{ forloop.counter0 }}"><img src="{{ image.image.thumbnail.url }}"
+                                                                                   alt=""></button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner">
+                    {% for image in announcement.image.all %}
+                        {% if forloop.first %}
+                            <div class="carousel-item active">
+                        {% else %}
+                            <div class="carousel-item">
+                        {% endif %}
+                    <a href="{% url 'announcement:announcement_details' slug=image.announcement.slug %}"><img
+                            src="{{ image.image.small.url }}" class="d-block w-100" alt="..."></a>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{ image.announcement.title }}</h5>
+                        <p>{{ image.announcement.description }}</p>
+                    </div>
+                    </div>
+                    {% endfor %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    </div>
+                </div>
+            </div>
 
-{% if user.is_authenticated and user == object.user %}
-<br>
-<a href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj</a>
-<a href="{% url 'announcement:delete_announcement' slug=announcement.slug %}">Usuń</a>
-{% endif %}
+        </div>
+        <h2>{{ announcement.title }}</h2><br>
+        <small>{{ announcement.date }}</small>
+        <br>
+        {{ announcement.description }}
+        <br>
+        <div class="row">
+        <!--TODO: to finish
+            <p>Inne ogłoszenia tego użytkownika:</p>
+            {% for ann in owner_announcements %}
+                {{ ann.title }}
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            {% if user.is_authenticated and user == object.user %}
+                <br>
+                <a href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj</a>
+                <a href="{% url 'announcement:delete_announcement' slug=announcement.slug %}">Usuń</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock content %}

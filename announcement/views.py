@@ -21,7 +21,7 @@ class HomeView(generic.FormView):
     newsletter_form = forms.NewsletterForm
 
     @staticmethod
-    def sample_generator(query, samp=2):
+    def sample_generator(query, samp=4):
         if query.count() <= samp:
             return query
         else:
@@ -34,36 +34,21 @@ class HomeView(generic.FormView):
         context["slider_images"] = self.sample_generator(slider_iamges, samp=5)
 
         # TODO: events type names change to english names in this view and database
-        # weddings = Announcement.objects.filter(event_type__name="wesele")
-        # weddings = EventType.objects.get(name="wesele").announcements.all()
         weddings = Image.objects.filter(announcement__event_type__name="wesele")
-        # print('wed:',weddings)
         context["weddings"] = self.sample_generator(weddings)
 
-        # business = EventType.objects.get(name="integracja").announcements.all()
         business = Image.objects.filter(announcement__event_type__name="integracja")
         context["business"] = self.sample_generator(business)
 
-        # party = EventType.objects.get(name="party").announcements.all()
         party = Image.objects.filter(announcement__event_type__name="party")
         context["party"] = self.sample_generator(party)
-
-        #     context["business"] = Announcement.objects.filter(
-        #         type="lokal", category__name="biznesowe"
-        #     )
-        #     context["party"] = Announcement.objects.filter(
-        #         type="lokal", category__name="party"
-        #     )
 
         context["newsletter"] = self.newsletter_form
         return context
 
     def post(self, request, *args, **kwargs):
-        # self.object = None
         newsletter = self.newsletter_form(request.POST)
-        # breakpoint()
         if newsletter.is_valid():
-            # breakpoint()
             newsletter.save()
         return redirect("announcement:home")
 
@@ -108,11 +93,17 @@ class AnnouncementListView(generic.ListView):
 
 
 class DetailsAnnouncementView(generic.DetailView):
-    """Announcemen details."""
+    """Announcement details."""
 
     model = Announcement
     template_name = "announcement/announcement_details.html"
     context_object_name = "announcement"
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailsAnnouncementView, self).get_context_data(**kwargs)
+        user = self.request.user.pk
+        context['owner_announcements'] = Announcement.objects.filter(user=user)
+        return context
 
 
 class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
@@ -180,7 +171,7 @@ class UpdateAnnouncementView(
         return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
 
 
-class DeleteAnnouncemenView(
+class DeleteAnnouncementView(
     LoginRequiredMixin, mixins.UserAccessMixin, generic.DeleteView
 ):
     """Remove announcement."""
