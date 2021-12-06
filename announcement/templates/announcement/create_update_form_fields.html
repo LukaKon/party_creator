@@ -56,12 +56,19 @@
             {% comment %} <div class="invalid-feedback">{{ form.errors.title }}</div> {% endcomment %}
         </div>
     </div>
+    <div class="col-6">
+        <h4>Podgląd zdjęć:</h4><br>
+        {% comment %} <input type="file" name="inpFile" id="inpFile"> {% endcomment %}
+        <div class="image-preview" id="imgPreview">
+            <img src="" alt="" class="image-preview__image">
+            <span class="image-preview__default-text">Podgląd</span>
+        </div>
+    </div>
 </div>
 
 
 <div class="row">
     <div class="col-lg-2 col-md-12">
         <button type="submit" class="btn btn-primary">Zapisz</button>
-        <!-- <input type="submit" value="Dodaj ogłoszenie"> -->
     </div>
 </div>
