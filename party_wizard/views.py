@@ -81,6 +81,7 @@ class ListToDoView(View):
 
 class RestaurantFormView(View):
     def get(self, request):
+
         context = {'api_key': party_creator.settings.GOOGLE_API_KEY}
         return render(request, 'party_wizard/restaurant_form.html', context=context)
 
