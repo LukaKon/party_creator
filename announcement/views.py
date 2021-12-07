@@ -154,14 +154,6 @@ class UpdateAnnouncementView(
         "event_type",
     )
 
-    # def test_func(self):
-    #     return self.get_object().user == self.request.user
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     if not self.get_test_func()():
-    # return HttpResponse("CZEGO TU SZUKASZ XDD")
-    # return super().dispatch(request, *args, **kwargs)
-
     def get_queryset(self):
         queryset = Announcement.objects.filter(user_id=self.request.user.id)
         return queryset

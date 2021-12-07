@@ -1,4 +1,5 @@
 // TODO: when upload new files do not remove old ones from preview
+// TODO: update do not add pictures!!!
 
 
 const inputFile = document.querySelector('#images');
