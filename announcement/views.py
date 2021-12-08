@@ -2,7 +2,7 @@ import random
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import BadHeaderError, send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, reverse
 from django.urls import reverse_lazy
 from django.views import generic
@@ -157,6 +157,13 @@ class UpdateAnnouncementView(
     def get_queryset(self):
         queryset = Announcement.objects.filter(user_id=self.request.user.id)
         return queryset
+
+    def form_valid(self, form):
+        images_set = self.request.FILES.getlist("images")
+        for image in images_set:
+            Image.objects.create(image=image, announcement=self.get_object())
+        self.object = form.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         """Return the URL to redirect to after processing a valid form."""
