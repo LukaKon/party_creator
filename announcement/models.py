@@ -58,6 +58,12 @@ class Announcement(models.Model):
             self.slug = unique_slug_generator(self)
         super().save(*args, **kwargs)
 
+    def delete(self, using=None, keep_parents=False):
+        ann = Announcement.objects.get(pk=self.pk)
+        for img in ann.image.all():
+            img.delete()
+        super().delete()
+
     def get_absolute_url(self):
         return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
 
@@ -79,6 +85,7 @@ class Image(models.Model):
             "thumbnail": (100, 100, True),
         },
         delete_orphans=True,
+        verbose_name="images",
     )
     announcement = models.ForeignKey(
         Announcement,
@@ -95,6 +102,7 @@ class Image(models.Model):
         null=True,
         blank=True,
     )
+    is_main = models.BooleanField(default=False)  # is image main - for front
 
     def __str__(self):
         return str(self.pk)

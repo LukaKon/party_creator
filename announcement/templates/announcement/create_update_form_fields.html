@@ -56,12 +56,19 @@
             {% comment %} <div class="invalid-feedback">{{ form.errors.title }}</div> {% endcomment %}
         </div>
     </div>
+    <div class="col-6 mb-3">
+        <h4>Podgląd zdjęć:</h4><br>
+        <div id="img-num">
+        </div>
+        <div class="row row-cols-3" id="imgPreview">
+        {% comment %} <div class="row row-cols-3 image-preview" id="imgPreview"> {% endcomment %}
+        </div>
+    </div>
 </div>
 
 
 <div class="row">
     <div class="col-lg-2 col-md-12">
         <button type="submit" class="btn btn-primary">Zapisz</button>
-        <!-- <input type="submit" value="Dodaj ogłoszenie"> -->
     </div>
 </div>

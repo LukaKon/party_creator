@@ -28,7 +28,7 @@ urlpatterns = [
     ),
     path(
         "delete_announcement/<slug:slug>/",
-        views.DeleteAnnouncemenView.as_view(),
+        views.DeleteAnnouncementView.as_view(),
         name="delete_announcement",
     ),
     # path("announcement_list/"),

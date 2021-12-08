@@ -16,8 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/party_wizard.css' %}"/>
 
     <title>{% block title %}BASE{% endblock title %}</title>
-    {% comment %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 
 <body>
@@ -32,7 +31,6 @@
                             {% if request.user.is_authenticated %}
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-
                                 Witaj {{ user.email }} <img src="{{ user.image.thumbnail.url }}" alt="">
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -66,10 +64,8 @@
                             {% endif %}
                         </li>
                     </ul>
-
                 </div>
-        </div>
-        </nav>
+            </nav>
         </div>
 
         <div class="container-sm position-relative">
@@ -97,11 +93,9 @@
                                 <a class="nav-link active" aria-current="page" href="{% url 'announcement:home' %}">O
                                     nas</a>
                             </li>
-                            {% comment %} <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li> {% endcomment %}
                         </ul>
                     </div>
+                </div>
             </nav>
         </div>
     </header>
@@ -219,8 +213,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 -->
     <script src="{% static 'js/app.js' %}"></script>
-{#    <script src="{% static 'js/add_announcement_form.js' %}"></script>#}
+
+    <script src="{% static 'js/image_preview.js' %}"></script>
+
     {% block script %}{% endblock script%}
+
 </body>
 
 </html>

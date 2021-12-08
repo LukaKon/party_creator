@@ -2,7 +2,7 @@ import random
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import BadHeaderError, send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, reverse
 from django.urls import reverse_lazy
 from django.views import generic
@@ -21,7 +21,7 @@ class HomeView(generic.FormView):
     newsletter_form = forms.NewsletterForm
 
     @staticmethod
-    def sample_generator(query, samp=2):
+    def sample_generator(query, samp=4):
         if query.count() <= samp:
             return query
         else:
@@ -34,36 +34,21 @@ class HomeView(generic.FormView):
         context["slider_images"] = self.sample_generator(slider_iamges, samp=5)
 
         # TODO: events type names change to english names in this view and database
-        # weddings = Announcement.objects.filter(event_type__name="wesele")
-        # weddings = EventType.objects.get(name="wesele").announcements.all()
         weddings = Image.objects.filter(announcement__event_type__name="wesele")
-        # print('wed:',weddings)
         context["weddings"] = self.sample_generator(weddings)
 
-        # business = EventType.objects.get(name="integracja").announcements.all()
         business = Image.objects.filter(announcement__event_type__name="integracja")
         context["business"] = self.sample_generator(business)
 
-        # party = EventType.objects.get(name="party").announcements.all()
         party = Image.objects.filter(announcement__event_type__name="party")
         context["party"] = self.sample_generator(party)
-
-        #     context["business"] = Announcement.objects.filter(
-        #         type="lokal", category__name="biznesowe"
-        #     )
-        #     context["party"] = Announcement.objects.filter(
-        #         type="lokal", category__name="party"
-        #     )
 
         context["newsletter"] = self.newsletter_form
         return context
 
     def post(self, request, *args, **kwargs):
-        # self.object = None
         newsletter = self.newsletter_form(request.POST)
-        # breakpoint()
         if newsletter.is_valid():
-            # breakpoint()
             newsletter.save()
         return redirect("announcement:home")
 
@@ -108,11 +93,17 @@ class AnnouncementListView(generic.ListView):
 
 
 class DetailsAnnouncementView(generic.DetailView):
-    """Announcemen details."""
+    """Announcement details."""
 
     model = Announcement
     template_name = "announcement/announcement_details.html"
     context_object_name = "announcement"
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailsAnnouncementView, self).get_context_data(**kwargs)
+        user = self.request.user.pk
+        context["owner_announcements"] = Announcement.objects.filter(user=user)
+        return context
 
 
 class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
@@ -163,24 +154,23 @@ class UpdateAnnouncementView(
         "event_type",
     )
 
-    # def test_func(self):
-    #     return self.get_object().user == self.request.user
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     if not self.get_test_func()():
-    # return HttpResponse("CZEGO TU SZUKASZ XDD")
-    # return super().dispatch(request, *args, **kwargs)
-
     def get_queryset(self):
         queryset = Announcement.objects.filter(user_id=self.request.user.id)
         return queryset
+
+    def form_valid(self, form):
+        images_set = self.request.FILES.getlist("images")
+        for image in images_set:
+            Image.objects.create(image=image, announcement=self.get_object())
+        self.object = form.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         """Return the URL to redirect to after processing a valid form."""
         return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
 
 
-class DeleteAnnouncemenView(
+class DeleteAnnouncementView(
     LoginRequiredMixin, mixins.UserAccessMixin, generic.DeleteView
 ):
     """Remove announcement."""
