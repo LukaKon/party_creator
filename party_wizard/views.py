@@ -2,59 +2,115 @@ from pprint import pprint
 
 import googlemaps
 from django.shortcuts import redirect, render
-from django.views.generic import FormView, View
+from django.views.generic import View, CreateView
+
+from rest_framework import generics
+from party_wizard.serializers import FormModelSerializer
 
 import party_creator.settings
-from announcement.models import EventType, Image, ServiceCategory
+from announcement.models import EventType, Image
+from account.models import User
+from party_wizard.models import FormModel
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
 
-class StartView(View):
+"""API VIEWS"""
+
+class UpdateFormView(generics.UpdateAPIView):
+    queryset = FormModel.objects.all()
+    serializer_class = FormModelSerializer
+
+
+class CreateFormView(generics.CreateAPIView):
+    queryset = FormModel.objects.all()
+    serializer_class = FormModelSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+"""PRIMARY VIEWS"""
+
+class ChooseEventView(View):
     def get(self, request, *args, **kwargs):
         event_types = EventType.objects.all()
-        images = Image.objects.all()
         context = {
             "event_types": event_types,
-            "images": images,
         }
 
         return render(
             request,
-            template_name="party_wizard/party_wizard_base.html",
+            template_name="party_wizard/choose_event.html",
             context=context,
         )
 
     def post(self, request, *args, **kwargs):
         event_pk = request.POST.get("event_pk")
-        return redirect("party_wizard:attractions")
+        self.request.session["event_pk"] = event_pk
+        return redirect("party_wizard:choose_categories")
 
 
-class AttractionsFormView(View):
+class ChooseCategoriesView(View):
     def get(self, request, *args, **kwargs):
-        context = {"categories": ServiceCategory.objects.all()}
+        event = EventType.objects.get(pk=self.request.session["event_pk"])
+        service_categories = event.category.all()
+        context = {"service_categories": service_categories}
+
         return render(
             request,
-            template_name="party_wizard/attractions_form.html",
+            template_name="party_wizard/choose_categories.html",
             context=context,
         )
 
     def post(self, request, *args, **kwargs):
-        location = request.POST.get("location")
-        meters = int(request.POST.get("km_radius")) * 1000
-        response = gmaps.places(query=location)
-        location = response.get("results")[0]["geometry"]["location"]
-        restaurants = gmaps.places_nearby(
-            location=(location["lat"], location["lng"]),
-            type="zoo",
-            radius=meters,
-        )
-        restauracje = []
-        for restaurant in restaurants["results"]:
-            restauracje.append(restaurant.get("name"))
+        categories = self.request.POST.getlist("categories")
+        print(categories)
+        self.request.session['categories'] = categories
 
-        return render(
-            request,
-            template_name="party_wizard/attractions_form.html",
-            context={"restauracje": restauracje},
-        )
+        return redirect("party_wizard:list_to_do")
+
+
+class ListToDoView(View):
+    def get(self, request):
+        categories = self.request.session['categories']
+        categories = [category.lower() for category in categories]
+
+        return render(request, "party_wizard/list_to_do.html", {'categories': categories})
+
+
+class RestaurantFormView(View):
+    def get(self, request):
+
+        context = {'api_key': party_creator.settings.GOOGLE_API_KEY}
+        return render(request, 'party_wizard/restaurant_form.html', context=context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # meters = 10 * 1000
+        # print(meters)
+        # response = gmaps.places(query="Wroclaw")
+        # print(response)
+        # location = response.get("results")["geometry"]["location"]
+        # restaurants = gmaps.places_nearby(
+        #     location=(location["lat"], location["lng"]),
+        #     type="restaurant",
+        #     radius=meters,
+        # )
+        # restauracje = []
+        # for restaurant in restaurants["results"]:
+        #     restauracje.append(restaurant.get("name"))
+        #     print(restaurant)

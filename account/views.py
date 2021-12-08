@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView, get_user_model
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -63,14 +63,9 @@ class EditProfileView(UpdateView):
     fields = ("image", "first_name", "last_name", "email")
     template_name = "account/edit_profile.html"
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = User.objects.filter(pk=self.request.user.pk)
-        return queryset
-
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if obj.pk != self.request.user.pk:
-            # TODO: create html
             return HttpResponse("CZEGO TU SZUKASZ XDD")
         return super(EditProfileView, self).dispatch(request, *args, **kwargs)
 

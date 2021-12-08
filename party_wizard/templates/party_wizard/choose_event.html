@@ -4,9 +4,13 @@
 {% block content %}
 
     {% load static %}
-    <h2>Choose event:</h2>
+    <div class="container">
+        <h2>Witam w kreatorze imprez!</h2>
+        <p>Wybierz jaką imprezę chcesz stworzyć!</p>
+    </div>
     <form class="container" action="" method="POST">
-    {% csrf_token %}
+        {% csrf_token %}
+
         <div class="row">
             {% for event_type in event_types %}
                 <div class="col">
