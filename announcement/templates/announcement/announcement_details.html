@@ -27,8 +27,7 @@
                         <div class="carousel-item">
                             {% endif %}
                             <a href="{% url 'announcement:announcement_details' slug=image.announcement.slug %}"><img
-                                    style="height:150px;" src="{{ image.image.small.url }}" class="d-block w-100"
-                                    alt="..."></a>
+                                    style="height:150px;" src="{{ image.image.small.url }}" class="d-block w-100" alt="..."></a>
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>{{ image.announcement.title }}</h5>
                                 <p>{{ image.announcement.description }}</p>
@@ -64,6 +63,9 @@
 
             <!--gallery-->
             <div class="col">
+                <div class="row">
+                    <h4>Galeria:<h4>
+                </div>
                 <div class="row row-cols-3">
                     {% for img in announcement.image.all %}
                     <div class="col">
@@ -71,6 +73,10 @@
                     </div>
                     {% endfor %}
                 </div>
+                {% comment %} <div class="row"> {% endcomment %}
+                    {% comment %} <a class="btn btn-btn-primary" {% endcomment %}
+                        {% comment %} href="{% url 'announcement:edit_gallery' slug=announcement.slug %}">Edytuj</a> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
             </div>
             <!--end gallery-->
 

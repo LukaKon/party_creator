@@ -160,10 +160,22 @@ class UpdateAnnouncementView(
 
     def form_valid(self, form):
         images_set = self.request.FILES.getlist("images")
+        images_del=self.request.POST.getlist("img[]")
+
         for image in images_set:
             Image.objects.create(image=image, announcement=self.get_object())
+
+        for pk in images_del:
+            Image.objects.get(pk=int(pk)).delete()
+
         self.object = form.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        announcement = self.get_object()
+        context["images"] = Image.objects.filter(announcement=announcement)
+        return context
 
     def get_success_url(self):
         """Return the URL to redirect to after processing a valid form."""

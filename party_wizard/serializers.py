@@ -1,7 +1,7 @@
-from party_wizard.models import FormModel
-from account.models import User
-
 from rest_framework import serializers
+
+from account.models import User
+from party_wizard.models import FormModel
 
 
 class FormModelSerializer(serializers.HyperlinkedModelSerializer):
