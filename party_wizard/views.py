@@ -1,18 +1,19 @@
-from pprint import pprint
-
 import googlemaps
-from django.shortcuts import redirect, render
-from django.views.generic import CreateView, View
-from rest_framework import generics
 
-import party_creator.settings
+from django.shortcuts import redirect, render
+from django.views.generic import View, CreateView
+from rest_framework import generics, views
+from rest_framework.response import Response
+
 from account.models import User
 from announcement.models import EventType, Image
+import party_creator.settings
 from party_wizard.models import FormModel
-from party_wizard.serializers import FormModelSerializer
+from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
+import party_wizard.utils.party_wizard as utils
+
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
-
 
 """API VIEWS"""
 
@@ -28,6 +29,15 @@ class CreateFormView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class GoogleNearbySearch(views.APIView):
+
+    def post(self, request):
+        data_js = request.data
+        data = utils.get_places(location=data_js.get("location"), radius=data_js.get("radius"), price_level=data_js.get("price_level"))
+        results = GoogleNearbySearchSerializer(data).data
+        return Response(results)
 
 
 """PRIMARY VIEWS"""
@@ -84,21 +94,6 @@ class ListToDoView(View):
 
 class RestaurantFormView(View):
     def get(self, request):
-
         context = {"api_key": party_creator.settings.GOOGLE_API_KEY}
         return render(request, "party_wizard/restaurant_form.html", context=context)
 
-        # meters = 10 * 1000
-        # print(meters)
-        # response = gmaps.places(query="Wroclaw")
-        # print(response)
-        # location = response.get("results")["geometry"]["location"]
-        # restaurants = gmaps.places_nearby(
-        #     location=(location["lat"], location["lng"]),
-        #     type="restaurant",
-        #     radius=meters,
-        # )
-        # restauracje = []
-        # for restaurant in restaurants["results"]:
-        #     restauracje.append(restaurant.get("name"))
-        #     print(restaurant)

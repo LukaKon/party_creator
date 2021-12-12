@@ -10,6 +10,7 @@ urlpatterns = [
         "update_form/<int:pk>/", views.UpdateFormView.as_view(), name="update_form_view"
     ),
     path("add_form/", views.CreateFormView.as_view(), name="add_form_view"),
+    path("nearby/", views.GoogleNearbySearch.as_view(), name="test"),
     # PRIMARY
     path("chooseevent/", views.ChooseEventView.as_view(), name="choose_event"),
     path(
