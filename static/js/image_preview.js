@@ -19,28 +19,47 @@ inputFile.addEventListener('change', function () {
         div.appendChild(imgNumber);
         previewContainer.appendChild(div);
 
-        files_arr.forEach((file) => {
+        files_arr.forEach((file,index) => {
             if (file) {
-                // console.log('file:', file)
-
+                console.log('file: ',file);
                 const reader = new FileReader();
-                // console.log('reader:', reader)
 
                 reader.addEventListener('load', function () {
+                    // image preview
+
                     const addImage = document.createElement('div');
                     addImage.className = 'col';
-                    // addImage.innerHTML='';
+
+                    // radio selector to chose main image
+                    const radioSelector = document.createElement('input');
+                    radioSelector.setAttribute('type', 'radio')
+                    radioSelector.setAttribute('name', 'main_image');
+                    radioSelector.setAttribute('id',index);
+                    radioSelector.setAttribute('value',index);
+                    // end radio selector to chose main image
+
+
+                    // label
+                    const radioLabel = document.createElement('label')
+                    radioLabel.setAttribute('for',index);
 
                     const img = document.createElement('img');
                     img.className = 'image-preview__image';
                     img.setAttribute('src', this.result);
                     // img.setAttribute('src', reader.result);
 
-                    const imgName = document.createElement('p')
-                    imgName.innerText = file.name
+                    const imgName = document.createElement('p');
+                    imgName.innerText = file.name;
 
-                    addImage.appendChild(img);
-                    addImage.appendChild(imgName);
+                    radioLabel.appendChild(img);
+                    radioLabel.appendChild(imgName);
+                    // end label
+
+                    addImage.appendChild(radioSelector);
+                    addImage.appendChild(radioLabel);
+
+                    // previewContainer.appendChild(addImage);
+                    // previewContainer.appendChild(radioSelector);
                     previewContainer.appendChild(addImage);
                 })
                 reader.readAsDataURL(file);
