@@ -160,7 +160,7 @@ class UpdateAnnouncementView(
 
     def form_valid(self, form):
         images_set = self.request.FILES.getlist("images")
-        images_del=self.request.POST.getlist("img[]")
+        images_del = self.request.POST.getlist("img[]")
 
         for image in images_set:
             Image.objects.create(image=image, announcement=self.get_object())

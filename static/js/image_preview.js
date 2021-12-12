@@ -1,14 +1,12 @@
-// TODO: when upload new files do not remove old ones from preview
-// TODO: update do not add pictures!!!
-
-
 const inputFile = document.querySelector('#images');
 const mainDiv = document.querySelector('#img-num')
 const previewContainer = document.querySelector('#imgPreview');
 
 inputFile.addEventListener('change', function () {
+    previewContainer.innerHTML = '';
+
     const files = this.files;
-    if (files) {
+    if (files.length > 0) {
         files_arr = Array.from(files)
 
         // number of selected pictures
@@ -16,6 +14,7 @@ inputFile.addEventListener('change', function () {
         div.className = 'col';
         const imgNumber = document.createElement('h3');
         imgNumber.textContent = `Dodano ${files_arr.length} plików.`;
+
 
         div.appendChild(imgNumber);
         previewContainer.appendChild(div);
@@ -30,6 +29,7 @@ inputFile.addEventListener('change', function () {
                 reader.addEventListener('load', function () {
                     const addImage = document.createElement('div');
                     addImage.className = 'col';
+                    // addImage.innerHTML='';
 
                     const img = document.createElement('img');
                     img.className = 'image-preview__image';
@@ -45,17 +45,20 @@ inputFile.addEventListener('change', function () {
                 })
                 reader.readAsDataURL(file);
             } else {
-                console.log('brak zdjęć...')
+                const emptyText = document.createElement('div');
+                emptyText.className = 'col';
+                emptyText.innerText = 'Nie wybrano zdjęć.';
+
+                previewContainer.appendChild(emptyText)
             };
         });
-
     } else {
-        console.log('brak zdjęć...')
         const emptyField = document.createElement('div');
         emptyField.className = 'col';
+        emptyField.innerHTML = ''
 
         const h3 = document.createElement('h3');
-        h3.innerText = 'nie wybrano jeszcze zdjęć';
+        h3.innerText = 'Nie wybrano jeszcze zdjęć';
 
         emptyField.appendChild(h3);
         previewContainer.appendChild(emptyField);
