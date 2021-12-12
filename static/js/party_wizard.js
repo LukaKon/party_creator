@@ -4,6 +4,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 google.maps.event.addDomListener(window, "load", initMap);
             });
 
+        // function initMap() {
+        //     // data = {"location":"Warszawa", "radius": 30}
+        //
+        //     fetch('http://127.0.0.1:8000/test/', {
+        //         method: 'get',
+        //         body: JSON.stringify(),
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             "X-CSRFToken": csrftoken,
+        //         },
+        //     }).then(response => response.json())
+        //         .then(data => console.log(data));
+        // }
+        //
         function initMap() {
             const options = {
                 componentRestrictions: {country: 'pl'}

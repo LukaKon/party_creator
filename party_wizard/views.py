@@ -4,8 +4,8 @@ import googlemaps
 from django.shortcuts import redirect, render
 from django.views.generic import View, CreateView
 
-from rest_framework import generics
-from party_wizard.serializers import FormModelSerializer
+from rest_framework import generics, views
+from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
 
 import party_creator.settings
 from announcement.models import EventType, Image
@@ -14,8 +14,8 @@ from party_wizard.models import FormModel
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
-
 """API VIEWS"""
+
 
 class UpdateFormView(generics.UpdateAPIView):
     queryset = FormModel.objects.all()
@@ -30,7 +30,19 @@ class CreateFormView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
+from rest_framework.response import Response
+
+
+class GoogleNearbySearch(views.APIView):
+    def get(self, request):
+        yourdata = {"data": {'ttt':3}}
+        results = GoogleNearbySearchSerializer(yourdata).data
+        print(results)
+        return Response(results)
+
+
 """PRIMARY VIEWS"""
+
 
 class ChooseEventView(View):
     def get(self, request, *args, **kwargs):
@@ -81,24 +93,8 @@ class ListToDoView(View):
 
 class RestaurantFormView(View):
     def get(self, request):
-
         context = {'api_key': party_creator.settings.GOOGLE_API_KEY}
         return render(request, 'party_wizard/restaurant_form.html', context=context)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         # meters = 10 * 1000
         # print(meters)
