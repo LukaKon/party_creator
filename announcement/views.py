@@ -116,16 +116,23 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
 
         announcement_form = self.get_form()
         images_set = request.FILES.getlist("images")
+        main_image_selector = request.POST.get("main_image")
 
         if announcement_form.is_valid():
             announcement = announcement_form.save(commit=False)
             announcement.user = self.request.user
             announcement.save()
 
-            for image in images_set:
+            for counter, image in enumerate(images_set):
+                if counter == int(main_image_selector):
+                    is_main = True
+                else:
+                    is_main = False
+
                 Image.objects.create(
                     image=image,
                     announcement=announcement,
+                    is_main=is_main,
                 )
             return redirect(
                 reverse("account:profile", kwargs={"pk": self.request.user.pk})
@@ -160,10 +167,20 @@ class UpdateAnnouncementView(
 
     def form_valid(self, form):
         images_set = self.request.FILES.getlist("images")
-        images_del=self.request.POST.getlist("img[]")
+        images_del = self.request.POST.getlist("img[]")
+        main_image_selector = self.request.POST.get("main_image")
 
-        for image in images_set:
-            Image.objects.create(image=image, announcement=self.get_object())
+        for counter, image in enumerate(images_set):
+            if counter == int(main_image_selector):
+                is_main = True
+            else:
+                is_main = False
+
+            Image.objects.create(
+                image=image,
+                announcement=self.get_object(),
+                is_main=is_main,
+            )
 
         for pk in images_del:
             Image.objects.get(pk=int(pk)).delete()
