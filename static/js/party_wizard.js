@@ -3,13 +3,14 @@ document.addEventListener("DOMContentLoaded", function () {
             .done(function (script, textStatus) {
                 google.maps.event.addDomListener(window, "load", initMap);
             });
-
         function initMap() {
+
             const options = {
                 componentRestrictions: {country: 'pl'}
             };
             const input = document.getElementById("location")
             autocomplete = new google.maps.places.Autocomplete(input, options);
+
         }
 
         function getCookie(name) {
@@ -55,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             init() {
                 this.events();
-                // this.googleAPI();
             }
 
             events() {
@@ -72,12 +72,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             addPlacesToHtml(data){
-                let div_step_2 = this.form.querySelector("div[data-step='2']")
+                let div_step_2 = this.form.querySelector("div[data-step='2'] div#places")
                 data.data.results.forEach(element=>{
                     let new_div = document.createElement("div")
                     let new_p = document.createElement("p")
+                    let new_img = document.createElement("img")
                     new_p.innerText = "Name : " + element.name
+                    new_img.setAttribute('src', "https://maps.googleapis.com/maps/api/place/photo" +
+                        "?maxwidth=200" + "&maxheight=200"+
+                        "&photo_reference=" + element.photos[0].photo_reference+
+                        "&key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY")
                     new_div.appendChild(new_p)
+                    new_div.appendChild(new_img)
                     div_step_2.appendChild(new_div)
                 })
             }
@@ -87,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 let step = button.currentTarget.getAttribute('id');
                 if (step === 'nextStep') {
                     if (active.getAttribute('data-step') === '1') {
-                        this.form.querySelector("div[data-step='2']").innerHTML = "";
+                        this.form.querySelector("div[data-step='2'] div#places").innerHTML = "";
                         let values = this.getValues()
 
                         fetch('http://127.0.0.1:8000/nearby/', {
@@ -140,14 +146,4 @@ document.addEventListener("DOMContentLoaded", function () {
             new FormHandling(form);
         }
     }
-)
-;
-
-// fetch('http://127.0.0.1:8000/update_form/{{dynamincznie_pobierane_z_html}}/', {
-//     method: 'PATCH',
-//     body: JSON.stringify({form_party: {"test": "test_bez_dodatkow"}}),
-//     headers: {
-//         "Content-Type": "application/json",
-//         "X-CSRFToken": csrftoken,
-//     },
-// });
+);

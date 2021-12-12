@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View, CreateView
 
 from rest_framework import generics, views
+from rest_framework.response import Response
 from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
 
 import party_creator.settings
@@ -31,17 +32,14 @@ class CreateFormView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-from rest_framework.response import Response
-
-
 class GoogleNearbySearch(views.APIView):
 
     def post(self, request):
         data_js = request.data
         data = utils.get_places(location=data_js.get("location"), radius=data_js.get("radius"), price_level=data_js.get("price_level"))
-        print(data)
         results = GoogleNearbySearchSerializer(data).data
         return Response(results)
+
 
 """PRIMARY VIEWS"""
 
