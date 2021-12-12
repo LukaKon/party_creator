@@ -11,6 +11,7 @@ import party_creator.settings
 from announcement.models import EventType, Image
 from account.models import User
 from party_wizard.models import FormModel
+import party_wizard.utils.party_wizard as utils
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
@@ -34,15 +35,15 @@ from rest_framework.response import Response
 
 
 class GoogleNearbySearch(views.APIView):
-    def get(self, request):
-        yourdata = {"data": {'ttt':3}}
-        results = GoogleNearbySearchSerializer(yourdata).data
-        print(results)
+
+    def post(self, request):
+        data_js = request.data
+        data = utils.get_places(location=data_js.get("location"), radius=data_js.get("radius"), price_level=data_js.get("price_level"))
+        print(data)
+        results = GoogleNearbySearchSerializer(data).data
         return Response(results)
 
-
 """PRIMARY VIEWS"""
-
 
 class ChooseEventView(View):
     def get(self, request, *args, **kwargs):
