@@ -1,18 +1,17 @@
-from pprint import pprint
-
 import googlemaps
+
 from django.shortcuts import redirect, render
 from django.views.generic import View, CreateView
-
 from rest_framework import generics, views
 from rest_framework.response import Response
-from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
 
-import party_creator.settings
-from announcement.models import EventType, Image
 from account.models import User
+from announcement.models import EventType, Image
+import party_creator.settings
 from party_wizard.models import FormModel
+from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
 import party_wizard.utils.party_wizard as utils
+
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
@@ -42,6 +41,7 @@ class GoogleNearbySearch(views.APIView):
 
 
 """PRIMARY VIEWS"""
+
 
 class ChooseEventView(View):
     def get(self, request, *args, **kwargs):
@@ -77,35 +77,23 @@ class ChooseCategoriesView(View):
     def post(self, request, *args, **kwargs):
         categories = self.request.POST.getlist("categories")
         print(categories)
-        self.request.session['categories'] = categories
+        self.request.session["categories"] = categories
 
         return redirect("party_wizard:list_to_do")
 
 
 class ListToDoView(View):
     def get(self, request):
-        categories = self.request.session['categories']
+        categories = self.request.session["categories"]
         categories = [category.lower() for category in categories]
 
-        return render(request, "party_wizard/list_to_do.html", {'categories': categories})
+        return render(
+            request, "party_wizard/list_to_do.html", {"categories": categories}
+        )
 
 
 class RestaurantFormView(View):
     def get(self, request):
-        context = {'api_key': party_creator.settings.GOOGLE_API_KEY}
-        return render(request, 'party_wizard/restaurant_form.html', context=context)
+        context = {"api_key": party_creator.settings.GOOGLE_API_KEY}
+        return render(request, "party_wizard/restaurant_form.html", context=context)
 
-        # meters = 10 * 1000
-        # print(meters)
-        # response = gmaps.places(query="Wroclaw")
-        # print(response)
-        # location = response.get("results")["geometry"]["location"]
-        # restaurants = gmaps.places_nearby(
-        #     location=(location["lat"], location["lng"]),
-        #     type="restaurant",
-        #     radius=meters,
-        # )
-        # restauracje = []
-        # for restaurant in restaurants["results"]:
-        #     restauracje.append(restaurant.get("name"))
-        #     print(restaurant)

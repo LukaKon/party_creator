@@ -1,15 +1,116 @@
 {% extends 'base.html' %}
 {% block title %}Sczegóły ogłoszenia{% endblock title %}
 {% block content %}
-<h2>
-    {{ announcement.title }}
-</h2>
-<br>
-{{ announcement.description }}
+<div class="container justify-content-center">
+    <!--slideshow-->
+    {% comment %} <div class="container">
+        <div class="row">
+            <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    {% for image in announcement.image.all %}
+                    {% if forloop.first %}
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                        class="active" aria-current="true" aria-label="Slide {{ forloop.counter0 }}"><img
+                            src="{{ image.image.thumbnail.url }}" alt=""></button>
+                    {% else %}
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                        aria-label="Slide {{ forloop.counter0 }}"><img src="{{ image.image.thumbnail.url }}"
+                            alt=""></button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner">
+                    {% for image in announcement.image.all %}
+                    {% if forloop.first %}
+                    <div class="carousel-item active">
+                        {% else %}
+                        <div class="carousel-item">
+                            {% endif %}
+                            <a href="{% url 'announcement:announcement_details' slug=image.announcement.slug %}"><img
+                                    style="height:150px;" src="{{ image.image.small.url }}" class="d-block w-100" alt="..."></a>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>{{ image.announcement.title }}</h5>
+                                <p>{{ image.announcement.description }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
+    <!--end slideshow-->
+    <div class="container">
+        <div class="row">
+            <!--announcement data-->
+            <div class="col-4">
+                <h2>{{ announcement.title }}</h2><br>
+                <h6><small>{{ announcement.date }}</small></h6>
+                <br>
+                {{ announcement.description }}
+            </div>
+            <!--end announcement data-->
 
-{% if user.is_authenticated and user == object.user %}
-<br>
-<a href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj</a>
-<a href="{% url 'announcement:delete_announcement' slug=announcement.slug %}">Usuń</a>
-{% endif %}
-{% endblock content %}
+            <!--gallery-->
+            <div class="col">
+                <div class="row">
+                    <h4>Galeria:<h4>
+                </div>
+                <div class="row row-cols-3">
+                    {% for img in announcement.image.all %}
+                    <div class="col">
+                        <a href="{{img.image.large.url }}"><img src="{{ img.image.thumbnail.url }}"></a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% comment %} <div class="row"> {% endcomment %}
+                    {% comment %} <a class="btn btn-btn-primary" {% endcomment %}
+                        {% comment %} href="{% url 'announcement:edit_gallery' slug=announcement.slug %}">Edytuj</a> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
+            </div>
+            <!--end gallery-->
+
+
+            <!--buttons-->
+            <div class="row row-cols-auto">
+                {% if user.is_authenticated and user == object.user %}
+                <div class="col">
+                    <a class="btn btn-primary"
+                        href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj</a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-danger"
+                        href="{% url 'announcement:delete_announcement' slug=announcement.slug %}">Usuń</a>
+                </div>
+                {% endif %}
+            </div>
+            <!--end buttons-->
+        </div>
+    </div>
+
+    <!--additional data-->
+    <div class="row">
+        <div class="container">
+            <p>Inne ogłoszenia tego użytkownika:</p>
+            <ul>
+                {% for ann in owner_announcements %}
+                <li>
+                    <a href="{% url 'announcement:announcement_details' slug=ann.slug %}">{{ ann.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <!--end additional data-->
+
+    {% endblock content %}
