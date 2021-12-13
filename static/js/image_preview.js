@@ -36,6 +36,10 @@ inputFile.addEventListener('change', function () {
                     radioSelector.setAttribute('name', 'main_image');
                     radioSelector.setAttribute('id',index);
                     radioSelector.setAttribute('value',index);
+                    console.log('index: ',index);
+                    if (index===0){
+                        radioSelector.setAttribute('checked','checked');
+                    }
                     // end radio selector to chose main image
 
 
