@@ -10,42 +10,49 @@ inputFile.addEventListener('change', function () {
         files_arr = Array.from(files)
 
         // number of selected pictures
-        const div = document.createElement('div');
-        div.className = 'col';
-        const imgNumber = document.createElement('h3');
-        imgNumber.textContent = `Dodano ${files_arr.length} plików.`;
+        // const div = document.createElement('div');
+        // div.className = 'col';
+        // const imgNumber = document.createElement('h3');
+        // imgNumber.textContent = `Dodano ${files_arr.length} plików.`;
 
 
-        div.appendChild(imgNumber);
-        previewContainer.appendChild(div);
+        // div.appendChild(imgNumber);
+        // previewContainer.appendChild(div);
 
-        files_arr.forEach((file,index) => {
+        const index_from_template = JSON.parse(document.querySelector('#counter').textContent)
+        console.log('index form html: ', typeof (index_from_template));
+        if (index_from_template === null) {
+            index_from_template = 0;
+        }
+
+        files_arr.forEach((file, index = index_from_template) => {
             if (file) {
-                console.log('file: ',file);
+                console.log('file: ', file);
                 const reader = new FileReader();
 
                 reader.addEventListener('load', function () {
-                    // image preview
 
                     const addImage = document.createElement('div');
                     addImage.className = 'col';
 
+                    console.log('index in for loop: ', index);
                     // radio selector to chose main image
                     const radioSelector = document.createElement('input');
                     radioSelector.setAttribute('type', 'radio')
                     radioSelector.setAttribute('name', 'main_image');
-                    radioSelector.setAttribute('id',index);
-                    radioSelector.setAttribute('value',index);
-                    console.log('index: ',index);
-                    if (index===0){
+                    radioSelector.setAttribute('id', index);
+                    radioSelector.setAttribute('value', index);
+                    console.log('index: ', index);
+                    if (index_from_template===0 && index===0){
                         radioSelector.setAttribute('checked','checked');
                     }
                     // end radio selector to chose main image
 
 
+                    // image preview
                     // label
                     const radioLabel = document.createElement('label')
-                    radioLabel.setAttribute('for',index);
+                    radioLabel.setAttribute('for', index);
 
                     const img = document.createElement('img');
                     img.className = 'image-preview__image';
@@ -62,8 +69,6 @@ inputFile.addEventListener('change', function () {
                     addImage.appendChild(radioSelector);
                     addImage.appendChild(radioLabel);
 
-                    // previewContainer.appendChild(addImage);
-                    // previewContainer.appendChild(radioSelector);
                     previewContainer.appendChild(addImage);
                 })
                 reader.readAsDataURL(file);

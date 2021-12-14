@@ -167,10 +167,18 @@ class UpdateAnnouncementView(
 
     def form_valid(self, form):
         images_set = self.request.FILES.getlist("images")
-        images_del = self.request.POST.getlist("img[]")
+        images_del = self.request.POST.getlist(
+            "img[]"
+        )  # TODO: why list, there is only one element...
         main_image_selector = self.request.POST.get("main_image")
 
+        print("main: ", main_image_selector)
+
+        # TODO: how to change main image: add flag 'is_main' to new one and remove from previous
+        # img_in_ann=Image.objects.filter(announcement=self.get_object())
+
         for counter, image in enumerate(images_set):
+            print("counter: ", counter)
             if counter == int(main_image_selector):
                 is_main = True
             else:

@@ -9,26 +9,6 @@
     <div class="row">
         <form action="" id="form_container" method="POST" enctype="multipart/form-data" class="row g-3">
             {% csrf_token %}
-
-            <div class="row">
-                <div class="row">
-                    <label for="images">
-                        <h6>Galeria <small>(wybierz zdjęcia, które chcesz usunąć)</small>:</h6>
-                    </label>
-                </div>
-
-                <div class="row row-cols-8">
-                    {% for img in images %}
-                    <div class="col">
-                        <input type="checkbox" id="{{ forloop.counter }}" name="img[]" value="{{ img.pk }}" />
-                        <label for="{{ forloop.counter }}">
-                            <a href="{{ img.image.large.url }}"><img src="{{ img.image.thumbnail.url }}" alt=""></a>
-                        </label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
             {% include 'announcement/create_update_form_fields.html' %}
         </form>
     </div>

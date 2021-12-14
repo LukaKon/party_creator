@@ -4,113 +4,118 @@
 {% load static %}
 {% block content %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <img alt="My image" src="{{ object.image.medium.url }}"/><br>
-            </div>
-            <div class="col">
-                Imie: {{ user_data.first_name }}<br>
-                Nazwisko: {{ user_data.last_name }}<br>
-                E-Mail: {{ user_data.email }}<br>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img alt="My image" src="{{ object.image.medium.url }}" /><br>
+        </div>
+        <div class="col">
+            Imie: {{ user_data.first_name }}<br>
+            Nazwisko: {{ user_data.last_name }}<br>
+            E-Mail: {{ user_data.email }}<br>
         </div>
     </div>
-    <div class="container">
-        <div class="row row-cols-auto">
-            <div class="col">
-                <a class="btn btn-primary" href="{% url 'announcement:add_announcement' %}">Dodaj ogłoszenie</a>
-            </div>
-            {% if user.is_authenticated and user == user_data %}
-                <div class="col">
-                    <a class="btn btn-primary" href="{% url 'account:edit_profile' pk=user.pk %}">Edytuj profil</a>
+</div>
+<div class="container">
+    <div class="row row-cols-auto">
+        <div class="col">
+            <a class="btn btn-primary" href="{% url 'announcement:add_announcement' %}">Dodaj ogłoszenie</a>
+        </div>
+        {% if user.is_authenticated and user == user_data %}
+        <div class="col">
+            <a class="btn btn-primary" href="{% url 'account:edit_profile' pk=user.pk %}">Edytuj profil</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-4">
+            {# if todo list exist #}
+            <div>
+                TODO wesele:
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        lokal:
+                    </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        kapela: <a href="">"Cygan i świta"</a>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        tort:<a href="">"Cukiernia Oleńka"</a>
+                    </label>
+                </div>
+            </div>
+        </div>
+        {# else #}
+        <!--Jeszcze nie stworzyłeś listy TODO...-->
+        {# endif #}
+
+        <div class="col align-items-center">
+            {% if announcements %}
+            <div class="">
+                Twoje ogłoszenia:
+            </div>
+            <div class="">
+                {% for announcement in  announcements %}
+                <div class="row row-cols-auto">
+                    <div class="col align-self-center">
+                        <!--TODO: docelowo ma być główne zdjęcie-->
+                        {% comment %} <div>
+                            test: {% for img in announcement.image.all %}
+                            {{ img.pk }}
+                            {% if img.is_main %}
+                            <strong>main image</strong>
+                            {% else %}
+                            first image
+                            {% endif %}
+                            {% endfor %}
+                        </div> {% endcomment %}
+                        {% comment %} {% with img=announcement.image.all|first %} {% endcomment %}
+                        {% if announcement.image.all %}
+                        {% for img in announcement.image.all %}
+                        {% if img.is_main %}
+                        <a href="{{ img.image.thumbnail.url }}"><img src="{{ img.image.thumbnail.url }}" alt=""></a>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% comment %} {% endwith %} {% endcomment %}
+                    </div>
+                    <div class="col align-self-center">
+                        <a
+                            href="{% url 'announcement:announcement_details' slug=announcement.slug %}">{{ announcement.title|truncatewords:3 }}</a>
+                        <br>
+                        <small>{{ announcement.date }}</small>
+                    </div>
+                    <div class="col align-self-center">
+                        {{ announcement.description|truncatewords:5 }}
+                    </div>
+                    {% if user.is_authenticated and user == user_data %}
+                    <div class="col align-self-center">
+                        <a class="btn btn-primary"
+                            href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj</a>
+                    </div>
+                    <div class="col align-self-center">
+                        <a class="btn btn-danger"
+                            href="{% url 'announcement:delete_announcement' slug=announcement.slug %}">Usuń</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="">
+                Jeszcze niczego nie dodałeś...
+            </div>
             {% endif %}
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col col-lg-4">
-                {# if todo list exist #}
-                <div>
-                    TODO wesele:
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            lokal:
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            kapela: <a href="">"Cygan i świta"</a>
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            tort:<a href="">"Cukiernia Oleńka"</a>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            {# else #}
-            <!--Jeszcze nie stworzyłeś listy TODO...-->
-            {# endif #}
-
-            <div class="col align-items-center">
-                {% if announcements %}
-                    <div class="">
-                        Twoje ogłoszenia:
-                    </div>
-                    <div class="">
-                        {% for announcement in  announcements %}
-                            <div class="row row-cols-auto">
-                                <div class="col align-self-center">
-                                    <!--TODO: docelowo ma być główne zdjęcie-->
-                                <div>
-                                    test: {% for img in announcement.image.all %}
-                                    {{ img.pk }}
-                                    {% if img.is_main %}
-                                        <strong>main image</strong>
-                                    {% else %}
-                                    first image
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                                    {% with img=announcement.image.all|first %}
-                                        <a href="{{ img.image.thumbnail.url }}"><img src="{{ img.image.thumbnail.url }}"
-                                                                                     alt=""></a>
-                                    {% endwith %}
-                                </div>
-                                <div class="col align-self-center">
-                                    <a
-                                            href="{% url 'announcement:announcement_details' slug=announcement.slug %}">{{ announcement.title|truncatewords:3 }}</a>
-                                    <br>
-                                    <small>{{ announcement.date }}</small>
-                                </div>
-                                <div class="col align-self-center">
-                                    {{ announcement.description|truncatewords:5 }}
-                                </div>
-                                {% if user.is_authenticated and user == user_data %}
-                                    <div class="col align-self-center">
-                                        <a class="btn btn-primary"
-                                           href="{% url 'announcement:update_announcement' slug=announcement.slug %}">Edytuj</a>
-                                    </div>
-                                    <div class="col align-self-center">
-                                        <a class="btn btn-danger"
-                                           href="{% url 'announcement:delete_announcement' slug=announcement.slug %}">Usuń</a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <div class="">
-                        Jeszcze niczego nie dodałeś...
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+</div>
 {% endblock %}
