@@ -19,13 +19,19 @@ inputFile.addEventListener('change', function () {
         // div.appendChild(imgNumber);
         // previewContainer.appendChild(div);
 
-        const index_from_template = JSON.parse(document.querySelector('#counter').textContent)
-        console.log('index form html: ', typeof (index_from_template));
+        let index_from_template = JSON.parse(document.querySelector('#counter').textContent)
+
+        console.log('index form html: ',  index_from_template);
         if (index_from_template === null) {
             index_from_template = 0;
         }
 
-        files_arr.forEach((file, index = index_from_template) => {
+        let index=index_from_template
+        files_arr.forEach((file) => {
+
+            console.log('index: ', index)
+            index+=1
+
             if (file) {
                 console.log('file: ', file);
                 const reader = new FileReader();
@@ -35,14 +41,14 @@ inputFile.addEventListener('change', function () {
                     const addImage = document.createElement('div');
                     addImage.className = 'col';
 
-                    console.log('index in for loop: ', index);
+                    // console.log('index in for loop: ', index);
                     // radio selector to chose main image
                     const radioSelector = document.createElement('input');
                     radioSelector.setAttribute('type', 'radio')
                     radioSelector.setAttribute('name', 'main_image');
                     radioSelector.setAttribute('id', index);
                     radioSelector.setAttribute('value', index);
-                    console.log('index: ', index);
+                    // console.log('index: ', index);
                     if (index_from_template===0 && index===0){
                         radioSelector.setAttribute('checked','checked');
                     }
@@ -57,6 +63,7 @@ inputFile.addEventListener('change', function () {
                     const img = document.createElement('img');
                     img.className = 'image-preview__image';
                     img.setAttribute('src', this.result);
+                    img.setAttribute('alt',index)
                     // img.setAttribute('src', reader.result);
 
                     const imgName = document.createElement('p');

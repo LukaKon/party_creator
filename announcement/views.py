@@ -166,6 +166,7 @@ class UpdateAnnouncementView(
         return queryset
 
     def form_valid(self, form):
+        existing_images=self.request.POST.getlist('all_images')
         images_set = self.request.FILES.getlist("images")
         images_del = self.request.POST.getlist(
             "img[]"
@@ -173,25 +174,58 @@ class UpdateAnnouncementView(
         main_image_selector = self.request.POST.get("main_image")
 
         print("main: ", main_image_selector)
+        print('images_set',images_set)
 
         # TODO: how to change main image: add flag 'is_main' to new one and remove from previous
         # img_in_ann=Image.objects.filter(announcement=self.get_object())
 
-        for counter, image in enumerate(images_set):
-            print("counter: ", counter)
-            if counter == int(main_image_selector):
-                is_main = True
-            else:
-                is_main = False
 
-            Image.objects.create(
-                image=image,
-                announcement=self.get_object(),
-                is_main=is_main,
-            )
+        for image in self.get_object().image.all():
+            image.is_main=False
+            image.save()
+
+        byleco=existing_images+images_set
+        print('byleco: ',byleco)
+        print('all_images: ', existing_images)
+
+        # TODO: elif do poprawy
+        for counter, image in enumerate(byleco):
+            is_main = True
+            # print(image, "====counter: ", counter, "index aktualny: ", existing_images.index(image))
+            print(main_image_selector)
+            if counter <= len(existing_images) and counter == int(main_image_selector):
+                img = Image.objects.get(pk=int(image))
+                img.is_main = is_main
+                img.save()
+            elif counter > len(existing_images) :
+                if counter != int(main_image_selector):
+                    is_main = False
+                Image.objects.create(
+                    image=image,
+                    announcement=self.get_object(),
+                    is_main=is_main,
+                )
+            # print("counter: ", counter)
+
+            # if counter == main_image_selector:
+            #     is_main = True
+            #     if counter <= len(all_images):
+            #         is_main_img=Image.objects.get(pk=int(image))
+            #         is_main_img.is_main=True
+            #         is_main_img.save()
+            #     else:
+            #         Image.objects.create(
+            #             image=image,
+            #             announcement=self.get_object(),
+            #             is_main=is_main,
+            #         )
+            # else:
+            #     is_main = False
+
 
         for pk in images_del:
             Image.objects.get(pk=int(pk)).delete()
+
 
         self.object = form.save()
         return super().form_valid(form)
@@ -202,9 +236,54 @@ class UpdateAnnouncementView(
         context["images"] = Image.objects.filter(announcement=announcement)
         return context
 
-    def get_success_url(self):
-        """Return the URL to redirect to after processing a valid form."""
-        return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
+    # def get_success_url(self):
+    #     """Return the URL to redirect to after processing a valid form."""
+    #     return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
+    # def form_valid(self, form):
+    #     """If the form is valid, redirect to the supplied URL."""
+    #     announcement = self.get_object()
+    #     # images= announcement.image.all()
+    #     # main_image_selector = request.POST.get("main_image")
+    #     for image in announcement.image.all():
+    #         image.is_main=False
+    #         # breakpoint()
+    #         image.save()
+    #
+    #     # self.object=form.save()
+    #     form.save()
+    #     return HttpResponseRedirect(self.get_success_url())
+
+
+    # def post(self, request, *args, **kwargs):
+        # super(UpdateAnnouncementView, self).post(request,*args, **kwargs)
+
+        # announcement_form = self.get_form()
+        # images_set = request.FILES.getlist("images")
+        # super(UpdateAnnouncementView, self).post(request, *args, **kwargs)
+
+        # return super().post(request,*args, **kwargs)
+
+        # if announcement_form.is_valid():
+        #     announcement = announcement_form.save(commit=False)
+        #     announcement.user = self.request.user
+        #     announcement.save()
+
+        #     for counter, image in enumerate(images_set):
+        #         if counter == int(main_image_selector):
+        #             is_main = True
+        #         else:
+        #             is_main = False
+
+        #         Image.objects.create(
+        #             image=image,
+        #             announcement=announcement,
+        #             is_main=is_main,
+        #         )
+        #     return redirect(
+        #         reverse("account:profile", kwargs={"pk": self.request.user.pk})
+        #     )
+
+
 
 
 class DeleteAnnouncementView(

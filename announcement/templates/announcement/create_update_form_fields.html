@@ -17,12 +17,15 @@
     {% if images %}
         <!--existing images-->
         {% for img in images %}
+            <input type="checkbox" name="all_images" id="{{ forloop.counter0 }}" value="{{ img.pk }}" checked="checked" />
         <div class="col">
             <!--delete checkbox-->
             <input type="checkbox" id="{{ forloop.counter0 }}" name="img[]" value="{{ img.pk }}" />
             <!--main selector-->
             <input type="radio" name="main_image" id="{{ forloop.counter0 }}" value="{{ forloop.counter0 }}"
                 {% if img.is_main %} checked="checked" {% endif %} />
+
+
 
             <label for="{{ forloop.counter0 }}">
                 {{ forloop.counter0 }}
