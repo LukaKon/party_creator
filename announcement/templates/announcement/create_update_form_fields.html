@@ -1,12 +1,9 @@
 <!--Gallery-->
 <div class="row">
     <div class="row">
-        <label for="images">
-            Galeria: <small>
-                (wybierz zdjęcia, które chcesz usunąć;
-                wybierz główne zdjęcie)
-            </small>
-        </label>
+        {#        <label for="images">#}
+        Galeria:
+        {#        </label>#}
     </div>
 
     <div class="row row-cols-8">
@@ -14,10 +11,14 @@
         {% comment %} ile jest już zdjęć: {{ images|length }} {% endcomment %}
         {{ images|length|json_script:"counter" }}
 
-    {% if images %}
+        {% if images %}
+        <small>
+            (wybierz zdjęcia, które chcesz usunąć;
+            wybierz główne zdjęcie)
+        </small>
         <!--existing images-->
         {% for img in images %}
-            <input type="checkbox" name="all_images" id="{{ forloop.counter0 }}" value="{{ img.pk }}" checked="checked" />
+        <input type="checkbox" name="all_images" id="{{ forloop.counter0 }}" value="{{ img.pk }}" checked="checked" />
         <div class="col">
             <!--delete checkbox-->
             <input type="checkbox" id="{{ forloop.counter0 }}" name="img[]" value="{{ img.pk }}" />
@@ -25,15 +26,15 @@
             <input type="radio" name="main_image" id="{{ forloop.counter0 }}" value="{{ forloop.counter0 }}"
                 {% if img.is_main %} checked="checked" {% endif %} />
 
-
-
             <label for="{{ forloop.counter0 }}">
                 {{ forloop.counter0 }}
                 <a href="{{ img.image.large.url }}"><img src="{{ img.image.thumbnail.url }}" alt=""></a>
             </label>
         </div>
         {% endfor %}
-    {% endif %}
+        {% else %}
+        Ogłoszenie nie posiada jeszcze zdjęć.
+        {% endif %}
     </div>
 
     <!--added images-->
@@ -47,7 +48,8 @@
     <div class="col-lg-6 col-md-12">
         <div class="input-group mb-3">
             <label class="input-group-text" for="images">Zdjęcia</label>
-            <input type="file" accept="image/.jpg, image/.png" multiple class="form-control" id="images"
+            <!--TODO: add accepted file types: accept="image/.jpg, image/.png"-->
+            <input type="file" multiple class="form-control" id="images"
                 placeholder="Wybierz zdjęcia..." aria-label="Zdjęcia:" aria-describedby="images" name="images">
             {% comment %} <div class="invalid-feedback">{{ form.errors.title }}</div> {% endcomment %}
         </div>

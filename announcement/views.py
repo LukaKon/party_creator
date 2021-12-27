@@ -166,66 +166,97 @@ class UpdateAnnouncementView(
         return queryset
 
     def form_valid(self, form):
-        existing_images=self.request.POST.getlist('all_images')
+        existing_images = self.request.POST.getlist("all_images")
+        # existing_images=self.get_object().image.all()
         images_set = self.request.FILES.getlist("images")
         images_del = self.request.POST.getlist(
             "img[]"
         )  # TODO: why list, there is only one element...
         main_image_selector = self.request.POST.get("main_image")
 
-        print("main: ", main_image_selector)
-        print('images_set',images_set)
+        print("main index: ", main_image_selector)
+        # Convert main_iamage_selector to int
+        if main_image_selector == None:
+            main_image_selector = 0
+        else:
+            main_image_selector = int(main_image_selector)
+        print("main index: ", main_image_selector, "|", type(main_image_selector))
 
         # TODO: how to change main image: add flag 'is_main' to new one and remove from previous
         # img_in_ann=Image.objects.filter(announcement=self.get_object())
 
+        if existing_images:
+            for image in existing_images:
+                """Save all images as not main."""
+                image.is_main = False
+                image.save()
 
-        for image in self.get_object().image.all():
-            image.is_main=False
-            image.save()
-
-        byleco=existing_images+images_set
-        print('byleco: ',byleco)
-        print('all_images: ', existing_images)
-
-        # TODO: elif do poprawy
-        for counter, image in enumerate(byleco):
-            is_main = True
-            # print(image, "====counter: ", counter, "index aktualny: ", existing_images.index(image))
-            print(main_image_selector)
-            if counter <= len(existing_images) and counter == int(main_image_selector):
-                img = Image.objects.get(pk=int(image))
-                img.is_main = is_main
-                img.save()
-            elif counter > len(existing_images) :
-                if counter != int(main_image_selector):
+        all_images = existing_images + images_set
+        # print("existing images: ", existing_images)
+        # print("images_set", images_set)
+        # print("all images: ", all_images)
+        breakpoint()
+        if main_image_selector <= len(existing_images):
+            for counter, img in enumerate(existing_images):
+                print("counter: ", counter)
+                if counter == main_image_selector:
+                    img = Image.objects.get(pk=int(image))
+                    img.is_main = True
+                    img.save()
+        else:
+            counter = len(existing_images)
+            for counter, img in enumerate(images_set):
+                print("counter: ", counter)
+                if counter == main_image_selector:
+                    is_main = True
+                else:
                     is_main = False
                 Image.objects.create(
                     image=image,
                     announcement=self.get_object(),
                     is_main=is_main,
                 )
-            # print("counter: ", counter)
 
-            # if counter == main_image_selector:
-            #     is_main = True
-            #     if counter <= len(all_images):
-            #         is_main_img=Image.objects.get(pk=int(image))
-            #         is_main_img.is_main=True
-            #         is_main_img.save()
-            #     else:
-            #         Image.objects.create(
-            #             image=image,
-            #             announcement=self.get_object(),
-            #             is_main=is_main,
-            #         )
-            # else:
-            #     is_main = False
+        # TODO: elif do poprawy
+        # if len(all_images) > 0:
+        #     for counter, image in enumerate(all_images):
+        #         # print(image, "====counter: ", counter, "index aktualny: ", existing_images.index(image))
+        #         print(main_image_selector)
+        #         if counter <=len(existing_images) and counter == main_image_selector:
+        #             img = Image.objects.get(pk=int(image))
+        #             img.is_main = True
+        #             img.save()
+        #         elif counter > len(existing_images):
+        #             if counter == main_image_selector:
+        #                 is_main = True
+        #             else:
+        #                 is_main=False
+        #             Image.objects.create(
+        #                 image=image,
+        #                 announcement=self.get_object(),
+        #                 is_main=is_main,
+        #             )
+        # else:
+        #     print("no images!")
+        # print("counter: ", counter)
 
+        # if counter == main_image_selector:
+        #     is_main = True
+        #     if counter <= len(all_images):
+        #         is_main_img=Image.objects.get(pk=int(image))
+        #         is_main_img.is_main=True
+        #         is_main_img.save()
+        #     else:
+        #         Image.objects.create(
+        #             image=image,
+        #             announcement=self.get_object(),
+        #             is_main=is_main,
+        #         )
+        # else:
+        #     is_main = False
 
         for pk in images_del:
             Image.objects.get(pk=int(pk)).delete()
-
 
         self.object = form.save()
         return super().form_valid(form)
@@ -253,37 +284,34 @@ class UpdateAnnouncementView(
     #     form.save()
     #     return HttpResponseRedirect(self.get_success_url())
 
-
     # def post(self, request, *args, **kwargs):
-        # super(UpdateAnnouncementView, self).post(request,*args, **kwargs)
+    # super(UpdateAnnouncementView, self).post(request,*args, **kwargs)
 
-        # announcement_form = self.get_form()
-        # images_set = request.FILES.getlist("images")
-        # super(UpdateAnnouncementView, self).post(request, *args, **kwargs)
+    # announcement_form = self.get_form()
+    # images_set = request.FILES.getlist("images")
+    # super(UpdateAnnouncementView, self).post(request, *args, **kwargs)
 
-        # return super().post(request,*args, **kwargs)
+    # return super().post(request,*args, **kwargs)
 
-        # if announcement_form.is_valid():
-        #     announcement = announcement_form.save(commit=False)
-        #     announcement.user = self.request.user
-        #     announcement.save()
+    # if announcement_form.is_valid():
+    #     announcement = announcement_form.save(commit=False)
+    #     announcement.user = self.request.user
+    #     announcement.save()
 
-        #     for counter, image in enumerate(images_set):
-        #         if counter == int(main_image_selector):
-        #             is_main = True
-        #         else:
-        #             is_main = False
+    #     for counter, image in enumerate(images_set):
+    #         if counter == int(main_image_selector):
+    #             is_main = True
+    #         else:
+    #             is_main = False
 
-        #         Image.objects.create(
-        #             image=image,
-        #             announcement=announcement,
-        #             is_main=is_main,
-        #         )
-        #     return redirect(
-        #         reverse("account:profile", kwargs={"pk": self.request.user.pk})
-        #     )
-
-
+    #         Image.objects.create(
+    #             image=image,
+    #             announcement=announcement,
+    #             is_main=is_main,
+    #         )
+    #     return redirect(
+    #         reverse("account:profile", kwargs={"pk": self.request.user.pk})
+    #     )
 
 
 class DeleteAnnouncementView(
