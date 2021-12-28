@@ -186,7 +186,7 @@ class UpdateAnnouncementView(
         # img_in_ann=Image.objects.filter(announcement=self.get_object())
 
         if existing_images:
-            for image in existing_images:
+            for image in self.get_object().image.all():
                 """Save all images as not main."""
                 image.is_main = False
                 image.save()
@@ -196,10 +196,12 @@ class UpdateAnnouncementView(
         # print("images_set", images_set)
         # print("all images: ", all_images)
         breakpoint()
+        # if no existing images main_image_selector < len(existing_images) and it's looping through existing_images -> NOT OK!
         if main_image_selector <= len(existing_images):
             for counter, img in enumerate(existing_images):
                 print("counter: ", counter)
                 if counter == main_image_selector:
+                    print('main image:', main_image_selector)
                     img = Image.objects.get(pk=int(image))
                     img.is_main = True
                     img.save()
