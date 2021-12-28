@@ -2,27 +2,33 @@
 
 {% block title %}Party Wizard{% endblock %}
 {% block content %}
-
     {% load static %}
+
     <div class="container">
-        <h2>Witam w kreatorze imprez!</h2>
-        <p>Wybierz jaką imprezę chcesz stworzyć!</p>
-    </div>
-    <form class="container" action="" method="POST">
-        {% csrf_token %}
-
-        <div class="row">
-            {% for event_type in event_types %}
-                <div class="col">
-                    <button type="submit" name='event_pk' value="{{ event_type.pk }}">
-                        <img src="{{ event_type.photo.image }}" class="w-75 p-3 rounded-pill" alt="test"><br>
-                        {{ event_type.name }}
-                    </button>
-                </div>
-
-            {% endfor %}
+        <div>
+            <h2>Witam w kreatorze imprez!</h2>
+            <p>Wybierz jaką imprezę chcesz stworzyć!</p>
         </div>
 
-
-    </form>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                {% for event_type in event_types %}
+                    <div class="col">
+                        <button type="submit" name='event_pk' value="{{ event_type.pk }}">
+                            <img src="{{ event_type.photo.image }}" class="w-25 p-1 rounded-pill" alt="test"><br>
+                            {{ event_type.name }}
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        </form>
+    <div>
+        <br><br>
+        <p>Twoje niedokończone formularze: </p>
+        {% for form_model in form_models %}
+        <a href="{% url "party_wizard:list_to_do" pk=form_model.pk %}">{{ form_model.name }}</a> <br>
+        {% endfor %}
+    </div>
+    </div>
 {% endblock %}

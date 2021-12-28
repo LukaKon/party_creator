@@ -8,16 +8,16 @@
     <form method="POST">
         {% csrf_token %}
 
-        <div class="active">
+        <div class="container">
             <p>Co chcesz zorganizować na imprezie:</p>
             <select id="categories" name="categories" multiple>
                 {% for service_category in service_categories %}
-                    <option value="{{ service_category.name }}">{{ service_category.name }}</option>
+                    <option value="{{ service_category.pk }}">{{ service_category.name }}</option>
                 {% endfor %}
             </select>
             <br>
+            <input type="submit" value="Dalej">
         </div>
-        <input type="submit" value="Dalej">
     </form>
 
 {% endblock %}

@@ -4,10 +4,10 @@ from account.models import User
 from party_wizard.models import FormModel
 
 
-class FormModelSerializer(serializers.HyperlinkedModelSerializer):
+class FormModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = FormModel
-        fields = ("form_party", "is_open")
+        fields = ("name", "categories", "is_open", "user")
 
 
 class GoogleNearbySearchSerializer(serializers.Serializer):

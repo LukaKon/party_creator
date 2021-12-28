@@ -9,21 +9,25 @@
     <link rel="stylesheet" href="{% static 'css/party_wizard.css' %}"/> {% endblock %}
 {% block content %}
 
-    <section class="form--steps">
+    <section class=" form--steps">
 
         <form method="POST">
             {% csrf_token %}
 
-            <div data-step="1" class="active">
-                {#                Do zrobienia - dynamiczne wyszukiwanie lokalizacji #}
-                <label for="location">Podaj lokalizację w której chcesz zorganizować imprezę:</label>
-                <input id="location" type="text">
-                <label for="radius">Podaj w jakim obrębie kilometrów wyszukiwać:</label>
-                <input id="radius" type="number">
-                <label for="price">
+            <div data-step="1" class="container active">
+                <div class="row row-cols-3">
+                    <label for="location">Podaj lokalizację w której chcesz zorganizować imprezę:</label>
+                    <input id="location" type="text">
+                </div>
+                <div class="row row-cols-3">
+                    <label for="radius">Podaj w jakim obrębie kilometrów wyszukiwać:</label>
+                    <input id="radius" type="number">
+                </div>
+
+                <label class="hidden" for="price">
                     Cena:
                 </label>
-                <select id="price">
+                <select class="hidden" id="price">
                     <option value="1">Tanio</option>
                     <option value="2">Umiarkowanie</option>
                     <option value="3">Drogo</option>
@@ -36,6 +40,14 @@
             </div>
 
             <div data-step="2">
+                <div id="option">
+                    <select id="sortBy">
+                        <option value="priceAscending">Price Ascending</option>
+                        <option value="priceDescending">Price Descending</option>
+                        <option value="ratingAscending">Rating Ascending</option>
+                        <option value="ratingDescending">Rating Descending</option>
+                    </select>
+                </div>
                 <div id="places">
                     No results
                 </div>
@@ -74,18 +86,18 @@
     {#            });#}
     {#        } // close function here#}
     {#    </script>#}
-{#    <script async defer#}
-{#            src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=test">#}
-{#    </script>#}
-{##}
-{##}
-{#    <script>#}
-{#        function test() {#}
-{#            var searchBox = new google.maps.places.SearchBox(form.querySelector('#location'));#}
-{##}
-{#        }#}
+    {#    <script async defer#}
+    {#            src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=test">#}
+    {#    </script>#}
+    {##}
+    {##}
+    {#    <script>#}
+    {#        function test() {#}
+    {#            var searchBox = new google.maps.places.SearchBox(form.querySelector('#location'));#}
+    {##}
+    {#        }#}
 
-{#    </script>#}
+    {#    </script>#}
     <script src="{% static 'js/party_wizard.js' %}"></script>
 
 {% endblock %}
