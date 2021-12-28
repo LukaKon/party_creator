@@ -12,5 +12,4 @@ def get_places(location, radius, price_level, type_of_places='restaurant'):
         type=type_of_places,
         radius=radius,
     )
-    print(nearby_places)
     return {'data': nearby_places}
