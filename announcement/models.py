@@ -102,7 +102,7 @@ class Image(models.Model):
         null=True,
         blank=True,
     )
-    is_main = models.BooleanField(default=False)  # is image main - for front
+    is_main = models.BooleanField(default=False, null=True)  # is image main - for front
 
     def __str__(self):
         return str(self.pk)

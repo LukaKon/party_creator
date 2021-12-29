@@ -21,7 +21,7 @@ class HomeView(generic.FormView):
     newsletter_form = forms.NewsletterForm
 
     @staticmethod
-    def sample_generator(query, samp=4):
+    def sample_generator(query, samp=3):
         if query.count() <= samp:
             return query
         else:
@@ -30,8 +30,8 @@ class HomeView(generic.FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        slider_iamges = Image.objects.all()
-        context["slider_images"] = self.sample_generator(slider_iamges, samp=5)
+        slider_images = Image.objects.filter(announcement_id__gt=0)
+        context["slider_images"] = self.sample_generator(slider_images, samp=2)
 
         # TODO: events type names change to english names in this view and database
         weddings = Image.objects.filter(announcement__event_type__name="wesele")

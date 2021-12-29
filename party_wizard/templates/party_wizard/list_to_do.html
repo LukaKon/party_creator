@@ -1,11 +1,25 @@
 {% extends 'base.html' %}
 {% block title %}List To Do{% endblock %}
 {% block content %}
-    {% for category in categories %}
+    {% load static %}
+    <div id="listToDo" class="container">
+        <p id="currentName">Nazwa: {{ form_model.name }}</p>
+        <button id="addName">Edytuj nazwę imprezy</button>
+        <input type="hidden" id="pk" value="{{ form_model.pk }}">
+        <br>
+        {% for category in categories %}
 
-        <a href="{% url "party_wizard:"|add:category  %}">{{ category }}</a>
-        <div class="progress" style=" background-color: rgba(11,95,144,0.47); width: 50%">
-  <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-</div>
-    {% endfor %}
+            <a href="{% url "party_wizard:start_form" pk=form_model.pk%}">{{ category }}</a>
+            <div class="progress" style=" background-color: rgba(11,95,144,0.47); width: 50%">
+                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
+                     aria-valuemax="100">50%
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/list_to_do.js' %}"></script>
 {% endblock %}

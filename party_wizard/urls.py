@@ -14,12 +14,12 @@ urlpatterns = [
     # PRIMARY
     path("chooseevent/", views.ChooseEventView.as_view(), name="choose_event"),
     path(
-        "choosecategories/",
+        "choosecategories/<int:pk>/",
         views.ChooseCategoriesView.as_view(),
         name="choose_categories",
     ),
-    path("listtodo/", views.ListToDoView.as_view(), name="list_to_do"),
+    path("listtodo/<int:pk>/", views.ListToDoView.as_view(), name="list_to_do"),
     path(
-        "restaurantform/", views.RestaurantFormView.as_view(), name="restauracja"
-    ),  # TODO Trzeba ogarnąć w jakiś sposób ten name
+        "startform/<int:pk>", views.StartFormView.as_view(), name="start_form"
+    ),
 ]
