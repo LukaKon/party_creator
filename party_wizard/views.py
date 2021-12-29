@@ -1,12 +1,16 @@
 import googlemaps
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.shortcuts import redirect, render
-from django.views.generic import View, CreateView
+from django.views.generic import CreateView, View
 from rest_framework import generics, views
 from rest_framework.response import Response
 
+import party_creator.settings
+import party_wizard.utils.party_wizard as utils
 from account.models import User
+
 from announcement.models import EventType, ServiceCategory
 import party_creator.settings
 from party_wizard.models import FormModel
@@ -32,7 +36,6 @@ class CreateFormView(generics.CreateAPIView):
 
 
 class GoogleNearbySearch(views.APIView):
-
     def post(self, request):
         data_js = request.data
         data = utils.get_places(location=data_js.get("location"), radius=data_js.get("radius"))
