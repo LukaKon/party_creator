@@ -13,7 +13,6 @@ from party_wizard.models import FormModel
 from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
 import party_wizard.utils.party_wizard as utils
 
-
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
 """API VIEWS"""
@@ -36,7 +35,7 @@ class GoogleNearbySearch(views.APIView):
 
     def post(self, request):
         data_js = request.data
-        data = utils.get_places(location=data_js.get("location"), radius=data_js.get("radius"), price_level=data_js.get("price_level"))
+        data = utils.get_places(location=data_js.get("location"), radius=data_js.get("radius"))
         results = GoogleNearbySearchSerializer(data).data
         return Response(results)
 
@@ -59,15 +58,10 @@ class ChooseEventView(LoginRequiredMixin, View):
             context=context,
         )
 
-    def post(self, request, *args, **kwargs):
-        event_pk = request.POST.get("event_pk")
-        self.request.session["event_pk"] = event_pk
-        return redirect("party_wizard:choose_categories")
-
 
 class ChooseCategoriesView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        event = EventType.objects.get(pk=self.request.session["event_pk"])
+        event = EventType.objects.get(pk=kwargs["pk"])
         service_categories = event.category.all()
         context = {"service_categories": service_categories}
 
@@ -79,11 +73,10 @@ class ChooseCategoriesView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         categories = self.request.POST.getlist("categories")
-        print(categories)
-        event_type = EventType.objects.get(pk=self.request.session["event_pk"])
+        event_type = EventType.objects.get(pk=kwargs["pk"])
 
         form_party = FormModel.objects.create(
-            name = event_type.name,
+            name=event_type.name,
             user_id=self.request.user.pk,
             is_open=True
         )
@@ -105,7 +98,7 @@ class ListToDoView(LoginRequiredMixin, View):
 
 
 class StartFormView(LoginRequiredMixin, View):
-    def get(self, request):
-        context = {"api_key": party_creator.settings.GOOGLE_API_KEY}
+    def get(self, request, *args, **kwargs):
+        context = {"api_key": party_creator.settings.GOOGLE_API_KEY,
+                   "pk": kwargs["pk"]}
         return render(request, "party_wizard/start_form.html", context=context)
-
