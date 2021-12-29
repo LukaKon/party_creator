@@ -14,12 +14,10 @@
             {% csrf_token %}
             <div class="row">
                 {% for event_type in event_types %}
-                    <div class="col">
-                        <button type="submit" name='event_pk' value="{{ event_type.pk }}">
-                            <img src="{{ event_type.photo.image }}" class="w-25 p-1 rounded-pill" alt="test"><br>
+                    <a href="{% url "party_wizard:choose_categories" pk=event_type.pk%}">
+                        <img src="{{ event_type.photo.image }}" class="w-25 p-1 rounded-pill" alt="test"><br>
                             {{ event_type.name }}
-                        </button>
-                    </div>
+                    </a>
                 {% endfor %}
             </div>
         </form>

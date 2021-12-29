@@ -13,15 +13,15 @@
 
         <form method="POST">
             {% csrf_token %}
-
+            <input type="hidden" id="pk" value="{{ pk }}">
             <div data-step="1" class="container active">
                 <div class="row row-cols-3">
                     <label for="location">Podaj lokalizację w której chcesz zorganizować imprezę:</label>
-                    <input id="location" type="text">
+                    <input id="location" class="formSave" type="text">
                 </div>
                 <div class="row row-cols-3">
                     <label for="radius">Podaj w jakim obrębie kilometrów wyszukiwać:</label>
-                    <input id="radius" type="number">
+                    <input id="radius" class="formSave" type="number">
                 </div>
 
                 <label class="hidden" for="price">

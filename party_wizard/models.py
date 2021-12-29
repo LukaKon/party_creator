@@ -9,3 +9,4 @@ class FormModel(models.Model):
     categories = models.ManyToManyField(ServiceCategory)
     is_open = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    form_party=models.JSONField(null=True)

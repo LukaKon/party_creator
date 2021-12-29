@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
-        //
-        // $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY&libraries=places")
-        //     .done(function (script, textStatus) {
-        //         google.maps.event.addDomListener(window, "load", initMap);
-        //     });
-        //
-        // function initMap() {
-        //
-        //     const options = {
-        //         componentRestrictions: {country: 'pl'}
-        //     };
-        //     const input = document.getElementById("location")
-        //     autocomplete = new google.maps.places.Autocomplete(input, options);
-        //
-        // }
+
+        $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY&libraries=places")
+            .done(function (script, textStatus) {
+                google.maps.event.addDomListener(window, "load", initMap);
+            });
+
+        function initMap() {
+
+            const options = {
+                componentRestrictions: {country: 'pl'}
+            };
+            const input = document.getElementById("location")
+            autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        }
 
         function getCookie(name) {
             let cookieValue = null;
@@ -32,21 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const csrftoken = getCookie('csrftoken');
-
-        function getSelectValues(select) {
-            let result = [];
-            let options = select && select.options;
-            let opt;
-
-            for (let i = 0, iLen = options.length; i < iLen; i++) {
-                opt = options[i];
-
-                if (opt.selected) {
-                    result.push(opt.value || opt.text);
-                }
-            }
-            return result;
-        }
 
 
         class FormHandling {
@@ -67,10 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             getValues() {
-                let location = this.form.querySelector("#location").value;
-                let radius = this.form.querySelector("#radius").value;
-                let price_level = this.form.querySelector("#price").value;
-                return {'location': location, 'radius': radius, 'price_level': price_level}
+                let inputs = this.form.querySelectorAll("input.formSave")
+                let dict = {}
+                inputs.forEach(input => {
+                    dict[input.getAttribute("id")] = input.value
+                })
+                return dict
             }
 
             compareNumbers(a, b) {
@@ -193,18 +180,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             save() {
-                let values = this.getValues()
+                let values = this.getValues();
+                let pk = this.form.querySelector("#pk").value;
 
                 let data = JSON.stringify({
-                    form_party: {
-                        "seite_1": values
-                    },
-                    is_open: true
+                    is_open: true,
+                    form_party: values,
+                    name: "test"
                 });
 
-                fetch('http://127.0.0.1:8000/add_form/', {
-                    method: 'POST',
-                    body: data,
+                fetch('http://127.0.0.1:8000/update_form/' + pk + '/', {
+                    method: 'PATCH',
+                    body: (data),
                     headers: {
                         "Content-Type": "application/json",
                         "X-CSRFToken": csrftoken,
@@ -221,61 +208,6 @@ document.addEventListener("DOMContentLoaded", function () {
             new FormHandling(form);
         }
 
-
-        class ListToDoHandling {
-            constructor(listToDo) {
-                this.listToDo = listToDo;
-                this.init();
-            }
-
-            init() {
-                this.buttonHandling();
-            }
-
-            buttonHandling() {
-                let button = this.listToDo.querySelector("button#addName");
-                button.addEventListener("click", () => {
-                    const form = document.createElement("form");
-                    const input = document.createElement("input");
-                    input.setAttribute("id", "name");
-                    const submit = document.createElement("input");
-                    submit.setAttribute("type", "submit");
-                    submit.setAttribute("value", "Edytuj");
-                    submit.setAttribute("id", "setName");
-                    form.appendChild(input);
-                    form.appendChild(submit);
-                    this.listToDo.insertBefore(form, button.nextElementSibling);
-                    this.setName();
-                });
-            }
-
-            setName() {
-                let submit = this.listToDo.querySelector("input#setName")
-                submit.addEventListener("click", (event) => {
-                    event.preventDefault()
-                    let pk = this.listToDo.querySelector("input#pk").value;
-                    let name = this.listToDo.querySelector("input#name").value;
-                    let currentName = this.listToDo.querySelector("#currentName")
-                    currentName.innerText = "Nazwa: " + name
-                    const data = {"name": name}
-
-                    fetch('http://127.0.0.1:8000/update_form/' + pk + '/', {
-                        method: 'PATCH',
-                        body: JSON.stringify(data),
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": csrftoken,
-                        },
-                    });
-                });
-            }
-        }
-
-        const listToDo = document.querySelector("div#listToDo");
-
-        if (listToDo != null) {
-            new ListToDoHandling(listToDo);
-        }
 
     }
 );
