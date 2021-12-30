@@ -21,16 +21,16 @@ inputFile.addEventListener('change', function () {
 
         let index_from_template = JSON.parse(document.querySelector('#counter').textContent)
 
-        console.log('index form html: ',  index_from_template);
+        console.log('index form html: ', index_from_template);
         if (index_from_template === null) {
             index_from_template = 0;
         }
 
-        let index=index_from_template
+        let index = index_from_template
         files_arr.forEach((file) => {
 
             console.log('index: ', index)
-            index+=1
+            index += 1
 
             if (file) {
                 console.log('file: ', file);
@@ -49,8 +49,8 @@ inputFile.addEventListener('change', function () {
                     radioSelector.setAttribute('id', index);
                     radioSelector.setAttribute('value', index);
                     // console.log('index: ', index);
-                    if (index_from_template===0 && index===0){
-                        radioSelector.setAttribute('checked','checked');
+                    if (index_from_template === 0 && index === 0) {
+                        radioSelector.setAttribute('checked', 'checked');
                     }
                     // end radio selector to chose main image
 
@@ -63,11 +63,15 @@ inputFile.addEventListener('change', function () {
                     const img = document.createElement('img');
                     img.className = 'image-preview__image';
                     img.setAttribute('src', this.result);
-                    img.setAttribute('alt',index)
+                    img.setAttribute('alt', index);
+                    img.setAttribute('style', 'height:100;width:100');
+                    // img.style.maxHeight=100;
                     // img.setAttribute('src', reader.result);
 
                     const imgName = document.createElement('p');
                     imgName.innerText = file.name;
+                    imgName.style.fontSize=300;
+                    imgName.setAttribute('style','background:yellow');
 
                     radioLabel.appendChild(img);
                     radioLabel.appendChild(imgName);

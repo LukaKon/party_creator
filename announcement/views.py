@@ -206,8 +206,8 @@ class UpdateAnnouncementView(
         # TODO: select as main added picture dont work
         if images_set:
             for counter, image in enumerate(images_set, start=len(existing_images)):
-                # print("counter: ", counter)
-                # print('image:' , image)
+                print("counter: ", counter,'main: ',main_image_selector)
+                print('image:' , image)
                 if counter == main_image_selector:
                     is_main = True
                 else:
@@ -217,9 +217,9 @@ class UpdateAnnouncementView(
                     announcement=self.get_object(),
                     is_main=is_main,
                 )
-
-        for pk in images_del:
-            Image.objects.get(pk=int(pk)).delete()
+        if images_del:
+            for pk in images_del:
+                Image.objects.get(pk=int(pk)).delete()
 
         self.object = form.save()
         return super().form_valid(form)
