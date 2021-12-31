@@ -121,32 +121,41 @@ document.addEventListener("DOMContentLoaded", function () {
             addPlacesToHtml(data) {
                 let div_step_2 = this.form.querySelector("div[data-step='2'] div#places");
                 data.data.results.forEach(element => {
-                    let new_div = document.createElement("div");
 
-                    let new_p = document.createElement("p");
-                    new_p.innerText = "Name : " + element.name;
+                    if (element.photos) {
+                        let new_div = document.createElement("div");
 
-                    let new_img = document.createElement("img");
-                    new_img.setAttribute('src', "https://maps.googleapis.com/maps/api/place/photo" +
-                        "?maxwidth=200" + "&maxheight=200" +
-                        "&photo_reference=" + element.photos[0].photo_reference +
-                        "&key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY");
+                        let new_image = document.createElement("img")
+                        new_image.setAttribute("src",
+                            "https://maps.googleapis.com/maps/api/place/photo" +
+                            "?maxwidth=200" + "&maxheight=200" +
+                            "&photo_reference=" + element.photos[0].photo_reference +
+                            "&key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY");
 
-                    let new_price = document.createElement("p");
-                    new_price.setAttribute('id', "price_level");
-                    new_price.innerText = "Price level " + element.price_level;
+                        let new_radio = document.createElement("input");
+                        new_radio.setAttribute("type", "radio");
+                        new_radio.setAttribute("name", "test");
+                        new_radio.setAttribute("id", element.name);
 
-                    let new_rating = document.createElement("p");
-                    new_rating.setAttribute('id', "rating");
-                    new_rating.innerText = "Rating " + element.rating;
+                        let new_label = document.createElement("label");
+                        new_label.setAttribute("for", element.name);
+                        new_label.innerText = "Nazwa : " + element.name +
+                            "\r\nPoziom cennika : " + element.price_level +
+                            "\r\nOcena : " + element.rating;
 
+                        new_div.addEventListener("click", ()=>{
+                            let radio = new_div.querySelector("input[type=radio]");
+                            radio.checked = true;
+                        });
 
-                    new_div.appendChild(new_p);
-                    new_div.appendChild(new_img);
-                    new_div.appendChild(new_price);
-                    new_div.appendChild(new_rating);
-                    div_step_2.appendChild(new_div);
+                        new_div.appendChild(new_image);
+                        new_div.appendChild(new_radio);
+                        new_div.appendChild(new_label);
+                        div_step_2.appendChild(new_div);
+                    }
                 });
+
+
             }
 
             updateStep(button) {
