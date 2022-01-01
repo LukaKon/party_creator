@@ -1,4 +1,7 @@
+import {getCookie} from "./getCsrftoken.js";
+
 document.addEventListener("DOMContentLoaded", function () {
+        const csrftoken = getCookie("csrftoken");
 
         $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY&libraries=places")
             .done(function (script, textStatus) {
@@ -11,28 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 componentRestrictions: {country: 'pl'}
             };
             const input = document.getElementById("location")
-            autocomplete = new google.maps.places.Autocomplete(input, options);
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
 
         }
-
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        const csrftoken = getCookie('csrftoken');
-
 
         class FormHandling {
             constructor(form) {
@@ -52,12 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             getValues() {
-                let inputs = this.form.querySelectorAll("input.formSave")
-                let dict = {}
+                let inputs = this.form.querySelectorAll("input.formSave");
+                let place_id = this.form.querySelector("input[name=placeID]:checked");
+                let dict = {};
                 inputs.forEach(input => {
-                    dict[input.getAttribute("id")] = input.value
-                })
-                return dict
+                    dict[input.getAttribute("id")] = input.value;
+                });
+                if (place_id) {
+                    dict["place_id"] = (place_id.value);
+                }
+                return dict;
             }
 
             compareNumbers(a, b) {
@@ -121,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
             addPlacesToHtml(data) {
                 let div_step_2 = this.form.querySelector("div[data-step='2'] div#places");
                 data.data.results.forEach(element => {
+                    console.log(element.place_id)
 
                     if (element.photos) {
                         let new_div = document.createElement("div");
@@ -134,7 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         let new_radio = document.createElement("input");
                         new_radio.setAttribute("type", "radio");
-                        new_radio.setAttribute("name", "test");
+                        new_radio.setAttribute("name", "placeID");
+                        new_radio.setAttribute("value", element.place_id);
                         new_radio.setAttribute("id", element.name);
 
                         let new_label = document.createElement("label");
@@ -143,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             "\r\nPoziom cennika : " + element.price_level +
                             "\r\nOcena : " + element.rating;
 
-                        new_div.addEventListener("click", ()=>{
+                        new_div.addEventListener("click", () => {
                             let radio = new_div.querySelector("input[type=radio]");
                             radio.checked = true;
                         });
@@ -208,7 +198,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
         }
-
 
         const
             form = document.querySelector(".form--steps");

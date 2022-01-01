@@ -74,30 +74,6 @@
 {% endblock %}
 
 {% block script %}
-
-    {#<script async#}
-    {#    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY&callback=initMap">#}
-    {#</script>#}
-    {#    <script>#}
-    {#        function initMapa() {#}
-    {#            var map = new google.maps.Map(document.getElementById('map123'), {#}
-    {#                center: {lat: 34.397, lng: 150.644},#}
-    {#                zoom: 15#}
-    {#            });#}
-    {#        } // close function here#}
-    {#    </script>#}
-    {#    <script async defer#}
-    {#            src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=test">#}
-    {#    </script>#}
-    {##}
-    {##}
-    {#    <script>#}
-    {#        function test() {#}
-    {#            var searchBox = new google.maps.places.SearchBox(form.querySelector('#location'));#}
-    {##}
-    {#        }#}
-
-    {#    </script>#}
-    <script src="{% static 'js/party_wizard.js' %}"></script>
+    <script src="{% static 'js/party_wizard.js' %}" type="module"></script>
 
 {% endblock %}

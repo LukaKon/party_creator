@@ -3,13 +3,13 @@
 {% block content %}
     {% load static %}
     <div id="listToDo" class="container">
-        <p id="currentName">Nazwa: {{ form_model.name }}</p>
+        <p id="currentName">Nazwa: {{ formmodel.name }}</p>
         <button id="addName">Edytuj nazwę imprezy</button>
-        <input type="hidden" id="pk" value="{{ form_model.pk }}">
+        <input type="hidden" id="pk" value="{{ formmodel.pk }}">
         <br>
         {% for category in categories %}
 
-            <a href="{% url "party_wizard:start_form" pk=form_model.pk%}">{{ category }}</a>
+            <a href="{% url "party_wizard:start_form" pk=formmodel.pk%}">{{ category }}</a>
             <div class="progress" style=" background-color: rgba(11,95,144,0.47); width: 50%">
                 <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
                      aria-valuemax="100">50%
@@ -21,5 +21,5 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'js/list_to_do.js' %}"></script>
+    <script src="{% static 'js/list_to_do.js'%}" type="module"></script>
 {% endblock %}

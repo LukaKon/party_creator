@@ -1,4 +1,8 @@
+import {getCookie} from "./getCsrftoken.js";
+
 document.addEventListener("DOMContentLoaded", function () {
+    const csrftoken = getCookie("csrftoken");
+
     class ListToDoHandling {
         constructor(listToDo) {
             this.listToDo = listToDo;
@@ -35,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 let currentName = this.listToDo.querySelector("#currentName")
                 currentName.innerText = "Nazwa: " + name
                 const data = {"name": name}
-
+                console.log('test')
                 fetch('http://127.0.0.1:8000/update_form/' + pk + '/', {
                     method: 'PATCH',
                     body: JSON.stringify(data),

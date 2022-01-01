@@ -3,19 +3,18 @@ import googlemaps
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, View
+from django.views.generic import CreateView, View, UpdateView
 from rest_framework import generics, views
 from rest_framework.response import Response
 
 import party_creator.settings
-import party_wizard.utils.party_wizard as utils
-from account.models import User
 
 from announcement.models import EventType, ServiceCategory
 import party_creator.settings
 from party_wizard.models import FormModel
 from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
 import party_wizard.utils.party_wizard as utils
+import announcement.utils.announcement.mixins as mixins
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
@@ -89,15 +88,16 @@ class ChooseCategoriesView(LoginRequiredMixin, View):
         return redirect("party_wizard:list_to_do", pk=form_party.pk)
 
 
-class ListToDoView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        form_model = FormModel.objects.get(pk=kwargs['pk'])
-        categories = [category.name.lower() for category in form_model.categories.all()]
+class ListToDoView(LoginRequiredMixin, mixins.UserAccessMixin,  UpdateView):
+    model = FormModel
+    template_name = "party_wizard/list_to_do.html"
+    fields = []
 
-        return render(
-            request, "party_wizard/list_to_do.html", {"categories": categories,
-                                                      "form_model": form_model}
-        )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        categories = [category.name.lower() for category in super().get_object().categories.all()]
+        context['categories'] = categories
+        return context
 
 
 class StartFormView(LoginRequiredMixin, View):
