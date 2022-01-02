@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('announcement', '0030_alter_image_is_main'),
-        ('party_wizard', '0003_auto_20211127_1830'),
+        ("announcement", "0030_alter_image_is_main"),
+        ("party_wizard", "0003_auto_20211127_1830"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='formmodel',
-            name='form_party',
+            model_name="formmodel",
+            name="form_party",
         ),
         migrations.AddField(
-            model_name='formmodel',
-            name='categories',
-            field=models.ManyToManyField(to='announcement.ServiceCategory'),
+            model_name="formmodel",
+            name="categories",
+            field=models.ManyToManyField(to="announcement.ServiceCategory"),
         ),
         migrations.AddField(
-            model_name='formmodel',
-            name='name',
+            model_name="formmodel",
+            name="name",
             field=models.CharField(default=1, max_length=250),
             preserve_default=False,
         ),

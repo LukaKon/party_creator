@@ -71,7 +71,31 @@ class Announcement(models.Model):
         return self.title
 
 
-class Image(models.Model):
+class Multimedia(models.Model):
+    announcement = models.ForeignKey(
+        Announcement,
+        verbose_name="announcement_%(class)ss",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="%(class)s",
+    )
+    event_type = models.OneToOneField(
+        EventType,
+        verbose_name="%(class)s",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return str(self.pk)
+
+    class Meta:
+        abstract = True
+
+
+class Image(Multimedia):
     """Pictures attached to announcement."""
 
     image = stdimage.StdImageField(
@@ -87,25 +111,28 @@ class Image(models.Model):
         delete_orphans=True,
         verbose_name="images",
     )
-    announcement = models.ForeignKey(
-        Announcement,
-        verbose_name="announcement_image",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="image",
-    )
-    event_type = models.OneToOneField(
-        EventType,
-        verbose_name="event_type_image",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
+    # announcement = models.ForeignKey(
+    #     Announcement,
+    #     verbose_name="announcement_image",
+    #     on_delete=models.CASCADE,
+    #     null=True,
+    #     blank=True,
+    #     related_name="image",
+    # )
+    # event_type = models.OneToOneField(
+    #     EventType,
+    #     verbose_name="event_type_image",
+    #     on_delete=models.CASCADE,
+    #     null=True,
+    #     blank=True,
+    # )
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front
 
-    def __str__(self):
-        return str(self.pk)
+
+class Movie(Multimedia):
+    """Movie attached to announcement."""
+
+    movie = models.FileField()
 
 
 class Newsletter(models.Model):

@@ -19,7 +19,5 @@ urlpatterns = [
         name="choose_categories",
     ),
     path("listtodo/<int:pk>/", views.ListToDoView.as_view(), name="list_to_do"),
-    path(
-        "startform/<int:pk>", views.StartFormView.as_view(), name="start_form"
-    ),
+    path("startform/<int:pk>", views.StartFormView.as_view(), name="start_form"),
 ]

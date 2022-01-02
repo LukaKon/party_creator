@@ -194,7 +194,7 @@ class UpdateAnnouncementView(
                         image.save()
 
         if images_set:
-            for counter, image in enumerate(images_set, start=len(existing_images)+1):
+            for counter, image in enumerate(images_set, start=len(existing_images) + 1):
                 if counter == main_image_selector:
                     is_main = True
                 else:

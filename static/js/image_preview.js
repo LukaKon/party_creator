@@ -64,14 +64,10 @@ inputFile.addEventListener('change', function () {
                     img.className = 'image-preview__image';
                     img.setAttribute('src', this.result);
                     img.setAttribute('alt', index);
-                    img.setAttribute('style', 'max-height:100;auto');
-                    // img.style.maxHeight=100;
-                    // img.setAttribute('src', reader.result);
+                    img.setAttribute('style', 'max-height:100px;width:auto');
 
                     const imgName = document.createElement('p');
                     imgName.innerText = file.name;
-                    // imgName.style.fontSize=300;
-                    imgName.setAttribute('style','background:yellow');
 
                     radioLabel.appendChild(img);
                     radioLabel.appendChild(imgName);
