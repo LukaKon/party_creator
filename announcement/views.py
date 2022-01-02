@@ -172,20 +172,13 @@ class UpdateAnnouncementView(
         images_del = self.request.POST.getlist("img[]")
         main_image_selector = self.request.POST.get("main_image")
 
-        # print("main index: ", main_image_selector)
         # Convert main_iamage_selector to int
         if main_image_selector == None:
             main_image_selector = 0
         else:
             main_image_selector = int(main_image_selector)
-        # print("main index: ", main_image_selector, "|", type(main_image_selector))
-
-        # img_in_ann=Image.objects.filter(announcement=self.get_object())
 
         all_images = existing_images + images_set
-        # print("existing images: ", existing_images)
-        # print("images_set", images_set)
-        # print("all images: ", all_images)
 
         if existing_images:
             for image in self.get_object().image.all():
@@ -195,19 +188,13 @@ class UpdateAnnouncementView(
 
             if main_image_selector <= len(existing_images):
                 for counter, image in enumerate(existing_images):
-                    # print("counter: ", counter)
                     if counter == main_image_selector:
-                        # print('main image:', main_image_selector)
-                        # print('img:',image)
                         image = Image.objects.get(pk=int(image))
                         image.is_main = True
                         image.save()
 
-        # TODO: select as main added picture dont work
         if images_set:
-            for counter, image in enumerate(images_set, start=len(existing_images)):
-                print("counter: ", counter,'main: ',main_image_selector)
-                print('image:' , image)
+            for counter, image in enumerate(images_set, start=len(existing_images)+1):
                 if counter == main_image_selector:
                     is_main = True
                 else:
