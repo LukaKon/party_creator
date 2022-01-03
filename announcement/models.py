@@ -132,7 +132,12 @@ class Image(Multimedia):
 class Movie(Multimedia):
     """Movie attached to announcement."""
 
-    movie = models.FileField()
+    movie = models.FileField(
+        null=True,
+        upload_to=upload_to_pattern,
+        # delete_orphans=True,
+        verbose_name="movies",
+    )
 
 
 class Newsletter(models.Model):

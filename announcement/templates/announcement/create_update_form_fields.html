@@ -1,15 +1,10 @@
 <!--Gallery-->
 <div class="row">
     <div class="row">
-        {#        <label for="images">#}
         Galeria:
-        {#        </label>#}
     </div>
 
-
     <div class="row row-cols-8">
-        <!--counter for js-->
-        {% comment %} ile jest już zdjęć: {{ images|length }} {% endcomment %}
         {{ images|length|json_script:"counter" }}
 
         {% if images %}
@@ -19,7 +14,8 @@
         </small>
         <!--existing images-->
         {% for img in images %}
-        <input type="checkbox" name="all_images" id="{{ forloop.counter0 }}" value="{{ img.pk }}" checked="checked" />
+        {% comment %} <input type="checkbox" name="all_images" id="{{ forloop.counter0 }}" value="{{ img.pk }}"
+            checked="checked" /> {% endcomment %}
         <div class="col">
             <!--delete checkbox-->
             <input type="checkbox" id="{{ forloop.counter0 }}" name="img[]" value="{{ img.pk }}" />
@@ -44,17 +40,68 @@
 </div>
 <!--end Gallery-->
 
-<!--Images-->
+<!--Movies-->
+<div class="row">
+    <div class="row">
+        Filmy:
+    </div>
+
+    <div class="row row-cols-8">
+        {{ movies|length|json_script:"counter" }}
+
+        {% if movies %}
+        <small>
+            (wybierz zdjęcia, które chcesz usunąć;
+            wybierz główne zdjęcie)
+        </small>
+        <!--existing images-->
+        {% for mov in movies %}
+        <div class="col">
+            <!--delete checkbox-->
+            <input type="checkbox" id="{{ forloop.counter0 }}" name="mov[]" value="{{ mov.pk }}" />
+
+            <label for="{{ forloop.counter0 }}">
+                {{ forloop.counter0 }}
+                {% comment %} <a href="{{ img.image.large.url }}"><img src="{{ img.image.thumbnail.url }}" alt=""></a> {% endcomment %}
+            </label>
+        </div>
+        {% endfor %}
+        {% else %}
+        Ogłoszenie nie posiada jeszcze zdjęć.
+        {% endif %}
+    </div>
+
+    <!--added images-->
+    <div class="row row-cols-8" id="imgPreview">
+    </div>
+</div>
+<!--end Movies-->
 <div class="row text-center">
+
+    <!--Images-->
     <div class="col-lg-6 col-md-12">
         <div class="input-group mb-3">
             <label class="input-group-text" for="images">Zdjęcia</label>
             <!--TODO: add accepted file types: accept="image/.jpg, image/.png"-->
-            <input type="file" multiple class="form-control" id="images"
-                placeholder="Wybierz zdjęcia..." aria-label="Zdjęcia:" aria-describedby="images" name="images">
+            <input type="file" multiple class="form-control" id="images" placeholder="Wybierz zdjęcia..."
+                aria-label="Zdjęcia:" aria-describedby="images" name="images">
             {% comment %} <div class="invalid-feedback">{{ form.errors.title }}</div> {% endcomment %}
         </div>
     </div>
+    <!--end Images-->
+
+
+    <!--Movie-->
+    <div class="col-lg-6 col-md-12">
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="movies">Filmy</label>
+            <input type="file" multiple class="form-control" id="movies" placeholder="Wybierz filmy..."
+                aria-label="Filmy:" aria-describedby="movies" name="movies">
+            {% comment %} <div class="invalid-feedback">{{ form.errors.title }}</div> {% endcomment %}
+        </div>
+    </div>
+    <!--end Movie-->
+
 
     <div class="row">
         <div class="col-lg-6 col-md-12">
@@ -66,6 +113,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="row">
         <div class="col-lg-6 col-md-12">
@@ -103,7 +151,6 @@
             </div>
         </div>
     </div>
-
 
 
     <div class="row">
