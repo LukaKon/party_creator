@@ -181,9 +181,9 @@ class UpdateAnnouncementView(
         main_image_selector = self.request.POST.get("main_image")
 
         # movies from form
-        existing_movies=self.request.POST.getlist('all_movies')
-        movies_set=self.request.FILES.getlist('movies')
-        movies_del=self.requset.POST.getlist('mov[]')
+        # existing_movies=self.request.POST.getlist('all_movies')
+        # movies_set=self.request.FILES.getlist('movies')
+        # movies_del=self.requset.POST.getlist('mov[]')
 
 
         # Convert main_iamage_selector to int

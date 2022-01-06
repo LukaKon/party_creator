@@ -1,11 +1,12 @@
-<!--Gallery-->
 <div class="row">
+
+<!--Gallery-->
     <div class="row">
         Galeria:
     </div>
 
     <div class="row row-cols-8">
-        {{ images|length|json_script:"counter" }}
+        {{ images|length|json_script:"img_counter" }}
 
         {% if images %}
         <small>
@@ -30,29 +31,26 @@
         </div>
         {% endfor %}
         {% else %}
-        Ogłoszenie nie posiada jeszcze zdjęć.
+        Ogłoszenie nie posiada jeszcze.
         {% endif %}
     </div>
 
     <!--added images-->
     <div class="row row-cols-8" id="imgPreview">
     </div>
-</div>
 <!--end Gallery-->
 
 <!--Movies-->
-<div class="row">
     <div class="row">
         Filmy:
     </div>
 
     <div class="row row-cols-8">
-        {{ movies|length|json_script:"counter" }}
+        {{ movies|length|json_script:"mov_counter" }}
 
         {% if movies %}
         <small>
-            (wybierz zdjęcia, które chcesz usunąć;
-            wybierz główne zdjęcie)
+            (wybierz filmy, które chcesz usunąć;)
         </small>
         <!--existing images-->
         {% for mov in movies %}
@@ -67,15 +65,18 @@
         </div>
         {% endfor %}
         {% else %}
-        Ogłoszenie nie posiada jeszcze zdjęć.
+        Ogłoszenie nie posiada filmów.
         {% endif %}
     </div>
 
     <!--added images-->
-    <div class="row row-cols-8" id="imgPreview">
+    <div class="row row-cols-8" id="movPreview">
     </div>
 </div>
 <!--end Movies-->
+</div>
+
+<div class="row">
 <div class="row text-center">
 
     <!--Images-->

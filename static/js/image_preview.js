@@ -1,25 +1,20 @@
-const inputFile = document.querySelector('#images');
+const inputImage = document.querySelector('#images');
+const inputMovie= document.querySelector('#movies')
 const mainDiv = document.querySelector('#img-num')
 const previewContainer = document.querySelector('#imgPreview');
 
-inputFile.addEventListener('change', function () {
+console.log('input img:', inputImage)
+console.log('input mov:', inputMovie)
+
+inputImage.addEventListener('change', function () {
     previewContainer.innerHTML = '';
 
     const files = this.files;
+    console.log('files img: ',files)
     if (files.length > 0) {
         files_arr = Array.from(files)
 
-        // number of selected pictures
-        // const div = document.createElement('div');
-        // div.className = 'col';
-        // const imgNumber = document.createElement('h3');
-        // imgNumber.textContent = `Dodano ${files_arr.length} plików.`;
-
-
-        // div.appendChild(imgNumber);
-        // previewContainer.appendChild(div);
-
-        let index_from_template = JSON.parse(document.querySelector('#counter').textContent)
+        let index_from_template = JSON.parse(document.querySelector('#img_counter').textContent)
 
         console.log('index form html: ', index_from_template);
         if (index_from_template === null) {
@@ -97,5 +92,14 @@ inputFile.addEventListener('change', function () {
 
         emptyField.appendChild(h3);
         previewContainer.appendChild(emptyField);
+    };
+});
+
+inputMovie.addEventListener('change', function(){
+    const files = this.files;
+    console.log('files mov: ',files)
+    if (files.length > 0) {
+        files_arr = Array.from(files)
+        console.log('files: ',files_arr);
     };
 });
