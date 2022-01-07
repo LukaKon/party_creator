@@ -1,20 +1,47 @@
-version: '3'
+version: '3.9'
 
 services:
-  web:
-    build: .
+  db:
+    image: postgres:14-alpine
+    # container_name: party_DB
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      # - POSTGRES_HOST=${DATABASE_HOST}
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - dj_network
+
+  django:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    # environment:
+      # - DB_ADAPTER: "postgis"
+    container_name: party_app
+    # command: python manage.py migrate
+    # command: python manage.py runserver_plus
     command: python manage.py runserver_plus 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
       - "8000:8000"
+    networks:
+      - dj_network
     depends_on:
       - db
-  db:
-    image: postgres:14
-    environment:
-      - POSTGRES_DB=party_db
-      - POSTGRES_USER=lko
-      - POSTGRES_PASSWORD=lko
-    ports:
-      - "5432:5432"
+
+networks:
+  dj_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
