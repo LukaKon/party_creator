@@ -49,11 +49,11 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       # - POSTGRES_HOST=${DATABASE_HOST}
       - POSTGRES_HOST_AUTH_METHOD=trust
-    restart: on-failure
+    # restart: on-failure
     volumes:
-      - postgres_data:/var/lib/postgresql
-    # ports:
-      # - 5432:5432
+      - postgres_data:/var/lib/postgresql:rw
+    ports:
+      - 5432:5432
     networks:
       - party_network
 
