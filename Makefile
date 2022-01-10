@@ -13,12 +13,12 @@ down:
 logs:
 	docker-compose logs
 migrate:
-	docker-compose exec api python3 manage.py migrate --noinput
+	docker-compose exec django python3 manage.py migrate --noinput
 makemigrations:
-	docker-compose exec api python3 manage.py makemigrations
+	docker-compose exec django python3 manage.py makemigrations
 
 superuser:
-	docker-compose exec api python3 manage.py createsuperuser
+	docker-compose exec django python3 manage.py createsuperuser
 
 down-v:
 	docker-compose down -v
