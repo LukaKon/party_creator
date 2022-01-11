@@ -1,6 +1,7 @@
 import random
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.gis.geos import Point
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, reverse
@@ -10,7 +11,7 @@ from django.views import generic
 from announcement import forms
 
 from .models import Announcement, EventType, Image, ServiceCategory
-from .utils.announcement import mixins
+from .utils.announcement import mixins, get_lat_lng
 
 
 class HomeView(generic.FormView):
@@ -109,7 +110,6 @@ class DetailsAnnouncementView(generic.DetailView):
 class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
     model = Announcement
     template_name = "announcement/add_announcement.html"
-
     form_class = forms.AddAnnouncementForm
 
     def post(self, request, *args, **kwargs):
@@ -117,10 +117,13 @@ class AddAnnouncementView(LoginRequiredMixin, generic.CreateView):
         announcement_form = self.get_form()
         images_set = request.FILES.getlist("images")
         main_image_selector = request.POST.get("main_image")
+        location = request.POST.get("location")
+        lat_lng = get_lat_lng(location)
 
         if announcement_form.is_valid():
             announcement = announcement_form.save(commit=False)
             announcement.user = self.request.user
+            announcement.city = Point(lat_lng["lat"], lat_lng["lng"])
             announcement.save()
 
             for counter, image in enumerate(images_set):

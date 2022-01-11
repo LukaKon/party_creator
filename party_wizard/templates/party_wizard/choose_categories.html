@@ -7,11 +7,10 @@
 
     <form method="POST">
         {% csrf_token %}
-
         <div class="container">
             <p>Co chcesz zorganizować na imprezie:</p>
-
                 {% for service_category in service_categories %}
+
                     <input id={{ service_category }} value="{{ service_category.pk }}" name="categories" type="checkbox">
                     <label for="{{ service_category }}">{{ service_category.name }}</label>
                 {% endfor %}

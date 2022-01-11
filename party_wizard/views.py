@@ -3,11 +3,12 @@ import googlemaps
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, View, UpdateView
+from django.views.generic import CreateView, View, UpdateView, FormView
 from rest_framework import generics, views
 from rest_framework.response import Response
 
 import party_creator.settings
+import party_wizard.models
 
 from announcement.models import EventType, ServiceCategory
 import party_creator.settings
@@ -19,6 +20,11 @@ import announcement.utils.announcement.mixins as mixins
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
 """API VIEWS"""
+
+
+class GetFormView(generics.RetrieveAPIView):
+    queryset = FormModel.objects.all()
+    serializer_class = FormModelSerializer
 
 
 class UpdateFormView(generics.UpdateAPIView):
@@ -37,8 +43,12 @@ class CreateFormView(generics.CreateAPIView):
 class GoogleNearbySearch(views.APIView):
     def post(self, request):
         data_js = request.data
-        data = utils.get_places(location=data_js.get("location"), radius=data_js.get("radius"))
-        results = GoogleNearbySearchSerializer(data).data
+        type_of_places = data_js.get("service_category")
+        places = utils.get_places(location=data_js.get("location"),
+                                  radius=data_js.get("radius"),
+                                  type_of_places=type_of_places)
+
+        results = GoogleNearbySearchSerializer({"places": places, "type_of_places": type_of_places}).data
         return Response(results)
 
 
@@ -48,9 +58,21 @@ class GoogleNearbySearch(views.APIView):
 class ChooseEventView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         event_types = EventType.objects.all()
+        event_lists = []
+        helper = []
+        count = 0
+
+        for event in event_types:
+            count += 1
+            helper.append(event)
+            if count == 3 or event == event_types[len(event_types) - 1]:
+                event_lists.append(helper)
+                helper = []
+                count = 0
+
         form_models = FormModel.objects.filter(user_id=self.request.user.pk)
         context = {
-            "event_types": event_types,
+            "event_lists": event_lists,
             "form_models": form_models
         }
 
@@ -88,20 +110,40 @@ class ChooseCategoriesView(LoginRequiredMixin, View):
         return redirect("party_wizard:list_to_do", pk=form_party.pk)
 
 
-class ListToDoView(LoginRequiredMixin, mixins.UserAccessMixin,  UpdateView):
+class ListToDoView(LoginRequiredMixin, mixins.UserAccessMixin, UpdateView):
     model = FormModel
     template_name = "party_wizard/list_to_do.html"
     fields = []
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        categories = [category.name.lower() for category in super().get_object().categories.all()]
+        categories = super().get_object().categories.all()  # [category.name.lower() for category in super().get_object().categories.all()]
         context['categories'] = categories
         return context
 
 
-class StartFormView(LoginRequiredMixin, View):
+class StartFormView(LoginRequiredMixin, mixins.UserAccessMixin, UpdateView):
+    model = FormModel
+    pk_url_kwarg = "form_model_pk"
+    fields = []
+    template_name = "party_wizard/start_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        service_category = ServiceCategory.objects.get(pk=self.kwargs["pk_servicecategory"])
+        context["service_category"] = service_category
+        context["api_key"] = party_creator.settings.GOOGLE_API_KEY,
+        return context
+
+from .models import Shop
+class TestView(CreateView):
+    model = party_wizard.models.Shop
+    fields = ["name",
+              'location',
+              'address',
+              'city']
+    template_name = "party_wizard/test.html"
     def get(self, request, *args, **kwargs):
-        context = {"api_key": party_creator.settings.GOOGLE_API_KEY,
-                   "pk": kwargs["pk"]}
-        return render(request, "party_wizard/start_form.html", context=context)
+        shop = Shop.objects.all()
+        context = {"shop": shop}
+        return render(request, template_name="party_wizard/test.html", context= context)

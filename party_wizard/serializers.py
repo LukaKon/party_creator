@@ -11,4 +11,5 @@ class FormModelSerializer(serializers.ModelSerializer):
 
 
 class GoogleNearbySearchSerializer(serializers.Serializer):
-    data = serializers.JSONField()
+    places = serializers.JSONField()
+    type_of_places = serializers.CharField(max_length=30)

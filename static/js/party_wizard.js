@@ -1,8 +1,10 @@
 import {getCookie} from "./getCsrftoken.js";
+// import {initMap} from "./city_autocomplete.js";
 
 document.addEventListener("DOMContentLoaded", function () {
         const csrftoken = getCookie("csrftoken");
 
+        // initMap();
         $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY&libraries=places")
             .done(function (script, textStatus) {
                 google.maps.event.addDomListener(window, "load", initMap);
@@ -23,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.form = form;
                 this.steps = form.querySelectorAll("#nextStep,#previousStep,#save");
                 this.init();
+                this.pk = this.form.querySelector("#pk").value;
             }
 
             init() {
@@ -35,16 +38,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
-            getValues() {
+
+            async getValues() {
+                const response = await fetch("http://127.0.0.1:8000/get_form/" + this.pk + "/")
+                let allData = await response.json();
+                let dict = await allData['form_party']
+
                 let inputs = this.form.querySelectorAll("input.formSave");
+                let service_category = this.form.querySelector("#serviceCategory").value;
+
+                await inputs.forEach(input => {
+                    if (dict[service_category]) {
+                        dict[service_category][input.getAttribute("id")] = input.value;
+                    } else {
+                        dict[service_category] = {}
+                        dict[service_category][input.getAttribute("id")] = input.value;
+                    }
+                })
+
                 let place_id = this.form.querySelector("input[name=placeID]:checked");
-                let dict = {};
-                inputs.forEach(input => {
-                    dict[input.getAttribute("id")] = input.value;
-                });
                 if (place_id) {
-                    dict["place_id"] = (place_id.value);
+                    dict[service_category]["place_id"] = (place_id.value);
                 }
+
                 return dict;
             }
 
@@ -108,9 +124,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             addPlacesToHtml(data) {
                 let div_step_2 = this.form.querySelector("div[data-step='2'] div#places");
-                data.data.results.forEach(element => {
-                    console.log(element.place_id)
 
+                if (data.type_of_places === "Restauracja") {
+                    console.log('restauracja')
+                } else {
+                    console.log('else')
+                }
+                data.places.data.forEach(element => {
                     if (element.photos) {
                         let new_div = document.createElement("div");
 
@@ -148,25 +168,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-            updateStep(button) {
+            async getPlaces() {
+                let places = null
+                this.form.querySelector("div[data-step='2'] div#places").innerHTML = "";
+
+                let service_category = this.form.querySelector("#serviceCategory").value;
+                let location = this.form.querySelector("input.formSave#location").value;
+                let radius = this.form.querySelector("input.formSave#radius").value;
+
+                let data = {
+                    "service_category": service_category,
+                    "location": location,
+                    "radius": radius,
+                }
+
+                await fetch('http://127.0.0.1:8000/nearby/', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken,
+                    },
+                }).then(response => response.json())
+                    .then(data => places = data)
+                return places
+            }
+
+            async updateStep(button) {
                 let active = document.querySelector("div.active");
                 let step = button.currentTarget.getAttribute('id');
                 if (step === 'nextStep') {
                     if (active.getAttribute('data-step') === '1') {
-                        this.form.querySelector("div[data-step='2'] div#places").innerHTML = "";
-                        let values = this.getValues();
-
-                        fetch('http://127.0.0.1:8000/nearby/', {
-                            method: 'POST',
-                            body: JSON.stringify(values),
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRFToken": csrftoken,
-                            },
-                        }).then(response => response.json())
-                            .then(data => this.addPlacesToHtml(data))
+                        let places = await this.getPlaces()
+                        this.addPlacesToHtml(places)
                         this.sortType()
-
                     }
                     active.nextElementSibling.classList.add("active");
                     active.classList.remove("active");
@@ -178,17 +213,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
-            save() {
-                let values = this.getValues();
-                let pk = this.form.querySelector("#pk").value;
-
+            async save() {
+                let values = await this.getValues()
                 let data = JSON.stringify({
                     is_open: true,
                     form_party: values,
-                    name: "test"
                 });
 
-                fetch('http://127.0.0.1:8000/update_form/' + pk + '/', {
+                fetch('http://127.0.0.1:8000/update_form/' + this.pk + '/', {
                     method: 'PATCH',
                     body: (data),
                     headers: {

@@ -17,7 +17,6 @@ import party_creator.local_settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -30,9 +29,7 @@ DEBUG = True
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
-
 ALLOWED_HOSTS = []
-
 
 # Application definition
 MY_APPS = [
@@ -40,19 +37,19 @@ MY_APPS = [
     "account.apps.AccountConfig",
     "announcement.apps.AnnouncementConfig",
     "party_wizard.apps.PartyWizardConfig",
+    'django.contrib.gis'
 ]
 
-
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "rest_framework",
-] + MY_APPS
-
+                     "django.contrib.admin",
+                     "django.contrib.auth",
+                     "django.contrib.contenttypes",
+                     "django.contrib.sessions",
+                     "django.contrib.messages",
+                     "django.contrib.staticfiles",
+                     "rest_framework",
+                     "leaflet",
+                 ] + MY_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -103,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -113,7 +109,7 @@ LANGUAGES = (
     ("en", "angielski"),
 )
 
-TIME_ZONE = "Europe/Warsaw"  #'UTC'
+TIME_ZONE = "Europe/Warsaw"  # 'UTC'
 
 USE_I18N = True
 

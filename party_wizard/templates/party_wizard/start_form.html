@@ -13,7 +13,8 @@
 
         <form method="POST">
             {% csrf_token %}
-            <input type="hidden" id="pk" value="{{ pk }}">
+            <input type="hidden" id="pk" value="{{ formmodel.pk }}">
+            <input type="hidden" id="serviceCategory" value="{{ service_category }}">
             <div data-step="1" class="container active">
                 <div class="row row-cols-3">
                     <label for="location">Podaj lokalizację w której chcesz zorganizować imprezę:</label>

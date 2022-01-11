@@ -1,5 +1,6 @@
 import stdimage
-from django.db import models
+# from django.db import models
+from django.contrib.gis.db import models
 from django.shortcuts import reverse
 from dynamic_filenames import FilePattern
 
@@ -48,6 +49,7 @@ class Announcement(models.Model):
     )
     event_type = models.ManyToManyField(EventType, related_name="announcements")
     date = models.DateTimeField(auto_now=True)
+    city = models.PointField()
 
     class Meta:
         index_together = (("id", "slug"),)

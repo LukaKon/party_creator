@@ -3,20 +3,25 @@
 {% block title %}Dodawanie ogłoszenia{% endblock title %}
 {% block content %}
 
-<div class="container col-md-12">
-    <div class="row">
-        <h2>Dodaj ogłoszenie:</h2>
-    </div>
+    <div class="container col-md-12">
+        <div class="row">
+            <h2>Dodaj ogłoszenie:</h2>
+        </div>
 
-    <div class="row">
-        <form action="" id="form_container" method="POST" enctype="multipart/form-data" class="row g-3">
-            {% csrf_token %}
-            {% include 'announcement/create_update_form_fields.html' %}
-        </form>
+        <div class="row">
+            <form action="" id="form_container" method="POST" enctype="multipart/form-data" class="row g-3">
+                {% csrf_token %}
+
+                {#            TODO to be completed - i did it for my further work #}
+                <label for="location">Podaj miasto:</label>
+                <input type="text" name="location" id="location"/>
+
+                {% include 'announcement/create_update_form_fields.html' %}
+            </form>
+        </div>
     </div>
-</div>
 {% endblock content %}
 
 {% block script %}
-<script src="{% static 'js/image_preview.js' %}"></script>
+    <script src="{% static 'js/image_preview.js' %}" type="module"></script>
 {% endblock script %}
