@@ -42,16 +42,16 @@ services:
 
   db:
     image: kartoza/postgis:12.1
-    # container_name: party_db
+    container_name: postgis_db
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       # - POSTGRES_HOST=${DATABASE_HOST}
       - POSTGRES_HOST_AUTH_METHOD=trust
-    # restart: on-failure
+    restart: on-failure
     volumes:
-      - postgres_data:/var/lib/postgresql:rw
+      - ./pgdata:/var/lib/postgresql/data:rw
     ports:
       - 5432:5432
     networks:
@@ -64,4 +64,4 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  pgdata:
