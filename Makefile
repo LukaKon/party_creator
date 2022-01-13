@@ -24,7 +24,7 @@ down-v:
 	docker-compose down -v
 
 volume:
-	docker volume inspect party_creator_postgres_data
+	docker volume inspect party_creator_pgdata
 
 shell:
 	docker-compose exec django python3 manage.py shell_plus

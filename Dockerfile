@@ -38,8 +38,7 @@ RUN apt-get update \
     && apt-get -y install netcat gcc postgresql \
     && apt-get clean
 
-RUN apt-get update \
-    && apt-get install -y binutils libproj-dev gdal-bin python-gdal python3-gdal
+RUN apt-get install -y binutils libproj-dev gdal-bin python-gdal python3-gdal
 
 RUN pip install --upgrade pip
 
