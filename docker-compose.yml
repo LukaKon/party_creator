@@ -7,9 +7,11 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: party_app
-    # command:
-      # - python3 manage.py runserver_plus 0.0.0.0:8000
-
+    command:
+      # - python3 manage.py migrate
+      - ./app/wait-for-postgres.sh party_db:5432
+      - python3 manage.py runserver_plus 0.0.0.0:8000
+      # - ls -lah
     env_file:
       - .env
     restart: on-failure
@@ -31,6 +33,8 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       # - POSTGRES_HOST=${DATABASE_HOST}
       # - POSTGRES_HOST_AUTH_METHOD=trust
+    # command:
+      # - ./wait-for-postgres.sh db
     restart: on-failure
     volumes:
       - pgdata:/var/lib/postgresql/data:rw

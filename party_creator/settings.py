@@ -15,10 +15,11 @@ from pathlib import Path
 
 from dotenv import dotenv_values, load_dotenv
 
-load_dotenv()
+import party_creator.local_settings
+
+config=load_dotenv('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# import party_creator.local_settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,7 +37,7 @@ if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
 
-ALLOWED_HOST = os.getenv("ALLOWED_HOSTS")#.split(" ")
+ALLOWED_HOST = os.getenv("ALLOWED_HOSTS")  # .split(" ")
 
 # Application definition
 MY_APPS = [

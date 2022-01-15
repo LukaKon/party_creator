@@ -5,13 +5,27 @@ ifneq (,$(wildcard ./.env))
 endif
 
 build:
-	docker-compose up --build -d --remove-orphans
+	echo 'build'
+	set -e
+	docker-compose down
+	docker-compose up --build
+
+	source .env
+	./wait-until "docker-compose exec -T -e PGPASSWORD=${DATABASE_PASSWORD} postgres psql -U ${DATABASE_USER} ${DATABASE_USER} -c 'select 1'"
 
 up:
+	echo 'up'
 	docker-compose up -d
+
+	source .env
+	./wait-until "docker-compose exec -T -e PGPASSWORD=${DATABASE_PASSWORD} postgres psql -U ${DATABASE_USER} ${DATABASE_USER} -c 'select 1'"
 
 down:
 	docker-compose down
+
+# remove also volumes
+down-v:
+	docker-compose down -v
 
 logs:
 	docker-compose logs
@@ -24,13 +38,6 @@ makemigrations:
 
 superuser:
 	docker-compose exec django python3 manage.py createsuperuser
-
-down:
-	docker-compose down
-
-# remove also volumes
-down-v:
-	docker-compose down -v
 
 volume:
 	docker volume inspect party_creator_pgdata

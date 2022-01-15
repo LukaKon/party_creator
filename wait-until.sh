@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
+# !/usr/bin/env bash
 
 command="${1}"
 timeout="${2:-30}"

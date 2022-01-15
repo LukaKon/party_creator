@@ -16,9 +16,9 @@ RUN apt-get install -y binutils libproj-dev gdal-bin python-gdal python3-gdal
 
 RUN pip install --upgrade pip
 
-# COPY ./requirements.txt /app/requirements.txt
+COPY ./requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . /app
-RUN pip install -r requirements.txt
-# RUN psql -e "select * from party_db;"
-RUN python3 manage.py runserver_plus 0.0.0.0:8000
+
+# RUN python3 manage.py runserver_plus 0.0.0.0:8000
