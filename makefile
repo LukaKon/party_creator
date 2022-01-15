@@ -6,20 +6,29 @@ endif
 
 build:
 	docker-compose up --build -d --remove-orphans
+
 up:
 	docker-compose up -d
+
 down:
 	docker-compose down
+
 logs:
 	docker-compose logs
+
 migrate:
 	docker-compose exec django python3 manage.py migrate --noinput
+
 makemigrations:
 	docker-compose exec django python3 manage.py makemigrations
 
 superuser:
 	docker-compose exec django python3 manage.py createsuperuser
 
+down:
+	docker-compose down
+
+# remove also volumes
 down-v:
 	docker-compose down -v
 

@@ -10,39 +10,33 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
-import environ
+
+from dotenv import dotenv_values, load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import party_creator.local_settings
+# import party_creator.local_settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-env=environ.Env(DEBUG=(bool,False))
-
-environ.Env.read_env(env_file='.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-#c13jyes32=3z7r@=4b0@tngds9va)a6a3#@_m6)!%&8t_va@5"
-SECRET_KEY=env('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG=env('DEBUG')
+DEBUG = os.getenv("DEBUG")
 
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
-# ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ['localhost','127.0.0.1']
-
+ALLOWED_HOST = os.getenv("ALLOWED_HOSTS")#.split(" ")
 
 # Application definition
 MY_APPS = [
@@ -61,8 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "rest_framework",
-    'django.contrib.gis'
-    # 'django_probes',
+    "django.contrib.gis",
 ] + MY_APPS
 
 

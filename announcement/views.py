@@ -9,7 +9,7 @@ from django.views import generic
 
 from announcement import forms
 
-from .models import Announcement, EventType, Image, ServiceCategory, Movie
+from .models import Announcement, EventType, Image, Movie, ServiceCategory
 from .utils.announcement import mixins
 
 
@@ -169,7 +169,7 @@ class UpdateAnnouncementView(
         context = super().get_context_data(**kwargs)
         announcement = self.get_object()
         context["images"] = Image.objects.filter(announcement=announcement)
-        context['movies']= Movie.objects.filter(announcement=announcement)
+        context["movies"] = Movie.objects.filter(announcement=announcement)
         return context
 
     def form_valid(self, form):
@@ -184,7 +184,6 @@ class UpdateAnnouncementView(
         # existing_movies=self.request.POST.getlist('all_movies')
         # movies_set=self.request.FILES.getlist('movies')
         # movies_del=self.requset.POST.getlist('mov[]')
-
 
         # Convert main_iamage_selector to int
         if main_image_selector == None:
@@ -224,7 +223,6 @@ class UpdateAnnouncementView(
 
         self.object = form.save()
         return super().form_valid(form)
-
 
 
 class DeleteAnnouncementView(
