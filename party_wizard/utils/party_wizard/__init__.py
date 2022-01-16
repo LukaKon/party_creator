@@ -8,7 +8,6 @@ from announcement.models import Announcement, ServiceCategory
 gmaps = googlemaps.Client(key=party_creator.local_settings.GOOGLE_API_KEY)
 
 from django.contrib.gis.geos import Point
-from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import Distance
 
 
@@ -19,7 +18,8 @@ def get_places(location, radius, type_of_places):
     announcements = Announcement.objects.filter(city__distance_lte=(location, Distance(km=radius)),
                                                category=type_of_places)
 
-    return None
+
+    return announcements
 
 
     # print(type_of_places)

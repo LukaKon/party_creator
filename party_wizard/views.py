@@ -40,16 +40,35 @@ class CreateFormView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class GoogleNearbySearch(views.APIView):
-    def post(self, request):
-        data_js = request.data
+from announcement.models import Announcement
+from .serializers import AnnouncementSerializer
+
+
+class GoogleNearbySearch(generics.ListAPIView):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def get_queryset(self):
+
+        data_js = self.request.data
         type_of_places = data_js.get("service_category")
         places = utils.get_places(location=data_js.get("location"),
                                   radius=data_js.get("radius"),
                                   type_of_places=type_of_places)
+        return places
 
-        results = GoogleNearbySearchSerializer({"places": places, "type_of_places": type_of_places}).data
-        return Response(results)
+    # def post(self, request):
+    #     data_js = request.data
+    #     type_of_places = data_js.get("service_category")
+    #     places = utils.get_places(location=data_js.get("location"),
+    #                               radius=data_js.get("radius"),
+    #                               type_of_places=type_of_places)
+    #
+    #     results = GoogleNearbySearchSerializer({"places": places, "type_of_places": type_of_places}).data
+    #     return Response(results)
 
 
 """PRIMARY VIEWS"""
@@ -135,7 +154,10 @@ class StartFormView(LoginRequiredMixin, mixins.UserAccessMixin, UpdateView):
         context["api_key"] = party_creator.settings.GOOGLE_API_KEY,
         return context
 
+
 from .models import Shop
+
+
 class TestView(CreateView):
     model = party_wizard.models.Shop
     fields = ["name",
@@ -143,7 +165,8 @@ class TestView(CreateView):
               'address',
               'city']
     template_name = "party_wizard/test.html"
+
     def get(self, request, *args, **kwargs):
         shop = Shop.objects.all()
         context = {"shop": shop}
-        return render(request, template_name="party_wizard/test.html", context= context)
+        return render(request, template_name="party_wizard/test.html", context=context)

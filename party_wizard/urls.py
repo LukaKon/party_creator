@@ -24,6 +24,6 @@ urlpatterns = [
     path(
         "startform/<int:form_model_pk>/<int:pk_servicecategory>/", views.StartFormView.as_view(), name="start_form"
     ),
-    path("test/", views.TestView.as_view()),
+    path("test/", views.TestView.as_view(), name="test123"),
 
 ]

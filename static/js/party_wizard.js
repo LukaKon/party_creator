@@ -2,6 +2,7 @@ import {getCookie} from "./getCsrftoken.js";
 // import {initMap} from "./city_autocomplete.js";
 
 document.addEventListener("DOMContentLoaded", function () {
+
         const csrftoken = getCookie("csrftoken");
 
         // initMap();
@@ -123,46 +124,61 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             addPlacesToHtml(data) {
-                let div_step_2 = this.form.querySelector("div[data-step='2'] div#places");
+                let div_step2 = this.form.querySelector("div[data-step='2'] div#places");
+                let helper = 0;
 
-                if (data.type_of_places === "Restauracja") {
-                    console.log('restauracja')
-                } else {
-                    console.log('else')
-                }
-                data.places.data.forEach(element => {
-                    if (element.photos) {
-                        let new_div = document.createElement("div");
+                data.forEach((element, index) => {
 
-                        let new_image = document.createElement("img")
-                        new_image.setAttribute("src",
-                            "https://maps.googleapis.com/maps/api/place/photo" +
-                            "?maxwidth=200" + "&maxheight=200" +
-                            "&photo_reference=" + element.photos[0].photo_reference +
-                            "&key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY");
-
-                        let new_radio = document.createElement("input");
-                        new_radio.setAttribute("type", "radio");
-                        new_radio.setAttribute("name", "placeID");
-                        new_radio.setAttribute("value", element.place_id);
-                        new_radio.setAttribute("id", element.name);
-
-                        let new_label = document.createElement("label");
-                        new_label.setAttribute("for", element.name);
-                        new_label.innerText = "Nazwa : " + element.name +
-                            "\r\nPoziom cennika : " + element.price_level +
-                            "\r\nOcena : " + element.rating;
-
-                        new_div.addEventListener("click", () => {
-                            let radio = new_div.querySelector("input[type=radio]");
-                            radio.checked = true;
-                        });
-
-                        new_div.appendChild(new_image);
-                        new_div.appendChild(new_radio);
-                        new_div.appendChild(new_label);
-                        div_step_2.appendChild(new_div);
+                    if(index===helper){
+                        let new_row = document.createElement('div');
+                        new_row.setAttribute("class", "row");
+                        div_step2.appendChild(new_row);
+                        helper+=4;
                     }
+
+                    let new_row = document.querySelector("div.row:last-child");
+
+                    let article = document.createElement("article");
+                    article.setAttribute("class", "card col-sm-4");
+                    article.setAttribute("style", "width: 18rem;");
+                    // article.addEventListener("click", (event)=>{
+                    //     console.log(event.currentTarget)
+                        // location.href = "http://127.0.0.1:8000/announcement_details/" + element.slug + "/"
+                    // })
+
+
+
+                    let new_image = document.createElement("img");
+                    new_image.setAttribute("src",
+                        "/media/"+element.image);
+                    new_image.setAttribute("class", "card-img-top");
+                    article.appendChild(new_image);
+
+                    let div_body = document.createElement("div");
+                    div_body.setAttribute("class", "card-body");
+                    article.appendChild(div_body);
+
+                    let h5 = document.createElement("h5")
+                    h5.innerText = element.title;
+                    h5.setAttribute("class", "card-title");
+                    div_body.appendChild(h5);
+
+                    let p = document.createElement("p");
+
+                    p.innerText = element.description.substr(0,60);
+                    p.setAttribute("class", "card-text");
+                    div_body.appendChild(p);
+
+                    // let buttons = document.createElement("div");
+                    // buttons.setAttribute("class", "btn btn-group");
+                    // div_body.appendChild(buttons);
+
+                    let a = document.createElement("a");
+                    a.setAttribute("class", "btn btn-primary")
+                    a.innerText = 'Submit'
+                    div_body.appendChild(a)
+
+                    new_row.appendChild(article);
                 });
 
 
@@ -188,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     headers: {
                         "Content-Type": "application/json",
                         "X-CSRFToken": csrftoken,
+
                     },
                 }).then(response => response.json())
                     .then(data => places = data)

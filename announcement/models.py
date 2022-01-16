@@ -107,7 +107,7 @@ class Image(models.Model):
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.image.thumbnail)
 
 
 class Newsletter(models.Model):

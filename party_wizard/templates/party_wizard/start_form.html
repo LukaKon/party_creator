@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/party_wizard.css' %}"/> {% endblock %}
 {% block content %}
 
-    <section class=" form--steps">
+    <section class="container form--steps">
 
         <form method="POST">
             {% csrf_token %}
@@ -17,23 +17,13 @@
             <input type="hidden" id="serviceCategory" value="{{ service_category }}">
             <div data-step="1" class="container active">
                 <div class="row row-cols-3">
-                    <label for="location">Podaj lokalizację w której chcesz zorganizować imprezę:</label>
+                    <label for="location">Lokalizacja:</label>
                     <input id="location" class="formSave" type="text">
                 </div>
                 <div class="row row-cols-3">
-                    <label for="radius">Podaj w jakim obrębie kilometrów wyszukiwać:</label>
+                    <label for="radius">W obrębie km:</label>
                     <input id="radius" class="formSave" type="number">
                 </div>
-
-                <label class="hidden" for="price">
-                    Cena:
-                </label>
-                <select class="hidden" id="price">
-                    <option value="1">Tanio</option>
-                    <option value="2">Umiarkowanie</option>
-                    <option value="3">Drogo</option>
-                    <option value="4">Bardzo drogo</option>
-                </select>
                 <div class="button-div">
                     <input id="nextStep" type="button" value="Dalej">
                     <input id="save" type="button" value="Zapisz Formularz">
