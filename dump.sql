@@ -16,6 +16,281 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: pg_cron; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_cron WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_cron; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pg_cron IS 'Job scheduler for PostgreSQL';
+
+
+--
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA topology;
+
+
+ALTER SCHEMA topology OWNER TO postgres;
+
+--
+-- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+
+--
+-- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
+
+
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+
+--
+-- Name: pgrouting; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgrouting WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgrouting; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgrouting IS 'pgRouting Extension';
+
+
+--
+-- Name: postgis_raster; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_raster WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis_raster; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis_raster IS 'PostGIS raster types and functions';
+
+
+--
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
+
+
+--
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
+
+
+--
+-- Name: asbinary(public.geometry); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.asbinary(public.geometry) RETURNS bytea
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/postgis-3', 'LWGEOM_asBinary';
+
+
+ALTER FUNCTION public.asbinary(public.geometry) OWNER TO postgres;
+
+--
+-- Name: asbinary(public.geometry, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.asbinary(public.geometry, text) RETURNS bytea
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/postgis-3', 'LWGEOM_asBinary';
+
+
+ALTER FUNCTION public.asbinary(public.geometry, text) OWNER TO postgres;
+
+--
+-- Name: astext(public.geometry); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.astext(public.geometry) RETURNS text
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/postgis-3', 'LWGEOM_asText';
+
+
+ALTER FUNCTION public.astext(public.geometry) OWNER TO postgres;
+
+--
+-- Name: estimated_extent(text, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.estimated_extent(text, text) RETURNS public.box2d
+    LANGUAGE c IMMUTABLE STRICT SECURITY DEFINER
+    AS '$libdir/postgis-3', 'geometry_estimated_extent';
+
+
+ALTER FUNCTION public.estimated_extent(text, text) OWNER TO postgres;
+
+--
+-- Name: estimated_extent(text, text, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.estimated_extent(text, text, text) RETURNS public.box2d
+    LANGUAGE c IMMUTABLE STRICT SECURITY DEFINER
+    AS '$libdir/postgis-3', 'geometry_estimated_extent';
+
+
+ALTER FUNCTION public.estimated_extent(text, text, text) OWNER TO postgres;
+
+--
+-- Name: geomfromtext(text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.geomfromtext(text) RETURNS public.geometry
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $_$SELECT ST_GeomFromText($1)$_$;
+
+
+ALTER FUNCTION public.geomfromtext(text) OWNER TO postgres;
+
+--
+-- Name: geomfromtext(text, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.geomfromtext(text, integer) RETURNS public.geometry
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $_$SELECT ST_GeomFromText($1, $2)$_$;
+
+
+ALTER FUNCTION public.geomfromtext(text, integer) OWNER TO postgres;
+
+--
+-- Name: ndims(public.geometry); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.ndims(public.geometry) RETURNS smallint
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/postgis-3', 'LWGEOM_ndims';
+
+
+ALTER FUNCTION public.ndims(public.geometry) OWNER TO postgres;
+
+--
+-- Name: setsrid(public.geometry, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.setsrid(public.geometry, integer) RETURNS public.geometry
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/postgis-3', 'LWGEOM_set_srid';
+
+
+ALTER FUNCTION public.setsrid(public.geometry, integer) OWNER TO postgres;
+
+--
+-- Name: srid(public.geometry); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.srid(public.geometry) RETURNS integer
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/postgis-3', 'LWGEOM_get_srid';
+
+
+ALTER FUNCTION public.srid(public.geometry) OWNER TO postgres;
+
+--
+-- Name: st_asbinary(text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.st_asbinary(text) RETURNS bytea
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $_$ SELECT ST_AsBinary($1::geometry);$_$;
+
+
+ALTER FUNCTION public.st_asbinary(text) OWNER TO postgres;
+
+--
+-- Name: st_astext(bytea); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.st_astext(bytea) RETURNS text
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $_$ SELECT ST_AsText($1::geometry);$_$;
+
+
+ALTER FUNCTION public.st_astext(bytea) OWNER TO postgres;
+
+--
+-- Name: gist_geometry_ops; Type: OPERATOR FAMILY; Schema: public; Owner: postgres
+--
+
+CREATE OPERATOR FAMILY public.gist_geometry_ops USING gist;
+ALTER OPERATOR FAMILY public.gist_geometry_ops USING gist ADD
+    OPERATOR 1 public.<<(public.geometry,public.geometry) ,
+    OPERATOR 2 public.&<(public.geometry,public.geometry) ,
+    OPERATOR 3 public.&&(public.geometry,public.geometry) ,
+    OPERATOR 4 public.&>(public.geometry,public.geometry) ,
+    OPERATOR 5 public.>>(public.geometry,public.geometry) ,
+    OPERATOR 6 public.~=(public.geometry,public.geometry) ,
+    OPERATOR 7 public.~(public.geometry,public.geometry) ,
+    OPERATOR 8 public.@(public.geometry,public.geometry) ,
+    OPERATOR 9 public.&<|(public.geometry,public.geometry) ,
+    OPERATOR 10 public.<<|(public.geometry,public.geometry) ,
+    OPERATOR 11 public.|>>(public.geometry,public.geometry) ,
+    OPERATOR 12 public.|&>(public.geometry,public.geometry) ,
+    OPERATOR 13 public.<->(public.geometry,public.geometry) FOR ORDER BY pg_catalog.float_ops ,
+    OPERATOR 14 public.<#>(public.geometry,public.geometry) FOR ORDER BY pg_catalog.float_ops ,
+    FUNCTION 3 (public.geometry, public.geometry) public.geometry_gist_compress_2d(internal) ,
+    FUNCTION 4 (public.geometry, public.geometry) public.geometry_gist_decompress_2d(internal) ,
+    FUNCTION 8 (public.geometry, public.geometry) public.geometry_gist_distance_2d(internal,public.geometry,integer);
+
+
+ALTER OPERATOR FAMILY public.gist_geometry_ops USING gist OWNER TO postgres;
+
+--
+-- Name: gist_geometry_ops; Type: OPERATOR CLASS; Schema: public; Owner: postgres
+--
+
+CREATE OPERATOR CLASS public.gist_geometry_ops
+    FOR TYPE public.geometry USING gist FAMILY public.gist_geometry_ops AS
+    STORAGE public.box2df ,
+    FUNCTION 1 (public.geometry, public.geometry) public.geometry_gist_consistent_2d(internal,public.geometry,integer) ,
+    FUNCTION 2 (public.geometry, public.geometry) public.geometry_gist_union_2d(bytea,internal) ,
+    FUNCTION 5 (public.geometry, public.geometry) public.geometry_gist_penalty_2d(internal,internal,internal) ,
+    FUNCTION 6 (public.geometry, public.geometry) public.geometry_gist_picksplit_2d(internal,internal) ,
+    FUNCTION 7 (public.geometry, public.geometry) public.geometry_gist_same_2d(public.geometry,public.geometry,internal);
+
+
+ALTER OPERATOR CLASS public.gist_geometry_ops USING gist OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -892,6 +1167,22 @@ ALTER TABLE ONLY public.party_wizard_formmodel_categories ALTER COLUMN id SET DE
 
 
 --
+-- Data for Name: job; Type: TABLE DATA; Schema: cron; Owner: postgres
+--
+
+COPY cron.job (jobid, schedule, command, nodename, nodeport, database, username, active, jobname) FROM stdin;
+\.
+
+
+--
+-- Data for Name: job_run_details; Type: TABLE DATA; Schema: cron; Owner: postgres
+--
+
+COPY cron.job_run_details (jobid, runid, job_pid, database, username, command, status, return_message, start_time, end_time) FROM stdin;
+\.
+
+
+--
 -- Data for Name: account_firma; Type: TABLE DATA; Schema: public; Owner: lko
 --
 
@@ -1378,6 +1669,44 @@ COPY public.party_wizard_formmodel (id, is_open, user_id, name, form_party) FROM
 
 COPY public.party_wizard_formmodel_categories (id, formmodel_id, servicecategory_id) FROM stdin;
 \.
+
+
+--
+-- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
+\.
+
+
+--
+-- Data for Name: topology; Type: TABLE DATA; Schema: topology; Owner: postgres
+--
+
+COPY topology.topology (id, name, srid, "precision", hasz) FROM stdin;
+\.
+
+
+--
+-- Data for Name: layer; Type: TABLE DATA; Schema: topology; Owner: postgres
+--
+
+COPY topology.layer (topology_id, layer_id, schema_name, table_name, feature_column, feature_type, level, child_id) FROM stdin;
+\.
+
+
+--
+-- Name: jobid_seq; Type: SEQUENCE SET; Schema: cron; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cron.jobid_seq', 1, false);
+
+
+--
+-- Name: runid_seq; Type: SEQUENCE SET; Schema: cron; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cron.runid_seq', 1, false);
 
 
 --
@@ -2195,6 +2524,32 @@ ALTER TABLE ONLY public.party_wizard_formmodel_categories
 ALTER TABLE ONLY public.party_wizard_formmodel
     ADD CONSTRAINT party_wizard_formmodel_user_id_f465f11a_fk_account_user_id FOREIGN KEY (user_id) REFERENCES public.account_user(id) DEFERRABLE INITIALLY DEFERRED;
 
+
+--
+-- Name: job cron_job_policy; Type: POLICY; Schema: cron; Owner: postgres
+--
+
+CREATE POLICY cron_job_policy ON cron.job USING ((username = CURRENT_USER));
+
+
+--
+-- Name: job_run_details cron_job_run_details_policy; Type: POLICY; Schema: cron; Owner: postgres
+--
+
+CREATE POLICY cron_job_run_details_policy ON cron.job_run_details USING ((username = CURRENT_USER));
+
+
+--
+-- Name: job; Type: ROW SECURITY; Schema: cron; Owner: postgres
+--
+
+ALTER TABLE cron.job ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: job_run_details; Type: ROW SECURITY; Schema: cron; Owner: postgres
+--
+
+ALTER TABLE cron.job_run_details ENABLE ROW LEVEL SECURITY;
 
 --
 -- PostgreSQL database dump complete

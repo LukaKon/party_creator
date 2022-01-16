@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     "django.contrib.gis",
+    'django_probes',
 ] + MY_APPS
 
 

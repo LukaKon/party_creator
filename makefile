@@ -4,21 +4,20 @@ ifneq (,$(wildcard ./.env))
 	ENV_FILE_PARAM = --env-file .env
 endif
 
+# vol:
+# docker volume create --name=pgdata
+
 build:
-	echo 'build'
 	set -e
 	docker-compose down
 	docker-compose up --build
 
-	source .env
-	./wait-until "docker-compose exec -T -e PGPASSWORD=${DATABASE_PASSWORD} postgres psql -U ${DATABASE_USER} ${DATABASE_USER} -c 'select 1'"
-
 up:
-	echo 'up'
-	docker-compose up -d
+	docker-compose up
+#	docker-compose up -d
 
-	source .env
-	./wait-until "docker-compose exec -T -e PGPASSWORD=${DATABASE_PASSWORD} postgres psql -U ${DATABASE_USER} ${DATABASE_USER} -c 'select 1'"
+stop:
+	docker-compose stop
 
 down:
 	docker-compose down
@@ -44,3 +43,9 @@ volume:
 
 shell:
 	docker-compose exec django python3 manage.py shell_plus
+
+dump:
+	docker exec -i postgis_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) pg_dump -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" > dump.sql
+
+restore:
+	docker exec -i postgis_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) psql -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" < dump.sql
