@@ -462,7 +462,8 @@ CREATE TABLE public.announcement_announcement (
     slug character varying(50) NOT NULL,
     date timestamp with time zone NOT NULL,
     user_id bigint NOT NULL,
-    category_id bigint NOT NULL
+    category_id bigint NOT NULL,
+    city public.geometry(Point,4326) NOT NULL
 );
 
 
@@ -1027,6 +1028,42 @@ ALTER SEQUENCE public.party_wizard_formmodel_id_seq OWNED BY public.party_wizard
 
 
 --
+-- Name: party_wizard_shop; Type: TABLE; Schema: public; Owner: lko
+--
+
+CREATE TABLE public.party_wizard_shop (
+    id bigint NOT NULL,
+    name character varying(100) NOT NULL,
+    location public.geometry(Point,4326) NOT NULL,
+    address character varying(100) NOT NULL,
+    city character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.party_wizard_shop OWNER TO lko;
+
+--
+-- Name: party_wizard_shop_id_seq; Type: SEQUENCE; Schema: public; Owner: lko
+--
+
+CREATE SEQUENCE public.party_wizard_shop_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.party_wizard_shop_id_seq OWNER TO lko;
+
+--
+-- Name: party_wizard_shop_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: lko
+--
+
+ALTER SEQUENCE public.party_wizard_shop_id_seq OWNED BY public.party_wizard_shop.id;
+
+
+--
 -- Name: account_firma id; Type: DEFAULT; Schema: public; Owner: lko
 --
 
@@ -1167,6 +1204,13 @@ ALTER TABLE ONLY public.party_wizard_formmodel_categories ALTER COLUMN id SET DE
 
 
 --
+-- Name: party_wizard_shop id; Type: DEFAULT; Schema: public; Owner: lko
+--
+
+ALTER TABLE ONLY public.party_wizard_shop ALTER COLUMN id SET DEFAULT nextval('public.party_wizard_shop_id_seq'::regclass);
+
+
+--
 -- Data for Name: job; Type: TABLE DATA; Schema: cron; Owner: postgres
 --
 
@@ -1231,41 +1275,41 @@ COPY public.account_useradmin (user_ptr_id) FROM stdin;
 -- Data for Name: announcement_announcement; Type: TABLE DATA; Schema: public; Owner: lko
 --
 
-COPY public.announcement_announcement (id, title, description, slug, date, user_id, category_id) FROM stdin;
-72	tarst	wfpt	tarst-likn	2021-11-23 00:00:00+00	3	4
-78	lk ogłoszenie	ine.,hmart	lk-ogoszenie-1fa4	2021-11-24 00:00:00+00	4	4
-79	lk ogłoszenie	ine.,hmart	lk-ogoszenie-s9rl	2021-11-24 00:00:00+00	4	4
-69	Lokal weselny	Piękne miejsce.	lokal-weselny	2021-11-23 00:00:00+00	3	4
-70	Lokal weselny	Piękne miejsce.	rtrast	2021-11-23 00:00:00+00	1	4
-71	tarst	wfpt	tarst	2021-11-23 00:00:00+00	3	4
-73	try again	wfpt	tarst-jt15	2021-11-27 00:00:00+00	1	1
-76	lk ogłoszenie 5	pionek	lk-ogoszenie-or1r	2021-11-27 00:00:00+00	4	1
-77	lk ogłoszenie3	bbbbbtft	lk-ogoszenie-fdmc	2021-11-27 22:41:17.896007+00	4	4
-81	sala weselna	na wielu gości	sala-weselna	2021-11-28 20:21:18.64759+00	1	4
-82	party time	bla bla lba	party-time	2021-11-28 20:39:35.949751+00	1	4
-83	biba	miejsce na imprezy firmowe	biba	2021-11-29 19:40:09.569654+00	1	4
-84	Paparazzi	fotograf okolicznościowy	paparazzi	2021-11-29 19:41:19.917593+00	1	3
-85	Jadło i napitki	żarcie jakie lubisz	jado-i-napitki	2021-11-29 19:42:17.757434+00	1	2
-74	test	test dłuuuuuuuuuuuugi text żeby sprawdzić zawijanie	test	2021-11-23 00:00:00+00	1	4
-87	test podglądu zdjęć	zobaczymy ile zdjęć się finalnie doda...	test-podgladu-zdjec	2021-12-07 19:11:30.474107+00	1	3
-106	testowe 5	xcdxcvd	tratwfpwf	2022-01-01 20:58:00.734657+00	1	5
-97	Main image TEST	dużo zmian	main-image-test-wgn8	2022-01-02 12:14:20.447453+00	1	4
-88	Nowe: test ze zdjęciami	bla bla bla bla bla lba... coś nowego	nowe-test-ze-zdjeciami	2021-12-11 19:40:38.737222+00	1	2
-91	main selector try	ntiarntxc	main-selector-try	2021-12-12 19:18:38.309997+00	1	4
-92	Main try again	nihd.x,co	main-try-again	2021-12-12 19:19:48.744429+00	1	4
-95	Main image TEST	,hmdwyuf	main-image-test-edg4	2021-12-12 19:41:18.98317+00	1	4
-86	Bitka, wypitka i inne atrakcje	picie i rozrywka	bitka-i-wypitka	2021-12-07 21:38:12.426258+00	1	4
-99	TEST main image	hmdwfwy;	test-main-image-wify	2021-12-12 20:25:57.820628+00	1	4
-100	NOWY test z mainem	hmowfp,h	nowy-test-z-mainem	2022-01-02 14:04:49.228146+00	1	4
-101	Try again	niofw,h	try-again	2021-12-12 20:37:20.784793+00	1	4
-98	TEST main image	hmdwfwy;	test-main-image	2021-12-12 20:38:09.789551+00	1	4
-90	NOWE	Ogłoszenie	nowe	2022-01-03 18:02:12.667613+00	1	4
-105	ratarstars	zmiana opisu	ratarstars-wp8t	2021-12-27 21:06:41.37366+00	1	5
-103	Dodawanie	czy nadal działa??	dodawanie	2021-12-29 21:11:35.077505+00	1	1
-102	Test z wyświetlaniem main image	zmiany	test-z-wyswietlaniem-main-image	2022-01-06 12:55:52.824232+00	1	1
-104	ratarstars	tratdxzcd	ratarstars	2021-12-15 18:04:00.326374+00	1	5
-107	Park	Impreza na świeżym powietrzu	park	2022-01-17 16:41:25.178281+00	1	3
-108	Park	wro	park-vu05	2022-01-17 16:42:40.95008+00	1	2
+COPY public.announcement_announcement (id, title, description, slug, date, user_id, category_id, city) FROM stdin;
+72	tarst	wfpt	tarst-likn	2021-11-23 00:00:00+00	3	4	0101000020E610000000000000000000000000000000000000
+78	lk ogłoszenie	ine.,hmart	lk-ogoszenie-1fa4	2021-11-24 00:00:00+00	4	4	0101000020E610000000000000000000000000000000000000
+79	lk ogłoszenie	ine.,hmart	lk-ogoszenie-s9rl	2021-11-24 00:00:00+00	4	4	0101000020E610000000000000000000000000000000000000
+69	Lokal weselny	Piękne miejsce.	lokal-weselny	2021-11-23 00:00:00+00	3	4	0101000020E610000000000000000000000000000000000000
+70	Lokal weselny	Piękne miejsce.	rtrast	2021-11-23 00:00:00+00	1	4	0101000020E610000000000000000000000000000000000000
+71	tarst	wfpt	tarst	2021-11-23 00:00:00+00	3	4	0101000020E610000000000000000000000000000000000000
+73	try again	wfpt	tarst-jt15	2021-11-27 00:00:00+00	1	1	0101000020E610000000000000000000000000000000000000
+76	lk ogłoszenie 5	pionek	lk-ogoszenie-or1r	2021-11-27 00:00:00+00	4	1	0101000020E610000000000000000000000000000000000000
+77	lk ogłoszenie3	bbbbbtft	lk-ogoszenie-fdmc	2021-11-27 22:41:17.896007+00	4	4	0101000020E610000000000000000000000000000000000000
+81	sala weselna	na wielu gości	sala-weselna	2021-11-28 20:21:18.64759+00	1	4	0101000020E610000000000000000000000000000000000000
+82	party time	bla bla lba	party-time	2021-11-28 20:39:35.949751+00	1	4	0101000020E610000000000000000000000000000000000000
+83	biba	miejsce na imprezy firmowe	biba	2021-11-29 19:40:09.569654+00	1	4	0101000020E610000000000000000000000000000000000000
+84	Paparazzi	fotograf okolicznościowy	paparazzi	2021-11-29 19:41:19.917593+00	1	3	0101000020E610000000000000000000000000000000000000
+85	Jadło i napitki	żarcie jakie lubisz	jado-i-napitki	2021-11-29 19:42:17.757434+00	1	2	0101000020E610000000000000000000000000000000000000
+74	test	test dłuuuuuuuuuuuugi text żeby sprawdzić zawijanie	test	2021-11-23 00:00:00+00	1	4	0101000020E610000000000000000000000000000000000000
+87	test podglądu zdjęć	zobaczymy ile zdjęć się finalnie doda...	test-podgladu-zdjec	2021-12-07 19:11:30.474107+00	1	3	0101000020E610000000000000000000000000000000000000
+106	testowe 5	xcdxcvd	tratwfpwf	2022-01-01 20:58:00.734657+00	1	5	0101000020E610000000000000000000000000000000000000
+97	Main image TEST	dużo zmian	main-image-test-wgn8	2022-01-02 12:14:20.447453+00	1	4	0101000020E610000000000000000000000000000000000000
+88	Nowe: test ze zdjęciami	bla bla bla bla bla lba... coś nowego	nowe-test-ze-zdjeciami	2021-12-11 19:40:38.737222+00	1	2	0101000020E610000000000000000000000000000000000000
+91	main selector try	ntiarntxc	main-selector-try	2021-12-12 19:18:38.309997+00	1	4	0101000020E610000000000000000000000000000000000000
+92	Main try again	nihd.x,co	main-try-again	2021-12-12 19:19:48.744429+00	1	4	0101000020E610000000000000000000000000000000000000
+95	Main image TEST	,hmdwyuf	main-image-test-edg4	2021-12-12 19:41:18.98317+00	1	4	0101000020E610000000000000000000000000000000000000
+86	Bitka, wypitka i inne atrakcje	picie i rozrywka	bitka-i-wypitka	2021-12-07 21:38:12.426258+00	1	4	0101000020E610000000000000000000000000000000000000
+99	TEST main image	hmdwfwy;	test-main-image-wify	2021-12-12 20:25:57.820628+00	1	4	0101000020E610000000000000000000000000000000000000
+100	NOWY test z mainem	hmowfp,h	nowy-test-z-mainem	2022-01-02 14:04:49.228146+00	1	4	0101000020E610000000000000000000000000000000000000
+101	Try again	niofw,h	try-again	2021-12-12 20:37:20.784793+00	1	4	0101000020E610000000000000000000000000000000000000
+98	TEST main image	hmdwfwy;	test-main-image	2021-12-12 20:38:09.789551+00	1	4	0101000020E610000000000000000000000000000000000000
+90	NOWE	Ogłoszenie	nowe	2022-01-03 18:02:12.667613+00	1	4	0101000020E610000000000000000000000000000000000000
+105	ratarstars	zmiana opisu	ratarstars-wp8t	2021-12-27 21:06:41.37366+00	1	5	0101000020E610000000000000000000000000000000000000
+103	Dodawanie	czy nadal działa??	dodawanie	2021-12-29 21:11:35.077505+00	1	1	0101000020E610000000000000000000000000000000000000
+102	Test z wyświetlaniem main image	zmiany	test-z-wyswietlaniem-main-image	2022-01-06 12:55:52.824232+00	1	1	0101000020E610000000000000000000000000000000000000
+104	ratarstars	tratdxzcd	ratarstars	2021-12-15 18:04:00.326374+00	1	5	0101000020E610000000000000000000000000000000000000
+107	Park	Impreza na świeżym powietrzu	park	2022-01-17 16:41:25.178281+00	1	3	0101000020E610000000000000000000000000000000000000
+108	Park	wro	park-vu05	2022-01-17 16:42:40.95008+00	1	2	0101000020E610000000000000000000000000000000000000
 \.
 
 
@@ -1535,6 +1579,10 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 78	Can change movie	18	change_movie
 79	Can delete movie	18	delete_movie
 80	Can view movie	18	view_movie
+81	Can add shop	19	add_shop
+82	Can change shop	19	change_shop
+83	Can delete shop	19	delete_shop
+84	Can view shop	19	view_shop
 \.
 
 
@@ -1574,6 +1622,7 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 16	party_wizard	new
 17	party_wizard	formmodel
 18	announcement	movie
+19	party_wizard	shop
 \.
 
 
@@ -1646,6 +1695,12 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 66	party_wizard	0006_alter_formmodel_form_party	2021-12-30 18:52:44.216446+00
 67	announcement	0031_auto_20220102_1455	2022-01-02 13:56:10.042335+00
 68	announcement	0032_movie_movie	2022-01-03 18:00:30.589756+00
+69	announcement	0033_alter_movie_movie	2022-01-17 20:48:56.293024+00
+70	announcement	0031_announcement_city	2022-01-17 20:48:56.332045+00
+71	announcement	0034_merge_0031_announcement_city_0033_alter_movie_movie	2022-01-17 20:48:56.343211+00
+72	party_wizard	0007_alter_formmodel_form_party	2022-01-17 20:48:56.383598+00
+73	party_wizard	0008_alter_formmodel_form_party	2022-01-17 20:48:56.403026+00
+74	party_wizard	0009_shop	2022-01-17 20:48:56.428409+00
 \.
 
 
@@ -1675,6 +1730,14 @@ COPY public.party_wizard_formmodel (id, is_open, user_id, name, form_party) FROM
 --
 
 COPY public.party_wizard_formmodel_categories (id, formmodel_id, servicecategory_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: party_wizard_shop; Type: TABLE DATA; Schema: public; Owner: lko
+--
+
+COPY public.party_wizard_shop (id, name, location, address, city) FROM stdin;
 \.
 
 
@@ -1818,7 +1881,7 @@ SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 80, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 84, true);
 
 
 --
@@ -1832,14 +1895,14 @@ SELECT pg_catalog.setval('public.django_admin_log_id_seq', 5, true);
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 18, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 19, true);
 
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 68, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 74, true);
 
 
 --
@@ -1854,6 +1917,13 @@ SELECT pg_catalog.setval('public.party_wizard_formmodel_categories_id_seq', 1, f
 --
 
 SELECT pg_catalog.setval('public.party_wizard_formmodel_id_seq', 1, false);
+
+
+--
+-- Name: party_wizard_shop_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
+--
+
+SELECT pg_catalog.setval('public.party_wizard_shop_id_seq', 1, false);
 
 
 --
@@ -2145,6 +2215,14 @@ ALTER TABLE ONLY public.party_wizard_formmodel
 
 
 --
+-- Name: party_wizard_shop party_wizard_shop_pkey; Type: CONSTRAINT; Schema: public; Owner: lko
+--
+
+ALTER TABLE ONLY public.party_wizard_shop
+    ADD CONSTRAINT party_wizard_shop_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: account_user_email_0bd7c421_like; Type: INDEX; Schema: public; Owner: lko
 --
 
@@ -2184,6 +2262,13 @@ CREATE INDEX account_user_user_permissions_user_id_cc42d270 ON public.account_us
 --
 
 CREATE INDEX announcement_announcement_category_id_3fd7aaf1 ON public.announcement_announcement USING btree (category_id);
+
+
+--
+-- Name: announcement_announcement_city_id; Type: INDEX; Schema: public; Owner: lko
+--
+
+CREATE INDEX announcement_announcement_city_id ON public.announcement_announcement USING gist (city);
 
 
 --
@@ -2338,6 +2423,13 @@ CREATE INDEX party_wizard_formmodel_categories_servicecategory_id_49a0a9e5 ON pu
 --
 
 CREATE INDEX party_wizard_formmodel_user_id_f465f11a ON public.party_wizard_formmodel USING btree (user_id);
+
+
+--
+-- Name: party_wizard_shop_location_id; Type: INDEX; Schema: public; Owner: lko
+--
+
+CREATE INDEX party_wizard_shop_location_id ON public.party_wizard_shop USING gist (location);
 
 
 --
