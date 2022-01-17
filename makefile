@@ -20,10 +20,6 @@ stop:
 	docker-compose stop
 
 down:
-	docker-compose down
-
-# remove also volumes
-down-v:
 	docker-compose down -v
 
 logs:
@@ -49,3 +45,6 @@ dump:
 
 restore:
 	docker exec -i postgis_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) psql -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" < dump.sql
+
+#dark:
+#	docker-compose exec django darker .

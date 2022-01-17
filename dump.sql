@@ -1199,7 +1199,7 @@ COPY public.account_user (id, password, last_login, is_superuser, first_name, la
 4	pbkdf2_sha256$260000$ERgk0p7TW46BajyxOmMmte$NwMhrYdwQixee/tHD7leYj/Q0PWmhsNurRlGYKR5bAo=	2021-11-27 17:09:09.8733+00	f	lk	lk	f	t	2021-11-24 18:40:58.555504+00	lk@lk.lk	f	default.jpg	f
 3	pbkdf2_sha256$260000$joQggq7q4Ff3JegWuz6SqJ$sSVe0yEzqjqlQyjKcg/lZNERBM28Z8EUx9oRclEOJ8k=	2021-11-28 20:19:44.340739+00	t			t	t	2021-11-12 22:52:29.65778+00	lukasz.konieczny.lk@gmail.com	f	account/user/default.jpg	f
 5	pbkdf2_sha256$260000$8zmJ09mHfy7q5tdf3m16e0$xeJkd4U+M/03bY40THE/hbDPXa2DA2f0KqCUH8rVi1Y=	2021-12-01 21:13:31.601952+00	f	Krzyś	Nowak	f	t	2021-12-01 21:13:15.04033+00	kn@wp.pl	f	account/user/ICMJESYOIJASRBNGH4G3CJEVVY.jpg	f
-1	pbkdf2_sha256$260000$tMhhrG1iwoJOzrY9HSuNQl$/1u5hiQ0HEl3fulOYERtxwVGisR7N+rDits/qX32upM=	2022-01-06 12:13:10.486922+00	f	Jacek	Placek	f	t	2021-11-11 20:03:43.702237+00	jd@jd.jd	f	account/user/4NISA7QXOJGBNIS3AR5JMOIUUE.jpg	f
+1	pbkdf2_sha256$260000$tMhhrG1iwoJOzrY9HSuNQl$/1u5hiQ0HEl3fulOYERtxwVGisR7N+rDits/qX32upM=	2022-01-17 16:25:10.066701+00	f	Jacek	Placek	f	t	2021-11-11 20:03:43.702237+00	jd@jd.jd	f	account/user/4NISA7QXOJGBNIS3AR5JMOIUUE.jpg	f
 \.
 
 
@@ -1264,6 +1264,8 @@ COPY public.announcement_announcement (id, title, description, slug, date, user_
 103	Dodawanie	czy nadal działa??	dodawanie	2021-12-29 21:11:35.077505+00	1	1
 102	Test z wyświetlaniem main image	zmiany	test-z-wyswietlaniem-main-image	2022-01-06 12:55:52.824232+00	1	1
 104	ratarstars	tratdxzcd	ratarstars	2021-12-15 18:04:00.326374+00	1	5
+107	Park	Impreza na świeżym powietrzu	park	2022-01-17 16:41:25.178281+00	1	3
+108	Park	wro	park-vu05	2022-01-17 16:42:40.95008+00	1	2
 \.
 
 
@@ -1297,6 +1299,7 @@ COPY public.announcement_announcement_event_type (id, announcement_id, eventtype
 52	106	1
 53	105	3
 54	90	2
+55	108	3
 \.
 
 
@@ -1393,6 +1396,9 @@ COPY public.announcement_image (id, image, announcement_id, event_type_id, is_ma
 164	announcement/image/XJ7TOJFBMBH75EMSBEXOFZC6XQ.jpg	100	\N	t
 165	announcement/image/XTEJRMORBBFJBA3JPXILLBS3EM.jpg	90	\N	t
 166	announcement/image/OVKPSIRCFNFVHMDQ3T5IT3VZNI.jpg	102	\N	f
+167	announcement/image/363APXGGUNEQRLWRBKSM5QM7DY.JPG	108	\N	f
+168	announcement/image/PKKSK5XPBZC7XBZTZ4AAJP7MZ4.JPG	108	\N	f
+169	announcement/image/OEWRKOAKG5CXNBVTPHJCKACQDY.JPG	108	\N	f
 \.
 
 
@@ -1652,6 +1658,7 @@ COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 vpct0gq1ringvbxatl8v45o1r2gn6lu5	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1mzOwS:OgiAA5_xhS3vtanI7DhcpcoZMC6T5ZJ93c4CQ87Sf44	2022-01-03 20:07:28.68617+00
 i92x69hozf498ndvydvplul8wd83khre	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n32Ey:8dxw__NRqpkrhfijZW8JNVwjp2NzMo1Dnb7NG2I7DjI	2022-01-13 20:41:36.493465+00
 wi617au4m147skaf1xuhn2y0vph1e8bj	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n5Rdm:0CsYlteXTe7aAT-eqQLffo-C-hM2hFYUCbFvPkW-MCM	2022-01-20 12:13:10.493676+00
+elfh8p89glsljxj6gxbkid3r5gzi737m	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n9Uog:SBcg2VtoAu7MqxIWwz2uwcETiWqckjqfzHI206JlDwg	2022-01-31 16:25:10.073237+00
 \.
 
 
@@ -1741,14 +1748,14 @@ SELECT pg_catalog.setval('public.account_user_user_permissions_id_seq', 1, false
 -- Name: announcement_announcement_event_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.announcement_announcement_event_type_id_seq', 54, true);
+SELECT pg_catalog.setval('public.announcement_announcement_event_type_id_seq', 55, true);
 
 
 --
 -- Name: announcement_announcement_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.announcement_announcement_id_seq', 106, true);
+SELECT pg_catalog.setval('public.announcement_announcement_id_seq', 108, true);
 
 
 --
@@ -1776,7 +1783,7 @@ SELECT pg_catalog.setval('public.announcement_eventtype_id_seq', 1, false);
 -- Name: announcement_image_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.announcement_image_id_seq', 166, true);
+SELECT pg_catalog.setval('public.announcement_image_id_seq', 169, true);
 
 
 --
