@@ -8,14 +8,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('announcement', '0030_alter_image_is_main'),
+        ("announcement", "0030_alter_image_is_main"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='announcement',
-            name='city',
-            field=django.contrib.gis.db.models.fields.PointField(default=Point(0.0, 0.0), srid=4326),
+            model_name="announcement",
+            name="city",
+            field=django.contrib.gis.db.models.fields.PointField(
+                default=Point(0.0, 0.0), srid=4326
+            ),
             preserve_default=False,
         ),
     ]

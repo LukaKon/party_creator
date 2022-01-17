@@ -10,11 +10,14 @@ class FormModelSerializer(serializers.ModelSerializer):
         model = FormModel
         fields = ("name", "categories", "is_open", "user", "form_party")
 
+
 class AnnouncementSerializer(serializers.ModelSerializer):
     image = serializers.StringRelatedField(many=True, read_only=True)
+
     class Meta:
         model = Announcement
         fields = ("title", "description", "date", "city", "image", "slug")
+
 
 class GoogleNearbySearchSerializer(serializers.Serializer):
     places = serializers.JSONField()

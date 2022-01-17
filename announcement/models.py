@@ -89,7 +89,7 @@ class Multimedia(models.Model):
         null=True,
         blank=True,
     )
-    
+
     def __str__(self):
         return str(self.image.thumbnail)
 
@@ -129,7 +129,6 @@ class Image(Multimedia):
     #     blank=True,
     # )
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front
-
 
 
 class Movie(Multimedia):

@@ -11,7 +11,7 @@ from django.views import generic
 from announcement import forms
 
 from .models import Announcement, EventType, Image, Movie, ServiceCategory
-from .utils.announcement import mixins, get_lat_lng
+from .utils.announcement import get_lat_lng, mixins
 
 
 class HomeView(generic.FormView):

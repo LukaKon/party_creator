@@ -15,9 +15,7 @@ from pathlib import Path
 
 from dotenv import dotenv_values, load_dotenv
 
-import party_creator.local_settings
-
-config=load_dotenv('.env')
+config = load_dotenv(".env")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,7 +55,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     "django.contrib.gis",
-    'django_probes',
+    "django_probes",
     "leaflet",
 ] + MY_APPS
 
@@ -98,12 +96,12 @@ WSGI_APPLICATION = "party_creator.wsgi.application"
 DATABASES = {
     "default": {
         # "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "ENGINE":'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv("DATABASE_NAME"),
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": os.getenv("DATABASE_NAME"),
         "HOST": os.getenv("PG_HOST"),
         "USER": os.getenv("DATABASE_USER"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
-        "PORT": os.getenv('PG_PORT'),
+        "PORT": os.getenv("PG_PORT"),
     }
 }
 
@@ -168,4 +166,4 @@ MEDIA_URL = "/media/"  # url that will serve media files
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
