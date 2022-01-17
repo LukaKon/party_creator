@@ -1,5 +1,11 @@
+
 const inputImage = document.querySelector('#images');
 const inputMovie= document.querySelector('#movies')
+
+import {initMap} from "./city_autocomplete.js";
+
+initMap();
+
 const mainDiv = document.querySelector('#img-num')
 const previewContainer = document.querySelector('#imgPreview');
 
@@ -80,7 +86,7 @@ inputImage.addEventListener('change', function () {
                 emptyText.innerText = 'Nie wybrano zdjęć.';
 
                 previewContainer.appendChild(emptyText)
-            };
+            }
         });
     } else {
         const emptyField = document.createElement('div');
@@ -102,4 +108,3 @@ inputMovie.addEventListener('change', function(){
         files_arr = Array.from(files)
         console.log('files: ',files_arr);
     };
-});

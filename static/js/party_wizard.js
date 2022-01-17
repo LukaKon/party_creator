@@ -1,8 +1,11 @@
 import {getCookie} from "./getCsrftoken.js";
+// import {initMap} from "./city_autocomplete.js";
 
 document.addEventListener("DOMContentLoaded", function () {
+
         const csrftoken = getCookie("csrftoken");
 
+        // initMap();
         $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY&libraries=places")
             .done(function (script, textStatus) {
                 google.maps.event.addDomListener(window, "load", initMap);
@@ -23,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.form = form;
                 this.steps = form.querySelectorAll("#nextStep,#previousStep,#save");
                 this.init();
+                this.pk = this.form.querySelector("#pk").value;
             }
 
             init() {
@@ -35,16 +39,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
-            getValues() {
+
+            async getValues() {
+                const response = await fetch("http://127.0.0.1:8000/get_form/" + this.pk + "/")
+                let allData = await response.json();
+                let dict = await allData['form_party']
+
                 let inputs = this.form.querySelectorAll("input.formSave");
+                let service_category = this.form.querySelector("#serviceCategory").value;
+
+                await inputs.forEach(input => {
+                    if (dict[service_category]) {
+                        dict[service_category][input.getAttribute("id")] = input.value;
+                    } else {
+                        dict[service_category] = {}
+                        dict[service_category][input.getAttribute("id")] = input.value;
+                    }
+                })
+
                 let place_id = this.form.querySelector("input[name=placeID]:checked");
-                let dict = {};
-                inputs.forEach(input => {
-                    dict[input.getAttribute("id")] = input.value;
-                });
                 if (place_id) {
-                    dict["place_id"] = (place_id.value);
+                    dict[service_category]["place_id"] = (place_id.value);
                 }
+
                 return dict;
             }
 
@@ -107,66 +124,101 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             addPlacesToHtml(data) {
-                let div_step_2 = this.form.querySelector("div[data-step='2'] div#places");
-                data.data.results.forEach(element => {
-                    console.log(element.place_id)
+                let div_step2 = this.form.querySelector("div[data-step='2'] div#places");
+                let helper = 0;
 
-                    if (element.photos) {
-                        let new_div = document.createElement("div");
+                data.forEach((element, index) => {
 
-                        let new_image = document.createElement("img")
-                        new_image.setAttribute("src",
-                            "https://maps.googleapis.com/maps/api/place/photo" +
-                            "?maxwidth=200" + "&maxheight=200" +
-                            "&photo_reference=" + element.photos[0].photo_reference +
-                            "&key=AIzaSyBMvS96FedoeGa8Ec7HeygGYiSPWVNyzhY");
-
-                        let new_radio = document.createElement("input");
-                        new_radio.setAttribute("type", "radio");
-                        new_radio.setAttribute("name", "placeID");
-                        new_radio.setAttribute("value", element.place_id);
-                        new_radio.setAttribute("id", element.name);
-
-                        let new_label = document.createElement("label");
-                        new_label.setAttribute("for", element.name);
-                        new_label.innerText = "Nazwa : " + element.name +
-                            "\r\nPoziom cennika : " + element.price_level +
-                            "\r\nOcena : " + element.rating;
-
-                        new_div.addEventListener("click", () => {
-                            let radio = new_div.querySelector("input[type=radio]");
-                            radio.checked = true;
-                        });
-
-                        new_div.appendChild(new_image);
-                        new_div.appendChild(new_radio);
-                        new_div.appendChild(new_label);
-                        div_step_2.appendChild(new_div);
+                    if(index===helper){
+                        let new_row = document.createElement('div');
+                        new_row.setAttribute("class", "row");
+                        div_step2.appendChild(new_row);
+                        helper+=4;
                     }
+
+                    let new_row = document.querySelector("div.row:last-child");
+
+                    let article = document.createElement("article");
+                    article.setAttribute("class", "card col-sm-4");
+                    article.setAttribute("style", "width: 18rem;");
+                    // article.addEventListener("click", (event)=>{
+                    //     console.log(event.currentTarget)
+                        // location.href = "http://127.0.0.1:8000/announcement_details/" + element.slug + "/"
+                    // })
+
+
+
+                    let new_image = document.createElement("img");
+                    new_image.setAttribute("src",
+                        "/media/"+element.image);
+                    new_image.setAttribute("class", "card-img-top");
+                    article.appendChild(new_image);
+
+                    let div_body = document.createElement("div");
+                    div_body.setAttribute("class", "card-body");
+                    article.appendChild(div_body);
+
+                    let h5 = document.createElement("h5")
+                    h5.innerText = element.title;
+                    h5.setAttribute("class", "card-title");
+                    div_body.appendChild(h5);
+
+                    let p = document.createElement("p");
+
+                    p.innerText = element.description.substr(0,60);
+                    p.setAttribute("class", "card-text");
+                    div_body.appendChild(p);
+
+                    // let buttons = document.createElement("div");
+                    // buttons.setAttribute("class", "btn btn-group");
+                    // div_body.appendChild(buttons);
+
+                    let a = document.createElement("a");
+                    a.setAttribute("class", "btn btn-primary")
+                    a.innerText = 'Submit'
+                    div_body.appendChild(a)
+
+                    new_row.appendChild(article);
                 });
 
 
             }
 
-            updateStep(button) {
+            async getPlaces() {
+                let places = null
+                this.form.querySelector("div[data-step='2'] div#places").innerHTML = "";
+
+                let service_category = this.form.querySelector("#serviceCategory").value;
+                let location = this.form.querySelector("input.formSave#location").value;
+                let radius = this.form.querySelector("input.formSave#radius").value;
+
+                let data = {
+                    "service_category": service_category,
+                    "location": location,
+                    "radius": radius,
+                }
+
+                await fetch('http://127.0.0.1:8000/nearby/', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken,
+
+                    },
+                }).then(response => response.json())
+                    .then(data => places = data)
+                return places
+            }
+
+            async updateStep(button) {
                 let active = document.querySelector("div.active");
                 let step = button.currentTarget.getAttribute('id');
                 if (step === 'nextStep') {
                     if (active.getAttribute('data-step') === '1') {
-                        this.form.querySelector("div[data-step='2'] div#places").innerHTML = "";
-                        let values = this.getValues();
-
-                        fetch('http://127.0.0.1:8000/nearby/', {
-                            method: 'POST',
-                            body: JSON.stringify(values),
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRFToken": csrftoken,
-                            },
-                        }).then(response => response.json())
-                            .then(data => this.addPlacesToHtml(data))
+                        let places = await this.getPlaces()
+                        this.addPlacesToHtml(places)
                         this.sortType()
-
                     }
                     active.nextElementSibling.classList.add("active");
                     active.classList.remove("active");
@@ -178,17 +230,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
-            save() {
-                let values = this.getValues();
-                let pk = this.form.querySelector("#pk").value;
-
+            async save() {
+                let values = await this.getValues()
                 let data = JSON.stringify({
                     is_open: true,
                     form_party: values,
-                    name: "test"
                 });
 
-                fetch('http://127.0.0.1:8000/update_form/' + pk + '/', {
+                fetch('http://127.0.0.1:8000/update_form/' + this.pk + '/', {
                     method: 'PATCH',
                     body: (data),
                     headers: {

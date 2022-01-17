@@ -7,15 +7,21 @@
 
     <form method="POST">
         {% csrf_token %}
-
         <div class="container">
             <p>Co chcesz zorganizować na imprezie:</p>
 
+            <ul class="list-group">
+
                 {% for service_category in service_categories %}
-                    <input id={{ service_category }} value="{{ service_category.pk }}" name="categories" type="checkbox">
-                    <label for="{{ service_category }}">{{ service_category.name }}</label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" id={{ service_category }} value="{{ service_category.pk }}"
+                               name="categories"
+                               type="checkbox">
+                    {{ service_category }}
+                    </label>
+                    {#                    <label class="list-group-item" for="{{ service_category }}">{{ service_category.name }}</label>#}
                 {% endfor %}
-            <br>
+            </ul>
             <input type="submit" value="Dalej">
         </div>
     </form>
@@ -23,5 +29,5 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'js/party_wizard.js'%}" type="module"></script>
+    <script src="{% static 'js/party_wizard.js' %}" type="module"></script>
 {% endblock %}

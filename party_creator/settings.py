@@ -19,6 +19,7 @@ import party_creator.local_settings
 
 config=load_dotenv('.env')
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,8 +45,8 @@ MY_APPS = [
     "account.apps.AccountConfig",
     "announcement.apps.AnnouncementConfig",
     "party_wizard.apps.PartyWizardConfig",
+    'django.contrib.gis'
 ]
-
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django.contrib.gis",
     'django_probes',
+    "leaflet",
 ] + MY_APPS
 
 
@@ -110,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -120,7 +121,7 @@ LANGUAGES = (
     ("en", "angielski"),
 )
 
-TIME_ZONE = "Europe/Warsaw"  #'UTC'
+TIME_ZONE = "Europe/Warsaw"  # 'UTC'
 
 USE_I18N = True
 

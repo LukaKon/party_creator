@@ -4,29 +4,43 @@
 {% block content %}
     {% load static %}
 
-    <div class="container">
-        <div>
-            <h2>Witam w kreatorze imprez!</h2>
-            <p>Wybierz jaką imprezę chcesz stworzyć!</p>
-        </div>
+    <div class="container border border-2">
+        <h2 class="text-center">Witam w kreatorze imprez!</h2>
+
+        {% if form_models %}
+            <div>
+                <h3>Przejdź do swoich niedokończonych imprez</h3>
+            {% for formmodel in form_models %}
+                <a href="{% url "party_wizard:list_to_do" pk=formmodel.pk %}"> {{ formmodel.name }} </a><br>
+            {% endfor %}
+            </div>
+        {% endif %}
+
 
         <form action="" method="POST">
             {% csrf_token %}
-            <div class="row">
-                {% for event_type in event_types %}
-                    <a href="{% url "party_wizard:choose_categories" pk=event_type.pk%}">
-                        <img src="{{ event_type.photo.image }}" class="w-25 p-1 rounded-pill" alt="test"><br>
-                            {{ event_type.name }}
-                    </a>
-                {% endfor %}
-            </div>
+
+            <p>Wybierz jaką imprezę chcesz stworzyć!</p>
+
+            {% for event_list in event_lists %}
+                <div class="row">
+                    {% for event in event_list %}
+                        <div class="col-sm-3">
+                            <a href="{% url "party_wizard:choose_categories" pk=event.pk %}">
+                                <img src="/media/{{ event.photo.image }}" class="w-100 p-1 rounded-pill"
+                                     alt="{{ event.name }}"><br>
+                                {{ event.name }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
         </form>
-    <div>
-        <br><br>
-        <p>Twoje niedokończone formularze: </p>
-        {% for form_model in form_models %}
-        <a href="{% url "party_wizard:list_to_do" pk=form_model.pk %}">{{ form_model.name }}</a> <br>
-        {% endfor %}
+
     </div>
-    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/choose_event.js' %}" type="module"></script>
 {% endblock %}

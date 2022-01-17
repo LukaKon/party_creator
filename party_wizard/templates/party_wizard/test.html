@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load leaflet_tags %}
+<head>
+    <meta charset="UTF-8">
+    {% leaflet_js %}
+    {% leaflet_css %}
+    <title>Title</title>
+</head>
+<style>
+    #myMap {
+        height: 180px;
+    }
+</style>
+<body>
+<div id="myMap"></div>
+{% for shopi in shop %}
+    {{ shopi.location}}
+{% endfor %}
+<script>
+    const mymap = L.map('myMap')
+</script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import {getCookie} from "./getCsrftoken.js";
+import {toastHandling} from "./toast_handling.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const csrftoken = getCookie("csrftoken");
@@ -39,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 let currentName = this.listToDo.querySelector("#currentName")
                 currentName.innerText = "Nazwa: " + name
                 const data = {"name": name}
-                console.log('test')
                 fetch('http://127.0.0.1:8000/update_form/' + pk + '/', {
                     method: 'PATCH',
                     body: JSON.stringify(data),
@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "X-CSRFToken": csrftoken,
                     },
                 });
+                toastHandling();
             });
         }
     }
@@ -57,4 +58,5 @@ document.addEventListener("DOMContentLoaded", function () {
     if (listToDo != null) {
         new ListToDoHandling(listToDo);
     }
+
 });
