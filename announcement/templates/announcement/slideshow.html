@@ -18,7 +18,7 @@
             <div class="carousel-item">
                 {% endif %}
                 <a href="{%url 'announcement:announcement_details' slug=image.announcement.slug %}"><img
-                        src="{{ image.image.small.url}}" class="d-block w-100" alt="..."></a>
+                        src="{{ image.image.thumbnail.url}}" class="d-block w-100" alt="..."></a>
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{  image.announcement.title }}</h5>
                     <p>{{ image.announcement.description }}</p>

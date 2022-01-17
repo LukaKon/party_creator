@@ -21,9 +21,9 @@ urlpatterns = [
         name="choose_categories",
     ),
     path("listtodo/<int:pk>/", views.ListToDoView.as_view(), name="list_to_do"),
+
     path(
         "startform/<int:form_model_pk>/<int:pk_servicecategory>/", views.StartFormView.as_view(), name="start_form"
     ),
     path("test/", views.TestView.as_view(), name="test123"),
-
 ]

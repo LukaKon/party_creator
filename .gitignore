@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# database backup file
+dump.sql
+
 # C extensions
 *.so
 

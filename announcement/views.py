@@ -10,7 +10,7 @@ from django.views import generic
 
 from announcement import forms
 
-from .models import Announcement, EventType, Image, ServiceCategory
+from .models import Announcement, EventType, Image, Movie, ServiceCategory
 from .utils.announcement import mixins, get_lat_lng
 
 
@@ -168,12 +168,25 @@ class UpdateAnnouncementView(
         queryset = Announcement.objects.filter(user_id=self.request.user.id)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        announcement = self.get_object()
+        context["images"] = Image.objects.filter(announcement=announcement)
+        context["movies"] = Movie.objects.filter(announcement=announcement)
+        return context
+
     def form_valid(self, form):
+        # images from form
         existing_images = self.request.POST.getlist("all_images")
         # existing_images=self.get_object().image.all()
         images_set = self.request.FILES.getlist("images")
         images_del = self.request.POST.getlist("img[]")
         main_image_selector = self.request.POST.get("main_image")
+
+        # movies from form
+        # existing_movies=self.request.POST.getlist('all_movies')
+        # movies_set=self.request.FILES.getlist('movies')
+        # movies_del=self.requset.POST.getlist('mov[]')
 
         # Convert main_iamage_selector to int
         if main_image_selector == None:
@@ -197,7 +210,7 @@ class UpdateAnnouncementView(
                         image.save()
 
         if images_set:
-            for counter, image in enumerate(images_set, start=len(existing_images)+1):
+            for counter, image in enumerate(images_set, start=len(existing_images) + 1):
                 if counter == main_image_selector:
                     is_main = True
                 else:
@@ -213,58 +226,6 @@ class UpdateAnnouncementView(
 
         self.object = form.save()
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        announcement = self.get_object()
-        context["images"] = Image.objects.filter(announcement=announcement)
-        return context
-
-    # def get_success_url(self):
-    #     """Return the URL to redirect to after processing a valid form."""
-    #     return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
-    # def form_valid(self, form):
-    #     """If the form is valid, redirect to the supplied URL."""
-    #     announcement = self.get_object()
-    #     # images= announcement.image.all()
-    #     # main_image_selector = request.POST.get("main_image")
-    #     for image in announcement.image.all():
-    #         image.is_main=False
-    #         # breakpoint()
-    #         image.save()
-    #
-    #     # self.object=form.save()
-    #     form.save()
-    #     return HttpResponseRedirect(self.get_success_url())
-
-    # def post(self, request, *args, **kwargs):
-    # super(UpdateAnnouncementView, self).post(request,*args, **kwargs)
-
-    # announcement_form = self.get_form()
-    # images_set = request.FILES.getlist("images")
-    # super(UpdateAnnouncementView, self).post(request, *args, **kwargs)
-
-    # return super().post(request,*args, **kwargs)
-
-    # if announcement_form.is_valid():
-    #     announcement = announcement_form.save(commit=False)
-    #     announcement.user = self.request.user
-    #     announcement.save()
-
-    #     for counter, image in enumerate(images_set):
-    #         if counter == int(main_image_selector):
-    #             is_main = True
-    #         else:
-    #             is_main = False
-
-    #         Image.objects.create(
-    #             image=image,
-    #             announcement=announcement,
-    #             is_main=is_main,
-    #         )
-    #     return redirect(
-    #         reverse("account:profile", kwargs={"pk": self.request.user.pk})
-    #     )
 
 
 class DeleteAnnouncementView(

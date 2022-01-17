@@ -10,10 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from dotenv import dotenv_values, load_dotenv
+
 import party_creator.local_settings
+
+config=load_dotenv('.env')
+
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,19 +28,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#c13jyes32=3z7r@=4b0@tngds9va)a6a3#@_m6)!%&8t_va@5"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOST = os.getenv("ALLOWED_HOSTS")  # .split(" ")
 
 # Application definition
 MY_APPS = [
-    "django_extensions",
     "account.apps.AccountConfig",
     "announcement.apps.AnnouncementConfig",
     "party_wizard.apps.PartyWizardConfig",
@@ -41,15 +49,19 @@ MY_APPS = [
 ]
 
 INSTALLED_APPS = [
-                     "django.contrib.admin",
-                     "django.contrib.auth",
-                     "django.contrib.contenttypes",
-                     "django.contrib.sessions",
-                     "django.contrib.messages",
-                     "django.contrib.staticfiles",
-                     "rest_framework",
-                     "leaflet",
-                 ] + MY_APPS
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django_extensions",
+    "rest_framework",
+    "django.contrib.gis",
+    'django_probes',
+    "leaflet",
+] + MY_APPS
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

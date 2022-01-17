@@ -4,4 +4,7 @@ podman run -d \
     -e POSTGRES_USER=lko \
     -e POSTGRES_DB=party_db \
     -p 5432:5432 \
-    postgres
+    -v party_db:/var/lib/postgresql/data \
+    docker.io/postgres
+
+# FROM postgres:14-alpine

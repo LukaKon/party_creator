@@ -1,29 +1,26 @@
+
+const inputImage = document.querySelector('#images');
+const inputMovie= document.querySelector('#movies')
+
 import {initMap} from "./city_autocomplete.js";
 
 initMap();
 
-const inputFile = document.querySelector('#images');
 const mainDiv = document.querySelector('#img-num')
 const previewContainer = document.querySelector('#imgPreview');
 
-inputFile.addEventListener('change', function () {
+console.log('input img:', inputImage)
+console.log('input mov:', inputMovie)
+
+inputImage.addEventListener('change', function () {
     previewContainer.innerHTML = '';
 
     const files = this.files;
+    console.log('files img: ',files)
     if (files.length > 0) {
         files_arr = Array.from(files)
 
-        // number of selected pictures
-        // const div = document.createElement('div');
-        // div.className = 'col';
-        // const imgNumber = document.createElement('h3');
-        // imgNumber.textContent = `Dodano ${files_arr.length} plików.`;
-
-
-        // div.appendChild(imgNumber);
-        // previewContainer.appendChild(div);
-
-        let index_from_template = JSON.parse(document.querySelector('#counter').textContent)
+        let index_from_template = JSON.parse(document.querySelector('#img_counter').textContent)
 
         console.log('index form html: ', index_from_template);
         if (index_from_template === null) {
@@ -68,14 +65,10 @@ inputFile.addEventListener('change', function () {
                     img.className = 'image-preview__image';
                     img.setAttribute('src', this.result);
                     img.setAttribute('alt', index);
-                    img.setAttribute('style', 'max-height:100;auto');
-                    // img.style.maxHeight=100;
-                    // img.setAttribute('src', reader.result);
+                    img.setAttribute('style', 'max-height:100px;width:auto');
 
                     const imgName = document.createElement('p');
                     imgName.innerText = file.name;
-                    // imgName.style.fontSize=300;
-                    imgName.setAttribute('style','background:yellow');
 
                     radioLabel.appendChild(img);
                     radioLabel.appendChild(imgName);
@@ -105,5 +98,13 @@ inputFile.addEventListener('change', function () {
 
         emptyField.appendChild(h3);
         previewContainer.appendChild(emptyField);
-    }
+    };
 });
+
+inputMovie.addEventListener('change', function(){
+    const files = this.files;
+    console.log('files mov: ',files)
+    if (files.length > 0) {
+        files_arr = Array.from(files)
+        console.log('files: ',files_arr);
+    };

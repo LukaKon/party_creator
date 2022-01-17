@@ -1,21 +1,21 @@
 import googlemaps
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.shortcuts import redirect, render
+
 from django.views.generic import CreateView, View, UpdateView, FormView
+
 from rest_framework import generics, views
 from rest_framework.response import Response
 
+import announcement.utils.announcement.mixins as mixins
 import party_creator.settings
+
 import party_wizard.models
 
 from announcement.models import EventType, ServiceCategory
-import party_creator.settings
 from party_wizard.models import FormModel
-from party_wizard.serializers import FormModelSerializer, GoogleNearbySearchSerializer
-import party_wizard.utils.party_wizard as utils
-import announcement.utils.announcement.mixins as mixins
+from party_wizard.serializers import (FormModelSerializer,
+                                      GoogleNearbySearchSerializer)
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 
@@ -90,10 +90,12 @@ class ChooseEventView(LoginRequiredMixin, View):
                 count = 0
 
         form_models = FormModel.objects.filter(user_id=self.request.user.pk)
+
         context = {
             "event_lists": event_lists,
             "form_models": form_models
         }
+
 
         return render(
             request,
@@ -119,9 +121,7 @@ class ChooseCategoriesView(LoginRequiredMixin, View):
         event_type = EventType.objects.get(pk=kwargs["pk"])
 
         form_party = FormModel.objects.create(
-            name=event_type.name,
-            user_id=self.request.user.pk,
-            is_open=True
+            name=event_type.name, user_id=self.request.user.pk, is_open=True
         )
         for category in categories:
             form_party.categories.add(ServiceCategory.objects.get(pk=int(category)))
@@ -136,7 +136,7 @@ class ListToDoView(LoginRequiredMixin, mixins.UserAccessMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        categories = super().get_object().categories.all()  # [category.name.lower() for category in super().get_object().categories.all()]
+        categories = super().get_object().categories.all()  
         context['categories'] = categories
         return context
 
