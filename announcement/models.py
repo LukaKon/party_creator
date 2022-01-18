@@ -1,4 +1,5 @@
 import stdimage
+
 # from django.db import models
 from django.contrib.gis.db import models
 from django.shortcuts import reverse
@@ -45,11 +46,12 @@ class Announcement(models.Model):
     category = models.ForeignKey(
         ServiceCategory,
         verbose_name="announcement_categories",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     event_type = models.ManyToManyField(EventType, related_name="announcements")
     date = models.DateTimeField(auto_now=True)
     city = models.PointField()
+    # is_active=models.BooleanField(default=True)
 
     class Meta:
         index_together = (("id", "slug"),)
@@ -113,21 +115,7 @@ class Image(Multimedia):
         delete_orphans=True,
         verbose_name="images",
     )
-    # announcement = models.ForeignKey(
-    #     Announcement,
-    #     verbose_name="announcement_image",
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    #     related_name="image",
-    # )
-    # event_type = models.OneToOneField(
-    #     EventType,
-    #     verbose_name="event_type_image",
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
+
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front
 
 

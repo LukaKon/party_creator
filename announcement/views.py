@@ -13,11 +13,13 @@ from announcement import forms
 from .models import Announcement, EventType, Image, Movie, ServiceCategory
 from .utils.announcement import get_lat_lng, mixins
 
+from .serializers import AnnouncementSerializer
+from rest_framework import generics
 
 class HomeView(generic.FormView):
     """Home page."""
 
-    template_name = "announcement/index.html"
+    template_name = "announcement/indeks.html"
     form_class = forms.SearchForm
     newsletter_form = forms.NewsletterForm
 
@@ -87,7 +89,7 @@ class CategoryListView(generic.ListView):
 
 
 class AnnouncementListView(generic.ListView):
-    """List of announcements."""
+    """List of announcements."""# TODO: Do we need this???
 
     model = Announcement
     template_name = "announcement/announcement_list.html"
@@ -239,3 +241,10 @@ class DeleteAnnouncementView(
     def get_success_url(self):
         """Return the URL to redirect to after processing a valid form."""
         return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
+
+class AnnouncementAPIList(generics.ListCreateAPIView):
+    queryset=Announcement.objects.all()
+    serializer_class=AnnouncementSerializer
+class AnnouncementAPIDetails(generics.RetrieveDestroyAPIView):
+    queryset=Announcement.objects.all()
+    serializer_class=AnnouncementSerializer

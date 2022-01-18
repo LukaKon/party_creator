@@ -45,19 +45,26 @@ MY_APPS = [
     "party_wizard.apps.PartyWizardConfig",
 ]
 
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+EXTENSIONS = [
     "django_extensions",
     "rest_framework",
     "django.contrib.gis",
     "django_probes",
     "leaflet",
-] + MY_APPS
+]
+
+INSTALLED_APPS = (
+    [
+        "django.contrib.admin",
+        "django.contrib.auth",
+        "django.contrib.contenttypes",
+        "django.contrib.sessions",
+        "django.contrib.messages",
+        "django.contrib.staticfiles",
+    ]
+    + MY_APPS
+    + EXTENSIONS
+)
 
 
 MIDDLEWARE = [
@@ -75,7 +82,7 @@ ROOT_URLCONF = "party_creator.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates", BASE_DIR / 'announcement_front/build'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -154,7 +161,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/2.2/howto/static-files/#configuring-static-files
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / 'announcement_front/build/static']
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # location where the media (profile pic) are stored

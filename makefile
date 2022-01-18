@@ -48,3 +48,7 @@ restore:
 
 #dark:
 #	docker-compose exec django darker .
+
+# TODO: react rebuild server command should run from announcement_front folder
+npmserv:
+	docker-compose exec django npm run build
