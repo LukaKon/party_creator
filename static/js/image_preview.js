@@ -108,3 +108,4 @@ inputMovie.addEventListener('change', function(){
         files_arr = Array.from(files)
         console.log('files: ',files_arr);
     };
+});

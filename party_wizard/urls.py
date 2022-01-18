@@ -12,7 +12,6 @@ urlpatterns = [
     path("add_form/", views.CreateFormView.as_view(), name="add_form_view"),
     path("get_form/<int:pk>/", views.GetFormView.as_view(), name="get_form_view"),
     path("nearby/", views.GoogleNearbySearch.as_view(), name="test"),
-
     # PRIMARY
     path("chooseevent/", views.ChooseEventView.as_view(), name="choose_event"),
     path(
@@ -21,9 +20,10 @@ urlpatterns = [
         name="choose_categories",
     ),
     path("listtodo/<int:pk>/", views.ListToDoView.as_view(), name="list_to_do"),
-
     path(
-        "startform/<int:form_model_pk>/<int:pk_servicecategory>/", views.StartFormView.as_view(), name="start_form"
+        "startform/<int:form_model_pk>/<int:pk_servicecategory>/",
+        views.StartFormView.as_view(),
+        name="start_form",
     ),
     path("test/", views.TestView.as_view(), name="test123"),
 ]

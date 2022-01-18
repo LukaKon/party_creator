@@ -2,10 +2,10 @@ from pprint import pprint
 
 import googlemaps
 
-import party_creator.local_settings
 from announcement.models import Announcement, ServiceCategory
+from party_creator.settings import GOOGLE_API_KEY
 
-gmaps = googlemaps.Client(key=party_creator.local_settings.GOOGLE_API_KEY)
+gmaps = googlemaps.Client(key=GOOGLE_API_KEY)
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
@@ -15,12 +15,11 @@ def get_places(location, radius, type_of_places):
     lat_lng = gmaps.places(query=location).get("results")[0]["geometry"]["location"]
     location = Point(lat_lng["lat"], lat_lng["lng"], srid=4326)
     type_of_places = ServiceCategory.objects.get(name=type_of_places)
-    announcements = Announcement.objects.filter(city__distance_lte=(location, Distance(km=radius)),
-                                               category=type_of_places)
-
+    announcements = Announcement.objects.filter(
+        city__distance_lte=(location, Distance(km=radius)), category=type_of_places
+    )
 
     return announcements
-
 
     # print(type_of_places)
     # if type_of_places == 'Restauracja':
