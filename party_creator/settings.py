@@ -82,7 +82,7 @@ ROOT_URLCONF = "party_creator.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates", BASE_DIR / 'announcement_front/build'],
+        "DIRS": [BASE_DIR / "templates", BASE_DIR / "announcement_front/build"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -161,12 +161,18 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/2.2/howto/static-files/#configuring-static-files
-STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / 'announcement_front/build/static']
+STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / "announcement_front/build/static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # location where the media (profile pic) are stored
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"  # url that will serve media files
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ]
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -7,14 +7,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, reverse
 from django.urls import reverse_lazy
 from django.views import generic
+from rest_framework import generics
 
 from announcement import forms
 
 from .models import Announcement, EventType, Image, Movie, ServiceCategory
+from .serializers import AnnouncementSerializer
 from .utils.announcement import get_lat_lng, mixins
 
-from .serializers import AnnouncementSerializer
-from rest_framework import generics
 
 class HomeView(generic.FormView):
     """Home page."""
@@ -89,7 +89,7 @@ class CategoryListView(generic.ListView):
 
 
 class AnnouncementListView(generic.ListView):
-    """List of announcements."""# TODO: Do we need this???
+    """List of announcements."""  # TODO: Do we need this???
 
     model = Announcement
     template_name = "announcement/announcement_list.html"
@@ -242,9 +242,14 @@ class DeleteAnnouncementView(
         """Return the URL to redirect to after processing a valid form."""
         return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
 
+
 class AnnouncementAPIList(generics.ListCreateAPIView):
-    queryset=Announcement.objects.all()
-    serializer_class=AnnouncementSerializer
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+    lookup_field = "slug"
+
+
 class AnnouncementAPIDetails(generics.RetrieveDestroyAPIView):
-    queryset=Announcement.objects.all()
-    serializer_class=AnnouncementSerializer
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+    lookup_field = "slug"

@@ -16,6 +16,10 @@ class AnnouncementAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "description",
+        'city',
+        'date',
+        'user',
+        'category',
     )
     prepopulated_fields = {"slug": ("title",)}
 

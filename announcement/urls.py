@@ -1,5 +1,5 @@
 from django.contrib.auth import views as auth_views
-from django.urls import path,re_path
+from django.urls import path, re_path
 from django.views.generic import TemplateView
 
 from announcement import views
@@ -33,11 +33,9 @@ urlpatterns = [
         name="delete_announcement",
     ),
     # path("announcement_list/"),
-    path('react/', TemplateView.as_view(template_name='index.html')),
-
+    path("react/", TemplateView.as_view(template_name="index.html")),
     # api
-    path('api/',views.AnnouncementAPIList.as_view(),name='anndetail'),
-    path('api/<int:pk>/',views.AnnouncementAPIDetails.as_view(), name='annlist'),
-    # path('api/<slug:slug>/',views.AnnouncementAPIDetails.as_view(), name='annlist'),
-
+    path("api/", views.AnnouncementAPIList.as_view(), name="ann_list"),
+    # path("api/<int:pk>/", views.AnnouncementAPIDetails.as_view(), name="annlist"),
+    path('api/<slug:slug>/',views.AnnouncementAPIDetails.as_view(), name='annlist'),
 ]
