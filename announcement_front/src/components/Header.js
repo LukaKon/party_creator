@@ -26,7 +26,7 @@ function Header(){
         >
             <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
-                Party Wizard
+                Party Wizard - have fun!
                 </Typography>
             </Toolbar>
         </AppBar>

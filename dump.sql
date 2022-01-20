@@ -1239,11 +1239,10 @@ COPY public.account_firma (id, name) FROM stdin;
 --
 
 COPY public.account_user (id, password, last_login, is_superuser, first_name, last_name, is_staff, is_active, date_joined, email, is_moderator, image, is_firma) FROM stdin;
-2	pbkdf2_sha256$260000$b5ISRaf2WdFMM5I8XEyhBd$rQwz2Y88+IGBaLKgMlh3ti0VhPSATDEzgSHhZ2ETsbE=	\N	f	James	Bond	f	t	2021-11-11 21:32:12.033207+00	007@jb.uk	f	account/user/PQMZ44CIVVBQVG5P563GVRDZXA.jpg	f
 4	pbkdf2_sha256$260000$ERgk0p7TW46BajyxOmMmte$NwMhrYdwQixee/tHD7leYj/Q0PWmhsNurRlGYKR5bAo=	2021-11-27 17:09:09.8733+00	f	lk	lk	f	t	2021-11-24 18:40:58.555504+00	lk@lk.lk	f	default.jpg	f
-3	pbkdf2_sha256$260000$joQggq7q4Ff3JegWuz6SqJ$sSVe0yEzqjqlQyjKcg/lZNERBM28Z8EUx9oRclEOJ8k=	2021-11-28 20:19:44.340739+00	t			t	t	2021-11-12 22:52:29.65778+00	lukasz.konieczny.lk@gmail.com	f	account/user/default.jpg	f
 5	pbkdf2_sha256$260000$8zmJ09mHfy7q5tdf3m16e0$xeJkd4U+M/03bY40THE/hbDPXa2DA2f0KqCUH8rVi1Y=	2021-12-01 21:13:31.601952+00	f	Krzyś	Nowak	f	t	2021-12-01 21:13:15.04033+00	kn@wp.pl	f	account/user/ICMJESYOIJASRBNGH4G3CJEVVY.jpg	f
 1	pbkdf2_sha256$260000$tMhhrG1iwoJOzrY9HSuNQl$/1u5hiQ0HEl3fulOYERtxwVGisR7N+rDits/qX32upM=	2022-01-17 16:25:10.066701+00	f	Jacek	Placek	f	t	2021-11-11 20:03:43.702237+00	jd@jd.jd	f	account/user/4NISA7QXOJGBNIS3AR5JMOIUUE.jpg	f
+3	pbkdf2_sha256$260000$joQggq7q4Ff3JegWuz6SqJ$sSVe0yEzqjqlQyjKcg/lZNERBM28Z8EUx9oRclEOJ8k=	2022-01-19 17:09:04.931267+00	t			t	t	2021-11-12 22:52:29.65778+00	lukasz.konieczny.lk@gmail.com	f	account/user/default.jpg	f
 \.
 
 
@@ -1276,40 +1275,6 @@ COPY public.account_useradmin (user_ptr_id) FROM stdin;
 --
 
 COPY public.announcement_announcement (id, title, description, slug, date, user_id, category_id, city) FROM stdin;
-72	tarst	wfpt	tarst-likn	2021-11-23 00:00:00+00	3	4	0101000020E610000000000000000000000000000000000000
-78	lk ogłoszenie	ine.,hmart	lk-ogoszenie-1fa4	2021-11-24 00:00:00+00	4	4	0101000020E610000000000000000000000000000000000000
-79	lk ogłoszenie	ine.,hmart	lk-ogoszenie-s9rl	2021-11-24 00:00:00+00	4	4	0101000020E610000000000000000000000000000000000000
-69	Lokal weselny	Piękne miejsce.	lokal-weselny	2021-11-23 00:00:00+00	3	4	0101000020E610000000000000000000000000000000000000
-70	Lokal weselny	Piękne miejsce.	rtrast	2021-11-23 00:00:00+00	1	4	0101000020E610000000000000000000000000000000000000
-71	tarst	wfpt	tarst	2021-11-23 00:00:00+00	3	4	0101000020E610000000000000000000000000000000000000
-73	try again	wfpt	tarst-jt15	2021-11-27 00:00:00+00	1	1	0101000020E610000000000000000000000000000000000000
-76	lk ogłoszenie 5	pionek	lk-ogoszenie-or1r	2021-11-27 00:00:00+00	4	1	0101000020E610000000000000000000000000000000000000
-77	lk ogłoszenie3	bbbbbtft	lk-ogoszenie-fdmc	2021-11-27 22:41:17.896007+00	4	4	0101000020E610000000000000000000000000000000000000
-81	sala weselna	na wielu gości	sala-weselna	2021-11-28 20:21:18.64759+00	1	4	0101000020E610000000000000000000000000000000000000
-82	party time	bla bla lba	party-time	2021-11-28 20:39:35.949751+00	1	4	0101000020E610000000000000000000000000000000000000
-83	biba	miejsce na imprezy firmowe	biba	2021-11-29 19:40:09.569654+00	1	4	0101000020E610000000000000000000000000000000000000
-84	Paparazzi	fotograf okolicznościowy	paparazzi	2021-11-29 19:41:19.917593+00	1	3	0101000020E610000000000000000000000000000000000000
-85	Jadło i napitki	żarcie jakie lubisz	jado-i-napitki	2021-11-29 19:42:17.757434+00	1	2	0101000020E610000000000000000000000000000000000000
-74	test	test dłuuuuuuuuuuuugi text żeby sprawdzić zawijanie	test	2021-11-23 00:00:00+00	1	4	0101000020E610000000000000000000000000000000000000
-87	test podglądu zdjęć	zobaczymy ile zdjęć się finalnie doda...	test-podgladu-zdjec	2021-12-07 19:11:30.474107+00	1	3	0101000020E610000000000000000000000000000000000000
-106	testowe 5	xcdxcvd	tratwfpwf	2022-01-01 20:58:00.734657+00	1	5	0101000020E610000000000000000000000000000000000000
-97	Main image TEST	dużo zmian	main-image-test-wgn8	2022-01-02 12:14:20.447453+00	1	4	0101000020E610000000000000000000000000000000000000
-88	Nowe: test ze zdjęciami	bla bla bla bla bla lba... coś nowego	nowe-test-ze-zdjeciami	2021-12-11 19:40:38.737222+00	1	2	0101000020E610000000000000000000000000000000000000
-91	main selector try	ntiarntxc	main-selector-try	2021-12-12 19:18:38.309997+00	1	4	0101000020E610000000000000000000000000000000000000
-92	Main try again	nihd.x,co	main-try-again	2021-12-12 19:19:48.744429+00	1	4	0101000020E610000000000000000000000000000000000000
-95	Main image TEST	,hmdwyuf	main-image-test-edg4	2021-12-12 19:41:18.98317+00	1	4	0101000020E610000000000000000000000000000000000000
-86	Bitka, wypitka i inne atrakcje	picie i rozrywka	bitka-i-wypitka	2021-12-07 21:38:12.426258+00	1	4	0101000020E610000000000000000000000000000000000000
-99	TEST main image	hmdwfwy;	test-main-image-wify	2021-12-12 20:25:57.820628+00	1	4	0101000020E610000000000000000000000000000000000000
-100	NOWY test z mainem	hmowfp,h	nowy-test-z-mainem	2022-01-02 14:04:49.228146+00	1	4	0101000020E610000000000000000000000000000000000000
-101	Try again	niofw,h	try-again	2021-12-12 20:37:20.784793+00	1	4	0101000020E610000000000000000000000000000000000000
-98	TEST main image	hmdwfwy;	test-main-image	2021-12-12 20:38:09.789551+00	1	4	0101000020E610000000000000000000000000000000000000
-90	NOWE	Ogłoszenie	nowe	2022-01-03 18:02:12.667613+00	1	4	0101000020E610000000000000000000000000000000000000
-105	ratarstars	zmiana opisu	ratarstars-wp8t	2021-12-27 21:06:41.37366+00	1	5	0101000020E610000000000000000000000000000000000000
-103	Dodawanie	czy nadal działa??	dodawanie	2021-12-29 21:11:35.077505+00	1	1	0101000020E610000000000000000000000000000000000000
-102	Test z wyświetlaniem main image	zmiany	test-z-wyswietlaniem-main-image	2022-01-06 12:55:52.824232+00	1	1	0101000020E610000000000000000000000000000000000000
-104	ratarstars	tratdxzcd	ratarstars	2021-12-15 18:04:00.326374+00	1	5	0101000020E610000000000000000000000000000000000000
-107	Park	Impreza na świeżym powietrzu	park	2022-01-17 16:41:25.178281+00	1	3	0101000020E610000000000000000000000000000000000000
-108	Park	wro	park-vu05	2022-01-17 16:42:40.95008+00	1	2	0101000020E610000000000000000000000000000000000000
 \.
 
 
@@ -1318,32 +1283,6 @@ COPY public.announcement_announcement (id, title, description, slug, date, user_
 --
 
 COPY public.announcement_announcement_event_type (id, announcement_id, eventtype_id) FROM stdin;
-35	70	1
-36	70	2
-37	73	1
-39	76	3
-40	77	2
-41	81	1
-42	81	2
-1	84	2
-2	85	3
-3	84	3
-4	83	1
-5	83	2
-7	85	2
-43	86	3
-44	88	1
-45	88	3
-46	100	2
-47	101	3
-48	98	2
-49	97	2
-50	102	2
-51	103	1
-52	106	1
-53	105	3
-54	90	2
-55	108	3
 \.
 
 
@@ -1363,9 +1302,6 @@ COPY public.announcement_eventtype (id, name, photo_id) FROM stdin;
 --
 
 COPY public.announcement_eventtype_category (id, eventtype_id, servicecategory_id) FROM stdin;
-1	1	1
-2	3	2
-3	2	4
 \.
 
 
@@ -1374,75 +1310,6 @@ COPY public.announcement_eventtype_category (id, eventtype_id, servicecategory_i
 --
 
 COPY public.announcement_image (id, image, announcement_id, event_type_id, is_main) FROM stdin;
-58	announcement/image/2SGO4YKNDJHB3JW6GCPKDGOQXM.JPG	69	\N	f
-59	announcement/image/FWZALSSOZRATXEXNPUNNLU5OQY.JPG	69	\N	f
-60	announcement/image/DCJGDS6NK5BIVGKUYD4KWTGYO4.JPG	69	\N	f
-61	announcement/image/G4D2I5ELXBHIXJ6X34K52INIKU.JPG	69	\N	f
-62	announcement/image/MBDH64EKPZGULO735P2J4FEG2E.JPG	71	\N	f
-63	announcement/image/TGJ3ZIGFNFFGVPIWML3VH6DHU4.JPG	72	\N	f
-67	announcement/image/XGJPH37V4FA5DHAYQF544IMJ2M.JPG	76	\N	f
-68	announcement/image/GQQ2S3MXLRCQTD5ZONZNHQEFQM.JPG	77	\N	f
-69	announcement/image/S2CSGDEEWJGRZGKLYQPNQAP75U.JPG	78	\N	f
-70	announcement/image/QZ3R2SBCJVBIHPM5BRIAZPVVYA.JPG	79	\N	f
-72	announcement/image/RTQ6RZXIIZCITCQTJ5UFLHTMPY.JPG	82	\N	f
-73	announcement/image/77AAPNB4KBD3VEQCJSXVAC3CZM.JPG	82	\N	f
-74	announcement/image/QH7XUSIRLNEDRPPA6ZS62YPQKY.JPG	83	\N	f
-75	announcement/image/Q5Q7FRO73JFEHCI6Y7V5SIQBOE.JPG	83	\N	f
-76	announcement/image/AUFJJOAM2NAHTP6T3AU4C22MTM.JPG	83	\N	f
-77	announcement/image/ZQXBJT3UD5CHRMAZ5O6IF7RF5E.JPG	83	\N	f
-78	announcement/image/HCAE6B5QUJGC3KRNYRPZOFPXSY.JPG	84	\N	f
-79	announcement/image/CPJ23D7UINAW7AA34EXNTEI3BE.JPG	84	\N	f
-80	announcement/image/TGCMJQFFK5GVXNT4MXZBFT4GWY.JPG	84	\N	f
-81	announcement/image/N6AUUIJSYRFUFGEDODEAEW4QTY.JPG	85	\N	f
-82	announcement/image/5Y73NRB7VNFGPHZV44WE64LKJY.JPG	85	\N	f
-83	announcement/image/GPETVLSMDRDRDCJ4B3IJXA2X44.JPG	86	\N	f
-84	announcement/image/Y2VOYFM5R5DQ7HJ7VYISKRFWQA.JPG	86	\N	f
-85	announcement/image/SZNLDGZKQZBF5HRADYEKRIV6F4.JPG	87	\N	f
-87	announcement/image/N62LH4LYYFBXHPZ3FLI4J67BFE.JPG	88	\N	f
-92	announcement/image/J4SET36B25GVJA3F7P2YIPDJ4M.JPG	88	\N	f
-93	announcement/image/WYVY5VDIKJH7FAQSYHLKGVS37Y.JPG	88	\N	f
-94	announcement/image/VOEY5DHJCZCZ7FFECWKFLNQM6A.JPG	88	\N	f
-95	announcement/image/6QA7OAMABNDH3P2UZ5M7SVEJCY.JPG	91	\N	f
-96	announcement/image/LIVRZE6RNVGYJDCTSJYSAMOQCE.JPG	91	\N	f
-97	announcement/image/ITWD3SM2PJARNFEMMQYSNVOPLI.JPG	92	\N	f
-98	announcement/image/ACRGTZ4PTFGBNC3YHHXKTTOVAU.JPG	92	\N	f
-99	0	95	\N	f
-103	announcement/image/KBXCJ73VT5DVPEV7ML7ISXQI5Y.JPG	99	\N	f
-104	announcement/image/QHUVWGMHAZGGXBCFREF6NRIY7U.JPG	99	\N	f
-105	announcement/image/FM4ICIZAXND4BBPS7STAX52M2U.JPG	99	\N	f
-109	announcement/image/XS7UBH6XZZBR5GJ23VQ52DESFQ.JPG	101	\N	t
-111	announcement/image/AQWXDRNC4FEV3G5GJNTLRGDA2I.JPG	101	\N	f
-138	announcement/image/LJ2AX52Q4RFOVD7HFUYTE7RMYU.JPG	104	\N	f
-139	announcement/image/Y2V3OWH7MRFMTN5MEF5QILBJMY.JPG	104	\N	t
-156	announcement/image/NYSJRSY2MJBLJKHNMZEE3F43I4.jpg	106	\N	f
-149	announcement/image/NGZZ7YVVRRD3RFPH2Z3TSMYDFA.JPG	106	\N	f
-136	announcement/image/SWFRO6ONVFBXVEDRLUGUUTBPTU.JPG	103	\N	f
-135	announcement/image/XLITJDF7L5ENXEHTURMNVVIRYE.JPG	103	\N	f
-134	announcement/image/CPK45VHX25H3HKKYFL57O6C3XE.JPG	103	\N	f
-137	announcement/image/GBGQRM352BEIVMYDF5XGTOBIVY.JPG	103	\N	f
-125	announcement/image/BQYUGQUKLRFERGMJPQSUZ3WD6U.JPG	102	\N	f
-153	announcement/image/MTDU3AMLIZGZVK3IWKCNGICYMQ.JPG	103	\N	t
-129	announcement/image/NWF6LIG6PJGYHBDNVUBM2OMD5Y.JPG	102	\N	f
-123	announcement/image/ZBZ2CN6NRZC63CS4J2CWZQXMQE.JPG	102	\N	f
-131	announcement/image/4CTSMCVJSRBSHO3XQ5AK7MKTTI.JPG	102	\N	f
-106	announcement/image/CNCORHGGTBBVRAMRUMNT3XUOEM.JPG	100	\N	f
-91	announcement/image/NBVAMXSB7JAM5IKINF2WLQKJJU.jpg	90	\N	f
-155	announcement/image/5S2SEOHXFVDONAGV4EQ3YJO4XY.JPG	97	\N	f
-142	announcement/image/GDS4CZ66DJDKVO7UCTDWQTQXJI.JPG	106	\N	f
-157	announcement/image/H3THUKYHG5HO5D5INJMZGSU22A.JPG	106	\N	t
-152	announcement/image/UCSTSFHWZVDD3NVQKKEEOFEREM.JPG	106	\N	f
-158	announcement/image/5C2JI4LSHBDXDBV7EOOGHAP4FM.JPG	106	\N	f
-159	announcement/image/PHWCAWP5OJDAJCYYTHYN7EC3GI.jpg	97	\N	f
-160	announcement/image/7APBWEOHP5GCHCFPBLLLHJHXUM.jpg	97	\N	f
-161	announcement/image/WV3JJA5AZFCVXBGAN5TXL4FCIA.jpg	97	\N	t
-162	announcement/image/DEKS4JTZSNDOJNIRIJWAMESTSY.jpg	100	\N	f
-163	announcement/image/EQDSUW7GUVAI5DIWHVKKL7KJYE.jpg	100	\N	f
-164	announcement/image/XJ7TOJFBMBH75EMSBEXOFZC6XQ.jpg	100	\N	t
-165	announcement/image/XTEJRMORBBFJBA3JPXILLBS3EM.jpg	90	\N	t
-166	announcement/image/OVKPSIRCFNFVHMDQ3T5IT3VZNI.jpg	102	\N	f
-167	announcement/image/363APXGGUNEQRLWRBKSM5QM7DY.JPG	108	\N	f
-168	announcement/image/PKKSK5XPBZC7XBZTZ4AAJP7MZ4.JPG	108	\N	f
-169	announcement/image/OEWRKOAKG5CXNBVTPHJCKACQDY.JPG	108	\N	f
 \.
 
 
@@ -1527,62 +1394,42 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 26	Can change user	7	change_useradmin
 27	Can delete user	7	delete_useradmin
 28	Can view user	7	view_useradmin
-29	Can add category	8	add_category
-30	Can change category	8	change_category
-31	Can delete category	8	delete_category
-32	Can view category	8	view_category
+29	Can add firma	8	add_firma
+30	Can change firma	8	change_firma
+31	Can delete firma	8	delete_firma
+32	Can view firma	8	view_firma
 33	Can add announcement	9	add_announcement
 34	Can change announcement	9	change_announcement
 35	Can delete announcement	9	delete_announcement
 36	Can view announcement	9	view_announcement
-37	Can add firma	10	add_firma
-38	Can change firma	10	change_firma
-39	Can delete firma	10	delete_firma
-40	Can view firma	10	view_firma
-41	Can add image	11	add_image
-42	Can change image	11	change_image
-43	Can delete image	11	delete_image
-44	Can view image	11	view_image
-45	Can add announcement image	11	add_announcementimage
-46	Can change announcement image	11	change_announcementimage
-47	Can delete announcement image	11	delete_announcementimage
-48	Can view announcement image	11	view_announcementimage
-49	Can add event type	12	add_eventtype
-50	Can change event type	12	change_eventtype
-51	Can delete event type	12	delete_eventtype
-52	Can view event type	12	view_eventtype
-53	Can add newsletter	13	add_newsletter
-54	Can change newsletter	13	change_newsletter
-55	Can delete newsletter	13	delete_newsletter
-56	Can view newsletter	13	view_newsletter
-57	Can add service category	8	add_servicecategory
-58	Can change service category	8	change_servicecategory
-59	Can delete service category	8	delete_servicecategory
-60	Can view service category	8	view_servicecategory
-61	Can add testowa	14	add_testowa
-62	Can change testowa	14	change_testowa
-63	Can delete testowa	14	delete_testowa
-64	Can view testowa	14	view_testowa
-65	Can add nowa	15	add_nowa
-66	Can change nowa	15	change_nowa
-67	Can delete nowa	15	delete_nowa
-68	Can view nowa	15	view_nowa
-69	Can add new	16	add_new
-70	Can change new	16	change_new
-71	Can delete new	16	delete_new
-72	Can view new	16	view_new
-73	Can add form model	17	add_formmodel
-74	Can change form model	17	change_formmodel
-75	Can delete form model	17	delete_formmodel
-76	Can view form model	17	view_formmodel
-77	Can add movie	18	add_movie
-78	Can change movie	18	change_movie
-79	Can delete movie	18	delete_movie
-80	Can view movie	18	view_movie
-81	Can add shop	19	add_shop
-82	Can change shop	19	change_shop
-83	Can delete shop	19	delete_shop
-84	Can view shop	19	view_shop
+37	Can add event type	10	add_eventtype
+38	Can change event type	10	change_eventtype
+39	Can delete event type	10	delete_eventtype
+40	Can view event type	10	view_eventtype
+41	Can add newsletter	11	add_newsletter
+42	Can change newsletter	11	change_newsletter
+43	Can delete newsletter	11	delete_newsletter
+44	Can view newsletter	11	view_newsletter
+45	Can add image	12	add_image
+46	Can change image	12	change_image
+47	Can delete image	12	delete_image
+48	Can view image	12	view_image
+49	Can add service category	13	add_servicecategory
+50	Can change service category	13	change_servicecategory
+51	Can delete service category	13	delete_servicecategory
+52	Can view service category	13	view_servicecategory
+53	Can add movie	14	add_movie
+54	Can change movie	14	change_movie
+55	Can delete movie	14	delete_movie
+56	Can view movie	14	view_movie
+57	Can add form model	15	add_formmodel
+58	Can change form model	15	change_formmodel
+59	Can delete form model	15	delete_formmodel
+60	Can view form model	15	view_formmodel
+61	Can add shop	16	add_shop
+62	Can change shop	16	change_shop
+63	Can delete shop	16	delete_shop
+64	Can view shop	16	view_shop
 \.
 
 
@@ -1596,6 +1443,13 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 3	2021-11-21 21:14:46.582264+00	2	spotkania biznesowe	2	[{"changed": {"fields": ["Name"]}}]	8	3
 4	2021-11-23 20:06:12.798421+00	70	Lokal weselny	1	[{"added": {}}]	9	3
 5	2021-11-28 20:20:42.216659+00	81	sala weselna	1	[{"added": {}}]	9	3
+6	2022-01-19 17:10:42.900835+00	95	Main image TEST	3		9	3
+7	2022-01-19 17:10:42.906471+00	91	main selector try	3		9	3
+8	2022-01-19 17:10:42.911406+00	77	lk ogłoszenie3	3		9	3
+9	2022-01-19 17:10:42.915897+00	76	lk ogłoszenie 5	3		9	3
+10	2022-01-19 17:10:42.921228+00	73	try again	3		9	3
+11	2022-01-19 17:10:42.926033+00	79	lk ogłoszenie	3		9	3
+12	2022-01-19 17:10:42.93115+00	72	tarst	3		9	3
 \.
 
 
@@ -1611,18 +1465,15 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 5	sessions	session
 6	account	user
 7	account	useradmin
+8	account	firma
 9	announcement	announcement
-10	account	firma
-12	announcement	eventtype
-13	announcement	newsletter
-11	announcement	image
-8	announcement	servicecategory
-14	party_wizard	testowa
-15	party_wizard	nowa
-16	party_wizard	new
-17	party_wizard	formmodel
-18	announcement	movie
-19	party_wizard	shop
+10	announcement	eventtype
+11	announcement	newsletter
+12	announcement	image
+13	announcement	servicecategory
+14	announcement	movie
+15	party_wizard	formmodel
+16	party_wizard	shop
 \.
 
 
@@ -1631,76 +1482,76 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 --
 
 COPY public.django_migrations (id, app, name, applied) FROM stdin;
-1	contenttypes	0001_initial	2021-11-11 17:50:24.317273+00
-2	contenttypes	0002_remove_content_type_name	2021-11-11 17:50:24.346999+00
-3	auth	0001_initial	2021-11-11 17:50:24.453344+00
-4	auth	0002_alter_permission_name_max_length	2021-11-11 17:50:24.473135+00
-5	auth	0003_alter_user_email_max_length	2021-11-11 17:50:24.489766+00
-6	auth	0004_alter_user_username_opts	2021-11-11 17:50:24.501227+00
-7	auth	0005_alter_user_last_login_null	2021-11-11 17:50:24.513812+00
-8	auth	0006_require_contenttypes_0002	2021-11-11 17:50:24.522045+00
-9	auth	0007_alter_validators_add_error_messages	2021-11-11 17:50:24.541557+00
-10	auth	0008_alter_user_username_max_length	2021-11-11 17:50:24.552989+00
-11	auth	0009_alter_user_last_name_max_length	2021-11-11 17:50:24.565279+00
-12	auth	0010_alter_group_name_max_length	2021-11-11 17:50:24.57786+00
-13	auth	0011_update_proxy_permissions	2021-11-11 17:50:24.597531+00
-14	auth	0012_alter_user_first_name_max_length	2021-11-11 17:50:24.611628+00
-15	account	0001_initial	2021-11-11 17:50:24.709896+00
-16	account	0002_auto_20211111_1432	2021-11-11 17:50:24.768482+00
-17	admin	0001_initial	2021-11-11 17:50:24.822352+00
-18	admin	0002_logentry_remove_auto_add	2021-11-11 17:50:24.850965+00
-19	admin	0003_logentry_add_action_flag_choices	2021-11-11 17:50:24.873976+00
-20	sessions	0001_initial	2021-11-11 17:50:24.912345+00
-21	announcement	0001_initial	2021-11-11 18:43:33.165135+00
-22	account	0003_alter_user_image	2021-11-12 17:44:34.343607+00
-23	account	0004_auto_20211112_2050	2021-11-15 06:40:55.007444+00
-24	account	0005_alter_user_image	2021-11-15 06:40:55.02678+00
-25	announcement	0002_alter_announcement_image	2021-11-15 06:40:55.043605+00
-26	announcement	0003_alter_announcement_image	2021-11-15 06:40:55.062499+00
-27	announcement	0004_alter_announcement_image	2021-11-15 06:40:55.079493+00
-28	announcement	0005_auto_20211115_0911	2021-11-15 08:16:35.641681+00
-29	announcement	0006_announcement_type	2021-11-15 08:50:41.12091+00
-30	announcement	0007_rename_image_announcementimage	2021-11-15 09:02:27.619872+00
-31	announcement	0008_alter_category_name	2021-11-15 11:34:49.292162+00
-32	announcement	0009_alter_category_name	2021-11-15 13:07:13.394497+00
-33	announcement	0010_alter_category_name	2021-11-15 13:21:49.716895+00
-34	announcement	0011_auto_20211115_2118	2021-11-15 20:18:56.637177+00
-35	announcement	0012_auto_20211115_2135	2021-11-15 20:35:33.095039+00
-36	announcement	0013_alter_announcement_images	2021-11-15 20:44:55.633766+00
-37	announcement	0014_auto_20211116_0831	2021-11-16 07:31:41.581891+00
-38	announcement	0015_alter_newsletter_email	2021-11-16 09:14:25.835456+00
-39	announcement	0016_auto_20211116_2205	2021-11-16 21:05:49.489167+00
-40	announcement	0017_auto_20211118_1900	2021-11-18 21:23:08.447327+00
-41	announcement	0018_rename_announcementimage_image	2021-11-18 21:23:08.481645+00
-42	announcement	0019_auto_20211118_1928	2021-11-18 21:23:08.522913+00
-43	announcement	0020_rename_imagee_eventtype_photo	2021-11-18 21:23:08.562018+00
-44	announcement	0021_rename_category_servicecategory	2021-11-18 21:23:08.616523+00
-45	account	0006_alter_user_image	2021-11-21 13:09:11.131707+00
-46	account	0007_alter_user_image	2021-11-21 13:09:37.31013+00
-47	announcement	0022_auto_20211122_2019	2021-11-22 19:21:59.659165+00
-48	announcement	0023_alter_image_event_type	2021-11-22 19:21:59.689634+00
-49	announcement	0024_alter_announcement_slug	2021-11-23 18:33:24.456716+00
-53	announcement	0025_alter_announcement_slug	2021-11-25 18:07:11.872376+00
-55	party_wizard	0002_delete_nowa	2021-11-25 20:09:55.760884+00
-56	announcement	0026_alter_announcement_options	2021-11-27 18:38:47.414263+00
-57	announcement	0027_alter_announcement_date	2021-11-27 22:40:39.564417+00
-58	announcement	0028_image_is_main	2021-12-05 11:34:23.153449+00
-59	party_wizard	0001_initial	2021-12-08 21:00:03.326844+00
-60	party_wizard	0002_rename_test_formmodel_form_party	2021-12-08 21:00:03.335458+00
-61	party_wizard	0003_auto_20211127_1830	2021-12-08 21:00:03.3701+00
-62	announcement	0029_alter_image_image	2021-12-08 21:00:22.769747+00
-63	announcement	0030_alter_image_is_main	2021-12-30 18:52:44.098622+00
-64	party_wizard	0004_auto_20211228_1925	2021-12-30 18:52:44.180131+00
-65	party_wizard	0005_formmodel_form_party	2021-12-30 18:52:44.199553+00
-66	party_wizard	0006_alter_formmodel_form_party	2021-12-30 18:52:44.216446+00
-67	announcement	0031_auto_20220102_1455	2022-01-02 13:56:10.042335+00
-68	announcement	0032_movie_movie	2022-01-03 18:00:30.589756+00
-69	announcement	0033_alter_movie_movie	2022-01-17 20:48:56.293024+00
-70	announcement	0031_announcement_city	2022-01-17 20:48:56.332045+00
-71	announcement	0034_merge_0031_announcement_city_0033_alter_movie_movie	2022-01-17 20:48:56.343211+00
-72	party_wizard	0007_alter_formmodel_form_party	2022-01-17 20:48:56.383598+00
-73	party_wizard	0008_alter_formmodel_form_party	2022-01-17 20:48:56.403026+00
-74	party_wizard	0009_shop	2022-01-17 20:48:56.428409+00
+1	contenttypes	0001_initial	2022-01-20 12:04:43.147089+00
+2	contenttypes	0002_remove_content_type_name	2022-01-20 12:04:43.178808+00
+3	auth	0001_initial	2022-01-20 12:04:43.273326+00
+4	auth	0002_alter_permission_name_max_length	2022-01-20 12:04:43.294626+00
+5	auth	0003_alter_user_email_max_length	2022-01-20 12:04:43.317565+00
+6	auth	0004_alter_user_username_opts	2022-01-20 12:04:43.333589+00
+7	auth	0005_alter_user_last_login_null	2022-01-20 12:04:43.34564+00
+8	auth	0006_require_contenttypes_0002	2022-01-20 12:04:43.353987+00
+9	auth	0007_alter_validators_add_error_messages	2022-01-20 12:04:43.377953+00
+10	auth	0008_alter_user_username_max_length	2022-01-20 12:04:43.392546+00
+11	auth	0009_alter_user_last_name_max_length	2022-01-20 12:04:43.415402+00
+12	auth	0010_alter_group_name_max_length	2022-01-20 12:04:43.429478+00
+13	auth	0011_update_proxy_permissions	2022-01-20 12:04:43.442057+00
+14	auth	0012_alter_user_first_name_max_length	2022-01-20 12:04:43.45258+00
+15	account	0001_initial	2022-01-20 12:04:43.569743+00
+16	account	0002_auto_20211111_1432	2022-01-20 12:04:43.616732+00
+17	account	0003_alter_user_image	2022-01-20 12:04:43.628716+00
+18	account	0004_auto_20211112_2050	2022-01-20 12:04:43.650442+00
+19	account	0005_alter_user_image	2022-01-20 12:04:43.662889+00
+20	account	0006_alter_user_image	2022-01-20 12:04:43.675395+00
+21	account	0007_alter_user_image	2022-01-20 12:04:43.687589+00
+22	admin	0001_initial	2022-01-20 12:04:43.729193+00
+23	admin	0002_logentry_remove_auto_add	2022-01-20 12:04:43.74248+00
+24	admin	0003_logentry_add_action_flag_choices	2022-01-20 12:04:43.755367+00
+25	announcement	0001_initial	2022-01-20 12:04:43.83353+00
+26	announcement	0002_alter_announcement_image	2022-01-20 12:04:43.849551+00
+27	announcement	0003_alter_announcement_image	2022-01-20 12:04:43.864404+00
+28	announcement	0004_alter_announcement_image	2022-01-20 12:04:43.882152+00
+29	announcement	0005_auto_20211115_0911	2022-01-20 12:04:43.925444+00
+30	announcement	0006_announcement_type	2022-01-20 12:04:43.940944+00
+31	announcement	0007_rename_image_announcementimage	2022-01-20 12:04:43.996642+00
+32	announcement	0008_alter_category_name	2022-01-20 12:04:44.028769+00
+33	announcement	0009_alter_category_name	2022-01-20 12:04:44.05439+00
+34	announcement	0010_alter_category_name	2022-01-20 12:04:44.071815+00
+35	announcement	0011_auto_20211115_2118	2022-01-20 12:04:44.264061+00
+36	announcement	0012_auto_20211115_2135	2022-01-20 12:04:44.369083+00
+37	announcement	0013_alter_announcement_images	2022-01-20 12:04:44.407416+00
+38	announcement	0014_auto_20211116_0831	2022-01-20 12:04:44.451807+00
+39	announcement	0015_alter_newsletter_email	2022-01-20 12:04:44.470094+00
+40	announcement	0016_auto_20211116_2205	2022-01-20 12:04:44.532682+00
+41	announcement	0017_auto_20211118_1900	2022-01-20 12:04:44.589443+00
+42	announcement	0018_rename_announcementimage_image	2022-01-20 12:04:44.617975+00
+43	announcement	0019_auto_20211118_1928	2022-01-20 12:04:44.658078+00
+44	announcement	0020_rename_imagee_eventtype_photo	2022-01-20 12:04:44.691044+00
+45	announcement	0021_rename_category_servicecategory	2022-01-20 12:04:44.743047+00
+46	announcement	0022_auto_20211122_2019	2022-01-20 12:04:44.810379+00
+47	announcement	0023_alter_image_event_type	2022-01-20 12:04:44.839473+00
+48	announcement	0024_alter_announcement_slug	2022-01-20 12:04:44.872593+00
+49	announcement	0025_alter_announcement_slug	2022-01-20 12:04:44.94278+00
+50	announcement	0026_alter_announcement_options	2022-01-20 12:04:44.96131+00
+51	announcement	0027_alter_announcement_date	2022-01-20 12:04:45.01464+00
+52	announcement	0028_image_is_main	2022-01-20 12:04:45.029506+00
+53	announcement	0029_alter_image_image	2022-01-20 12:04:45.043709+00
+54	announcement	0030_alter_image_is_main	2022-01-20 12:04:45.058071+00
+55	announcement	0031_auto_20220102_1455	2022-01-20 12:04:45.12033+00
+56	announcement	0032_movie_movie	2022-01-20 12:04:45.135635+00
+57	announcement	0033_alter_movie_movie	2022-01-20 12:04:45.151495+00
+58	announcement	0031_announcement_city	2022-01-20 12:04:45.185807+00
+59	announcement	0034_merge_0031_announcement_city_0033_alter_movie_movie	2022-01-20 12:04:45.192558+00
+60	announcement	0035_alter_announcement_category	2022-01-20 12:04:45.211705+00
+61	party_wizard	0001_initial	2022-01-20 12:04:45.230548+00
+62	party_wizard	0002_rename_test_formmodel_form_party	2022-01-20 12:04:45.246925+00
+63	party_wizard	0003_auto_20211127_1830	2022-01-20 12:04:45.294854+00
+64	party_wizard	0004_auto_20211228_1925	2022-01-20 12:04:45.375984+00
+65	party_wizard	0005_formmodel_form_party	2022-01-20 12:04:45.413867+00
+66	party_wizard	0006_alter_formmodel_form_party	2022-01-20 12:04:45.432888+00
+67	party_wizard	0007_alter_formmodel_form_party	2022-01-20 12:04:45.490988+00
+68	party_wizard	0008_alter_formmodel_form_party	2022-01-20 12:04:45.517737+00
+69	party_wizard	0009_shop	2022-01-20 12:04:45.575119+00
+70	sessions	0001_initial	2022-01-20 12:04:45.680502+00
 \.
 
 
@@ -1713,7 +1564,6 @@ COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 vpct0gq1ringvbxatl8v45o1r2gn6lu5	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1mzOwS:OgiAA5_xhS3vtanI7DhcpcoZMC6T5ZJ93c4CQ87Sf44	2022-01-03 20:07:28.68617+00
 i92x69hozf498ndvydvplul8wd83khre	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n32Ey:8dxw__NRqpkrhfijZW8JNVwjp2NzMo1Dnb7NG2I7DjI	2022-01-13 20:41:36.493465+00
 wi617au4m147skaf1xuhn2y0vph1e8bj	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n5Rdm:0CsYlteXTe7aAT-eqQLffo-C-hM2hFYUCbFvPkW-MCM	2022-01-20 12:13:10.493676+00
-elfh8p89glsljxj6gxbkid3r5gzi737m	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n9Uog:SBcg2VtoAu7MqxIWwz2uwcETiWqckjqfzHI206JlDwg	2022-01-31 16:25:10.073237+00
 \.
 
 
@@ -1818,7 +1668,7 @@ SELECT pg_catalog.setval('public.announcement_announcement_event_type_id_seq', 5
 -- Name: announcement_announcement_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.announcement_announcement_id_seq', 108, true);
+SELECT pg_catalog.setval('public.announcement_announcement_id_seq', 111, true);
 
 
 --
@@ -1888,7 +1738,7 @@ SELECT pg_catalog.setval('public.auth_permission_id_seq', 84, true);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 5, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 12, true);
 
 
 --
@@ -1902,7 +1752,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 19, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 74, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 75, true);
 
 
 --

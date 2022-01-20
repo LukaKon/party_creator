@@ -31,4 +31,4 @@ ReactDOM.render(routing, document.getElementById('root'));
 // // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
 
-ServiceWorker.unregister();
+// ServiceWorker.unregister();

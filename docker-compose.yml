@@ -37,6 +37,26 @@ services:
     networks:
       - party_network
 
+  front:
+    container_name: front_react
+    build:
+      context: ./announcement_front/
+      dockerfile: Dockerfile.node
+    command: npm start
+    # command : >
+      # sh -c "ls -lah && npm start"
+    restart: always
+    volumes:
+      - ./announcement_front:/front
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - django
+      - db
+    networks:
+      - party_network
+
 networks:
   party_network:
     driver: bridge

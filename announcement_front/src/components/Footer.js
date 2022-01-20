@@ -23,7 +23,7 @@ function Copyright() {
 	return (
 		<Typography variant="body2" color="textSecondary" align="center">
 			{'Copyright © '}
-			<Link color="inherit" href="https://material-ui.com/">
+			<Link color="inherit" href="#">
 				Your Website
 			</Link>{' '}
 			{new Date().getFullYear()}
@@ -43,17 +43,13 @@ const footers = [
 			'Cool stuff',
 			'Random feature',
 			'Team feature',
-			'Developer stuff',
-			'Another one',
 		],
 	},
 	{
 		title: 'Resources',
 		description: [
 			'Resource',
-			'Resource name',
 			'Another resource',
-			'Final resource',
 		],
 	},
 	{
