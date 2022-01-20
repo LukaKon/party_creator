@@ -1242,7 +1242,7 @@ COPY public.account_user (id, password, last_login, is_superuser, first_name, la
 4	pbkdf2_sha256$260000$ERgk0p7TW46BajyxOmMmte$NwMhrYdwQixee/tHD7leYj/Q0PWmhsNurRlGYKR5bAo=	2021-11-27 17:09:09.8733+00	f	lk	lk	f	t	2021-11-24 18:40:58.555504+00	lk@lk.lk	f	default.jpg	f
 5	pbkdf2_sha256$260000$8zmJ09mHfy7q5tdf3m16e0$xeJkd4U+M/03bY40THE/hbDPXa2DA2f0KqCUH8rVi1Y=	2021-12-01 21:13:31.601952+00	f	Krzyś	Nowak	f	t	2021-12-01 21:13:15.04033+00	kn@wp.pl	f	account/user/ICMJESYOIJASRBNGH4G3CJEVVY.jpg	f
 1	pbkdf2_sha256$260000$tMhhrG1iwoJOzrY9HSuNQl$/1u5hiQ0HEl3fulOYERtxwVGisR7N+rDits/qX32upM=	2022-01-17 16:25:10.066701+00	f	Jacek	Placek	f	t	2021-11-11 20:03:43.702237+00	jd@jd.jd	f	account/user/4NISA7QXOJGBNIS3AR5JMOIUUE.jpg	f
-3	pbkdf2_sha256$260000$joQggq7q4Ff3JegWuz6SqJ$sSVe0yEzqjqlQyjKcg/lZNERBM28Z8EUx9oRclEOJ8k=	2022-01-19 17:09:04.931267+00	t			t	t	2021-11-12 22:52:29.65778+00	lukasz.konieczny.lk@gmail.com	f	account/user/default.jpg	f
+3	pbkdf2_sha256$260000$joQggq7q4Ff3JegWuz6SqJ$sSVe0yEzqjqlQyjKcg/lZNERBM28Z8EUx9oRclEOJ8k=	2022-01-20 20:52:56.133499+00	t			t	t	2021-11-12 22:52:29.65778+00	lukasz.konieczny.lk@gmail.com	f	account/user/default.jpg	f
 \.
 
 
@@ -1275,6 +1275,7 @@ COPY public.account_useradmin (user_ptr_id) FROM stdin;
 --
 
 COPY public.announcement_announcement (id, title, description, slug, date, user_id, category_id, city) FROM stdin;
+112	Party hole	nice for integration	party-hole	2022-01-20 20:53:49.236883+00	1	4	0101000020E6100000FDFFFFFFFF499FBF077609FBFF47923F
 \.
 
 
@@ -1283,6 +1284,7 @@ COPY public.announcement_announcement (id, title, description, slug, date, user_
 --
 
 COPY public.announcement_announcement_event_type (id, announcement_id, eventtype_id) FROM stdin;
+56	112	3
 \.
 
 
@@ -1450,6 +1452,7 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 10	2022-01-19 17:10:42.921228+00	73	try again	3		9	3
 11	2022-01-19 17:10:42.926033+00	79	lk ogłoszenie	3		9	3
 12	2022-01-19 17:10:42.93115+00	72	tarst	3		9	3
+13	2022-01-20 20:53:49.250043+00	112	Party hole	1	[{"added": {}}]	9	3
 \.
 
 
@@ -1564,6 +1567,7 @@ COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 vpct0gq1ringvbxatl8v45o1r2gn6lu5	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1mzOwS:OgiAA5_xhS3vtanI7DhcpcoZMC6T5ZJ93c4CQ87Sf44	2022-01-03 20:07:28.68617+00
 i92x69hozf498ndvydvplul8wd83khre	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n32Ey:8dxw__NRqpkrhfijZW8JNVwjp2NzMo1Dnb7NG2I7DjI	2022-01-13 20:41:36.493465+00
 wi617au4m147skaf1xuhn2y0vph1e8bj	.eJxVjDsOwjAQBe_iGll21l9Kes5g7fqDA8iW4qRC3B0ipYD2zcx7sYDbWsM28hLmxM5MstPvRhgfue0g3bHdOo-9rctMfFf4QQe_9pSfl8P9O6g46rdWEI2gKDHZSEIXFARgJvIuR-FJFWc1gC4lKwJlVdHaa-nJTAhgjWPvD-nWN3Y:1n5Rdm:0CsYlteXTe7aAT-eqQLffo-C-hM2hFYUCbFvPkW-MCM	2022-01-20 12:13:10.493676+00
+4h9p6vvb04l5fdo2kflotta8n1u6c4qh	.eJxVjLEOwjAMRP8lM4pCa6cKIzvfENmOQwoolZp2Qvw7rdQBttO9d_c2kdalxLXpHMdkLqY3p9-OSZ5ad5AeVO-Tlaku88h2V-xBm71NSV_Xw_07KNTKtiYlHBBBzpo5swtZErDzwpzQedgCdEG6ngVFnCIAeNKBQ_LigzefLxfvOO0:1nAeQS:whFEVHHN72OB7aXL9FdhDaKnIqNw07d9ActYyfASM6o	2022-02-03 20:52:56.139171+00
 \.
 
 
@@ -1661,14 +1665,14 @@ SELECT pg_catalog.setval('public.account_user_user_permissions_id_seq', 1, false
 -- Name: announcement_announcement_event_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.announcement_announcement_event_type_id_seq', 55, true);
+SELECT pg_catalog.setval('public.announcement_announcement_event_type_id_seq', 56, true);
 
 
 --
 -- Name: announcement_announcement_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.announcement_announcement_id_seq', 111, true);
+SELECT pg_catalog.setval('public.announcement_announcement_id_seq', 112, true);
 
 
 --
@@ -1738,7 +1742,7 @@ SELECT pg_catalog.setval('public.auth_permission_id_seq', 84, true);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lko
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 12, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 13, true);
 
 
 --

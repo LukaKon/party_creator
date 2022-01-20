@@ -51,7 +51,7 @@ EXTENSIONS = [
     "django.contrib.gis",
     "django_probes",
     "leaflet",
-    'corsheaders',
+    "corsheaders",
 ]
 
 INSTALLED_APPS = (
@@ -71,9 +71,7 @@ INSTALLED_APPS = (
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-
     "corsheaders.middleware.CorsMiddleware",
-
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -173,8 +171,8 @@ MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"  # url that will serve media files
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
     ]
 }
 

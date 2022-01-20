@@ -37,5 +37,5 @@ urlpatterns = [
     # api
     path("api/", views.AnnouncementAPIList.as_view(), name="ann_list"),
     # path("api/<int:pk>/", views.AnnouncementAPIDetails.as_view(), name="annlist"),
-    path('api/<slug:slug>/',views.AnnouncementAPIDetails.as_view(), name='annlist'),
+    path("api/<slug:slug>/", views.AnnouncementAPIDetails.as_view(), name="annlist"),
 ]
