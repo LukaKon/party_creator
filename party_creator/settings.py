@@ -45,7 +45,7 @@ MY_APPS = [
     "account.apps.AccountConfig",
     "announcement.apps.AnnouncementConfig",
     "party_wizard.apps.PartyWizardConfig",
-    'django.contrib.gis'
+    "leaflet",
 ]
 
 INSTALLED_APPS = [
@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django.contrib.gis",
     'django_probes',
-    "leaflet",
+
 ] + MY_APPS
 
 
