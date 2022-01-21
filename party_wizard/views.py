@@ -1,17 +1,13 @@
 import googlemaps
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
-
-from django.views.generic import CreateView, View, UpdateView, FormView
-
+from django.views.generic import CreateView, FormView, UpdateView, View
 from rest_framework import generics, views
 from rest_framework.response import Response
 
 import announcement.utils.announcement.mixins as mixins
 import party_creator.settings
-
 import party_wizard.models
-
 from announcement.models import EventType, ServiceCategory
 from party_wizard.models import FormModel
 from party_wizard.serializers import (FormModelSerializer,
@@ -41,6 +37,7 @@ class CreateFormView(generics.CreateAPIView):
 
 
 from announcement.models import Announcement
+
 from .serializers import AnnouncementSerializer
 
 
@@ -55,9 +52,11 @@ class GoogleNearbySearch(generics.ListAPIView):
 
         data_js = self.request.data
         type_of_places = data_js.get("service_category")
-        places = utils.get_places(location=data_js.get("location"),
-                                  radius=data_js.get("radius"),
-                                  type_of_places=type_of_places)
+        places = utils.get_places(
+            location=data_js.get("location"),
+            radius=data_js.get("radius"),
+            type_of_places=type_of_places,
+        )
         return places
 
     # def post(self, request):
@@ -91,11 +90,7 @@ class ChooseEventView(LoginRequiredMixin, View):
 
         form_models = FormModel.objects.filter(user_id=self.request.user.pk)
 
-        context = {
-            "event_lists": event_lists,
-            "form_models": form_models
-        }
-
+        context = {"event_lists": event_lists, "form_models": form_models}
 
         return render(
             request,
@@ -136,8 +131,8 @@ class ListToDoView(LoginRequiredMixin, mixins.UserAccessMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        categories = super().get_object().categories.all()  
-        context['categories'] = categories
+        categories = super().get_object().categories.all()
+        context["categories"] = categories
         return context
 
 
@@ -149,9 +144,11 @@ class StartFormView(LoginRequiredMixin, mixins.UserAccessMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        service_category = ServiceCategory.objects.get(pk=self.kwargs["pk_servicecategory"])
+        service_category = ServiceCategory.objects.get(
+            pk=self.kwargs["pk_servicecategory"]
+        )
         context["service_category"] = service_category
-        context["api_key"] = party_creator.settings.GOOGLE_API_KEY,
+        context["api_key"] = (party_creator.settings.GOOGLE_API_KEY,)
         return context
 
 
@@ -160,10 +157,7 @@ from .models import Shop
 
 class TestView(CreateView):
     model = party_wizard.models.Shop
-    fields = ["name",
-              'location',
-              'address',
-              'city']
+    fields = ["name", "location", "address", "city"]
     template_name = "party_wizard/test.html"
 
     def get(self, request, *args, **kwargs):

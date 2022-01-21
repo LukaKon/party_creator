@@ -1,12 +1,13 @@
 import random
 import string
-import googlemaps
 
+import googlemaps
 from django.utils.text import slugify
 
-import party_creator.local_settings
+from party_creator.settings import GOOGLE_API_KEY
 
-gmaps = googlemaps.Client(key=party_creator.local_settings.GOOGLE_API_KEY)
+gmaps = googlemaps.Client(key=GOOGLE_API_KEY)
+
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
     """Generate random sufix (string) for slug."""

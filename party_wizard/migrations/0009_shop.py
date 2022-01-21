@@ -7,18 +7,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('party_wizard', '0008_alter_formmodel_form_party'),
+        ("party_wizard", "0008_alter_formmodel_form_party"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Shop',
+            name="Shop",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('location', django.contrib.gis.db.models.fields.PointField(srid=4326)),
-                ('address', models.CharField(max_length=100)),
-                ('city', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("location", django.contrib.gis.db.models.fields.PointField(srid=4326)),
+                ("address", models.CharField(max_length=100)),
+                ("city", models.CharField(max_length=50)),
             ],
         ),
     ]
