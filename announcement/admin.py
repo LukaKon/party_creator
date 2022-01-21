@@ -24,7 +24,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-admin.site.register(Announcement, AnnouncementAdmin)
+# admin.site.register(Announcement, AnnouncementAdmin)
 
 # admin.site.register(Announcement)
 admin.site.register(ServiceCategory)

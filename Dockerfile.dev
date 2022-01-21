@@ -1,5 +1,9 @@
 FROM python:3.9.2-slim-buster
 
+# TODO: Try to switch to apine (RUN commands) - could be lighter
+# FROM python:3.9.10-alpine3.15
+
+
 WORKDIR /app
 
 RUN mkdir -p /pgdata
