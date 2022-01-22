@@ -15,8 +15,15 @@ upload_to_pattern = FilePattern(
 
 class ServiceCategory(models.Model):
     """Category(type) of announcement. e.g local, photograph etc."""
-
-    name = models.CharField(max_length=250)
+    CATEGORY_NAME=(
+        ('muzyka','music'),
+        ('cattering','cattering'),
+        ('fotograf','photograph'),
+        ('lokal','local'),
+        ('animator','animator'),
+    )
+    # name = models.CharField(max_length=250)
+    name=models.CharField(max_length=100, choices=CATEGORY_NAME)
 
     def __str__(self):
         return self.name

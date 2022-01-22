@@ -72,6 +72,12 @@ const Announcements = (props) => {
                         {announcement.description.substr(0, 60)}...
                       </Typography>
                     </div>
+                    <div className={classes.announcementOwner}>
+                      <Typography component="p" color="gray"></Typography>
+                      <Typography variant="p" color="blue">
+                        {announcement.user}
+                      </Typography>
+                    </div>
                   </CardContent>
                 </Card>
               </Grid>
