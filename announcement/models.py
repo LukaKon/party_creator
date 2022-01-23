@@ -15,8 +15,15 @@ upload_to_pattern = FilePattern(
 
 class ServiceCategory(models.Model):
     """Category(type) of announcement. e.g local, photograph etc."""
-
-    name = models.CharField(max_length=250)
+    CATEGORY_NAME=(
+        ('muzyka','music'),
+        ('cattering','cattering'),
+        ('fotograf','photograph'),
+        ('lokal','local'),
+        ('animator','animator'),
+    )
+    # name = models.CharField(max_length=250)
+    name=models.CharField(max_length=100, choices=CATEGORY_NAME)
 
     def __str__(self):
         return self.name
@@ -45,11 +52,12 @@ class Announcement(models.Model):
     category = models.ForeignKey(
         ServiceCategory,
         verbose_name="announcement_categories",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     event_type = models.ManyToManyField(EventType, related_name="announcements")
     date = models.DateTimeField(auto_now=True)
     city = models.PointField()
+    # is_active=models.BooleanField(default=True)
 
     class Meta:
         index_together = (("id", "slug"),)
@@ -113,21 +121,7 @@ class Image(Multimedia):
         delete_orphans=True,
         verbose_name="images",
     )
-    # announcement = models.ForeignKey(
-    #     Announcement,
-    #     verbose_name="announcement_image",
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    #     related_name="image",
-    # )
-    # event_type = models.OneToOneField(
-    #     EventType,
-    #     verbose_name="event_type_image",
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
+
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front
 
 
