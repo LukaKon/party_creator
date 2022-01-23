@@ -12,6 +12,7 @@ from announcement.models import EventType, ServiceCategory
 from party_wizard.models import FormModel
 from party_wizard.serializers import (FormModelSerializer,
                                       GoogleNearbySearchSerializer)
+import party_wizard.utils.party_wizard as utils
 
 gmaps = googlemaps.Client(key=party_creator.settings.GOOGLE_API_KEY)
 

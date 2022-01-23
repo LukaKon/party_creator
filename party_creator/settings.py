@@ -15,6 +15,7 @@ from pathlib import Path
 
 from dotenv import dotenv_values, load_dotenv
 
+
 config = load_dotenv(".env")
 
 
@@ -75,7 +76,7 @@ ROOT_URLCONF = "party_creator.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates", BASE_DIR / "party_creator_react/build"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -154,7 +155,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/2.2/howto/static-files/#configuring-static-files
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / "party_creator_react/build/static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # location where the media (profile pic) are stored
