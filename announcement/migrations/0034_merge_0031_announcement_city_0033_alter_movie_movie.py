@@ -6,9 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('announcement', '0031_announcement_city'),
-        ('announcement', '0033_alter_movie_movie'),
+        ("announcement", "0031_announcement_city"),
+        ("announcement", "0033_alter_movie_movie"),
     ]
 
-    operations = [
-    ]
+    operations = []

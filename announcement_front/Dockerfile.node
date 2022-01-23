@@ -1,0 +1,12 @@
+FROM node:16-alpine3.15
+
+WORKDIR /front
+
+COPY package.json package-lock.json /front/
+
+RUN npm install
+RUN npm install react-scripts
+
+COPY ./ /front
+
+EXPOSE 3000
