@@ -7,7 +7,7 @@ from announcement import views
 app_name = "announcement"
 
 urlpatterns = [
-    path("", views.HomeView.as_view(), name="home"),
+    # path("", views.HomeView.as_view(), name="home"),
 
     # contact with administration
     path("contact/", views.ContactView.as_view(), name="contact"),

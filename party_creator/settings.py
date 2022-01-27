@@ -43,6 +43,7 @@ MY_APPS = [
     "account.apps.AccountConfig",
     "announcement.apps.AnnouncementConfig",
     "party_wizard.apps.PartyWizardConfig",
+    "frontend.apps.FrontendConfig",
 ]
 
 EXTENSIONS = [

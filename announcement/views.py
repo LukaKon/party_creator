@@ -12,7 +12,6 @@ from rest_framework import generics
 from announcement import forms
 
 from .models import Announcement, EventType, Image, Movie, ServiceCategory
-from .serializers import AnnouncementSerializer
 from .utils.announcement import get_lat_lng, mixins
 
 

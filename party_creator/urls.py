@@ -16,16 +16,14 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.urls import include, path
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("/", include("account.urls", "account")),
     path("", include("announcement.urls", "announcement")),
     path("", include("party_wizard.urls", "party_wizard")),
-    path("test-react/", TemplateView.as_view(template_name="index.html")),
+    path("", include("frontend.urls", "frontend")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
