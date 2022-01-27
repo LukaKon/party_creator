@@ -8,9 +8,10 @@ app_name = "announcement"
 
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
-    path("contact/", views.ContactView.as_view(), name="contact"),
+
     # contact with administration
-    path("category/", views.CategoryListView.as_view(), name="category_list"),
+    path("contact/", views.ContactView.as_view(), name="contact"),
+
     # announcement
     path(
         "add_announcement/",
@@ -32,10 +33,4 @@ urlpatterns = [
         views.DeleteAnnouncementView.as_view(),
         name="delete_announcement",
     ),
-    # path("announcement_list/"),
-    path("react/", TemplateView.as_view(template_name="index.html")),
-    # api
-    path("api/", views.AnnouncementAPIList.as_view(), name="ann_list"),
-    # path("api/<int:pk>/", views.AnnouncementAPIDetails.as_view(), name="annlist"),
-    path("api/<slug:slug>/", views.AnnouncementAPIDetails.as_view(), name="annlist"),
 ]

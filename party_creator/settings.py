@@ -51,7 +51,6 @@ EXTENSIONS = [
     "django.contrib.gis",
     "django_probes",
     "leaflet",
-    "corsheaders",
 ]
 
 INSTALLED_APPS = (
@@ -71,7 +70,6 @@ INSTALLED_APPS = (
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -84,7 +82,7 @@ ROOT_URLCONF = "party_creator.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates", BASE_DIR / "announcement_front/build"],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -163,7 +161,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/2.2/howto/static-files/#configuring-static-files
-STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / "announcement_front/build/static"]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # location where the media (profile pic) are stored
@@ -182,9 +180,3 @@ REST_FRAMEWORK = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-
-
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000",
-]

@@ -81,20 +81,6 @@ class ContactView(generic.FormView):
         return render(request, "announcement/contact.html", {"form": form})
 
 
-class CategoryListView(generic.ListView):
-    """List of categories."""  # TODO: Do we need this???
-
-    model = ServiceCategory
-    template_name = "announcement/category_list.html"
-
-
-class AnnouncementListView(generic.ListView):
-    """List of announcements."""  # TODO: Do we need this???
-
-    model = Announcement
-    template_name = "announcement/announcement_list.html"
-
-
 class DetailsAnnouncementView(generic.DetailView):
     """Announcement details."""
 
@@ -241,15 +227,3 @@ class DeleteAnnouncementView(
     def get_success_url(self):
         """Return the URL to redirect to after processing a valid form."""
         return reverse_lazy("account:profile", kwargs={"pk": self.request.user.pk})
-
-
-class AnnouncementAPIList(generics.ListCreateAPIView):
-    queryset = Announcement.objects.all()
-    serializer_class = AnnouncementSerializer
-    lookup_field = "slug"
-
-
-class AnnouncementAPIDetails(generics.RetrieveDestroyAPIView):
-    queryset = Announcement.objects.all()
-    serializer_class = AnnouncementSerializer
-    lookup_field = "slug"
