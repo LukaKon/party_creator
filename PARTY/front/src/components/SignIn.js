@@ -1,4 +1,6 @@
 import * as React from 'react';
+import {useNavigate} from "react-router-dom";
+
 import {
     Avatar,
     Button,
@@ -14,12 +16,14 @@ import {
 } from "@mui/material"
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {LOCALHOST} from "../settings";
+
+import {axiosInstance} from "../axios";
 
 const theme = createTheme();
 
 
 export const SignIn = () => {
+    let navigate = useNavigate()
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -28,24 +32,25 @@ export const SignIn = () => {
             email: data.get('email'),
             password: data.get('password')
         }
-        fetch(LOCALHOST + "account/login/",
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.log(error))
 
+        axiosInstance
+            .post(
+                "account/login/",
+                data
+            ).then((response) => {
+            localStorage.setItem('access_token', response.data.access)
+            localStorage.setItem('refresh_token', response.data.refresh)
+            axiosInstance.defaults.headers["Authorization"] =
+                "JWT" + localStorage.getItem("access_token")
+            navigate('/')
+        })
+            .catch(error => console.log(error))
     };
 
     return (
-        // <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
-            {/*<CssBaseline/>*/}
+            <CssBaseline/>
             <Box
                 sx={{
                     marginTop: 8,
@@ -107,8 +112,7 @@ export const SignIn = () => {
                     </Grid>
                 </Box>
             </Box>
-            {/*<Copyright sx={{mt: 8, mb: 4}}/>*/}
         </Container>
-        // </ThemeProvider>
+        </ThemeProvider>
     );
 }
