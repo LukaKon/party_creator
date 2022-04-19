@@ -105,7 +105,12 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# TODO: commented to share secrets
+# .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .venv
 env/
 venv/
@@ -166,7 +171,6 @@ dmypy.json
 logs
 *.log
 npm-debug.log*
-PARTY/front/node_modules/
 node_modules/
 .sass-cache/
 
@@ -178,10 +182,6 @@ node_modules/
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 npm-debug.log*
 yarn-debug.log*
