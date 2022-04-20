@@ -166,6 +166,12 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "../front/build/static")
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# location where the media (profile pic) are stored
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"  # url that will serve media files
+
 AUTH_USER_MODEL = 'account.User'
 
 REST_FRAMEWORK = {

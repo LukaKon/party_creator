@@ -1,0 +1,10 @@
+FROM node:17.9-alpine3.15
+
+WORKDIR /react
+
+LABEL maintainer="PartyTeam"
+LABEL description="PartyWizard Frontend"
+
+COPY . .
+
+RUN npm run build
