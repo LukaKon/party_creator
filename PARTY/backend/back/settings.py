@@ -17,7 +17,6 @@ from dotenv import dotenv_values, load_dotenv
 
 config = load_dotenv(".env")
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -109,7 +108,7 @@ DATABASES = {
         # 'HOST': '127.0.0.1',
         # 'PORT': '5432',
         "NAME": os.getenv("DATABASE_NAME"),
-        "HOST": os.getenv("PG_HOST"),
+        "HOST": os.getenv("PG_HOST"),#TODO: in container should be 'db', without 'localhost'
         "USER": os.getenv("DATABASE_USER"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
         "PORT": os.getenv("PG_PORT"),
@@ -163,7 +162,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "../front/build/static")
+    os.path.join(BASE_DIR, "../front/dist") #TODO: to change
+    # os.path.join(BASE_DIR, "../front/build/static")
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"

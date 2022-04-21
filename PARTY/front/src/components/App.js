@@ -4,7 +4,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {HomePage} from "./HomePage";
 import {SignIn} from "./SignIn"
 
-function App() {
+export const App=()=> {
     return (
         <div className="App">
             <BrowserRouter>
@@ -19,5 +19,3 @@ function App() {
         </div>
     );
 }
-
-export default App;

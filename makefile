@@ -51,4 +51,4 @@ restore:
 
 # TODO: react rebuild server command should run from announcement_front folder
 npmserv:
-	docker-compose exec backend npm run build
+	docker-compose exec frontend npm run build
