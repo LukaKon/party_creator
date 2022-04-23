@@ -13,8 +13,8 @@ build:
 	docker-compose up --build
 
 up:
-	docker-compose up
-#	docker-compose up -d
+	# docker-compose up
+	docker-compose up -d
 
 stop:
 	docker-compose stop

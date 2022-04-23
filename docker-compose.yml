@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 
 services:
 
@@ -14,7 +14,7 @@ services:
       - .env
     restart: on-failure
     volumes:
-      - ./PARTY/backend:/app
+      - ./PARTY/backend:/django
     ports:
       - 8000:8000
     networks:
@@ -42,13 +42,13 @@ services:
     build:
       context: ./PARTY/front
       dockerfile: Dockerfile.dev
-    # command: npm start
+    command: npm start
     # command : >
       # sh -c "ls -lah && npm start"
     restart: always
     volumes:
       # - ./PARTY/front:/front
-      - react_build:/react/build
+      - ./PARTY/front:/react
       # - react_build:/react
     ports:
       - "3000:3000"
