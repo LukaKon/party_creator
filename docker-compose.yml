@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
 
@@ -47,10 +47,13 @@ services:
       # sh -c "ls -lah && npm start"
     environment:
       CHOKIDAR_USEPOLLING: "true"
+    env_file:
+      # - ./.env
+      - .env
     restart: always
     volumes:
-      # - ./PARTY/front:/react/dist
-      - react_dist:/react/dist
+      - ./PARTY/front:/react
+      # - react_dist:/react/dist
     ports:
       - "3000:3000"
     stdin_open: true
@@ -70,8 +73,9 @@ services:
       - 433:433
     restart: always
     volumes:
-      # - ./PARTY/front:/var/www/react/dist
-      - react_dist:/usr/share/nginx/html/react
+      # - ./PARTY/front/dist:/var/www/react/dist
+      - ./PARTY/front/dist:/usr/share/nginx/html
+      # - react_dist:/usr/share/nginx/html/react
     depends_on:
       - backend
       - frontend

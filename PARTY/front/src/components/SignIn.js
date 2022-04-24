@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
     Avatar,
     Button,
@@ -10,36 +10,36 @@ import {
     Grid,
     Box,
     Typography,
-    Container
-} from "@mui/material"
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {LOCALHOST} from "../settings";
+    Container,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
+console.log("localhost: ", LOCALHOST);
 
 const theme = createTheme();
 
-
 export const SignIn = () => {
-
     const handleSubmit = (event) => {
         event.preventDefault();
         let data = new FormData(event.currentTarget);
-        data = {
-            email: data.get('email'),
-            password: data.get('password')
-        }
-        fetch(LOCALHOST + "account/login/",
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.log(error))
-
+        // TODO: change something in object 'data' - content of data object referring to obj 'data' - zapętlenie;)
+        // data -> obj_data
+        let obj_data = {
+            email: data.get("email"),
+            password: data.get("password"),
+        };
+        fetch(LOCALHOST + "account/login/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj_data),
+        })
+            .then((response) => response.json())
+            .then((resp) => console.log(resp))
+            .catch((error) => console.log(error));
     };
 
     return (
@@ -49,18 +49,23 @@ export const SignIn = () => {
             <Box
                 sx={{
                     marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
                 }}
             >
-                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                    <LockOutlinedIcon/>
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                    <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    sx={{ mt: 1 }}
+                >
                     <TextField
                         margin="normal"
                         required
@@ -82,14 +87,14 @@ export const SignIn = () => {
                         autoComplete="current-password"
                     />
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
+                        control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
-                        sx={{mt: 3, mb: 2}}
+                        sx={{ mt: 3, mb: 2 }}
                     >
                         Sign In
                     </Button>
@@ -111,4 +116,4 @@ export const SignIn = () => {
         </Container>
         // </ThemeProvider>
     );
-}
+};

@@ -47,5 +47,5 @@ restore:
 #	docker-compose exec backend darker .
 
 # TODO: react rebuild server command should run from announcement_front folder
-npmserv:
-	docker-compose exec frontend npm run build
+# npmserv:
+	# docker-compose exec frontend npm run build
