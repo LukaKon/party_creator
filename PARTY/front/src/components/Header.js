@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 import {
     AppBar,
     Box,
@@ -15,7 +16,6 @@ import {
     useTheme
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import {useNavigate} from "react-router-dom";
 import {makeStyles} from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,23 +28,22 @@ const pages = {
     // for example:
     // "Button Name" : "URL"
     // "Test Button" : "/testSite"
-    "Stworz impreze": "/createparty",
-    "Dodaj swoje ogloszenie": "/addannouncement",
-    "Wynajmij firme/lokal": "/example",
+    "Zarejestruj się": "/signup",
+    "Zaloguj": "/signin",
 }
 
 const settings = {
     'Ustawienia konta': '/settings',
-    'Wyloguj sie': '/logout',
+    'Wyloguj sie': '/signout',
 }
 
 export const Header = () => {
-    // let navigate = useNavigate();
+    let navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleMenu = (pageURL) => {
-        // navigate(pageURL);
+        navigate(pageURL);
         console.log(pageURL)
     }
 
