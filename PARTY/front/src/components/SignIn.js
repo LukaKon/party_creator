@@ -38,8 +38,10 @@ export const SignIn = () => {
                 "account/login/",
                 data
             ).then((response) => {
-            localStorage.setItem('access_token', response.data.access)
-            localStorage.setItem('refresh_token', response.data.refresh)
+            sessionStorage.setItem('access_token', response.data.access)
+            sessionStorage.setItem('refresh_token', response.data.refresh)
+            const test = sessionStorage.setItem('refresh_token')
+            console.log(JSON.parse(atob(test.split('.')[1])))
             axiosInstance.defaults.headers["Authorization"] =
                 "JWT" + localStorage.getItem("access_token")
             navigate('/')
