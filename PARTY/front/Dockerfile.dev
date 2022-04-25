@@ -1,0 +1,18 @@
+FROM node:17.9-alpine3.15
+
+WORKDIR /react
+
+ENV PATH="./node_modules/.bin:$PATH"
+
+LABEL maintainer="PartyTeam"
+LABEL description="PartyWizard Frontend"
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+# RUN npm run start
+# CMD [ "npm", "start" ]

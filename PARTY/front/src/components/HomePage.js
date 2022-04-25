@@ -4,9 +4,9 @@ export const HomePage = () => {
     return (
         <div>
             HomePage
-            {sessionStorage.getItem('access_token')
+            {sessionStorage.getItem("access_token")
                 ? "Zalogowany"
                 : "Niezalogowany"}
         </div>
-    )
-}
+    );
+};

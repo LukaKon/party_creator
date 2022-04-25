@@ -1,7 +1,8 @@
 {
-    "python.pythonPath": "venv/bin/python",
-    "python.formatting.provider": "black",
+    "python.pythonPath": "PARTY/backend/venv/bin/python",
     "todo-tree.tree.showBadges": true,
-    // "python.formatting.blackPath": "/home/lk/vm/programing/Python/party_creator/venv/bin/darker",
-    // "python.formatting.blackArgs": ["--diff","--isort"],
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "/home/lk/dev/Python/party_creator/PARTY/backend/venv/bin/darker",
+    // "python.formatting.blackArgs": [],
+    "python.formatting.blackArgs": ["--diff","--isort"],
 }

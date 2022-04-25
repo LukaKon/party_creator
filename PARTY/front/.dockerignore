@@ -1,0 +1,10 @@
+**/.classpath
+**/.dockerignore
+# **/.env
+**/.git
+**/.gitignore
+**/.vscode
+**/Dockerfile*
+**/node_modules
+**/npm-debug.log
+README.md

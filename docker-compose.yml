@@ -1,0 +1,89 @@
+version: '3.9'
+
+services:
+
+  backend:
+    build:
+      context: ./PARTY/backend
+      dockerfile: Dockerfile.dev
+    container_name: django_back
+    command: >
+      sh -c "python manage.py wait_for_database &&
+             gunicorn back.wsgi --bind 0.0.0.0:8000"
+    env_file:
+      - .env
+    restart: on-failure
+    # volumes:
+      # - ./PARTY/backend:/django
+    ports:
+      - 8000:8000
+    networks:
+      - party_network
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    container_name: postgres_db
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    restart: on-failure
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - party_network
+
+  frontend:
+    container_name: react_front
+    build:
+      context: ./PARTY/front
+      dockerfile: Dockerfile.dev
+    command: npm start
+    # command : >
+      # sh -c "ls -lah && npm start"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    env_file:
+      # - ./.env
+      - .env
+    restart: always
+    volumes:
+      - ./PARTY/front:/react
+      # - react_dist:/react/dist
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - backend
+      - db
+    networks:
+      - party_network
+
+  nginx:
+    container_name: nginx_server
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - 80:8080
+      - 433:433
+    restart: always
+    volumes:
+      # - ./PARTY/front/dist:/var/www/react/dist
+      - ./PARTY/front/dist:/var/www/react
+      # - react_dist:/usr/share/nginx/html/react
+    depends_on:
+      - backend
+      - frontend
+
+networks:
+  party_network:
+    driver: bridge
+
+volumes:
+  # react_dist:
+  pgdata:

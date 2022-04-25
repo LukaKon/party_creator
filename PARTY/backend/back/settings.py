@@ -13,6 +13,12 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from decouple import config
+
+# from dotenv import dotenv_values, load_dotenv
+
+# config = load_dotenv(".env")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,32 +26,45 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mf6224^77-(@j-hevuj7v2lri)i0flr&2bvm)xrhaar$5uxjs3'
+# SECRET_KEY = 'django-insecure-mf6224^77-(@j-hevuj7v2lri)i0flr&2bvm)xrhaar$5uxjs3'
+# SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
+
+
+ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
 
 # Application definition
 
 PROJECT_APPS = [
-    "account",
+    "account.apps.AccountConfig",
 ]
 
 ADDITIONAL_APPS = [
+    "django_extensions",
     "rest_framework",
+    "django_probes",
     "django_filters",
 ]
 
-INSTALLED_APPS = [
-                     'django.contrib.admin',
-                     'django.contrib.auth',
-                     'django.contrib.contenttypes',
-                     'django.contrib.sessions',
-                     'django.contrib.messages',
-                     'django.contrib.staticfiles',
-                 ] + PROJECT_APPS + ADDITIONAL_APPS
+INSTALLED_APPS = (
+    [
+        "django.contrib.admin",
+        "django.contrib.auth",
+        "django.contrib.contenttypes",
+        "django.contrib.sessions",
+        "django.contrib.messages",
+        "django.contrib.staticfiles",
+    ]
+    + PROJECT_APPS
+    + ADDITIONAL_APPS
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,17 +80,15 @@ ROOT_URLCONF = 'back.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, "../front/build")
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "../front/dist")],  # TODO: is the path ok?
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -85,11 +102,16 @@ WSGI_APPLICATION = 'back.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dev2',
-        'USER': 'postgres',
-        'PASSWORD': 'coderslab',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        # 'NAME': 'dev2',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'coderslab',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '5432',
+        "NAME": os.getenv("DATABASE_NAME", "dev2"),
+        "HOST": os.getenv("PG_HOST", "127.0.0.1"),
+        "USER": os.getenv("DATABASE_USER", "postgres"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD", "coderslab"),
+        "PORT": os.getenv("PG_PORT", "5432"),
     }
 }
 
@@ -114,9 +136,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "pl"
+LANGUAGES = (
+    ("pl", "polski"),
+    ("en", "angielski"),
+)
 
-TIME_ZONE = 'UTC'
+# LANGUAGE_CODE = 'en-us'
+
+# TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Warsaw"  # 'UTC'
 
 USE_I18N = True
 
@@ -133,8 +162,15 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "../front/build/static")
+    os.path.join(BASE_DIR / "static")  # TODO: to change
+    # os.path.join(BASE_DIR, "../front/build/static")
 ]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# location where the media (profile pic) are stored
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"  # url that will serve media files
 
 AUTH_USER_MODEL = 'account.User'
 
