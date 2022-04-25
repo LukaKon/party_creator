@@ -61,7 +61,8 @@ const config = {
         }),
         // new Dotenv(),
         new Dotenv({
-            path: "./.env",
+            path: "../../.env",
+            // path: path.resolve(__dirname, "../../.env"),
         }),
     ],
 };

@@ -81,7 +81,7 @@ ROOT_URLCONF = 'back.urls'
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "../front/build")],  # TODO: is the path ok?
+        "DIRS": [os.path.join(BASE_DIR, "../front/dist")],  # TODO: is the path ok?
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

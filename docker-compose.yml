@@ -74,7 +74,7 @@ services:
     restart: always
     volumes:
       # - ./PARTY/front/dist:/var/www/react/dist
-      - ./PARTY/front/dist:/usr/share/nginx/html
+      - ./PARTY/front/dist:/var/www/react
       # - react_dist:/usr/share/nginx/html/react
     depends_on:
       - backend
@@ -85,5 +85,5 @@ networks:
     driver: bridge
 
 volumes:
-  react_dist:
+  # react_dist:
   pgdata:
