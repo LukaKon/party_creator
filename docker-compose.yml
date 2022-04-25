@@ -43,8 +43,6 @@ services:
       context: ./PARTY/front
       dockerfile: Dockerfile.dev
     command: npm start
-    # command : >
-      # sh -c "ls -lah && npm start"
     environment:
       CHOKIDAR_USEPOLLING: "true"
     env_file:
@@ -73,9 +71,13 @@ services:
       - 433:433
     restart: always
     volumes:
-      # - ./PARTY/front/dist:/var/www/react/dist
-      - ./PARTY/front/dist:/var/www/react
-      # - react_dist:/usr/share/nginx/html/react
+      # for debian
+      # - ./nginx/nginx-debian.conf:/etc/nginx/conf.d/default.conf:ro
+      # - ./PARTY/front/dist:/var/www/react
+
+      # for alpine
+      - ./nginx/nginx-alpine.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./PARTY/front/dist:/usr/share/nginx/html
     depends_on:
       - backend
       - frontend
