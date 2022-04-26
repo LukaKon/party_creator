@@ -8,6 +8,7 @@ const config = {
     entry: {
         bundle: path.resolve(__dirname, "src/index.js"),
     },
+
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name][contenthash].js",
@@ -63,6 +64,7 @@ const config = {
         new Dotenv({
             path: "../../.env",
             // path: path.resolve(__dirname, "../../.env"),
+            // path: ["../../.env", ".env"],
         }),
     ],
 };
