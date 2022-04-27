@@ -1,2 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
-// import{}
+import { announcementReducer } from "./announcementSlice";
+
+export const rootReducer = combineReducers({
+    announcement: announcementReducer,
+});

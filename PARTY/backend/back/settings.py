@@ -15,10 +15,6 @@ from pathlib import Path
 
 from decouple import config
 
-# from dotenv import dotenv_values, load_dotenv
-
-# config = load_dotenv(".env")
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,6 +40,7 @@ ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
 
 PROJECT_APPS = [
     "account.apps.AccountConfig",
+    "announcement.apps.AnnouncementConfig",
 ]
 
 ADDITIONAL_APPS = [
@@ -53,19 +50,15 @@ ADDITIONAL_APPS = [
     "django_filters",
     "corsheaders",
 ]
-
-INSTALLED_APPS = (
-    [
-        "django.contrib.admin",
-        "django.contrib.auth",
-        "django.contrib.contenttypes",
-        "django.contrib.sessions",
-        "django.contrib.messages",
-        "django.contrib.staticfiles",
-    ]
-    + PROJECT_APPS
-    + ADDITIONAL_APPS
-)
+STANDARD_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+]
+INSTALLED_APPS = STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

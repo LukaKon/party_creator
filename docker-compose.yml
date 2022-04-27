@@ -13,8 +13,8 @@ services:
     env_file:
       - .env
     restart: on-failure
-    # volumes:
-      # - ./PARTY/backend:/django
+    volumes:
+      - ./PARTY/backend:/django
     ports:
       - 8000:8000
     networks:
