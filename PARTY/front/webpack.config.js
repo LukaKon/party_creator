@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+const Dotenv2 = require("dotenv-webpack");
 
 const config = {
     mode: "development",
@@ -65,6 +66,9 @@ const config = {
             path: "../../.env",
             // path: path.resolve(__dirname, "../../.env"),
             // path: ["../../.env", ".env"],
+        }),
+        new Dotenv2({
+            path: ".env",
         }),
     ],
 };
