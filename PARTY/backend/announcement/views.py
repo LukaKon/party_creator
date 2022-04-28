@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Announcement
-from .serializers import AnnouncementSerializer
+from .serializers import AnnouncementSerializer, ImageSerializer
 
 
 class AnnouncementView(APIView):

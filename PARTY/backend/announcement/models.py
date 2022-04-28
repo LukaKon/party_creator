@@ -53,9 +53,8 @@ class Announcement(models.Model):
         verbose_name="announcement_categories",
         on_delete=models.PROTECT,
     )
-    event_type = models.ManyToManyField(EventType, related_name="announcements")
+    # event_type = models.ManyToManyField(EventType, related_name="announcements")
     date = models.DateTimeField(auto_now=True)
-    # city = models.PointField()
     # is_active=models.BooleanField(default=True)
 
     class Meta:
@@ -124,12 +123,12 @@ class Image(Multimedia):
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front
 
 
-class Movie(Multimedia):
-    """Movie attached to announcement."""
+# class Movie(Multimedia):
+#     """Movie attached to announcement."""
 
-    movie = models.FileField(
-        null=True,
-        upload_to=upload_to_pattern,
-        # delete_orphans=True,
-        verbose_name="movies",
-    )
+#     movie = models.FileField(
+#         null=True,
+#         upload_to=upload_to_pattern,
+#         # delete_orphans=True,
+#         verbose_name="movies",
+#     )

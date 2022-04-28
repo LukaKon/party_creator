@@ -12,6 +12,7 @@ COPY package.json .
 
 RUN npm install
 
+#TODO: do I need that for developnent? in compose is volume
 COPY . .
 
 RUN npm run build
