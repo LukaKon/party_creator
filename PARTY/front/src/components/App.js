@@ -7,21 +7,24 @@ import {SignIn} from "./SignIn"
 import {SignUp} from "./SignUp";
 import {TestApi} from "./testAPI";
 
-export const App=()=> {
+
+export const App = () => {
     return (
         <div className="App">
+            <AddAnnouncement />
             <BrowserRouter>
-                <Header/>
+                <Header />
                 <Routes>
+
                     <Route path="example" element={<div>example</div>}/>
                     <Route path="signin" element={<SignIn/>}/>
                     <Route path="signup" element={<SignUp/>}/>
                     <Route path="/" element={<HomePage/>}/>
-
                     <Route path="testapi" element={<TestApi/>}/>
+
                 </Routes>
-                <Footer/>
+                <Footer />
             </BrowserRouter>
         </div>
     );
-}
+};

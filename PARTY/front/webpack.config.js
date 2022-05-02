@@ -2,12 +2,14 @@ const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+const Dotenv2 = require("dotenv-webpack");
 
 const config = {
     mode: "development",
     entry: {
         bundle: path.resolve(__dirname, "src/index.js"),
     },
+
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name][contenthash].js",
@@ -63,6 +65,10 @@ const config = {
         new Dotenv({
             path: "../../.env",
             // path: path.resolve(__dirname, "../../.env"),
+            // path: ["../../.env", ".env"],
+        }),
+        new Dotenv2({
+            path: ".env",
         }),
     ],
 };
