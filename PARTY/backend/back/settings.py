@@ -33,7 +33,6 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
-
 ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
 
 # Application definition
@@ -61,15 +60,14 @@ STANDARD_APPS = [
 INSTALLED_APPS = STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -182,7 +180,12 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
     'ROTATE_REFRESH_TOKENS': True,
 }
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]

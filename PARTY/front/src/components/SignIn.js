@@ -1,5 +1,5 @@
-// import * as React from 'react';
-import React from "react";
+import * as React from "react";
+import { Buffer } from 'buffer';
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -41,8 +41,6 @@ export const SignIn = () => {
             .then((response) => {
                 sessionStorage.setItem("access_token", response.data.access);
                 sessionStorage.setItem("refresh_token", response.data.refresh);
-                const test = sessionStorage.setItem("refresh_token");
-                console.log(JSON.parse(atob(test.split(".")[1])));
                 axiosInstance.defaults.headers["Authorization"] =
                     "JWT" + localStorage.getItem("access_token");
                 navigate("/");
