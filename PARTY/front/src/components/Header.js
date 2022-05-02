@@ -24,20 +24,29 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const pages = {
-    // for example:
-    // "Button Name" : "URL"
-    // "Test Button" : "/testSite"
-    "Zarejestruj się": "/signup",
-    "Zaloguj": "/signin",
-}
-
-const settings = {
-    'Ustawienia konta': '/settings',
-    'Wyloguj sie': '/signout',
-}
-
 export const Header = () => {
+
+    const pages = {
+        // for example:
+        // "Button Name" : "URL"
+        // "Test Button" : "/testSite"
+        'test api' : "/testapi"
+    }
+
+    const settings = {
+        // for example:
+        // "Button Name" : "URL"
+        // "Test Button" : "/testSite"
+    }
+
+    if (sessionStorage.getItem("access_token")) {
+        settings['Wyloguj sie'] = "/signout";
+    } else {
+        pages["Zarejestruj"] = "/signup"
+        pages["Zaloguj"] = "/signin"
+        settings["Ustawienia konta"] = "/settings"
+    }
+
     let navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -126,7 +135,7 @@ export const Header = () => {
                     <Typography
                         noWrap
                         component="div"
-                        sx={{mr:1}}>
+                        sx={{mr: 1}}>
                         <img src={"media/logo.png"} alt="logo"/>
                     </Typography>
 
@@ -136,7 +145,7 @@ export const Header = () => {
 
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Ustawienia">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p:0}}>
+                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                 <Avatar alt="avatar" src="/media/default.jpg"/>
                             </IconButton>
                         </Tooltip>
@@ -145,7 +154,7 @@ export const Header = () => {
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
-                                vertical:"top",
+                                vertical: "top",
                                 horizontal: "right",
                             }}
                             keepMounted
@@ -155,13 +164,13 @@ export const Header = () => {
                             }}
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
-                            >
-                            {Object.keys(settings).map((setting)=>
-                            <MenuItem key={setting} onClick={() => handleMenu(settings[setting])}>
-                                <Typography textAlign="center">
-                                    {setting}
-                                </Typography>
-                            </MenuItem>
+                        >
+                            {Object.keys(settings).map((setting) =>
+                                <MenuItem key={setting} onClick={() => handleMenu(settings[setting])}>
+                                    <Typography textAlign="center">
+                                        {setting}
+                                    </Typography>
+                                </MenuItem>
                             )}
                         </Menu>
                     </Box>
