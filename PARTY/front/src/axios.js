@@ -8,7 +8,7 @@ export const axiosInstance = axios.create({
     timeout: 5000,
     headers: {
         Authorization: sessionStorage.getItem('access_token')
-            ? "JWT" + sessionStorage.getItem('access_token')
+            ? "JWT " + sessionStorage.getItem('access_token')
             : null,
         "Content-Type": 'application/json',
         accept: 'application/json',
