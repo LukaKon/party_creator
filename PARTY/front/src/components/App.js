@@ -5,6 +5,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {HomePage} from "./HomePage";
 import {SignIn} from "./SignIn"
 import {SignUp} from "./SignUp";
+import {TestApi} from "./testAPI";
 
 export const App=()=> {
     return (
@@ -16,6 +17,8 @@ export const App=()=> {
                     <Route path="signin" element={<SignIn/>}/>
                     <Route path="signup" element={<SignUp/>}/>
                     <Route path="/" element={<HomePage/>}/>
+
+                    <Route path="testapi" element={<TestApi/>}/>
                 </Routes>
                 <Footer/>
             </BrowserRouter>
