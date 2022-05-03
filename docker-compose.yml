@@ -7,9 +7,12 @@ services:
       context: ./PARTY/backend
       dockerfile: Dockerfile.dev
     container_name: django_back
+    # command: >
+      # sh -c "python manage.py wait_for_database &&
+            #  gunicorn back.wsgi --bind 0.0.0.0:8000"
     command: >
       sh -c "python manage.py wait_for_database &&
-             gunicorn back.wsgi --bind 0.0.0.0:8000"
+             python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
     restart: on-failure
@@ -33,7 +36,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5433:5432
     networks:
       - party_network
 

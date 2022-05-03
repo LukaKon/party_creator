@@ -2,6 +2,7 @@ import stdimage
 from account.models import User
 from django.db import models
 from django.shortcuts import reverse
+from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
 
 from .utils.announcement import unique_slug_generator
@@ -28,38 +29,51 @@ class ServiceCategory(models.Model):
         return self.name
 
 
-class EventType(models.Model):
-    """Event type. e.g weddings, baptism etc."""
+# class EventType(models.Model):
+#     """Event type. e.g weddings, baptism etc."""
 
-    name = models.CharField(max_length=100)
-    photo = models.ForeignKey(
-        "Image", verbose_name="event_type_image", on_delete=models.SET_NULL, null=True
-    )
-    category = models.ManyToManyField(ServiceCategory, related_name="event_types")
+#     name = models.CharField(max_length=100)
+#     photo = models.ForeignKey(
+#         "Image", verbose_name="event_type_image", on_delete=models.SET_NULL, null=True
+#     )
+#     category = models.ManyToManyField(ServiceCategory, related_name="event_types")
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class Announcement(models.Model):
     """Model of announcement."""
 
+    DEFAULT = "default"
+    WEDDING = "wedding"
+    BAPTISM = "baptism"
+    INTEGRATION = "integration"
+    EVENT = [
+        (DEFAULT, _("default")),
+        (WEDDING, _("Wedding...")),
+        (BAPTISM, _("Baptism...")),
+        (INTEGRATION, _("Integration...")),
+    ]
+
     title = models.CharField(max_length=200)
     description = models.TextField()
     slug = models.SlugField(unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     category = models.ForeignKey(
         ServiceCategory,
         verbose_name="announcement_categories",
         on_delete=models.PROTECT,
+        # default=1,
     )
-    # event_type = models.ManyToManyField(EventType, related_name="announcements")
-    date = models.DateTimeField(auto_now=True)
+    # # event_type = models.ManyToManyField(EventType, related_name="announcements")
+    # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
+    created = models.DateTimeField(auto_now=True)
     # is_active=models.BooleanField(default=True)
 
     class Meta:
         index_together = (("id", "slug"),)
-        ordering = ("-date",)
+        ordering = ("-created",)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -72,8 +86,8 @@ class Announcement(models.Model):
             img.delete()
         super().delete()
 
-    def get_absolute_url(self):
-        return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
+    # def get_absolute_url(self):
+    #     return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.title
@@ -88,13 +102,13 @@ class Multimedia(models.Model):
         blank=True,
         related_name="%(class)s",
     )
-    event_type = models.OneToOneField(
-        EventType,
-        verbose_name="%(class)s",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
+    # event_type = models.OneToOneField(
+    #     EventType,
+    #     verbose_name="%(class)s",
+    #     on_delete=models.CASCADE,
+    #     null=True,
+    #     blank=True,
+    # )
 
     def __str__(self):
         return str(self.image.thumbnail)
@@ -118,6 +132,7 @@ class Image(Multimedia):
         },
         delete_orphans=True,
         verbose_name="images",
+        default="media/default.jpg",
     )
 
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front

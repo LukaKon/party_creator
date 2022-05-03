@@ -1,4 +1,4 @@
-# PARTY WIZARD :joy
+# PARTY WIZARD :)
 
 **Service** that help you organize your life event:)
 
