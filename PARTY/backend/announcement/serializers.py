@@ -1,7 +1,7 @@
 from account.models import User
 from rest_framework import serializers
 
-from .models import Announcement, Image, ServiceCategory
+from .models import Announcement, EventType, Image  # ServiceCategory
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,13 +13,19 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
 
-class ServiceCategorySerializer(serializers.ModelSerializer):
+# class ServiceCategorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ServiceCategory
+#         fields = (
+#             # "id",
+#             "name",
+#         )
+
+
+class EventTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ServiceCategory
-        fields = (
-            # "id",
-            "name",
-        )
+        model = EventType
+        fields = ("name",)
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -38,8 +44,10 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     images = ImageSerializer(many=True, read_only=True)
-    # user = UserSerializer()
-    # category = ServiceCategory()
+    user = UserSerializer()
+    # category = ServiceCategorySerializer()
+    # category = ServiceCategorySerializer(read_only=True)
+    event_type = EventType()
 
     class Meta:
         model = Announcement
@@ -48,14 +56,25 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "slug",
-            # "user",
+            "uuid",
+            "user",
             "category",
-            # "event",
+            # "event_type",
             "created",
             "images",
         )
         read_only_fields = (
             "slug",
-            "category",
+            # "category",
             "event",
         )
+
+    def create(self, validated_data):
+        #     print("data: ", validated_data)
+        category_data = validated_data.pop("user")
+        #     print("profile_data: ", category_data)
+        announcement = Announcement.objects.create(**validated_data)
+        #     print("announcement: ", announcement)
+        # user=
+        # ServiceCategory.objects.create(announcement=announcement, **category_data)
+        return announcement
