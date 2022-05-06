@@ -47,7 +47,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
-    event_type = EventType()
+    event_type = EventType()  # many=True, read_only=True)
 
     class Meta:
         model = Announcement
@@ -57,16 +57,16 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "description",
             "slug",
             "uuid",
-            "user",
+            # "user",
             "category",
-            # "event_type",
+            "event_type",
             "created",
             "images",
         )
         read_only_fields = (
             "slug",
             # "category",
-            "event",
+            "event_type",
         )
 
     def create(self, validated_data):
@@ -78,3 +78,6 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         # user=
         # ServiceCategory.objects.create(announcement=announcement, **category_data)
         return announcement
+
+    def update(self, instance, validated_data):
+        return  # TODO: create update function

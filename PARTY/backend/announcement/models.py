@@ -86,7 +86,7 @@ class Announcement(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     # category = models.ForeignKey(
     # ServiceCategory,
     # verbose_name="announcement_categories",
@@ -94,7 +94,7 @@ class Announcement(models.Model):
     # default=1,
     # )
     category = models.CharField(max_length=30, choices=CATEGORY_NAME)
-    # event_type = models.ManyToManyField(EventType, related_name="announcements")
+    event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
     # is_active=models.BooleanField(default=True)
