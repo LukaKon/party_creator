@@ -1,3 +1,4 @@
+
 import React from 'react'
 import {Footer} from "./Footer";
 import {Header} from "./Header";
@@ -8,22 +9,21 @@ import {SignUp} from "./SignUp";
 import {SignOut} from "./SignOut";
 import {TestApi} from "./testAPI";
 
-export const App=()=> {
+export const App = () => {
     return (
         <div className="App">
             <BrowserRouter>
-                <Header/>
+                <Header />
                 <Routes>
                     <Route path="example" element={<div>example</div>}/>
                     <Route path="signin" element={<SignIn/>}/>
                     <Route path="signup" element={<SignUp/>}/>
                     <Route path="signout" element={<SignOut/>}/>
                     <Route path="/" element={<HomePage/>}/>
-
                     <Route path="testapi" element={<TestApi/>}/>
                 </Routes>
-                <Footer/>
+                <Footer />
             </BrowserRouter>
         </div>
     );
-}
+};
