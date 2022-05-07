@@ -29,7 +29,7 @@ export const SignIn = () => {
     let navigate = useNavigate();
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         let data = new FormData(event.currentTarget);
         data = {
             email: data.get("email"),
@@ -43,7 +43,8 @@ export const SignIn = () => {
                 sessionStorage.setItem("refresh_token", response.data.refresh);
                 axiosInstance.defaults.headers["Authorization"] =
                     "JWT" + localStorage.getItem("access_token");
-                navigate("/");
+                navigate('/')
+                window.location.reload(true);
             })
             .catch((error) => console.log(error));
     };

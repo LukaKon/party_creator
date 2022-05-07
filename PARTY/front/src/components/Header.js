@@ -30,7 +30,9 @@ export const Header = () => {
         // for example:
         // "Button Name" : "URL"
         // "Test Button" : "/testSite"
-        'test api' : "/testapi"
+        "strona główna" : '/',
+        'test api' : "/testapi",
+
     }
 
     const settings = {
@@ -53,7 +55,6 @@ export const Header = () => {
 
     const handleMenu = (pageURL) => {
         navigate(pageURL);
-        console.log(pageURL)
     }
 
     const handleOpenNavMenu = (event) => {
