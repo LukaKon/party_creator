@@ -3,7 +3,7 @@ import React from "react";
 export const HomePage = () => {
     return (
         <div>
-            HomePage
+            HomePage new
             {sessionStorage.getItem("access_token")
                 ? "Zalogowany"
                 : "Niezalogowany"}

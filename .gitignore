@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 
 # database backup file
+database
 dump.sql
 
 # C extensions
