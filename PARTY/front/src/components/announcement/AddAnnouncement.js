@@ -16,8 +16,9 @@ export const AddAnnouncement = () => {
         title: "",
         description: "",
         category: "",
-        event_type: "",
+        // event_type: "",
     };
+
     const [state, setState] = useState(initState);
     const theme = createTheme();
 

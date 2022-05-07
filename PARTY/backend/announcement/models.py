@@ -14,21 +14,24 @@ upload_to_pattern = FilePattern(
 )
 
 
-# class ServiceCategory(models.Model):
-#     """Category(type) of announcement. e.g local, photograph etc."""
+class Category(models.Model):
+    """Category(type) of announcement. e.g local, photograph etc."""
 
-#     CATEGORY_NAME = (
-#         ("muzyka", "music"),
-#         ("cattering", "cattering"),
-#         ("fotograf", "photograph"),
-#         ("lokal", "local"),
-#         ("animator", "animator"),
-#     )
-#     # name = models.CharField(max_length=250)
-#     name = models.CharField(max_length=100, choices=CATEGORY_NAME)
+    CATEGORY_NAME = (
+        ("muzyka", "music"),
+        ("cattering", "cattering"),
+        ("fotograf", "photograph"),
+        ("lokal", "local"),
+        ("animator", "animator"),
+    )
 
-#     def __str__(self):
-#         return self.name
+    name = models.CharField(
+        max_length=100,
+        choices=CATEGORY_NAME,
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class EventType(models.Model):
@@ -45,16 +48,9 @@ class EventType(models.Model):
         (INTEGRATION, _("Integration...")),
     ]
 
-    CAT = (
-        ("muzyka", "music"),
-        ("cattering", "cattering"),
-        ("fotograf", "photograph"),
-        ("lokal", "local"),
-        ("animator", "animator"),
-    )
     name = models.CharField(
         max_length=30,
-        choices=CAT,
+        choices=EVENT,
     )  # default=DEFAULT)
 
     #     name = models.CharField(max_length=100)
@@ -86,15 +82,18 @@ class Announcement(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    # user = models.ForeignKey(
+    # User,
+    # on_delete=models.CASCADE,
+    # )  # default=None)
     # category = models.ForeignKey(
     # ServiceCategory,
     # verbose_name="announcement_categories",
     # on_delete=models.PROTECT,
     # default=1,
     # )
-    category = models.CharField(max_length=30, choices=CATEGORY_NAME)
-    event_type = models.ManyToManyField(EventType, related_name="announcements")
+    # category = models.CharField(max_length=30, choices=CATEGORY_NAME)
+    # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
     # is_active=models.BooleanField(default=True)

@@ -2,11 +2,16 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
+    ListAPIView,
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,17 +24,45 @@ class AnnouncementCraeteView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = AnnouncementSerializer
 
-    # def get(self, request, *args, **kwargs):
-    # serializer = AnnouncementSerializer
-    # TODO: not like that
+    def post(self, request, *args, **kwargs):
+        """
+        add announcement
+        """
+        print("request: ", request.data)
+        print("-----user: ", request.user)
+        data = {
+            "title": request.data.get("title"),
+            "description": request.data.get("description"),
+            "user": request.user.email,
+            "category": request.data.get("category"),
+            # 'event_type':request.data.get('event_type'),
+            # 'images':request.data.get('images'),
+        }
+        permission_classes = (IsAuthenticated,)
+
+        serializer = AnnouncementSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AnnouncementListView(ListCreateAPIView):
-    queryset = Announcement.objects.all()
-    permission_classes = (AllowAny,)
+class AnnouncementListView(ListAPIView):
+    # permission_classes = (AllowAny,)
     serializer_class = AnnouncementSerializer
-    loogup_field = "uuid"
+    queryset = Announcement.objects.all()
+    lookup_field = "uuid"
     # parser_classes = (FormParser, MultiPartParser)
+
+    # def get(self, request, *args, **kwargs):
+    #     """
+    #     list all announcement
+    #     """
+    #     permission_classes = (AllowAny,)
+    #     queryset = Announcement.objects.all()
+    #     serializer = AnnouncementSerializer(many=True)
+    #     print("====data:", serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
     # def get(self, request, *args, **kwargs):
     # announcements = Announcement.objects.all()

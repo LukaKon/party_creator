@@ -46,7 +46,7 @@ ADDITIONAL_APPS = [
     "django_extensions",
     "rest_framework",
     "django_probes",
-    "django_filters",
+    "django_filters",  # TODO: do we need this?
     "corsheaders",
 ]
 STANDARD_APPS = [

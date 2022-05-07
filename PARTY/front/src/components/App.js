@@ -6,6 +6,8 @@ import { HomePage } from "./HomePage";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { TestApi } from "./testAPI";
+import { AddAnnouncement } from "./announcement/AddAnnouncement";
+import { AnnouncementList } from "./announcement/AnnouncementList";
 
 export const App = () => {
     return (
@@ -18,7 +20,9 @@ export const App = () => {
                     <Route path="signup" element={<SignUp />} />
                     <Route path="/" element={<HomePage />} />
                     <Route path="testapi" element={<TestApi />} />
+                    <Route path="announcement" element={<AddAnnouncement />} />
                 </Routes>
+                <AnnouncementList />
                 <Footer />
             </BrowserRouter>
         </div>

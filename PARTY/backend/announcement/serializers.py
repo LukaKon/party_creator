@@ -43,41 +43,40 @@ class ImageSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
-    images = ImageSerializer(many=True, read_only=True)
-    user = UserSerializer()
+    # images = ImageSerializer(many=True, read_only=True)
+    # user = UserSerializer()
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
-    event_type = EventType()  # many=True, read_only=True)
+    # event_type = EventType()  # many=True, read_only=True)
 
     class Meta:
         model = Announcement
         fields = (
-            "id",
+            # "id",
             "title",
             "description",
             "slug",
             "uuid",
             # "user",
-            "category",
-            "event_type",
+            # "category",
+            # "event_type",
             "created",
-            "images",
+            # "images",
         )
         read_only_fields = (
             "slug",
-            # "category",
-            "event_type",
+            # "event_type",
         )
 
-    def create(self, validated_data):
-        #     print("data: ", validated_data)
-        category_data = validated_data.pop("user")
-        #     print("profile_data: ", category_data)
-        announcement = Announcement.objects.create(**validated_data)
-        #     print("announcement: ", announcement)
-        # user=
-        # ServiceCategory.objects.create(announcement=announcement, **category_data)
-        return announcement
+    # def create(self, validated_data):
+    #     #     print("data: ", validated_data)
+    #     category_data = validated_data.pop("user")
+    #     #     print("profile_data: ", category_data)
+    #     announcement = Announcement.objects.create(**validated_data)
+    #     #     print("announcement: ", announcement)
+    #     # user=
+    #     # ServiceCategory.objects.create(announcement=announcement, **category_data)
+    #     return announcement
 
-    def update(self, instance, validated_data):
-        return  # TODO: create update function
+    # def update(self, instance, validated_data):
+    # return  # TODO: create update function
