@@ -1,7 +1,9 @@
 import axios from "axios";
-import {LOCALHOST} from "./settings";
 import { Buffer } from 'buffer';
 
+// import {LOCALHOST} from "./settings";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const axiosInstance = axios.create({
     baseURL: LOCALHOST,
@@ -90,3 +92,4 @@ axiosInstance.interceptors.response.use(
 		// return Promise.reject(error);
 	}
 );
+
