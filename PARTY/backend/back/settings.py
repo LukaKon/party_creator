@@ -47,7 +47,9 @@ ADDITIONAL_APPS = [
     "rest_framework",
     "django_probes",
     "django_filters",
-    "corsheaders",
+
+    'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 STANDARD_APPS = [
     "django.contrib.admin",
