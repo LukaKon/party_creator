@@ -51,6 +51,7 @@ ADDITIONAL_APPS = [
     "django_probes",
     "django_filters",
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 INSTALLED_APPS = (

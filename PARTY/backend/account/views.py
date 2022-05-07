@@ -26,14 +26,14 @@ class LogoutAllView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-        tokens = OutstandingToken.objects.filter(user_id=request.user.id)
-        for token in tokens:
-            t, _ = BlacklistedToken.objects.get_or_create(token=token)
+        try:
+            tokens = OutstandingToken.objects.filter(user_id=request.user.id)
+            for token in tokens:
+                t, _ = BlacklistedToken.objects.get_or_create(token=token)
 
-            print("t", t)
-            print("_", _)
-
-        return Response(status={"status": "OK"})
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class testAPI(APIView):
