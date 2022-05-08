@@ -7,7 +7,10 @@ import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
-import { AnnouncementList } from "./announcement/AnnouncementList";
+import {
+    AnnouncementList,
+    AnnouncementListContainer,
+} from "./announcement/AnnouncementList";
 
 export const App = () => {
     return (
@@ -22,7 +25,8 @@ export const App = () => {
                     <Route path="testapi" element={<TestApi />} />
                     <Route path="announcement" element={<AddAnnouncement />} />
                 </Routes>
-                <AnnouncementList />
+                {/* <AnnouncementList /> */}
+                <AnnouncementListContainer />
                 <Footer />
             </BrowserRouter>
         </div>

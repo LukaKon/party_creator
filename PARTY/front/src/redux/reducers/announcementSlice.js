@@ -19,9 +19,13 @@ const initialState = [
     // }
 ];
 
-const announcementsSlice = createSlice({
+const announcementSlice = createSlice({
     name: "announcements",
-    initialState,
+    initialState: {
+        loading: false,
+        entities: [],
+        error: "",
+    },
     reducers: {
         addAnnouncement(state, action) {
             const ann = action.payload;
@@ -44,5 +48,5 @@ const announcementsSlice = createSlice({
 });
 
 export const { announcementFetching, announcementFetched, announcementError } =
-    announcementsSlice.actions;
-export const announcementReducer = announcementsSlice.reducer;
+    announcementSlice.actions;
+export const announcementReducer = announcementSlice.reducer;
