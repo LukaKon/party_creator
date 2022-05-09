@@ -7,7 +7,7 @@ export const fetchAnnouncements = createAsyncThunk(
     async () => {
         try {
             const response = await axiosInstance.get("/api/announcements");
-            // response.announcements; // TODO: to check is it ok, maybe announcement or something else
+            // .dispatch(addAnnouncement);
             return [...response.data];
         } catch (err) {
             console.log("thunk error: ", err.message);

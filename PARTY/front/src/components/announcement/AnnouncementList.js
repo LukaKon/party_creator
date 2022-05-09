@@ -2,8 +2,25 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { fetchAnnouncements } from "../../features/announcement/announcementSlice";
+import { AnnouncementItem } from "./AnnouncementItem";
+import { Grid, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        overflow: "hidden",
+        padding: theme.spacing(0, 3),
+    },
+    paper: {
+        maxWidth: 200,
+        margin: `${theme.spacing(1)}px auto`,
+        padding: theme.spacing(2),
+    },
+}));
 
 export const AnnouncementList = () => {
+    const classes = useStyles();
     const { loading, entities, error } = useSelector(
         (state) => state.announcements
     );
@@ -22,12 +39,14 @@ export const AnnouncementList = () => {
         content = <div>Fetching in progress...</div>;
     } else {
         content = (
-            <div>
-                <ul>
-                    {entities.map((ann, index) => {
-                        return <li key={index}>{ann.title}</li>;
-                    })}
-                </ul>
+            <div className={classes.root}>
+                {/* <Paper className={classes.paper}> */}
+                <Grid container spacing={4}>
+                    {entities.map((ann) => (
+                        <AnnouncementItem key={ann.uuid} {...ann} />
+                    ))}
+                </Grid>
+                {/* </Paper> */}
             </div>
         );
     }
