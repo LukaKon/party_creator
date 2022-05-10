@@ -30,11 +30,7 @@ export const AnnouncementItem = ({ title, description, uuid, created }) => {
             <Grid container wrap="nowrap" spacing={5}>
                 <Grid item xs={5}>
                     <ButtonBase className={classes.image}>
-                        <img
-                            className={classes.img}
-                            alt="complex"
-                            src="/static/images/grid/complex.jpg"
-                        />
+                        <img className={classes.img} alt="complex" src="" />
                     </ButtonBase>
                 </Grid>
                 <Grid item xs={12} sm container>

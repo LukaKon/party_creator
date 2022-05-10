@@ -13,6 +13,11 @@ urlpatterns = [
         name="announcement_api",
     ),
     path(
+        route="addannouncement/",
+        view=views.AnnouncementCraeteView.as_view(),
+        name="add_announcement",
+    ),
+    path(
         route="announcement/<uuid:uuid>/",
         view=views.AnnouncementRetriveUpdateDestroyAPIView.as_view(),
         name="announcement_api",

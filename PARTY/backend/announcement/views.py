@@ -33,8 +33,8 @@ class AnnouncementCraeteView(CreateAPIView):
         data = {
             "title": request.data.get("title"),
             "description": request.data.get("description"),
-            "user": request.user.email,
-            "category": request.data.get("category"),
+            # "user": request.user.email,
+            # "category": request.data.get("category"),
             # 'event_type':request.data.get('event_type'),
             # 'images':request.data.get('images'),
         }

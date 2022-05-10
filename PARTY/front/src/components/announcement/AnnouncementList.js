@@ -24,11 +24,7 @@ export const AnnouncementList = () => {
     const { loading, entities, error } = useSelector(
         (state) => state.announcements
     );
-    // console.log("-----entities: ", entities);
     const dispatch = useDispatch();
-
-    // const loading = useSelector((state) => state.announcements.loading);
-    // console.log("loading state: ", loading);
 
     useEffect(() => {
         dispatch(fetchAnnouncements());

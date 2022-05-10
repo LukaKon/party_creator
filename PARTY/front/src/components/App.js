@@ -9,24 +9,26 @@ import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
 import {
     AnnouncementList,
-    AnnouncementListContainer,
 } from "./announcement/AnnouncementList";
 
 export const App = () => {
     return (
         <div className="App">
             <BrowserRouter>
-                <Header />
+                <Header/>
                 <Routes>
-                    <Route path="example" element={<div>example</div>} />
-                    <Route path="signin" element={<SignIn />} />
-                    <Route path="signup" element={<SignUp />} />
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="testapi" element={<TestApi />} />
-                    <Route path="announcement" element={<AddAnnouncement />} />
+                    <Route path="example" element={<div>example</div>}/>
+                    <Route path="signin" element={<SignIn/>}/>
+                    <Route path="signup" element={<SignUp/>}/>
+                    <Route path="/" element={<HomePage/>}/>
+                    <Route path="testapi" element={<TestApi/>}/>
+                    <Route path='addannouncement' element={<AddAnnouncement/>}/>
+                    <Route path='*' element={
+                        <main style={{padding: "1rem"}}>
+                            <p>There's nothing here!</p>
+                        </main>}/>
                 </Routes>
-                {/* <AnnouncementList /> */}
-                <AnnouncementListContainer />
+                 <AnnouncementList />
                 <Footer />
             </BrowserRouter>
         </div>
