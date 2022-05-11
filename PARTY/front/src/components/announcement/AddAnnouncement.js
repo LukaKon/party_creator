@@ -1,15 +1,7 @@
-import React, { useState } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import {
-    Button,
-    Container,
-    CssBaseline,
-    TextField,
-    Typography,
-    Input,
-    Box,
-    TextareaAutosize,
-} from "@mui/material";
+import React, {useState} from "react";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {Box, Button, Container, CssBaseline, TextareaAutosize, TextField, Typography,} from "@mui/material";
+import {useForm} from './hooks/useForm'
 
 export const AddAnnouncement = () => {
     const initState = {
@@ -18,18 +10,26 @@ export const AddAnnouncement = () => {
         category: "",
         // event_type: "",
     };
+    const [updateValue, submitHandler, errors] = useForm({})
 
     const [state, setState] = useState(initState);
     const theme = createTheme();
 
     const handleSubmit = (e) => {
+
         console.log("Submit");
     };
+
+    let checkInputs;
+    if (errors.length !== 0) {
+        checkInputs = (<Typography color={"red"}>{errors.map(err => err)}</Typography>)
+    }
+
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 8,
@@ -41,24 +41,24 @@ export const AddAnnouncement = () => {
                     <Typography component="h1" variant="h5">
                         Add announcement
                     </Typography>
+                    {checkInputs}
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
-                        sx={{ mt: 1 }}
+                        sx={{mt: 1}}
                     >
                         <TextField
                             margin="normal"
                             required
-                            fullWidth
                             id="title"
                             label="Title"
                             name="title"
                             autoFocus
+                            onChange={updateValue}
                         />
                         <TextareaAutosize
                             margin="normal"
                             required
-                            fullWidth
                             id="description"
                             label="Description"
                             name="description"
@@ -68,27 +68,29 @@ export const AddAnnouncement = () => {
                             maxRows={10}
                             maxLength={1000}
                             placeholder="Description..."
-                            style={{ width: 200 }}
+                            style={{width: 200}}
+                            onChange={updateValue}
                         />
-                        {/* <TextField margin="normal" /> */}
-                        {/* <Input */}
-                        {/* type="files" */}
-                        {/* margin="normal" */}
-                        {/* // required */}
-                        {/* fullWidth */}
-                        {/* id="image" */}
-                        {/* name="image" */}
-                        {/* autoFocus */}
-                        {/* /> */}
-                        "add images/multimedia"
-                        <br />
-                        "event type: list with checkboxes"
-                        <br /> "category: list with checkboxes"
+                        <div>
+                            <ul>
+                                <li>
+                                    "add images/multimedia"
+                                </li>
+                                <li>
+
+                                    "event type: list with checkboxes"
+                                </li>
+                                <li>
+                                    "category: list with checkboxes"
+                                </li>
+                            </ul>
+                        </div>
                         <Button
                             type="submit"
-                            fullWidth
+                            disabled={errors.length}
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{mt: 3, mb: 2}}
+                            onClick={submitHandler}
                         >
                             Save
                         </Button>

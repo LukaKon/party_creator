@@ -6,10 +6,7 @@ import { HomePage } from "./HomePage";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { TestApi } from "./testAPI";
-import { AddAnnouncement } from "./announcement/AddAnnouncement";
-import {
-    AnnouncementList,
-} from "./announcement/AnnouncementList";
+import {AddAnnouncement} from "./announcement/AddAnnouncement";
 
 export const App = () => {
     return (
@@ -28,7 +25,6 @@ export const App = () => {
                             <p>There's nothing here!</p>
                         </main>}/>
                 </Routes>
-                 <AnnouncementList />
                 <Footer />
             </BrowserRouter>
         </div>

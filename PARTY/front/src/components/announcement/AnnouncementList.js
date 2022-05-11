@@ -5,6 +5,8 @@ import { fetchAnnouncements } from "../../features/announcement/announcementSlic
 import { AnnouncementItem } from "./AnnouncementItem";
 import { Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import {Typography} from "@mui/material";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,26 +34,24 @@ export const AnnouncementList = () => {
 
     let content;
     if (loading) {
-        content = <div>Fetching in progress...</div>;
+        content = <Typography>Fetching in progress...</Typography>;
     } else {
         content = (
-            <div className={classes.root}>
+            <Typography className={classes.root}>
                 {/* <Paper className={classes.paper}> */}
                 <Grid container spacing={4}>
-                    {entities.map((ann) => (
-                        <AnnouncementItem key={ann.uuid} {...ann} />
-                    ))}
+                    {entities.map((ann) => (<AnnouncementItem key={ann.uuid} {...ann} />))}
                 </Grid>
                 {/* </Paper> */}
-            </div>
+            </Typography>
         );
     }
     return (
-        <div>
+        <Typography>
             List of announcements.
             <br />
             {content}
-        </div>
+        </Typography>
     );
 };
 
