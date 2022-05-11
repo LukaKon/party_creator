@@ -1,30 +1,20 @@
-import React, {useState} from "react";
+import React from "react";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Box, Button, Container, CssBaseline, TextareaAutosize, TextField, Typography,} from "@mui/material";
 import {useForm} from './hooks/useForm'
 
 export const AddAnnouncement = () => {
-    const initState = {
-        title: "",
-        description: "",
-        category: "",
-        // event_type: "",
-    };
     const [updateValue, submitHandler, errors] = useForm({})
-
-    const [state, setState] = useState(initState);
     const theme = createTheme();
 
-    const handleSubmit = (e) => {
-
-        console.log("Submit");
-    };
-
     let checkInputs;
+    let saveButton;
     if (errors.length !== 0) {
         checkInputs = (<Typography color={"red"}>{errors.map(err => err)}</Typography>)
+        saveButton = true
+    } else {
+        saveButton = false
     }
-
 
     return (
         <ThemeProvider theme={theme}>
@@ -44,7 +34,7 @@ export const AddAnnouncement = () => {
                     {checkInputs}
                     <Box
                         component="form"
-                        onSubmit={handleSubmit}
+                        // onSubmit={handleSubmit}
                         sx={{mt: 1}}
                     >
                         <TextField
@@ -87,7 +77,7 @@ export const AddAnnouncement = () => {
                         </div>
                         <Button
                             type="submit"
-                            disabled={errors.length}
+                            disabled={saveButton}
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                             onClick={submitHandler}
