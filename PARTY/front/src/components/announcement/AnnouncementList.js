@@ -1,23 +1,23 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
-import { fetchAnnouncements } from "../../features/announcement/announcementSlice";
+import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
+// import { fetchAnnouncements } from "../../redux/slices/thunk";
 import { AnnouncementItem } from "./AnnouncementItem";
 import { Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {Typography} from "@mui/material";
-
+import { Typography } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         overflow: "hidden",
-        padding: theme.spacing(0, 3),
+        padding: 3,
     },
     paper: {
         maxWidth: 200,
-        margin: `${theme.spacing(1)}px auto`,
-        padding: theme.spacing(2),
+        margin: "1px auto",
+        padding: 2,
     },
 }));
 
@@ -40,7 +40,15 @@ export const AnnouncementList = () => {
             <Typography className={classes.root}>
                 {/* <Paper className={classes.paper}> */}
                 <Grid container spacing={4}>
-                    {entities.map((ann) => (<AnnouncementItem key={ann.uuid} {...ann} />))}
+                    {entities.map((ann) => {
+                        return (
+                            <>
+                                {/* TODO: Warning: Each child in a list should have a unique "key" prop. Why??? */}
+                                {/* {ann.uuid} */}
+                                <AnnouncementItem key={ann.uuid} {...ann} />
+                            </>
+                        );
+                    })}
                 </Grid>
                 {/* </Paper> */}
             </Typography>

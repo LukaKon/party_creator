@@ -1,5 +1,6 @@
-from account.models import User
 from rest_framework import serializers
+
+from account.models import User
 
 from .models import Announcement, EventType, Image  # ServiceCategory
 
@@ -57,7 +58,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "description",
             "slug",
             "uuid",
-            # "user",
+            "user",
             # "category",
             # "event_type",
             "created",

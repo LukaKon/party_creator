@@ -1,11 +1,12 @@
 import uuid as uuid_lib
 
 import stdimage
-from account.models import User
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
+
+from account.models import User
 
 from .utils.announcement import unique_slug_generator
 
@@ -82,10 +83,10 @@ class Announcement(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    # user = models.ForeignKey(
-    # User,
-    # on_delete=models.CASCADE,
-    # )  # default=None)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )  # default=None)
     # category = models.ForeignKey(
     # ServiceCategory,
     # verbose_name="announcement_categories",

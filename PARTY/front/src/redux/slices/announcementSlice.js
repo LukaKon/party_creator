@@ -54,7 +54,7 @@ const announcementSlice = createSlice({
 
                 state.loading = false;
                 // state.entities = [...action.payload];
-                state.entities=action.payload;
+                state.entities = action.payload;
                 // console.log("payload: ", action.payload);
                 // (state.entities = action.payload), (state.loading = false);
             })

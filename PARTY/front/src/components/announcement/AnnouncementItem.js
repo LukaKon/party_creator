@@ -1,15 +1,14 @@
 import React from "react";
 import { Avatar, ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
 
-// import { makeStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         maxWidth: 300,
-        margin: `${theme.spacing(1)}px auto`,
-        padding: theme.spacing(2),
-        background: '#d0f4f9',
+        margin: "1px auto",
+        padding: 2,
+        background: "#d0f4f9",
     },
     image: {
         width: 128,
