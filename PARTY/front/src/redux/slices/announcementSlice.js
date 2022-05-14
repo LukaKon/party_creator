@@ -16,6 +16,17 @@ export const fetchAnnouncements = createAsyncThunk(
     }
 );
 
+export const saveAnnouncement = createAsyncThunk(
+    "announcements/saveAnnouncement",
+    async (data) => {
+        try {
+            await axiosInstance.post("api/addannouncement", data);
+        } catch (err) {
+            console.log("Sent announcement error: ", err.message);
+        }
+    }
+);
+
 const announcementSlice = createSlice({
     name: "announcements",
     initialState: {
@@ -59,6 +70,15 @@ const announcementSlice = createSlice({
                 // (state.entities = action.payload), (state.loading = false);
             })
             .addCase(fetchAnnouncements.rejected, (state, action) => {
+                (state.error = action.payload), (state.loading = false);
+            })
+            .addCase(saveAnnouncement.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(saveAnnouncement.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(saveAnnouncement.rejected, (state, action) => {
                 (state.error = action.payload), (state.loading = false);
             });
     },
