@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Buffer } from 'buffer';
-import { useNavigate } from "react-router-dom";
+import {Buffer} from 'buffer';
+import {useNavigate} from "react-router-dom";
 
 import {
     Avatar,
@@ -16,9 +16,10 @@ import {
     Container,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 
-import { axiosInstance } from "../axios";
+import {axiosInstance} from "../axios";
+import {useState} from "react";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 console.log("localhost: ", LOCALHOST);
@@ -26,6 +27,7 @@ console.log("localhost: ", LOCALHOST);
 const theme = createTheme();
 
 export const SignIn = () => {
+    const [loginError, setLoginError] = useState(null)
     let navigate = useNavigate();
 
     const handleSubmit = (event) => {
@@ -36,6 +38,7 @@ export const SignIn = () => {
             password: data.get("password"),
         };
 
+
         axiosInstance
             .post("account/login/", data)
             .then((response) => {
@@ -44,15 +47,22 @@ export const SignIn = () => {
                 axiosInstance.defaults.headers["Authorization"] =
                     "JWT" + localStorage.getItem("access_token");
                 navigate('/')
-                window.location.reload(true);
+                window.location.reload();
             })
-            .catch((error) => console.log(error));
-    };
+            .catch((error) => {
+                if (error.response.status === 401 &&
+                    error.response.statusText === "Unauthorized") {
+                    setLoginError('Podaj prawidłowe dane')
+                } else {
+                    setLoginError('Skontaktuj się z farmaceutą')
+                }
+            })
+    }
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 8,
@@ -61,17 +71,20 @@ export const SignIn = () => {
                         alignItems: "center",
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                        <LockOutlinedIcon />
+                    <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
+                        <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
+                    </Typography>
+                    <Typography component={'p'} color={'red'}>
+                        {loginError}
                     </Typography>
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
                         noValidate
-                        sx={{ mt: 1 }}
+                        sx={{mt: 1}}
                     >
                         <TextField
                             margin="normal"
@@ -95,7 +108,7 @@ export const SignIn = () => {
                         />
                         <FormControlLabel
                             control={
-                                <Checkbox value="remember" color="primary" />
+                                <Checkbox value="remember" color="primary"/>
                             }
                             label="Remember me"
                         />
@@ -103,7 +116,7 @@ export const SignIn = () => {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{mt: 3, mb: 2}}
                         >
                             Sign In
                         </Button>
