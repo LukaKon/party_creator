@@ -6,9 +6,7 @@ export const fetchAnnouncements = createAsyncThunk(
     "announcements/fetchAnnouncements",
     async () => {
         try {
-            const response = await axiosInstance.get("/api/announcements");
-            // .dispatch(addAnnouncement);
-            // return [...response.data];
+            const response = await axiosInstance.get("/api/announcements/");
             return response.data;
         } catch (err) {
             console.log("thunk error: ", err.message);
@@ -16,11 +14,11 @@ export const fetchAnnouncements = createAsyncThunk(
     }
 );
 
-export const saveAnnouncement = createAsyncThunk(
-    "announcements/saveAnnouncement",
+export const createAnnouncement = createAsyncThunk(
+    "announcements/createAnnouncement",
     async (data) => {
         try {
-            await axiosInstance.post("api/addannouncement", data);
+            await axiosInstance.post("api/addannouncement/", data);
         } catch (err) {
             console.log("Sent announcement error: ", err.message);
         }
@@ -56,29 +54,20 @@ const announcementSlice = createSlice({
                 state.loading = true;
             })
             .addCase(fetchAnnouncements.fulfilled, (state, action) => {
-                // const newEntities = {};
-                // action.payload.forEach((ann) => {
-                // newEntities[ann.uuid] = ann;
-                // });
-                // console.log("newEntities: ", newEntities);
-                // (state.entities = newEntities),
-
                 state.loading = false;
-                // state.entities = [...action.payload];
                 state.entities = action.payload;
-                // console.log("payload: ", action.payload);
-                // (state.entities = action.payload), (state.loading = false);
             })
             .addCase(fetchAnnouncements.rejected, (state, action) => {
                 (state.error = action.payload), (state.loading = false);
             })
-            .addCase(saveAnnouncement.pending, (state, action) => {
+            .addCase(createAnnouncement.pending, (state, action) => {
                 state.loading = true;
             })
-            .addCase(saveAnnouncement.fulfilled, (state, action) => {
+            .addCase(createAnnouncement.fulfilled, (state, action) => {
                 state.loading = false;
+                state.entities.push(action.payload);
             })
-            .addCase(saveAnnouncement.rejected, (state, action) => {
+            .addCase(createAnnouncement.rejected, (state, action) => {
                 (state.error = action.payload), (state.loading = false);
             });
     },

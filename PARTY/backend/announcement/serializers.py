@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from account.models import User
+from rest_framework import serializers
 
 from .models import Announcement, EventType, Image  # ServiceCategory
 
@@ -53,19 +52,14 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Announcement
         fields = (
-            # "id",
             "title",
             "description",
-            "slug",
-            "uuid",
             "user",
             # "category",
             # "event_type",
-            "created",
             # "images",
         )
         read_only_fields = (
-            "slug",
             # "event_type",
         )
 

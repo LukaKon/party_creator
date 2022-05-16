@@ -10,29 +10,10 @@ import {
     Typography,
 } from "@mui/material";
 import { useForm } from "./hooks/useForm";
-import { useDispatch } from "react-redux";
-import { saveAnnouncement } from "../../redux/slices/announcementSlice";
 
 export const AddAnnouncement = () => {
     const [updateValue, submitHandler, errors] = useForm({});
     const theme = createTheme();
-
-    const dispatch = useDispatch();
-    // console.log(JSON.parse(localStorage.getItem("user")));
-    console.log(localStorage);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // const data = new FormData(e.currentTarget);
-        // console.log("data: ", data);
-        console.log("token: ", sessionStorage.getItem("email"));
-        dispatch(
-            saveAnnouncement({
-                title: "test",
-                description: "opis",
-            })
-        );
-    };
 
     let checkInputs;
     let saveButton;
@@ -102,8 +83,8 @@ export const AddAnnouncement = () => {
                             disabled={saveButton}
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
-                            // onClick={submitHandler}
-                            onClick={handleSubmit}
+                            onClick={submitHandler}
+                            // onClick={handleSubmit}
                         >
                             Save
                         </Button>

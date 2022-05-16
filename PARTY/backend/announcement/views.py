@@ -21,32 +21,36 @@ from .serializers import AnnouncementSerializer, ImageSerializer
 
 class AnnouncementCraeteView(CreateAPIView):
     queryset = Announcement.objects.all()
-    permission_classes = (IsAuthenticated,) # TODO: uncomment that
+    # permission_classes = (IsAuthenticated,) # TODO: uncomment that
     # permission_classes = (AllowAny,)
     serializer_class = AnnouncementSerializer
     # lookup_field = "email"
 
-    # def post(self, request, *args, **kwargs):
-    #     """
-    #     add announcement
-    #     """
+    def post(self, request, *args, **kwargs):
+        """
+        add announcement
+        """
     #     print("request: ", request.data)
-    #     print("-----user: ", request.user)
-    #     data = {
-    #         "title": request.data.get("title"),
-    #         "description": request.data.get("description"),
-    #         "user": request.user.email,
+        print("-----user: ", request.user)
+        data = {
+            "title": request.data.get("title"),
+            "description": request.data.get("description"),
+            "user": request.user.pk,
     #         # "category": request.data.get("category"),
     #         # 'event_type':request.data.get('event_type'),
     #         # 'images':request.data.get('images'),
-    #     }
-    #     permission_classes = (IsAuthenticated,)
+        }
+        print("data: ", data)
+        permission_classes = (IsAuthenticated,)
 
-    #     serializer = AnnouncementSerializer(data=data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = AnnouncementSerializer(data=data)
+        if serializer.is_valid():
+            print("in post")
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print("ser: ", serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AnnouncementListView(ListAPIView):
