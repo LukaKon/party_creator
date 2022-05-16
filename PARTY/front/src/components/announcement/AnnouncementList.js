@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 export const AnnouncementList = () => {
     const classes = useStyles();
     const { loading, entities, error } = useSelector(

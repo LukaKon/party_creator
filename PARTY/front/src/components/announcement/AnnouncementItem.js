@@ -1,7 +1,7 @@
 import React from "react";
-import { Avatar, ButtonBase, Grid, Paper, Typography } from "@material-ui/core";
+import {Avatar, ButtonBase, Paper, Grid, Typography} from "@mui/material";
 
-import { makeStyles } from "@material-ui/styles";
+import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -22,14 +22,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const AnnouncementItem = ({ title, description, uuid, created }) => {
+export const AnnouncementItem = ({title, description, uuid, created}) => {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.paper}>
+            <Paper className={classes.paper}>
             {/* <Grid container wrap="nowrap" spacing={1}> */}
             <Grid container wrap="nowrap" spacing={5}>
                 <Grid item xs={5}>
+
                     <ButtonBase className={classes.image}>
                         <img className={classes.img} alt="complex" src="" />
                     </ButtonBase>
@@ -47,7 +48,6 @@ export const AnnouncementItem = ({ title, description, uuid, created }) => {
                     </Grid>
                 </Grid>
             </Grid>
-            {/* </Grid> */}
         </Paper>
     );
 };
