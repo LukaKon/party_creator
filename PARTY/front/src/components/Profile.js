@@ -6,7 +6,7 @@ import {axiosInstance} from "../axios";
 export const Profile = () => {
     const downloadProfile = () => {
         let test = null
-        axiosInstance.get('profile/')
+        axiosInstance.get('/getuser/')
             .then(response => test = response)
         return test
     }
