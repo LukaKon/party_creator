@@ -42,12 +42,13 @@ export const Header = () => {
     };
 
     if (sessionStorage.getItem("access_token")) {
-        pages["Add announcement"]=  "/addannouncement"
-        settings["Wyloguj sie"] = "/signout";
+      pages["Add announcement"]=  "/addannouncement"
+        settings["Profil"] = "/profile"
+        settings["Ustawienia konta"] = "/settings"
+        settings['Wyloguj sie'] = "signout"
     } else {
-        pages["Zarejestruj"] = "/signup";
-        pages["Zaloguj"] = "/signin";
-        settings["Ustawienia konta"] = "/settings";
+        pages["Zarejestruj"] = "/signup"
+        pages["Zaloguj"] = "/signin"
     }
 
     let navigate = useNavigate();
