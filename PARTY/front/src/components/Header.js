@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { makeStyles } from "@mui/styles";
+import {handleButton} from "../utils";
 
 const useStyles = makeStyles((theme) => ({
     test: {
@@ -29,8 +30,10 @@ export const Header = () => {
         // for example:
         // "Button Name" : "URL"
         // "Test Button" : "/testSite"
-        "test api": "/testapi",
-    };
+
+        "strona główna": '/',
+        'test api': "/testapi",
+    }
 
     const settings = {
         // for example:
@@ -52,9 +55,13 @@ export const Header = () => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleMenu = (pageURL) => {
-        navigate(pageURL);
-        console.log(pageURL);
-    };
+        if (pageURL === 'signout') {
+            handleButton()
+            navigate('/')
+        } else {
+            navigate(pageURL);
+        }
+    }
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);

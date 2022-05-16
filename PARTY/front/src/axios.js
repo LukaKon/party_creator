@@ -104,8 +104,7 @@ axiosInstance.interceptors.response.use(
                 window.location.href = "/signin/";
             }
         }
-
-        // specific error handling done elsewhere
-        // return Promise.reject(error);
-    }
+		// specific error handling done elsewhere
+		return Promise.reject(error);
+	}
 );
