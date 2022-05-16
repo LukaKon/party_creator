@@ -47,5 +47,5 @@ class testAPI(APIView):
         return Response(data)
 
 
-class ProfileAPI(RetrieveAPIView):
-        return Response(data)
+#class ProfileAPI(RetrieveAPIView):
+        #return Response(data)
