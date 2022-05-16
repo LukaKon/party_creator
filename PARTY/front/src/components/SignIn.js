@@ -41,7 +41,6 @@ export const SignIn = () => {
             .then((response) => {
                 sessionStorage.setItem("access_token", response.data.access);
                 sessionStorage.setItem("refresh_token", response.data.refresh);
-                sessionStorage.setItem("email", data.email);
                 axiosInstance.defaults.headers["Authorization"] =
                     "JWT" + localStorage.getItem("access_token");
                 navigate("/");

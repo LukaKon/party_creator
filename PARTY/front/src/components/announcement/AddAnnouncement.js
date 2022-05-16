@@ -30,7 +30,6 @@ export const AddAnnouncement = () => {
             saveAnnouncement({
                 title: "test",
                 description: "opis",
-                user: "lukasz.konieczny.lk@gmail.com",
             })
         );
     };

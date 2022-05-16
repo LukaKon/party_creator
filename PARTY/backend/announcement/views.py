@@ -21,8 +21,8 @@ from .serializers import AnnouncementSerializer, ImageSerializer
 
 class AnnouncementCraeteView(CreateAPIView):
     queryset = Announcement.objects.all()
-    # permission_classes = (IsAuthenticated,)
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,) # TODO: uncomment that
+    # permission_classes = (AllowAny,)
     serializer_class = AnnouncementSerializer
     # lookup_field = "email"
 
