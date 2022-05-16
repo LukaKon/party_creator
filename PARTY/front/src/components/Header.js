@@ -43,11 +43,13 @@ export const Header = () => {
     }
 
     if (sessionStorage.getItem("access_token")) {
-        settings['Wyloguj sie'] = "signout";
+        settings["Profil"] = "/profile"
+        settings["Ustawienia konta"] = "/settings"
+        settings['Wyloguj sie'] = "signout"
     } else {
         pages["Zarejestruj"] = "/signup"
         pages["Zaloguj"] = "/signin"
-        settings["Ustawienia konta"] = "/settings"
+
     }
 
     let navigate = useNavigate();

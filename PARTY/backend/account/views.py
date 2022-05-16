@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -42,3 +42,7 @@ class testAPI(APIView):
     def get(self, request):
         data = {"TEST": "DONE"}
         return Response(data)
+
+
+class ProfileAPI(RetrieveAPIView):
+    model
