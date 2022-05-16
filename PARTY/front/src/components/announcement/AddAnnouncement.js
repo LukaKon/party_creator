@@ -1,29 +1,49 @@
-import React, { useState } from "react";
+import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
+    Box,
     Button,
     Container,
     CssBaseline,
+    TextareaAutosize,
     TextField,
     Typography,
-    Input,
-    Box,
-    TextareaAutosize,
 } from "@mui/material";
+import { useForm } from "./hooks/useForm";
+import { useDispatch } from "react-redux";
+import { saveAnnouncement } from "../../redux/slices/announcementSlice";
 
 export const AddAnnouncement = () => {
-    const initState = {
-        title: "",
-        description: "",
-        category: "",
-        event_type: "",
-    };
-    const [state, setState] = useState(initState);
+    const [updateValue, submitHandler, errors] = useForm({});
     const theme = createTheme();
 
+    const dispatch = useDispatch();
+    // console.log(JSON.parse(localStorage.getItem("user")));
+    console.log(localStorage);
+
     const handleSubmit = (e) => {
-        console.log("Submit");
+        e.preventDefault();
+        // const data = new FormData(e.currentTarget);
+        // console.log("data: ", data);
+        console.log("token: ", sessionStorage.getItem("email"));
+        dispatch(
+            saveAnnouncement({
+                title: "test",
+                description: "opis",
+            })
+        );
     };
+
+    let checkInputs;
+    let saveButton;
+    if (errors.length !== 0) {
+        checkInputs = (
+            <Typography color={"red"}>{errors.map((err) => err)}</Typography>
+        );
+        saveButton = true;
+    } else {
+        saveButton = false;
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -40,24 +60,24 @@ export const AddAnnouncement = () => {
                     <Typography component="h1" variant="h5">
                         Add announcement
                     </Typography>
+                    {checkInputs}
                     <Box
                         component="form"
-                        onSubmit={handleSubmit}
+                        // onSubmit={handleSubmit}
                         sx={{ mt: 1 }}
                     >
                         <TextField
                             margin="normal"
                             required
-                            fullWidth
                             id="title"
                             label="Title"
                             name="title"
                             autoFocus
+                            onChange={updateValue}
                         />
                         <TextareaAutosize
                             margin="normal"
                             required
-                            fullWidth
                             id="description"
                             label="Description"
                             name="description"
@@ -68,26 +88,22 @@ export const AddAnnouncement = () => {
                             maxLength={1000}
                             placeholder="Description..."
                             style={{ width: 200 }}
+                            onChange={updateValue}
                         />
-                        {/* <TextField margin="normal" /> */}
-                        {/* <Input */}
-                        {/* type="files" */}
-                        {/* margin="normal" */}
-                        {/* // required */}
-                        {/* fullWidth */}
-                        {/* id="image" */}
-                        {/* name="image" */}
-                        {/* autoFocus */}
-                        {/* /> */}
-                        "add images/multimedia"
-                        <br />
-                        "event type: list with checkboxes"
-                        <br /> "category: list with checkboxes"
+                        <div>
+                            <ul>
+                                <li>"add images/multimedia"</li>
+                                <li>"event type: list with checkboxes"</li>
+                                <li>"category: list with checkboxes"</li>
+                            </ul>
+                        </div>
                         <Button
                             type="submit"
-                            fullWidth
+                            disabled={saveButton}
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            // onClick={submitHandler}
+                            onClick={handleSubmit}
                         >
                             Save
                         </Button>

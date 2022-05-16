@@ -1,13 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import { announcementReducer } from "./reducers/announcementSlice";
-import { rootReducer } from "./reducers";
-import thunk from "redux-thunk";
 import logger from "redux-logger";
+import { announcementReducer } from "./slices/announcementSlice";
 
 export const store = configureStore({
-    reducer: rootReducer,
-    middleware: [thunk, logger],
-    // reducer: {
-    // announcement: announcementReducer,
-    // },
+    reducer: {
+        announcements: announcementReducer,
+        // category:categoryReducer,
+        // event:eventReducer,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
