@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 
@@ -40,9 +42,10 @@ class testAPI(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
+
         data = {"TEST": "DONE"}
         return Response(data)
 
 
 class ProfileAPI(RetrieveAPIView):
-    model
+        return Response(data)

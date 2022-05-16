@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Buffer} from 'buffer';
-import {useNavigate} from "react-router-dom";
+import { Buffer } from "buffer";
+import { useNavigate } from "react-router-dom";
 
 import {
     Avatar,

@@ -1,5 +1,5 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate ,Link,NavLink} from "react-router-dom";
 import {
     AppBar,
     Box,
@@ -13,43 +13,42 @@ import {
     Tooltip,
     MenuItem,
     useMediaQuery,
-    useTheme
+    useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import {makeStyles} from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import {handleButton} from "../utils";
 
 const useStyles = makeStyles((theme) => ({
     test: {
-        backgroundColor: "blue"
-    }
-}))
+        backgroundColor: "blue",
+    },
+}));
 
 export const Header = () => {
-
     const pages = {
         // for example:
         // "Button Name" : "URL"
         // "Test Button" : "/testSite"
+
         "strona główna": '/',
         'test api': "/testapi",
-
     }
 
     const settings = {
         // for example:
         // "Button Name" : "URL"
         // "Test Button" : "/testSite"
-    }
+    };
 
     if (sessionStorage.getItem("access_token")) {
+      pages["Add announcement"]=  "/addannouncement"
         settings["Profil"] = "/profile"
         settings["Ustawienia konta"] = "/settings"
         settings['Wyloguj sie'] = "signout"
     } else {
         pages["Zarejestruj"] = "/signup"
         pages["Zaloguj"] = "/signin"
-
     }
 
     let navigate = useNavigate();
@@ -67,19 +66,19 @@ export const Header = () => {
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
-    }
+    };
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
-    }
+    };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
-    }
+    };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
-    }
+    };
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -96,7 +95,7 @@ export const Header = () => {
                     onClick={handleOpenNavMenu}
                     color="inherit"
                 >
-                    <MenuIcon/>
+                    <MenuIcon />
                 </IconButton>
                 <Menu
                     id="menu-appbar"
@@ -113,53 +112,53 @@ export const Header = () => {
                     open={Boolean(anchorElNav)}
                     onClose={handleCloseNavMenu}
                     sx={{
-                        display: {xs: "block", md: "none"},
+                        display: { xs: "block", md: "none" },
                     }}
                 >
-                    {Object.keys(pages).map((page) =>
-                        <MenuItem key={page} onClick={() => handleMenu(pages[page])}>
+                    {Object.keys(pages).map((page) => (
+                        <MenuItem
+                            key={page}
+                            onClick={() => handleMenu(pages[page])}
+                        >
                             <Typography textAlign="center">{page}</Typography>
                         </MenuItem>
-                    )}
+                    ))}
                 </Menu>
             </Box>
-        )
+        );
     } else {
-        menuIcon = (
-            Object.keys(pages).map((page) => (
-                <Button
-                    key={page}
-                    onClick={() => handleMenu(pages[page])}
-                    sx={{my: 2, color: "white", display: "block"}}>
-                    {page}
-                </Button>
-            ))
-        )
+        menuIcon = Object.keys(pages).map((page) => (
+            <Button
+                key={page}
+                onClick={() => handleMenu(pages[page])}
+                sx={{ my: 2, color: "white", display: "block" }}
+            >
+                {page}
+            </Button>
+        ));
     }
 
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Typography
-                        noWrap
-                        component="div"
-                        sx={{mr: 1}}>
-                        <img src={"media/logo.png"} alt="logo"/>
+                    <Typography noWrap component="div" sx={{ mr: 1 }}>
+                        <img src={"media/logo.png"} alt="logo" />
                     </Typography>
 
-                    <Box sx={{flexGrow: 1, display: "flex"}}>
-                        {menuIcon}
-                    </Box>
+                    <Box sx={{ flexGrow: 1, display: "flex" }}>{menuIcon}</Box>
 
-                    <Box sx={{flexGrow: 0}}>
+                    <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Ustawienia">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                <Avatar alt="avatar" src="/media/default.jpg"/>
+                            <IconButton
+                                onClick={handleOpenUserMenu}
+                                sx={{ p: 0 }}
+                            >
+                                <Avatar alt="avatar" src="/media/default.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{mt: '45px'}}
+                            sx={{ mt: "45px" }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
@@ -174,17 +173,22 @@ export const Header = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {Object.keys(settings).map((setting) =>
-                                <MenuItem key={setting} onClick={() => handleMenu(settings[setting])}>
+                            {Object.keys(settings).map((setting) => (
+                                <MenuItem
+                                    key={setting}
+                                    onClick={() =>
+                                        handleMenu(settings[setting])
+                                    }
+                                >
                                     <Typography textAlign="center">
                                         {setting}
                                     </Typography>
                                 </MenuItem>
-                            )}
+                            ))}
                         </Menu>
                     </Box>
                 </Toolbar>
             </Container>
         </AppBar>
-    )
-}
+    );
+};

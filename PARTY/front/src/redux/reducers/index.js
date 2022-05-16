@@ -3,4 +3,6 @@ import { announcementReducer } from "./announcementSlice";
 
 export const rootReducer = combineReducers({
     announcement: announcementReducer,
+    // category:categoryReducer,
+    // event:eventReducer,
 });
