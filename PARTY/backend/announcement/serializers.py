@@ -1,43 +1,34 @@
 from account.models import User
 from rest_framework import serializers
 
-from .models import Announcement, EventType, Image  # ServiceCategory
+from .models import Announcement, Category, Image
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Category
         fields = (
-            # "id",
-            "email",
+            "name",
+            # "uuid",
         )
 
 
-# class ServiceCategorySerializer(serializers.ModelSerializer):
+# class EventTypeSerializer(serializers.ModelSerializer):
 #     class Meta:
-#         model = ServiceCategory
+#         model = EventType
+#         fields = ("name",)
+
+
+# class ImageSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Image
 #         fields = (
 #             # "id",
-#             "name",
+#             "announcement",
+#             "event_type",
+#             "image",
+#             "is_main",
 #         )
-
-
-class EventTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventType
-        fields = ("name",)
-
-
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = (
-            # "id",
-            "announcement",
-            "event_type",
-            "image",
-            "is_main",
-        )
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
@@ -48,6 +39,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
     # event_type = EventType()  # many=True, read_only=True)
+    # category = serializers.CharField(max_length=30, source="get_category_display")
 
     class Meta:
         model = Announcement
@@ -55,13 +47,17 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "user",
-            # "category",
+            "category",
             # "event_type",
             # "images",
+            "created",
         )
         read_only_fields = (
             # "event_type",
         )
+
+    # def get_category(self, obj):
+    #     return obj.get_category_display()
 
     # def create(self, validated_data):
     #     #     print("data: ", validated_data)

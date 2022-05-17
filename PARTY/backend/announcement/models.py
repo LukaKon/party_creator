@@ -1,12 +1,11 @@
 import uuid as uuid_lib
 
 import stdimage
+from account.models import User
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
-
-from account.models import User
 
 from .utils.announcement import unique_slug_generator
 
@@ -27,54 +26,58 @@ class Category(models.Model):
     )
 
     name = models.CharField(
-        max_length=100,
+        max_length=25,
         choices=CATEGORY_NAME,
     )
+    # uuid = models.UUIDField(
+    #     db_index=True,
+    #     default=uuid_lib.uuid4,
+    #     editable=False,
+    # )
 
     def __str__(self):
         return self.name
 
 
-class EventType(models.Model):
-    """Event type. e.g weddings, baptism etc."""
+# class EventType(models.Model):
+# """Event type. e.g weddings, baptism etc."""
 
-    DEFAULT = "default"
-    WEDDING = "wedding"
-    BAPTISM = "baptism"
-    INTEGRATION = "integration"
-    EVENT = [
-        (DEFAULT, _("default")),
-        (WEDDING, _("Wedding...")),
-        (BAPTISM, _("Baptism...")),
-        (INTEGRATION, _("Integration...")),
-    ]
+# DEFAULT = "default"
+# WEDDING = "wedding"
+# BAPTISM = "baptism"
+# INTEGRATION = "integration"
+# EVENT = [
+#     (DEFAULT, _("default")),
+#     (WEDDING, _("Wedding...")),
+#     (BAPTISM, _("Baptism...")),
+#     (INTEGRATION, _("Integration...")),
+# ]
 
-    name = models.CharField(
-        max_length=30,
-        choices=EVENT,
-    )  # default=DEFAULT)
+# name = models.CharField(
+#     max_length=30,
+#     choices=EVENT,
+# )  # default=DEFAULT)
 
-    #     name = models.CharField(max_length=100)
-    #     photo = models.ForeignKey(
-    #         "Image", verbose_name="event_type_image", on_delete=models.SET_NULL, null=True
-    #     )
-    #     category = models.ManyToManyField(ServiceCategory, related_name="event_types")
+# #     name = models.CharField(max_length=100)
+# #     photo = models.ForeignKey(
+# #         "Image", verbose_name="event_type_image", on_delete=models.SET_NULL, null=True
+# #     )
+# #     category = models.ManyToManyField(ServiceCategory, related_name="event_types")
 
-    def __str__(self):
-        return self.name
+# def __str__(self):
+#     return self.name
 
 
 class Announcement(models.Model):
     """Model of announcement."""
 
-    CATEGORY_NAME = (
-        ("muzyka", "music"),
-        ("cattering", "cattering"),
-        ("fotograf", "photograph"),
-        ("lokal", "local"),
-        ("animator", "animator"),
-    )
-
+    # CATEGORY_NAME = (
+    #     ("muzyka", "music"),
+    #     ("cattering", "cattering"),
+    #     ("fotograf", "photograph"),
+    #     ("lokal", "local"),
+    #     ("animator", "animator"),
+    # )
     title = models.CharField(max_length=200)
     description = models.TextField()
     slug = models.SlugField(unique=True)
@@ -87,12 +90,11 @@ class Announcement(models.Model):
         User,
         on_delete=models.CASCADE,
     )  # default=None)
-    # category = models.ForeignKey(
-    # ServiceCategory,
-    # verbose_name="announcement_categories",
-    # on_delete=models.PROTECT,
-    # default=1,
-    # )
+    category = models.ForeignKey(
+        Category,
+        verbose_name="announcement_categories",
+        on_delete=models.PROTECT,
+    )
     # category = models.CharField(max_length=30, choices=CATEGORY_NAME)
     # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)

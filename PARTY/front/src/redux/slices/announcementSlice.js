@@ -9,7 +9,7 @@ export const fetchAnnouncements = createAsyncThunk(
             const response = await axiosInstance.get("/api/announcements/");
             return response.data;
         } catch (err) {
-            console.log("thunk error: ", err.message);
+            console.log("Fetch announcements error: ", err.message);
         }
     }
 );
