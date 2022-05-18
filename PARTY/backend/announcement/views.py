@@ -37,9 +37,9 @@ class AnnouncementCraeteView(CreateAPIView):
             "title": request.data.get("title"),
             "description": request.data.get("description"),
             "user": request.user.pk,
-    #         # "category": request.data.get("category"),
-    #         # 'event_type':request.data.get('event_type'),
-    #         # 'images':request.data.get('images'),
+            #         # "category": request.data.get("category"),
+            #         # 'event_type':request.data.get('event_type'),
+            #         # 'images':request.data.get('images'),
         }
         print("data: ", data)
         permission_classes = (IsAuthenticated,)

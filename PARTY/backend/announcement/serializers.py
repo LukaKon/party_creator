@@ -1,5 +1,6 @@
-from account.models import User
 from rest_framework import serializers
+
+from account.models import User
 
 from .models import Announcement, Category, Image
 
@@ -8,11 +9,14 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
-            'id',
+            "id",
             "name",
             "uuid",
         )
-        read_only_fields = ('id','uuid',)
+        read_only_fields = (
+            "id",
+            "uuid",
+        )
 
 
 # class EventTypeSerializer(serializers.ModelSerializer):
@@ -39,6 +43,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # images = ImageSerializer(many=True, read_only=True)
     # event_type = EventType()  # many=True, read_only=True)
     category = CategorySerializer(required=True)
+
     class Meta:
         model = Announcement
         fields = (
@@ -50,14 +55,14 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             # "event_type",
             # "images",
             "created",
-            'slug',
-            'uuid',
+            "slug",
+            "uuid",
         )
         read_only_fields = (
             # "event_type",
-            'slug',
-            'uuid',
-            'created'
+            "slug",
+            "uuid",
+            "created",
         )
 
     # def get_category(self, obj):

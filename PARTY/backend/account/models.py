@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from dynamic_filenames import FilePattern
 
 import back.utils.account as utils
+
 # import uuid as uuid_lib
 
 upload_to_pattern = FilePattern(
@@ -57,11 +58,10 @@ class User(AbstractUser):
         delete_orphans=True,
     )
     # uuid=models.UUIDField(
-        # db_index=True,
-        # default=uuid_lib.uuid4,
-        # editable=False,
-        # )
-
+    # db_index=True,
+    # default=uuid_lib.uuid4,
+    # editable=False,
+    # )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

@@ -23,10 +23,9 @@ from announcement import urls as announcement_url
 template = TemplateView.as_view(template_name="index.html")
 
 urlpatterns = [
-    path('', template),
-    path('admin/', admin.site.urls),
-    path('signin/', template),
+    path("", template),
+    path("admin/", admin.site.urls),
+    path("signin/", template),
     path("account/", include("account.urls", "account")),
     path("api/", include(announcement_url, "announcement")),
 ]
-

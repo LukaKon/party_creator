@@ -23,6 +23,12 @@ down:
 logs:
 	docker compose logs
 
+lint:
+	docker compose run --rm backend sh -c 'black . && isort --profile black .'
+
+test:
+	docker compose run --rm backend sh -c 'python manage.py test'
+
 migrate:
 	docker compose exec backend python3 manage.py migrate --noinput
 

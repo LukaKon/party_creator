@@ -6,18 +6,25 @@ services:
     build:
       context: ./PARTY/backend
       dockerfile: Dockerfile.dev
+      args:
+        - DEV=true
     container_name: django_back
-    command: >
-      sh -c "python manage.py wait_for_database &&
-             gunicorn back.wsgi --bind 0.0.0.0:8000"
     # command: >
     #   sh -c "python manage.py wait_for_database &&
-    #          python manage.py runserver 0.0.0.0:8000"
+    #          gunicorn back.wsgi --bind 0.0.0.0:8000"
+    command: >
+      sh -c "python manage.py wait_for_database &&
+             python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
+    environment:
+      - DB_HOST=db
+      - DB_NAME=${DATABASE_NAME}
+      - DB_USER=${DATABASE_USER}
+      - DB_PASS=${DATABASE_PASSWORD}
     restart: on-failure
     volumes:
-      - ./PARTY/backend:/django
+      - ./PARTY/backend:/app
     ports:
       - 8000:8000
     networks:
@@ -26,7 +33,8 @@ services:
       - db
 
   db:
-    image: postgres:14
+    # image: postgres:14
+    image: postgres:14-alpine3.15
     container_name: postgres_db
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
