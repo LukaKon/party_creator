@@ -17,11 +17,11 @@ services:
              python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
-    environment:
-      - DB_HOST=db
-      - DB_NAME=${DATABASE_NAME}
-      - DB_USER=${DATABASE_USER}
-      - DB_PASS=${DATABASE_PASSWORD}
+    # environment:
+    #   - DB_HOST=db
+    #   - DB_NAME=${DATABASE_NAME}
+    #   - DB_USER=${DATABASE_USER}
+    #   - DB_PASS=${DATABASE_PASSWORD}
     restart: on-failure
     volumes:
       - ./PARTY/backend:/app
