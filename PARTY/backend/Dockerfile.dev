@@ -1,6 +1,26 @@
-FROM python:3.9.2-slim-buster
+# FROM python:3.9.2-slim-buster
 
-WORKDIR /django
+# WORKDIR /django
+
+# LABEL maintainer="PartyTeam"
+# LABEL description="PartyWizard Backend"
+
+# ENV PYTHONDONTWRITEBYTECODE 1
+# ENV PYTHONUNBUFFERED 1
+
+# RUN apt-get update \
+#     && apt-get -y install \
+#     && apt-get clean
+
+# RUN pip install --upgrade pip
+
+# # COPY ./requirements.txt /django/requirements.txt
+# COPY requirements.txt requirements.txt
+# RUN pip install -r requirements.txt
+
+# COPY . .
+
+FROM python:3.9.2-alpine3.13
 
 LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Backend"
@@ -8,14 +28,20 @@ LABEL description="PartyWizard Backend"
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update \
-    && apt-get -y install \
-    && apt-get clean
+COPY ./PARTY/backend/requirements.txt /tmp/requirements.txt
+COPY ./PARTY/backend /app
+WORKDIR /app
+EXPOSE 8000
 
-RUN pip install --upgrade pip
+RUN python -m venv /py && \
+    /py/bin/pip install --upgrade pip && \
+    /py/bin/pip install -r /tmp/requirements.txt && \
+    rm -rf /tmp && \
+    adduser \
+    --disable-password \
+    --no-create-home \
+    django-user
 
-# COPY ./requirements.txt /django/requirements.txt
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+ENV PATH="/py/bin:$PATH"
 
-COPY . .
+USER django-user
