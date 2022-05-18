@@ -29,11 +29,11 @@ class Category(models.Model):
         max_length=25,
         choices=CATEGORY_NAME,
     )
-    # uuid = models.UUIDField(
-    #     db_index=True,
-    #     default=uuid_lib.uuid4,
-    #     editable=False,
-    # )
+    uuid = models.UUIDField(
+        db_index=True,
+        default=uuid_lib.uuid4,
+        editable=False,
+    )
 
     def __str__(self):
         return self.name

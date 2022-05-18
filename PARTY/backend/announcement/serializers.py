@@ -8,9 +8,11 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
+            'id',
             "name",
-            # "uuid",
+            "uuid",
         )
+        read_only_fields = ('id','uuid',)
 
 
 # class EventTypeSerializer(serializers.ModelSerializer):
@@ -35,15 +37,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     # images = ImageSerializer(many=True, read_only=True)
-    # user = UserSerializer()
-    # category = ServiceCategorySerializer()
-    # category = ServiceCategorySerializer(read_only=True)
     # event_type = EventType()  # many=True, read_only=True)
-    # category = serializers.CharField(max_length=30, source="get_category_display")
-
+    category = CategorySerializer(required=True)
     class Meta:
         model = Announcement
         fields = (
+            # TODO: should it be in order like in model?
             "title",
             "description",
             "user",
@@ -51,9 +50,14 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             # "event_type",
             # "images",
             "created",
+            'slug',
+            'uuid',
         )
         read_only_fields = (
             # "event_type",
+            'slug',
+            'uuid',
+            'created'
         )
 
     # def get_category(self, obj):
