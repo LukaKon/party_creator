@@ -5,11 +5,11 @@
 
 **Service** that help you organize your life event:)
 
-*Work in progress...*
+_Work in progress..._
 
 Technologies used in project:
 
-- Django (Python) - backend api,
-- React (Javascript) - frondend,
-- Postgresql - database,
-- Docker - contenerization
+-   Django (Python) - backend api
+-   React (Javascript) - frondend
+-   Postgresql - database
+-   Docker - contenerization
