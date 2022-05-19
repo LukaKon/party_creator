@@ -14,10 +14,11 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build && \
-    adduser \
-    --disabled-password \
-    --no-create-home \
-    react-user
+RUN npm run build
+# RUN npm run build && \
+# adduser \
+# --disabled-password \
+# --no-create-home \
+# react-user
 
-USER react-user
+# USER react-user
