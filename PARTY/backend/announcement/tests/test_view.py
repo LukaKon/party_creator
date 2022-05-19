@@ -1,6 +1,7 @@
-from announcement.models import Announcement
 from django.test import SimpleTestCase, TestCase
 from rest_framework.test import APIClient
+
+from announcement.models import Announcement
 
 
 class TestView(TestCase):

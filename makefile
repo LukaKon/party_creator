@@ -24,7 +24,10 @@ logs:
 	docker compose logs
 
 lint:
-	docker compose run --rm backend sh -c 'black . && isort --profile black .'
+	docker compose run --rm backend sh -c 'black .'
+
+isort:
+	docker compose run --rm backend sh -c 'isort --profile black .'
 
 test:
 	docker compose run --rm backend sh -c 'python manage.py test'

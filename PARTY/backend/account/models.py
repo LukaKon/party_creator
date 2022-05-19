@@ -6,7 +6,6 @@ from dynamic_filenames import FilePattern
 
 import back.utils.account as utils
 
-# import uuid as uuid_lib
 
 upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
@@ -42,6 +41,10 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField(_("email address"), unique=True)
+    #  TODO: What do you think about to add this fields:
+    # is_active=models.BooleanField(default=True)
+    # is_staff=models.BooleanField(default=False)
+    # created=models.DateTimeField(auto_now=True)
     is_moderator = models.BooleanField(default=False)
     is_firma = models.BooleanField(default=False)
     image = utils.stdimage_save_defaultimg(
@@ -57,11 +60,6 @@ class User(AbstractUser):
         },
         delete_orphans=True,
     )
-    # uuid=models.UUIDField(
-    # db_index=True,
-    # default=uuid_lib.uuid4,
-    # editable=False,
-    # )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

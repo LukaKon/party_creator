@@ -13,8 +13,9 @@ services:
     #   sh -c "python manage.py wait_for_database &&
     #          gunicorn back.wsgi --bind 0.0.0.0:8000"
     command: >
-      sh -c "python manage.py wait_for_database &&
-             python manage.py runserver 0.0.0.0:8000"
+      sh -c   "python manage.py wait_for_database &&
+              python manage.py migrate &&
+              python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
     # environment:
