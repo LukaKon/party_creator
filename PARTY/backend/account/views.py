@@ -47,25 +47,18 @@ class testAPI(APIView):
         return Response(data)
 
 
-class MultipleFieldLookupMixin:
-    """
-    Apply this mixin to any view or viewset to get multiple field filtering
-    based on a `lookup_fields` attribute, instead of the default single field filtering.
-    """
-    def get_object(self):
-        print("get_object", self)
-        queryset = self.get_queryset()             # Get the base queryset
-        queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        filter = {}
-        for field in self.lookup_fields:
-            if self.kwargs[field]: # Ignore empty fields.
-                filter[field] = self.kwargs[field]
-        obj = get_object_or_404(queryset, **filter)  # Lookup the object
-        self.check_object_permissions(self.request, obj)
-        return obj
-
-
-class GetUserAPI(MultipleFieldLookupMixin, RetrieveAPIView):
-    queryset = User.objects.all()
+class GetUserAPI(RetrieveAPIView):
+    model = get_user_model()
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
-    lookup_fields = ['account', 'username']
+
+    def get_queryset(self):
+        print('request data=================', self.request.data.get('email'))
+        queryset = self.model.objects.get(email=self.request.data.get('email'))
+        print('queryset', queryset.is_firma)
+        return queryset
+
+    def post(self, request):
+        user = self.get_queryset()
+        user_information = self.serializer_class(user).data
+        return Response(user_information)

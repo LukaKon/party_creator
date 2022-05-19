@@ -12,5 +12,5 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='auth_register'),
     path('testapi/', views.testAPI.as_view(), name='testAPI'),
 
-    path('getuser/', views.GetUserAPI.as_view(), name='GetUser'),
+    path('getprofile/', views.GetUserAPI.as_view(), name='GetUser'),
 ]
