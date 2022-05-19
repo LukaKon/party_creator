@@ -57,12 +57,10 @@ services:
     environment:
       CHOKIDAR_USEPOLLING: "true"
     env_file:
-      # - ./.env
       - .env
     restart: always
     volumes:
-      - ./PARTY/front:/react
-      # - react_dist:/react/dist
+      - ./PARTY/front:/app
     ports:
       - "3000:3000"
     stdin_open: true
