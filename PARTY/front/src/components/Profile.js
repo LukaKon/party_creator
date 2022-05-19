@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react'
 import {Typography} from "@mui/material";
-import {axiosInstance} from "../axios";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
-import {AnnouncementItem} from "./announcement/AnnouncementItem";
 
 
 export const Profile = () => {
@@ -12,9 +10,8 @@ export const Profile = () => {
         (state) => state.profile
     );
 
-
     useEffect(() => {
-        dispatch(fetchProfile({email: 'bartek@gmail.com'}));
+        dispatch(fetchProfile());
     }, []);
 
 
@@ -24,9 +21,11 @@ export const Profile = () => {
     } else {
         content = <Typography>
             Twój email : {entities.email}
+            Twoje ogłoszenia :
+            {entities.announcements.map(ann=>ann)}
+
         </Typography>
     }
-
     return (
         <Typography component={"div"}>
             Witaj na stronie Twojego profilu.

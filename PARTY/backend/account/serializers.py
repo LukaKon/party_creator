@@ -45,6 +45,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    announcements = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = get_user_model()
-        fields = ('email', 'is_firma')
+        fields = ('email', 'is_firma', 'announcements')
+2

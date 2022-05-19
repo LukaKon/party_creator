@@ -86,6 +86,7 @@ class Announcement(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='announcements'
     )  # default=None)
     # category = models.ForeignKey(
     # ServiceCategory,

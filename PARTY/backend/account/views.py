@@ -53,9 +53,10 @@ class GetUserAPI(RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        print('request data=================', self.request.data.get('email'))
-        queryset = self.model.objects.get(email=self.request.data.get('email'))
-        print('queryset', queryset.is_firma)
+        if self.request.data.get('email') is None:
+            queryset = self.model.objects.get(email=self.request.user.email)
+        else:
+            queryset = self.model.objects.get(email=self.request.data.get('email'))
         return queryset
 
     def post(self, request):

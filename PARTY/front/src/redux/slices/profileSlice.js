@@ -18,7 +18,7 @@ const profileSlice = createSlice({
         name: "profile",
         initialState: {
             loading: false,
-            entities: ['test_value', "test_key"],
+            entities: ['test_value',],
             error: null,
         },
         reducers: {},

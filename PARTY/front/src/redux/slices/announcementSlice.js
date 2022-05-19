@@ -20,7 +20,7 @@ export const saveAnnouncement = createAsyncThunk(
     "announcements/saveAnnouncement",
     async (data) => {
         try {
-            await axiosInstance.post("api/addannouncement", data);
+            await axiosInstance.post("api/addannouncement/", data);
         } catch (err) {
             console.log("Sent announcement error: ", err.message);
         }
