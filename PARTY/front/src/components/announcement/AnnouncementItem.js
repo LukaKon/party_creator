@@ -1,7 +1,14 @@
 import React from "react";
-import {Avatar, ButtonBase, Paper, Grid, Typography} from "@mui/material";
+import {
+    Avatar,
+    ButtonBase,
+    Paper,
+    Grid,
+    Typography,
+    // makeStyles,
+} from "@mui/material";
 
-import {makeStyles} from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -22,15 +29,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const AnnouncementItem = ({title, description, uuid, created}) => {
+export const AnnouncementItem = ({
+    title,
+    description,
+    uuid,
+    created,
+    category,
+}) => {
     const classes = useStyles();
 
     return (
-            <Paper className={classes.paper}>
+        <Paper className={classes.paper}>
             {/* <Grid container wrap="nowrap" spacing={1}> */}
             <Grid container wrap="nowrap" spacing={5}>
                 <Grid item xs={5}>
-
                     <ButtonBase className={classes.image}>
                         <img className={classes.img} alt="complex" src="" />
                     </ButtonBase>
@@ -41,8 +53,14 @@ export const AnnouncementItem = ({title, description, uuid, created}) => {
                             <Typography gutterBottom variant="subtitle1">
                                 {title}
                             </Typography>
-                            <Typography variant="body2" gutterBottom>
+                            <Typography variant="body1" gutterBottom>
                                 {description}
+                            </Typography>
+                            <Typography variant="body2">
+                                cat: {category}
+                            </Typography>
+                            <Typography variant="body2">
+                                date: {created}
                             </Typography>
                         </Grid>
                     </Grid>

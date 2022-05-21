@@ -1,7 +1,7 @@
 # FROM node:17.9-alpine3.15
-FROM node:18.0-alpine3.15
+FROM node:18-alpine3.15
 
-WORKDIR /react
+WORKDIR /app
 
 ENV PATH="./node_modules/.bin:$PATH"
 
@@ -12,9 +12,13 @@ COPY package.json .
 
 RUN npm install
 
-#TODO: do I need that for developnent? in compose is volume
 COPY . .
 
 RUN npm run build
-# RUN npm run start
-# CMD [ "npm", "start" ]
+# RUN npm run build && \
+# adduser \
+# --disabled-password \
+# --no-create-home \
+# react-user
+
+# USER react-user

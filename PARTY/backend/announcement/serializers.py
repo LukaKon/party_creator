@@ -2,72 +2,71 @@ from rest_framework import serializers
 
 from account.models import User
 
-from .models import Announcement, EventType, Image  # ServiceCategory
+from .models import Announcement, Category, Image
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Category
         fields = (
-            # "id",
-            "email",
+            "id",
+            "name",
+            "uuid",
+        )
+        read_only_fields = (
+            "id",
+            "uuid",
         )
 
 
-# class ServiceCategorySerializer(serializers.ModelSerializer):
+# class EventTypeSerializer(serializers.ModelSerializer):
 #     class Meta:
-#         model = ServiceCategory
+#         model = EventType
+#         fields = ("name",)
+
+
+# class ImageSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Image
 #         fields = (
 #             # "id",
-#             "name",
+#             "announcement",
+#             "event_type",
+#             "image",
+#             "is_main",
 #         )
-
-
-class EventTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventType
-        fields = ("name",)
-
-
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = (
-            # "id",
-            "announcement",
-            "event_type",
-            "image",
-            "is_main",
-        )
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     # images = ImageSerializer(many=True, read_only=True)
-    # user = UserSerializer()
-    # category = ServiceCategorySerializer()
-    # category = ServiceCategorySerializer(read_only=True)
     # event_type = EventType()  # many=True, read_only=True)
+    category = CategorySerializer(required=True)
 
     class Meta:
         model = Announcement
         fields = (
-            # "id",
+            # TODO: should it be in order like in model?
             "title",
             "description",
+            "user",
+            "category",
+            # "event_type",
+            # "images",
+            "created",
             "slug",
             "uuid",
-            "user",
-            # "category",
-            # "event_type",
-            "created",
-            # "images",
         )
         read_only_fields = (
-            "slug",
             # "event_type",
+            "slug",
+            "uuid",
+            "created",
         )
+
+    # def get_category(self, obj):
+    #     return obj.get_category_display()
 
     # def create(self, validated_data):
     #     #     print("data: ", validated_data)

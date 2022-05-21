@@ -1,38 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
 import {
     Box,
     Button,
     Container,
     CssBaseline,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
     TextareaAutosize,
     TextField,
     Typography,
 } from "@mui/material";
 import { useForm } from "./hooks/useForm";
 import { useDispatch } from "react-redux";
-import { saveAnnouncement } from "../../redux/slices/announcementSlice";
+import { fetchCategories } from "../../redux/slices/categorySlice";
 
-export const AddAnnouncement = () => {
+// const useStyles = makeStyles((theme) => ({
+//     formControl: {
+//         // margin: theme.spacing(1),
+//         margin: 1,
+//         minWidth: 120,
+//     },
+//     selectEmpty: {
+//         // marginTop: theme.spacing(2),
+//         marginTop: 2,
+//     },
+// }));
+
+// export const AddAnnouncement = ({ categories }) => {
+export const AddAnnouncement = (props) => {
+    console.log("props: ", props);
+    // const classes = useStyles();
     const [updateValue, submitHandler, errors] = useForm({});
     const theme = createTheme();
-
     const dispatch = useDispatch();
-    // console.log(JSON.parse(localStorage.getItem("user")));
-    console.log(localStorage);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // const data = new FormData(e.currentTarget);
-        // console.log("data: ", data);
-        console.log("token: ", sessionStorage.getItem("email"));
-        dispatch(
-            saveAnnouncement({
-                title: "test",
-                description: "opis",
-            })
-        );
-    };
+    useEffect(() => {
+        dispatch(fetchCategories());
+    }, []);
 
     let checkInputs;
     let saveButton;
@@ -90,11 +98,34 @@ export const AddAnnouncement = () => {
                             style={{ width: 200 }}
                             onChange={updateValue}
                         />
+                        {/* <FormControl className={classes.formControl}> */}
+                        <FormControl>
+                            <InputLabel id="select_category_label">
+                                Category
+                            </InputLabel>
+                            <Select
+                                labelId="select_category_label"
+                                id="select_category"
+                                onChange={updateValue}
+                                // value={updateValue}
+                            >
+                                {/* TODO: check after add thunk function to fetch categories */}
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {/* {categories.map((category) => { */}
+                                {/* return ( */}
+                                {/* <MenuItem value={category.id}> */}
+                                {/* {category.name} */}
+                                {/* </MenuItem> */}
+                                {/* ); */}
+                                {/* })} */}
+                            </Select>
+                        </FormControl>
                         <div>
                             <ul>
                                 <li>"add images/multimedia"</li>
                                 <li>"event type: list with checkboxes"</li>
-                                <li>"category: list with checkboxes"</li>
                             </ul>
                         </div>
                         <Button
@@ -102,8 +133,8 @@ export const AddAnnouncement = () => {
                             disabled={saveButton}
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
-                            // onClick={submitHandler}
-                            onClick={handleSubmit}
+                            onClick={submitHandler}
+                            // onClick={handleSubmit}
                         >
                             Save
                         </Button>
