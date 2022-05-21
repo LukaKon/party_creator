@@ -7,7 +7,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-CREATE_USER_URL = reverse("account:auth_register")
+CREATE_USER_URL = reverse("account:register")
+TOKEN_URL = reverse("account:token")  # change 'token'
 
 
 def create_user(**kwargs):
@@ -74,3 +75,7 @@ class PublicUserAPITests(TestCase):
         user_exists = get_user_model().objects.filter(email=payload["email"]).exists()
 
         self.assertFalse(user_exists)
+
+    def test_create_token_for_user(self):
+        """Test generates token for valid credential."""
+        user_details = {"email": ""}

@@ -1,23 +1,36 @@
-import React, {useState} from 'react'
+import React, {useEffect} from 'react'
 import {Typography} from "@mui/material";
 import {axiosInstance} from "../axios";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProfile} from "../redux/slices/profileSlice";
+import {AnnouncementItem} from "./announcement/AnnouncementItem";
 
 
 export const Profile = () => {
-    const downloadProfile = () => {
-        let test = null
-        axiosInstance.get('/getuser/')
-            .then(response => test = response)
-        return test
+    const dispatch = useDispatch();
+    const {entities, loading} = useSelector(
+        (state) => state.profile
+    );
+
+
+    useEffect(() => {
+        dispatch(fetchProfile({email: 'bartek@gmail.com'}));
+    }, []);
+
+
+    let content;
+    if (loading) {
+        content = <Typography>Fetching in progress...</Typography>;
+    } else {
+        content = <Typography>
+            Twój email : {entities.email}
+        </Typography>
     }
-    const [profile, setProfile] = useState(downloadProfile())
 
-
-
-    return(
-        <Typography component={'p'}>
-            Profile
-            {profile}
+    return (
+        <Typography component={"div"}>
+            Witaj na stronie Twojego profilu.
+            {content}
         </Typography>
     )
 }

@@ -133,7 +133,7 @@ class Multimedia(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="%(class)s",
+        related_name="%(class)ss",
     )
     # event_type = models.OneToOneField(
     #     EventType,
