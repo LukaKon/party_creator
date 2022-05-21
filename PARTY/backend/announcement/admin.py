@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from . import models
 
 
-# @admin.register(models.Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
     """Define the admin page for announcements."""
 

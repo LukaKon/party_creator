@@ -14,9 +14,7 @@ class UserAdmin(BaseUserAdmin):
     ordering = ["id"]
     list_display = [
         "email",
-        # "image",
         "is_moderator",
-        # "is_firma",
     ]
     fieldsets = (
         (
@@ -38,8 +36,8 @@ class UserAdmin(BaseUserAdmin):
                 )
             },
         ),
-        (_("Important dates"), {"fields": ("last_login",)}),
         (_("Avatar"), {"fields": ("image",)}),
+        (_("Important dates"), {"fields": ("last_login",)}),
     )
     readonly_fields = ("last_login",)
     add_fieldsets = (

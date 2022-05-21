@@ -1,12 +1,11 @@
 import uuid as uuid_lib
 
 import stdimage
+from account.models import User
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
-
-from account.models import User
 
 from .utils.announcement import unique_slug_generator
 
@@ -35,6 +34,9 @@ class Category(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
+
+    class Meta:
+        verbose_name_plural = "categories"
 
     def __str__(self):
         return self.name
