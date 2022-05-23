@@ -75,13 +75,6 @@ class Category(models.Model):
 class Announcement(models.Model):
     """Model of announcement."""
 
-    # CATEGORY_NAME = (
-    #     ("muzyka", "music"),
-    #     ("cattering", "cattering"),
-    #     ("fotograf", "photograph"),
-    #     ("lokal", "local"),
-    #     ("animator", "animator"),
-    # )
     title = models.CharField(max_length=200)
     description = models.TextField()
     slug = models.SlugField(unique=True)
@@ -93,17 +86,16 @@ class Announcement(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-    )  # default=None)
+    )
     category = models.ForeignKey(
         Category,
         verbose_name="announcement_categories",
         on_delete=models.PROTECT,
     )
-    # category = models.CharField(max_length=30, choices=CATEGORY_NAME)
     # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
-    # is_active=models.BooleanField(default=True)
+    is_active=models.BooleanField(default=True)
 
     class Meta:
         index_together = (("id", "slug"),)
