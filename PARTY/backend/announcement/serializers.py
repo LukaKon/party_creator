@@ -34,8 +34,8 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = (
             # "id",
-            "announcement",
-            "event_type",
+            # "announcement",
+            # "event_type",
             "image",
             "is_main",
         )
@@ -44,7 +44,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
-    # images = ImageSerializer(many=True, read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
     # user = UserSerializer()
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
@@ -62,7 +62,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             # "category",
             # "event_type",
             "created",
-            # "images",
+            "images",
         )
         read_only_fields = (
             "slug",

@@ -98,6 +98,7 @@ class Announcement(models.Model):
     # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
+
     # is_active=models.BooleanField(default=True)
 
     class Meta:
@@ -129,8 +130,9 @@ class Multimedia(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="%(class)s",
+        related_name="%(class)ss",
     )
+
     # event_type = models.OneToOneField(
     #     EventType,
     #     verbose_name="%(class)s",
@@ -139,8 +141,8 @@ class Multimedia(models.Model):
     #     blank=True,
     # )
 
-    def __str__(self):
-        return str(self.image.thumbnail)
+    # def __str__(self):
+    #     return str(self.image.thumbnail)
 
     class Meta:
         abstract = True
@@ -166,6 +168,8 @@ class Image(Multimedia):
 
     is_main = models.BooleanField(default=False, null=True)  # is image main - for front
 
+    def __str__(self):
+        return str(self.image)
 
 # class Movie(Multimedia):
 #     """Movie attached to announcement."""

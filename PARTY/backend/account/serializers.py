@@ -6,6 +6,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from account.models import User
 
+#
+from announcement.serializers import AnnouncementSerializer
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
@@ -45,9 +48,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    announcements = serializers.StringRelatedField(many=True)
+    # announcements = serializers.StringRelatedField(many=True)
+    announcements = AnnouncementSerializer(many=True)
 
     class Meta:
         model = get_user_model()
         fields = ('email', 'is_firma', 'announcements')
-2

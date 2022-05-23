@@ -17,8 +17,8 @@ export const fetchProfile = createAsyncThunk(
 const profileSlice = createSlice({
         name: "profile",
         initialState: {
-            loading: false,
-            entities: ['test_value',],
+            loading: "before",
+            entities: 'test',
             error: null,
         },
         reducers: {},
@@ -27,13 +27,11 @@ const profileSlice = createSlice({
                 state.loading = true
             },
             [fetchProfile.fulfilled]: (state, action)=>{
-                state.loading = false
-                console.log(action.payload)
+                state.loading = "after"
                 state.entities = action.payload
             },
             [fetchProfile.rejected]: (state, action)=> {
-                state.loading = false
-                console.log(action.payload)
+                state.loading = "after"
             }
         }
     }
