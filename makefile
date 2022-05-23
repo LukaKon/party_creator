@@ -4,7 +4,7 @@ ifneq (,$(wildcard ./.env))
 	ENV_FILE_PARAM = --env-file .env
 endif
 
-
+# DOCKER
 build:
 	set -e
 	docker compose down
@@ -58,3 +58,18 @@ dump:
 
 restore:
 	docker exec -i postgres_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) psql -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" < dump.sql
+
+# PODMAN
+pbuild:
+	set -e
+	podman-compose down
+	podman-compose up --build -d
+
+pup:
+	podman-compose up -d
+
+pstop:
+	podman-compose stop
+
+pdown:
+	podman-compose down
