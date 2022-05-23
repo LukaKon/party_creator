@@ -1,5 +1,5 @@
 # FROM node:17.9-alpine3.15
-FROM node:18-alpine3.15
+FROM node:18-alpine3.15 as builder
 
 WORKDIR /app
 
@@ -22,3 +22,15 @@ RUN npm run build
 # react-user
 
 # USER react-user
+
+
+# FROM nginx:alpine
+
+# COPY ./nginx.conf /etc/nginx/conf.d/default.conf:ro
+# # COPY ./../../nginx/gzip.conf /etc/nginx/conf.d/gzip.conf:ro
+
+# RUN rm -rf /usr/share/nginx/html/*
+
+# COPY --from=builder /app/dist /usr/share/nginx/html
+
+# EXPOSE 3000 80

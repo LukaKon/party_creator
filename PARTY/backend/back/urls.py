@@ -13,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from announcement import urls as announcement_url
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
+from announcement import urls as announcement_url
 
 # TODO: do we need this?
 template = TemplateView.as_view(template_name="index.html")

@@ -82,7 +82,7 @@ services:
   #     - 433:433
   #   restart: always
   #   volumes:
-  #     - ./nginx/nginx-alpine.conf:/etc/nginx/conf.d/default.conf:ro
+  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
   #     - ./nginx/gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
   #     - ./PARTY/front/dist:/usr/share/nginx/html
   #   depends_on:

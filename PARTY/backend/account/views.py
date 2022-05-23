@@ -22,6 +22,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class LoginView(TokenObtainPairView):
+    """Create a new auth token for user."""
+
     permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
 

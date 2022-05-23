@@ -28,9 +28,18 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
 
     password = serializers.CharField(
-        write_only=True, required=True, validators=[validate_password]
+        write_only=True,
+        required=True,
+        validators=[validate_password],
+        trim_whitespace=False,
+        style={"input_type": "password"},
     )
-    password2 = serializers.CharField(write_only=True, required=True)
+    password2 = serializers.CharField(
+        write_only=True,
+        required=True,
+        trim_whitespace=False,
+        style={"input_type": "password"},
+    )
 
     class Meta:
         model = get_user_model()
@@ -39,7 +48,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         # extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
 
     def validate(self, attrs):
-        if len(attrs["password"]) < 5:
+        """Validate and authenticate the user."""
+        if len(attrs.get("password")) < 5:
             raise serializers.ValidationError(
                 {"password": "Password is too short (min. 5 chars)."}
             )
@@ -52,8 +62,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            validated_data["email"], validated_data["password"]
-            # **validated_data
+            validated_data["email"],
+            validated_data["password"],
         )
 
         return user
