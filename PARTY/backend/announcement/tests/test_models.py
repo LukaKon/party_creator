@@ -22,6 +22,5 @@ class ModelTest(TestCase):
             user=user,
             category=category,
         )
-        print("test: ", str(announcement))
 
         self.assertEqual(str(announcement), announcement.title)
