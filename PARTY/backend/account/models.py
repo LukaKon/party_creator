@@ -1,11 +1,9 @@
+import back.utils.account as utils
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from dynamic_filenames import FilePattern
-
-import back.utils.account as utils
-# import uuid as uuid_lib
 
 upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
@@ -15,16 +13,18 @@ upload_to_pattern = FilePattern(
 class UserManager(BaseUserManager):
     """User Manager to create a user with email as login field"""
 
-    def create_user(self, email, password, **kwargs):
+    def create_user(self, email, password=None, **kwargs):
+        """Create, save and return a new user."""
         if not email:
             raise ValueError(_("The Email must be set"))
         email = self.normalize_email(email)
         user = self.model(email=email, **kwargs)
-        user.set_password(password)
-        user.save()
+        user.set_password(password)  # set encrypted password
+        user.save(using=self._db)  # support different databases - good practice
         return user
 
     def create_superuser(self, email, password, **kwargs):
+        """Create and return superuser."""
         kwargs.setdefault("is_staff", True)
         kwargs.setdefault("is_superuser", True)
         kwargs.setdefault("is_active", True)
@@ -56,17 +56,11 @@ class User(AbstractUser):
         },
         delete_orphans=True,
     )
-    # uuid=models.UUIDField(
-        # db_index=True,
-        # default=uuid_lib.uuid4,
-        # editable=False,
-        # )
 
-
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "email"  # field for authentication
     REQUIRED_FIELDS = []
 
-    objects = UserManager()
+    objects = UserManager()  # assign UserManager to user model
 
     def __str__(self):
         return self.email

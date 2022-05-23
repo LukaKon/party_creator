@@ -2,11 +2,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
-// import { fetchAnnouncements } from "../../redux/slices/thunk";
 import { AnnouncementItem } from "./AnnouncementItem";
-import { Grid, Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@mui/material";
+import {
+    Grid,
+    Paper,
+    Typography,
+    //    makeStyles
+} from "@mui/material";
+import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
         padding: 2,
     },
 }));
-
 
 export const AnnouncementList = () => {
     const classes = useStyles();
@@ -37,23 +39,31 @@ export const AnnouncementList = () => {
     if (loading) {
         content = <Typography>Fetching in progress...</Typography>;
     } else {
-        content = (
-            <Typography className={classes.root}>
-                {/* <Paper className={classes.paper}> */}
-                <Grid container spacing={4}>
-                    {entities.map((ann) => {
-                        return (
-                            <>
-                                {/* TODO: Warning: Each child in a list should have a unique "key" prop. Why??? */}
-                                {/* {ann.uuid} */}
-                                <AnnouncementItem key={ann.uuid} {...ann} />
-                            </>
-                        );
-                    })}
-                </Grid>
-                {/* </Paper> */}
-            </Typography>
-        );
+        if (!entities) {
+            content = (
+                <Typography variant="h3">
+                    No announcement in data base.
+                </Typography>
+            );
+        } else {
+            content = (
+                <Typography className={classes.root}>
+                    {/* <Paper className={classes.paper}> */}
+                    <Grid container spacing={4}>
+                        {entities.map((ann) => {
+                            return (
+                                <>
+                                    {/* TODO: Warning: Each child in a list should have a unique "key" prop. Why??? */}
+                                    {/* {ann.uuid} */}
+                                    <AnnouncementItem key={ann.uuid} {...ann} />
+                                </>
+                            );
+                        })}
+                    </Grid>
+                    {/* </Paper> */}
+                </Typography>
+            );
+        }
     }
     return (
         <Typography>

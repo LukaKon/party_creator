@@ -1,8 +1,19 @@
-**/.dockerignore
-# **/.env
-**/.git
-**/.gitignore
-**/.project
-**/.vscode
-**/Dockerfile*
-**/venv
+# Git
+# .git
+# .gitignore
+
+# Docker
+.dockerignore
+Dockerfile*
+.docker
+
+# Python
+.env
+# **/.project
+# /.vscode
+venv/
+.venv/
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
+*/*/*/__pycache__/

@@ -1,17 +1,24 @@
+"""
+Views for the user API.
+"""
+from account.models import User
+from account.serializers import (
+    MyTokenObtainPairSerializer,
+    RegisterSerializer,
+    UserSerializer,
+)
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
-from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.token_blacklist.models import (
+    BlacklistedToken,
+    OutstandingToken,
+)
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
-
-from account.models import User
-from account.serializers import MyTokenObtainPairSerializer, RegisterSerializer, UserSerializer
 
 
 class LoginView(TokenObtainPairView):
@@ -20,6 +27,8 @@ class LoginView(TokenObtainPairView):
 
 
 class RegisterView(CreateAPIView):
+    """Create a new user in the system."""
+
     queryset = get_user_model().objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer

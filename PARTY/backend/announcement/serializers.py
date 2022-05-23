@@ -2,25 +2,21 @@ from rest_framework import serializers
 
 from account.models import User
 
-from .models import Announcement, EventType, Image  # ServiceCategory
+from .models import Announcement, Category, Image
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Category
         fields = (
-            # "id",
-            "email",
+            "id",
+            "name",
+            "uuid",
         )
-
-
-# class ServiceCategorySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ServiceCategory
-#         fields = (
-#             # "id",
-#             "name",
-#         )
+        read_only_fields = (
+            "id",
+            "uuid",
+        )
 
 
 class EventTypeSerializer(serializers.ModelSerializer):
@@ -48,26 +44,33 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # user = UserSerializer()
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
+
     # event_type = EventType()  # many=True, read_only=True)
+    category = CategorySerializer(required=True)
 
     class Meta:
         model = Announcement
         fields = (
-            # "id",
+            # TODO: should it be in order like in model?
             "title",
             "description",
+            "user",
+            "category",
+            # "event_type",
+            "images",
+            "created",
             "slug",
             "uuid",
-            "user",
-            # "category",
-            # "event_type",
-            "created",
-            "images",
         )
         read_only_fields = (
-            "slug",
             # "event_type",
+            "slug",
+            "uuid",
+            "created",
         )
+
+    # def get_category(self, obj):
+    #     return obj.get_category_display()
 
     # def create(self, validated_data):
     #     #     print("data: ", validated_data)
