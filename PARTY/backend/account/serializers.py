@@ -7,6 +7,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from announcement.serializers import AnnouncementSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -61,6 +62,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the user object."""
 
+    announcements = AnnouncementSerializer(many=True)
+
     class Meta:
         model = get_user_model()
-        fields = ("email", "is_firma")
+        fields = ('email', 'is_firma', 'announcements')
