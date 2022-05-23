@@ -1,36 +1,67 @@
 import React, {useEffect} from 'react'
-import {Typography} from "@mui/material";
-import {axiosInstance} from "../axios";
+import {Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
-import {AnnouncementItem} from "./announcement/AnnouncementItem";
+import {Announcement} from "./Announcement";
+import {announcementReducer} from "../redux/slices/announcementSlice";
+import {useNavigate} from "react-router-dom";
 
 
 export const Profile = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const {entities, loading} = useSelector(
         (state) => state.profile
     );
 
-
     useEffect(() => {
-        dispatch(fetchProfile({email: 'bartek@gmail.com'}));
+        dispatch(fetchProfile());
     }, []);
+
+    const handleAnnouncement = () => {
+        // navigate('/')
+    }
 
 
     let content;
-    if (loading) {
+    if (loading === true || loading === 'before') {
         content = <Typography>Fetching in progress...</Typography>;
     } else {
-        content = <Typography>
-            Twój email : {entities.email}
-        </Typography>
+        content = <Grid container spacing={3} >
+            <Grid item xs="12">
+                <Typography component="div" variant="h4">
+                    Twoje dane:
+                </Typography>
+            </Grid>
+
+            <Grid item xs="12">
+                <Typography component="div" variant="p">
+                    Twój email : {entities.email}
+                </Typography>
+                <Typography variant="p">
+                    Twoje ogłoszenia :
+                </Typography>
+
+            </Grid>
+
+            <Grid item container xs="12">
+                {entities.announcements.map(ann => {
+                    return (
+                        <Grid item xs={12} md={6}>
+                            <Announcement {...ann}/>
+                        </Grid>
+                    )
+                })}
+            </Grid>
+
+        </Grid>
+        // console.log(Object.keys(entities.announcements).map((key) => [Number(key), entities.announcements[key]]));
     }
 
+
     return (
-        <Typography component={"div"}>
-            Witaj na stronie Twojego profilu.
+        <Grid>
             {content}
-        </Typography>
+        </Grid>
     )
 }

@@ -19,28 +19,32 @@ class CategorySerializer(serializers.ModelSerializer):
         )
 
 
-# class EventTypeSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = EventType
-#         fields = ("name",)
+class EventTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventType
+        fields = ("name",)
 
 
-# class ImageSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Image
-#         fields = (
-#             # "id",
-#             "announcement",
-#             "event_type",
-#             "image",
-#             "is_main",
-#         )
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = (
+            # "id",
+            # "announcement",
+            # "event_type",
+            "image",
+            "is_main",
+        )
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
-    # images = ImageSerializer(many=True, read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
+    # user = UserSerializer()
+    # category = ServiceCategorySerializer()
+    # category = ServiceCategorySerializer(read_only=True)
+
     # event_type = EventType()  # many=True, read_only=True)
     category = CategorySerializer(required=True)
 
@@ -53,7 +57,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "user",
             "category",
             # "event_type",
-            # "images",
+            "images",
             "created",
             "slug",
             "uuid",
