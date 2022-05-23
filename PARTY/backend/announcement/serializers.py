@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from account.models import User
+from rest_framework import serializers
 
 from .models import Announcement, Category, Image
 
@@ -19,10 +18,10 @@ class CategorySerializer(serializers.ModelSerializer):
         )
 
 
-class EventTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventType
-        fields = ("name",)
+# class EventTypeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = EventType
+#         fields = ("name",)
 
 
 class ImageSerializer(serializers.ModelSerializer):

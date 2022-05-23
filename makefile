@@ -31,19 +31,15 @@ isort:
 
 test:
 	docker compose run --rm backend sh -c 'python manage.py test'
-	# docker compose run --rm backend sh -c 'python manage.py test --parallel'
 
 migrate:
 	docker compose run --rm backend sh -c 'python3 manage.py migrate --noinput'
-	# docker compose exec backend python3 manage.py migrate --noinput
 
 makemigrations:
 	docker compose run --rm backend sh -c 'python3 manage.py makemigrations'
-	# docker compose exec backend python3 manage.py makemigrations
 
 superuser:
 	docker compose run --rm backend sh -c 'python3 manage.py createsuperuser'
-	# docker compose exec backend python3 manage.py createsuperuser
 
 volume:
 	docker volume inspect party_creator_pgdata
