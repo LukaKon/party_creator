@@ -22,10 +22,11 @@ from .serializers import AnnouncementSerializer, CategorySerializer
 class CategoryListView(ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = (AllowAny,)
     # lookup_field = "uuid"
 
 
-class AnnouncementCraeteView(CreateAPIView):
+class CreateAnnouncementView(CreateAPIView):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
 
@@ -33,20 +34,21 @@ class AnnouncementCraeteView(CreateAPIView):
         """
         add announcement
         """
+        print("req: ", request)
         data = {
             "title": request.data.get("title"),
             "description": request.data.get("description"),
             "user": request.user.pk,
-            #         # "category": request.data.get("category"),
+            "category": request.data.get("category"),
             #         # 'event_type':request.data.get('event_type'),
             #         # 'images':request.data.get('images'),
         }
         print("data: ", data)
+        # TODO: in data there is no 'user' and ' 'category'
         permission_classes = (IsAuthenticated,)
 
         serializer = AnnouncementSerializer(data=data)
         if serializer.is_valid():
-            print("in post")
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 

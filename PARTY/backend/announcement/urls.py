@@ -11,11 +11,11 @@ urlpatterns = [
     path(
         route="announcements/",
         view=views.AnnouncementListView.as_view(),
-        name="announcement_api",
+        name="announcement_list",
     ),
     path(
         route="addannouncement/",
-        view=views.AnnouncementCraeteView.as_view(),
+        view=views.CreateAnnouncementView.as_view(),
         name="add_announcement",
     ),
     path(

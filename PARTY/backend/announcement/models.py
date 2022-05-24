@@ -1,12 +1,12 @@
 import uuid as uuid_lib
 
 import stdimage
+from account.models import User
+from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
-
-from account.models import User
 
 from .utils.announcement import unique_slug_generator
 
@@ -73,10 +73,10 @@ class Category(models.Model):
 
 
 class Announcement(models.Model):
-    """Model of announcement."""
+    """Announcement object."""
 
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.TextField(blank=False)
     slug = models.SlugField(unique=True)
     uuid = models.UUIDField(  # Used by the API to look up the record
         db_index=True,
@@ -84,7 +84,8 @@ class Announcement(models.Model):
         editable=False,
     )
     user = models.ForeignKey(
-        User,
+        # User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='announcements'
     )  # default=None)

@@ -4,6 +4,12 @@ from rest_framework import serializers
 from .models import Announcement, Category, Image
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("email",)
+
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -40,12 +46,15 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     images = ImageSerializer(many=True, read_only=True)
-    # user = UserSerializer()
+    user = UserSerializer(many=False)
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
 
     # event_type = EventType()  # many=True, read_only=True)
     category = CategorySerializer(required=True)
+
+    # TODO: create 'create' function?
+    print("in serializer: ", user, category)
 
     class Meta:
         model = Announcement
