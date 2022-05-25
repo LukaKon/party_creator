@@ -44,7 +44,7 @@ class CreateAnnouncementView(CreateAPIView):
             #         # 'images':request.data.get('images'),
         }
         print("data: ", data)
-        # TODO: in data there is no 'user' and ' 'category'
+        # TODO: in data there is no 'user' and 'category'
         permission_classes = (IsAuthenticated,)
 
         serializer = AnnouncementSerializer(data=data)
