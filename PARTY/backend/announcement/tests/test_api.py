@@ -8,6 +8,8 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
+from rest_framework_simplejwt import utils
+from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
 ADD_ANNOUNCEMENT_URL = reverse("announcement:add_announcement")
@@ -61,9 +63,7 @@ class PrivateAnnouncementAPITests(TestCase):
         # self.client.credentials(
         # HTTP_AUTHORIZATION=f"Bearer {self.refresh_token.access_token}"
         # )
-        self.client.credentials(
-            HTTP_AUTHORIZATION=f"Bearer {self.refresh_token.access_token}"
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.refresh_token}")
 
         # print(
         #     "client: ",
