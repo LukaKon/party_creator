@@ -45,8 +45,8 @@ class CreateAnnouncementView(CreateAPIView):
         """
         add announcement
         """
-        print("req: ", request.user, request.auth)
-        print("user: ", request.user.pk)
+        # print("req: ", request.user, request.auth)
+        # print("user: ", request.user.pk)
         data = {
             "title": request.data.get("title"),
             "description": request.data.get("description"),
@@ -55,10 +55,11 @@ class CreateAnnouncementView(CreateAPIView):
             #         # 'event_type':request.data.get('event_type'),
             #         # 'images':request.data.get('images'),
         }
-        print("data: ", data)
+        # print("data: ", data)
         # TODO: in data there is no 'user' and 'category'
         # permission_classes = (IsAuthenticated,)
-        serializer = AnnouncementSerializer(data=data)
+        # serializer = AnnouncementSerializer(data=data)
+        serializer = AnnouncementSerializer(**data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -76,6 +77,9 @@ class AnnouncementListView(ListAPIView):
 
 class AnnouncementRetriveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Announcement.objects.all()
-    permission_classes = (IsAuthenticated, AllowAny)
+    permission_classes = (
+        IsAuthenticated,
+        AllowAny,
+    )
     serializer_class = AnnouncementSerializer
     lookup_field = "uuid"

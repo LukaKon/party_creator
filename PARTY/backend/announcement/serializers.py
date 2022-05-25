@@ -7,7 +7,10 @@ from .models import Announcement, Category, Image
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("email",)
+        fields = (
+            "id",
+            "email",
+        )
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -46,15 +49,15 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     images = ImageSerializer(many=True, read_only=True)
-    user = UserSerializer(many=False)
+    user = UserSerializer(many=True)
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
 
     # event_type = EventType()  # many=True, read_only=True)
-    category = CategorySerializer(many=False,required=True)
+    category = CategorySerializer(many=True, required=True)
 
     # TODO: create 'create' function?
-    print("in serializer: ", user, category)
+    # print("in serializer: ", user, category)
 
     class Meta:
         model = Announcement
@@ -79,8 +82,8 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # def get_category(self, obj):
     #     return obj.get_category_display()
 
-    def create(self, validated_data):
-            print("data: ", validated_data)
+    # def create(self, validated_data):
+    # print("data: ", validated_data)
     #     category_data = validated_data.pop("user")
     #     #     print("profile_data: ", category_data)
     #     announcement = Announcement.objects.create(**validated_data)
