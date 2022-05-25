@@ -61,7 +61,9 @@ class PrivateAnnouncementAPITests(TestCase):
         # self.client.credentials(
         # HTTP_AUTHORIZATION=f"Bearer {self.refresh_token.access_token}"
         # )
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.refresh_token}")
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Bearer {self.refresh_token.access_token}"
+        )
 
         # print(
         #     "client: ",
