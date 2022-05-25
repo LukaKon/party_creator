@@ -114,8 +114,8 @@ class Announcement(models.Model):
             img.delete()
         super().delete()
 
-    # def get_absolute_url(self):
-    # return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
+    def get_absolute_url(self):
+        return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.title
