@@ -18,6 +18,8 @@ from rest_framework.views import APIView
 from .models import Announcement, Category
 from .serializers import AnnouncementSerializer, CategorySerializer
 
+from rest_framework_simplejwt.authentication import JWTAuthentication,JWTTokenUserAuthentication
+from rest_framework_simplejwt.tokens import Token
 
 class CategoryListView(ListAPIView):
     serializer_class = CategorySerializer
@@ -29,12 +31,20 @@ class CategoryListView(ListAPIView):
 class CreateAnnouncementView(CreateAPIView):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
+    # authentication_classes=(JWTAuthentication,)
+    authentication_classes=(JWTTokenUserAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    # def get(self,request,*args,**kwargs)
+        # token=Token.objects.
+
 
     def post(self, request, *args, **kwargs):
         """
         add announcement
         """
-        print("req: ", request)
+        print("req: ", request.user,request.auth)
+        print('user: ',request.user.pk)
         data = {
             "title": request.data.get("title"),
             "description": request.data.get("description"),
@@ -45,7 +55,6 @@ class CreateAnnouncementView(CreateAPIView):
         }
         print("data: ", data)
         # TODO: in data there is no 'user' and ' 'category'
-        permission_classes = (IsAuthenticated,)
 
         serializer = AnnouncementSerializer(data=data)
         if serializer.is_valid():

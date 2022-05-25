@@ -51,7 +51,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # category = ServiceCategorySerializer(read_only=True)
 
     # event_type = EventType()  # many=True, read_only=True)
-    category = CategorySerializer(required=True)
+    category = CategorySerializer(many=False,required=True)
 
     # TODO: create 'create' function?
     print("in serializer: ", user, category)
@@ -76,12 +76,11 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "uuid",
             "created",
         )
-
     # def get_category(self, obj):
     #     return obj.get_category_display()
 
-    # def create(self, validated_data):
-    #     #     print("data: ", validated_data)
+    def create(self, validated_data):
+            print("data: ", validated_data)
     #     category_data = validated_data.pop("user")
     #     #     print("profile_data: ", category_data)
     #     announcement = Announcement.objects.create(**validated_data)
