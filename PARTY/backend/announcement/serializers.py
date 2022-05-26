@@ -19,10 +19,10 @@ class CategorySerializer(serializers.ModelSerializer):
         )
 
 
-class EventTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventType
-        fields = ("name",)
+# class EventTypeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = EventType
+#         fields = ("name",)
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -52,6 +52,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         model = Announcement
         fields = (
             # TODO: should it be in order like in model?
+            # "id",
             "title",
             "description",
             "user",
