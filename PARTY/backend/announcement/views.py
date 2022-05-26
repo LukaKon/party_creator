@@ -1,5 +1,9 @@
+"""
+Views for announcements APIs.
+"""
+from announcement import models, serializers
 from django.shortcuts import render
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -7,17 +11,12 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-)
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import (
-    JWTAuthentication,
     JWTTokenUserAuthentication,
-)
+)  # JWTAuthentication,
 from rest_framework_simplejwt.tokens import Token
 
 from .models import Announcement, Category
@@ -27,26 +26,29 @@ from .serializers import AnnouncementSerializer, CategorySerializer
 class CategoryListView(ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-    permission_classes = (AllowAny,)
     # lookup_field = "uuid"
+
+
+# try viewsets
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    """View for manage announcement APIs."""
+
+    serializer_class = serializers.AnnouncementSerializer
+    queryset = models.Announcement.objects.all()
+    authentication_classes = (JWTTokenUserAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class CreateAnnouncementView(CreateAPIView):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
-    # authentication_classes=(JWTAuthentication,)
     authentication_classes = (JWTTokenUserAuthentication,)
     permission_classes = (IsAuthenticated,)
-
-    # def get(self,request,*args,**kwargs)
-    # token=Token.objects.
 
     def post(self, request, *args, **kwargs):
         """
         add announcement
         """
-        # print("req: ", request.user, request.auth)
-        # print("user: ", request.user.pk)
         data = {
             "title": request.data.get("title"),
             "description": request.data.get("description"),
@@ -79,7 +81,6 @@ class AnnouncementRetriveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Announcement.objects.all()
     permission_classes = (
         IsAuthenticated,
-        AllowAny,
     )
     serializer_class = AnnouncementSerializer
     lookup_field = "uuid"

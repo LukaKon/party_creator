@@ -1,4 +1,7 @@
-from account.models import User
+"""
+Serializers for announcements API.
+"""
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from .models import Announcement, Category, Image
@@ -6,11 +9,12 @@ from .models import Announcement, Category, Image
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = get_user_model()
         fields = (
             "id",
             "email",
         )
+        read_only_fields = ("id",)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -37,24 +41,24 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = (
-            # "id",
+            "id",
             # "announcement",
             # "event_type",
             "image",
             "is_main",
         )
-
+        read_only_fields = ("id",)
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     images = ImageSerializer(many=True, read_only=True)
-    user = UserSerializer(many=True)
+    user = UserSerializer(many=False)
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
 
     # event_type = EventType()  # many=True, read_only=True)
-    category = CategorySerializer(many=True, required=True)
+    category = CategorySerializer(many=False, required=True)
 
     # TODO: create 'create' function?
     # print("in serializer: ", user, category)
@@ -63,6 +67,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         model = Announcement
         fields = (
             # TODO: should it be in order like in model?
+            "id",
             "title",
             "description",
             "user",
@@ -74,6 +79,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "uuid",
         )
         read_only_fields = (
+            "id",
             # "event_type",
             "slug",
             "uuid",

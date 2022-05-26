@@ -1,13 +1,20 @@
+"""
+URLs mapping for announcement app.
+"""
+from announcement import views
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
-
-from . import views
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
 app_name = "announcement"
+router = DefaultRouter()
+router.register("announcements", views.AnnouncementViewSet)
+# router.register("categories", views.CategoryListView)
 
 urlpatterns = [
     # announcements
+    path("", include(router.urls)),
     path(
         route="announcements/",
         view=views.AnnouncementListView.as_view(),

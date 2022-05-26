@@ -9,12 +9,17 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework_simplejwt import utils
-from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 ADD_ANNOUNCEMENT_URL = reverse("announcement:add_announcement")
-ANNOUNCEMENTS_URL = reverse("announcement:announcement_list")
+ANNOUNCEMENTS_URL = reverse(
+    "announcement:announcement_list"
+)  # TODO: change after applying routers - generally do smth with this ;)
+
+
+def detail_url(announcement_id):
+    """Create and return announcement detailc URL."""
+    return reverse("announcement:announcement_detail", args=[announcement_id])
 
 
 def create_announcement(user, **kwargs):
@@ -59,42 +64,21 @@ class PrivateAnnouncementAPITests(TestCase):
         self.user = get_user_model().objects.create(
             email="user@example.com", password="testpass123"
         )
-        # TODO: not sure about authentication...
         self.refresh_token = RefreshToken.for_user(self.user)
-        print('ref_token: ',self.refresh_token.access_token)
-        # self.client.credentials(
-        # HTTP_AUTHORIZATION=f"Bearer {self.refresh_token.access_token}"
-        # )
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.refresh_token}")
-        print('client: ', self.client)
-        # )
-        # self.client.force_authenticate(
-        # user=self.user#, token=self.refresh_token.access_token
-        # )
+        ref_token = self.refresh_token.access_token
+        self.client.credentials(HTTP_AUTHORIZATION=f"JWT {ref_token}")
+        self.client.force_authenticate(
+            user=self.user  # , token=self.refresh_token.access_token
+        )
 
-    def test_retrive_announcements(self):
-        """Test retrieving a list of announcements."""
-        create_announcement(user=self.user)  # create announcement
-        create_announcement(user=self.user)
-
-        res = self.client.get(ANNOUNCEMENTS_URL)
-        # print("data: ", res.data)
-
-        announcements = models.Announcement.objects.all().order_by("-id")
-        serializer = serializers.AnnouncementSerializer(announcements, many=True)
-        # print("ser: ", serializer.data)
-
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
-
-    def test_announcement_list_limited_to_user(self):
-        """Test list of announcements is limited to authenticated user."""
+    def test_get_announcements_list(self):
+        """Test get announcements list."""
         other_user = get_user_model().objects.create(
             email="other@example.com",
             password="pass12345",
         )
-        create_announcement(user=other_user)
         create_announcement(user=self.user)
+        create_announcement(user=other_user)
 
         res = self.client.get(ANNOUNCEMENTS_URL)
 
@@ -104,11 +88,27 @@ class PrivateAnnouncementAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
+    def test_get_announcement_detail(self):
+        """Test get announcement detail."""
+        announcement = create_announcement(user=self.user)
+
+        url = detail_url(announcement_id=announcement.id)
+        res = self.client.get(url)
+
+        serializer = serializers.AnnouncementDetailSerializer(announcement)
+
+        self.assertEqual(res.data, serializer.data)
+
     # def test_create_announcement(self):
-    # """Test create announcement."""
+    #     """Test create a list of announcement."""
+    #     res = self.client.post(
+    #         ADD_ANNOUNCEMENT_URL,
+    #         {
+    #             "title": "Sample announcement title",
+    #             "description": "Description of announcement",
+    #             "category": models.Category.objects.create(name="test category"),
+    #         },
+    #     )
 
-    # res = self.client.post(ADD_ANNOUNCEMENT_URL)
-    # print("data: ", res.data)
-
-    # # TODO: same situation: it returns for some reason 405...
-    # self.assertEqual(res.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+    #     self.assertEqual(res.data, serializer.data)
