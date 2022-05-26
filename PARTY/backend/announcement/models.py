@@ -1,6 +1,8 @@
 import uuid as uuid_lib
 
 import stdimage
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
@@ -96,7 +98,7 @@ class Announcement(models.Model):
     # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
-    is_active=models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         index_together = (("id", "slug"),)
@@ -129,17 +131,6 @@ class Multimedia(models.Model):
         blank=True,
         related_name="%(class)ss",
     )
-
-    # event_type = models.OneToOneField(
-    #     EventType,
-    #     verbose_name="%(class)s",
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
-
-    # def __str__(self):
-    #     return str(self.image.thumbnail)
 
     class Meta:
         abstract = True

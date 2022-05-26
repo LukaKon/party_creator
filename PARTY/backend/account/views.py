@@ -10,7 +10,7 @@ from account.serializers import (
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -74,3 +74,6 @@ class GetUserAPI(RetrieveAPIView):
         user = self.get_queryset()
         user_information = self.serializer_class(user).data
         return Response(user_information)
+
+
+class UpdateUserAPI(UpdateAPIView)

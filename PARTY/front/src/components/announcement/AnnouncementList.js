@@ -10,6 +10,7 @@ import {
     //    makeStyles
 } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
+import {AnnouncementSkeleton} from "../skeletons/AnnouncementSkeletons";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,7 +38,7 @@ export const AnnouncementList = () => {
 
     let content;
     if (loading) {
-        content = <Typography>Fetching in progress...</Typography>;
+        content = <AnnouncementSkeleton/>
     } else {
         if (!entities) {
             content = (

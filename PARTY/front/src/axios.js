@@ -1,8 +1,6 @@
 import axios from "axios";
 import { Buffer } from "buffer";
 
-// import {LOCALHOST} from "./settings";
-
 const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const axiosInstance = axios.create({

@@ -18,7 +18,7 @@ const profileSlice = createSlice({
         name: "profile",
         initialState: {
             loading: "before",
-            entities: 'test',
+            entities: "initial",
             error: null,
         },
         reducers: {},

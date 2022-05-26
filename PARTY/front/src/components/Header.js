@@ -1,23 +1,29 @@
-import React from "react";
-import { useNavigate ,Link,NavLink} from "react-router-dom";
+import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import {
     AppBar,
-    Box,
-    Toolbar,
-    IconButton,
-    Typography,
-    Menu,
-    Container,
     Avatar,
+    Box,
     Button,
-    Tooltip,
+    Container,
+    IconButton,
+    Menu,
     MenuItem,
+    Toolbar,
+    Tooltip,
+    Typography,
     useMediaQuery,
     useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { makeStyles } from "@mui/styles";
+import {makeStyles} from "@mui/styles";
 import {handleButton} from "../utils";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProfile} from "../redux/slices/profileSlice";
+
+//const imgUrl = process.env.IMAGE_URL; // TODO it is not working
+const imgUrl = "http://127.0.0.1:8000/api"
+
 
 const useStyles = makeStyles((theme) => ({
     test: {
@@ -25,7 +31,25 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 export const Header = () => {
+    let image
+
+    const {entities} = useSelector(
+        (state) => state.profile
+    );
+
+    const showAvatar = async () => {
+        const dispatch = useDispatch();
+
+        if (entities === "initial") {
+            await dispatch(fetchProfile());
+        }
+
+        image = imgUrl + entities.image
+
+    }
+
     const pages = {
         // for example:
         // "Button Name" : "URL"
@@ -42,11 +66,16 @@ export const Header = () => {
     };
 
     if (sessionStorage.getItem("access_token")) {
-      pages["Add announcement"]=  "/addannouncement"
+        // Set profile picture
+        showAvatar()
+
+        // Set settings/options
+        pages["Add announcement"] = "/addannouncement"
         settings["Profil"] = "/profile"
         settings["Ustawienia konta"] = "/settings"
         settings['Wyloguj sie'] = "signout"
     } else {
+        // Set settings/options
         pages["Zarejestruj"] = "/signup"
         pages["Zaloguj"] = "/signin"
     }
@@ -58,7 +87,7 @@ export const Header = () => {
     const handleMenu = (pageURL) => {
         if (pageURL === 'signout') {
             handleButton()
-            navigate('/')
+            window.location.replace('/');
         } else {
             navigate(pageURL);
         }
@@ -95,7 +124,7 @@ export const Header = () => {
                     onClick={handleOpenNavMenu}
                     color="inherit"
                 >
-                    <MenuIcon />
+                    <MenuIcon/>
                 </IconButton>
                 <Menu
                     id="menu-appbar"
@@ -112,7 +141,7 @@ export const Header = () => {
                     open={Boolean(anchorElNav)}
                     onClose={handleCloseNavMenu}
                     sx={{
-                        display: { xs: "block", md: "none" },
+                        display: {xs: "block", md: "none"},
                     }}
                 >
                     {Object.keys(pages).map((page) => (
@@ -131,7 +160,7 @@ export const Header = () => {
             <Button
                 key={page}
                 onClick={() => handleMenu(pages[page])}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{my: 2, color: "white", display: "block"}}
             >
                 {page}
             </Button>
@@ -142,23 +171,23 @@ export const Header = () => {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Typography noWrap component="div" sx={{ mr: 1 }}>
-                        <img src={"media/logo.png"} alt="logo" />
+                    <Typography noWrap component="div" sx={{mr: 1}}>
+                        <img src={require('../media/logo.png')} alt="logo"/>
                     </Typography>
 
-                    <Box sx={{ flexGrow: 1, display: "flex" }}>{menuIcon}</Box>
+                    <Box sx={{flexGrow: 1, display: "flex"}}>{menuIcon}</Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
+                    <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Ustawienia">
                             <IconButton
                                 onClick={handleOpenUserMenu}
-                                sx={{ p: 0 }}
+                                sx={{p: 0}}
                             >
-                                <Avatar alt="avatar" src="/media/default.jpg" />
+                                <Avatar alt="avatar" src={image}/>
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: "45px" }}
+                            sx={{mt: "45px"}}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
