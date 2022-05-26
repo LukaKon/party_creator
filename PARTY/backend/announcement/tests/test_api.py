@@ -11,6 +11,7 @@ from rest_framework.test import APIClient
 from rest_framework_simplejwt import utils
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 ADD_ANNOUNCEMENT_URL = reverse("announcement:add_announcement")
 ANNOUNCEMENTS_URL = reverse("announcement:announcement_list")
@@ -60,21 +61,15 @@ class PrivateAnnouncementAPITests(TestCase):
         )
         # TODO: not sure about authentication...
         self.refresh_token = RefreshToken.for_user(self.user)
+        print('ref_token: ',self.refresh_token.access_token)
         # self.client.credentials(
         # HTTP_AUTHORIZATION=f"Bearer {self.refresh_token.access_token}"
         # )
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.refresh_token}")
-
-        # print(
-        #     "client: ",
-        #     self.user,
-        #     self.client.credentials(
-        #         HTTP_AUTHORIZATION=f"Bearer {self.refresh_token.access_token}"
-        #     ),
-        #     self.refresh_token,
+        print('client: ', self.client)
         # )
         # self.client.force_authenticate(
-        # user=self.user, token=self.refresh_token.access_token
+        # user=self.user#, token=self.refresh_token.access_token
         # )
 
     def test_retrive_announcements(self):
@@ -86,11 +81,11 @@ class PrivateAnnouncementAPITests(TestCase):
         # print("data: ", res.data)
 
         announcements = models.Announcement.objects.all().order_by("-id")
-        serilizer = serializers.AnnouncementSerializer(announcements, many=True)
-        # print("ser: ", serilizer.data)
+        serializer = serializers.AnnouncementSerializer(announcements, many=True)
+        # print("ser: ", serializer.data)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serilizer.data)
+        self.assertEqual(res.data, serializer.data)
 
     def test_announcement_list_limited_to_user(self):
         """Test list of announcements is limited to authenticated user."""

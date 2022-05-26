@@ -46,7 +46,7 @@ volume:
 
 shell:
 	docker compose run --rm backend sh -c 'python3 manage.py shell_plus'
-	# docker compose exec backend python3 manage.py shell_plus
+#	 docker compose exec backend python3 manage.py shell_plus
 
 dump:
 	docker exec -i postgres_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) pg_dump -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" > dump.sql
