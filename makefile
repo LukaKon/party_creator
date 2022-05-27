@@ -23,11 +23,8 @@ down:
 logs:
 	docker compose logs
 
-lint:
-	docker compose run --rm backend sh -c 'black .'
-
-isort:
-	docker compose run --rm backend sh -c 'isort --profile black .'
+flake:
+	docker compose run --rm backend sh -c 'flake8'
 
 test:
 	docker compose run --rm backend sh -c 'python manage.py test'

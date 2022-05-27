@@ -45,7 +45,6 @@ PROJECT_APPS = [
 ADDITIONAL_APPS = [
     "django_extensions",
     "rest_framework",
-    "django_probes",
     "django_filters",
     "corsheaders",
     "rest_framework_simplejwt.token_blacklist",
