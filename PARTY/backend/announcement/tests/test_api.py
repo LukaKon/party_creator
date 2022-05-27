@@ -11,22 +11,20 @@ from rest_framework.test import APIClient
 from rest_framework_simplejwt import utils
 from rest_framework_simplejwt.tokens import RefreshToken
 
-ADD_ANNOUNCEMENT_URL = reverse("announcement:add_announcement")
-ANNOUNCEMENTS_URL = reverse(
-    "announcement:announcement_list"
-)  # TODO: change after applying routers - generally do smth with this ;)
+# ADD_ANNOUNCEMENT_URL = reverse("announcement:announcement-detail")
+ANNOUNCEMENT_URL = reverse("announcement:announcement-list")
 
 
 def detail_url(announcement_id):
     """Create and return announcement detailc URL."""
-    return reverse("announcement:announcement_detail", args=[announcement_id])
+    return reverse("announcement:announcement-detail", args=[announcement_id])
 
 
 def create_announcement(user, **kwargs):
     """Create and return a sample announcement."""
     defaults = {
         "title": "Sample announcement title",
-        "description": "Description of announcement",
+        # "description": "Description of announcement",
         "category": models.Category.objects.create(name="test category"),
     }
     defaults.update(
@@ -44,7 +42,7 @@ class PublicAnnouncementAPITests(TestCase):
 
     def NOtest_auth_not_required(self):
         """Test auth is not required."""
-        res = self.client.get(ANNOUNCEMENTS_URL)
+        res = self.client.get(ANNOUNCEMENT_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
@@ -72,7 +70,7 @@ class PrivateAnnouncementAPITests(TestCase):
         create_announcement(user=self.user)
         create_announcement(user=other_user)
 
-        res = self.client.get(ANNOUNCEMENTS_URL)
+        res = self.client.get(ANNOUNCEMENT_URL)
 
         announcements = models.Announcement.objects.filter(user=self.user)
         serializer = serializers.AnnouncementSerializer(announcements, many=True)
@@ -91,16 +89,21 @@ class PrivateAnnouncementAPITests(TestCase):
 
         self.assertEqual(res.data, serializer.data)
 
-    # def test_create_announcement(self):
-    #     """Test create a list of announcement."""
-    #     res = self.client.post(
-    #         ADD_ANNOUNCEMENT_URL,
-    #         {
-    #             "title": "Sample announcement title",
-    #             "description": "Description of announcement",
-    #             "category": models.Category.objects.create(name="test category"),
-    #         },
-    #     )
+    def test_create_announcement(self):
+        """Test creating a announcement."""
+        payload = (
+            {
+                "title": "Sample announcement title",
+                "description": "Description of announcement",
+                "category": models.Category.objects.create(name="test category"),
+            },
+        )
+        # res = self.client.post(ADD_ANNOUNCEMENT_URL, payload)
+        res = self.client.post(ANNOUNCEMENT_URL, payload)
 
-    #     self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-    #     self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        ann = models.Announcement.objects.get(id=res.data["id"])
+
+        for k, v in payload.items():
+            self.assertEqual(getattr(ann, k), v)
+        self.assertEqual(ann.user, self.user)

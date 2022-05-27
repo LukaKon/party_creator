@@ -11,7 +11,11 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import (
@@ -33,11 +37,19 @@ class CategoryListView(ListAPIView):
 class AnnouncementViewSet(viewsets.ModelViewSet):
     """View for manage announcement APIs."""
 
-    serializer_class = serializers.AnnouncementSerializer
+    serializer_class = serializers.AnnouncementDetailSerializer
     queryset = models.Announcement.objects.all()
     authentication_classes = (JWTTokenUserAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (
+        IsAuthenticated,
+        AllowAny,
+    )
 
+    def get_serializer_class(self):
+        """Return serializer class for requset."""
+        if self.action == "list":
+            return serializers.AnnouncementSerializer
+        return self.serializer_class
 
 class CreateAnnouncementView(CreateAPIView):
     queryset = Announcement.objects.all()

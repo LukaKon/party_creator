@@ -69,7 +69,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             # TODO: should it be in order like in model?
             "id",
             "title",
-            "description",
+            # "description",
             "user",
             "category",
             # "event_type",
@@ -100,3 +100,10 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
     # def update(self, instance, validated_data):
     # return  # TODO: create update function
+
+
+class AnnouncementDetailSerializer(AnnouncementSerializer):
+    """Serializer for announcement detail view."""
+
+    class Meta(AnnouncementSerializer.Meta):
+        fields = AnnouncementSerializer.Meta.fields + ("description",)
