@@ -39,9 +39,9 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.AnnouncementDetailSerializer
     queryset = models.Announcement.objects.all()
-    authentication_classes = (JWTTokenUserAuthentication,)
+    # authentication_classes = (JWTTokenUserAuthentication,)
     permission_classes = (
-        IsAuthenticated,
+        # IsAuthenticated,
         AllowAny,
     )
 
@@ -50,6 +50,27 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         if self.action == "list":
             return serializers.AnnouncementSerializer
         return self.serializer_class
+
+    # def list(self, request):
+    #     """Return list of announcements."""
+    #     serializer_class = serializers.AnnouncementSerializer(
+    #         self.queryset,
+    #         many=True,
+    #     )
+    #     return Response(serializer_class.data)
+    # def create(self, validated_data):  # request):
+    #     """Create a new announcement."""
+    #     authentication_classes = (JWTTokenUserAuthentication,)
+    #     permission_classes = (IsAuthenticated,)
+    #     return models.Announcement.objects.create(**validated_data)
+
+    def perform_create(self, serializer):
+        """Create a new announcement."""
+        authentication_classes = (JWTTokenUserAuthentication,)
+        permission_classes = (IsAuthenticated,)
+        print("request: ", self.request)
+        serializer.save(user=self.request.user)
+
 
 class CreateAnnouncementView(CreateAPIView):
     queryset = Announcement.objects.all()

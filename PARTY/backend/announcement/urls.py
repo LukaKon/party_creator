@@ -11,9 +11,9 @@ app_name = "announcement"
 
 router = DefaultRouter()
 router.register(
-    prefix="announcements",
+    prefix="",
     viewset=views.AnnouncementViewSet,
-    # basename="announcement_list",
+    basename="announcement",
 )
 # router.register("categories", views.CategoryListView)
 
