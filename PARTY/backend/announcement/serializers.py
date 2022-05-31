@@ -50,10 +50,9 @@ class ImageSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
 class AnnouncementSerializer(serializers.ModelSerializer):
-    # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     images = ImageSerializer(many=True, read_only=True)
-    user = UserSerializer(many=False)
+    # user = UserSerializer(many=False)
     # category = ServiceCategorySerializer()
     # category = ServiceCategorySerializer(read_only=True)
 
@@ -81,6 +80,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             # "event_type",
+            # "user",
             "slug",
             "uuid",
             "created",
@@ -88,15 +88,25 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # def get_category(self, obj):
     #     return obj.get_category_display()
 
-    # def create(self, validated_data):
-    # print("data: ", validated_data)
-    #     category_data = validated_data.pop("user")
-    #     #     print("profile_data: ", category_data)
-    #     announcement = Announcement.objects.create(**validated_data)
-    #     #     print("announcement: ", announcement)
-    #     # user=
-    #     # ServiceCategory.objects.create(announcement=announcement, **category_data)
-    #     return announcement
+    def create(self, validated_data):
+        print("data: ", validated_data)
+        # announcement = Announcement(title=xyz...)
+        # announcement.save(commit=False)
+        user = validated_data.pop("user")
+        category = validated_data.pop("category")
+        announcement = Announcement(title=validated_data.get("title"))
+        # for inp in validated_data:
+        # announcement(inp=validated_data.get(inp))
+
+        test = announcement.save(commit=False)
+        test.user = user
+        test.category = category
+        test.save()
+        # announcement = Announcement.objects.create(**validated_data)
+        # announcement.user = user
+        # announcement.category = category
+        # announcement.save()
+        return announcement
 
     # def update(self, instance, validated_data):
     # return  # TODO: create update function
