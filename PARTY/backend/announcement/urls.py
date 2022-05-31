@@ -11,15 +11,19 @@ app_name = "announcement"
 
 router = DefaultRouter()
 router.register(
-    prefix="",
+    prefix="announcements",
     viewset=views.AnnouncementViewSet,
     basename="announcement",
 )
-# router.register("categories", views.CategoryListView)
-
-urlpatterns = [
+router.register(
+    prefix="categories",
+    viewset=views.CategoryViewSet,
+    basename='category',
+)
+urlpatterns=router.urls+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns = [
     # announcements
-    path("", include(router.urls)),
+    # path("", include(router.urls)),
     # path(
     # route="announcements/",
     # view=views.AnnouncementListView.as_view(),
@@ -36,7 +40,7 @@ urlpatterns = [
     # name="announcement_api",
     # ),
     # categories
-    path(
-        route="categories/", view=views.CategoryListView.as_view(), name="category_api"
-    ),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # path(
+        # route="categories/", view=views.CategoryListView.as_view(), name="category_api"
+    # ),
+# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

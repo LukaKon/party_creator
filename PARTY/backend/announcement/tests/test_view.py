@@ -1,6 +1,5 @@
 from announcement import views
 from announcement.models import Announcement
-from django.http import HttpRequest
 from django.test import TestCase
 from django.urls import resolve
 from rest_framework.test import APIClient
