@@ -15,9 +15,19 @@ ANNOUNCEMENT_URL = reverse("announcement:announcement-list")
 CATEGORY_URL=reverse('announcement:category-list')
 
 
-def detail_url(announcement_slug):
-    """Create and return announcement detailc URL."""
+def create_user(**params):
+    """Create and return a user."""
+    return get_user_model().objects.create(**params)
+
+
+def ann_detail_url(announcement_slug):
+    """Create and return announcement detail URL."""
     return reverse("announcement:announcement-detail", args=[announcement_slug])
+
+
+def cat_detail_url(category_uuid):
+    """Create and return category detail URL."""
+    return reverse("announcement:category-detail", args=[category_uuid])
 
 
 def create_category(**kwargs):
@@ -34,7 +44,7 @@ def create_announcement(user, **kwargs):
     """Create and return a sample announcement."""
     defaults = {
         "title": "Sample announcement title",
-        # "description": "Description of announcement",
+        "description": "Description of announcement",
         "category": models.Category.objects.create(name="test category"),
     }
     defaults.update(
@@ -67,6 +77,18 @@ class PublicCategoryAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
+    def test_get_category_detail(self):
+        """Test get category detail."""
+        category = create_category()
+
+        url = cat_detail_url(category_uuid=category.uuid)
+        res = self.client.get(url)
+
+        serializer = serializers.CategorySerializer(category)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
 
 class PublicAnnouncementAPITests(TestCase):
     """Test unauthenticated API requests."""
@@ -86,8 +108,9 @@ class PrivateAnnouncementAPITests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create(
-            email="user@example.com", password="testpass123"
+        self.user = create_user(
+            email="user@example.com",
+            password="testpass123",
         )
         self.refresh_token = RefreshToken.for_user(self.user)
         ref_token = self.refresh_token.access_token
@@ -96,33 +119,55 @@ class PrivateAnnouncementAPITests(TestCase):
             user=self.user  # , token=self.refresh_token.access_token
         )
 
-    def NOtest_get_announcements_list(self):
-        """Test get announcements list."""
-        other_user = get_user_model().objects.create(
+    def test_get_announcements_list_limited_to_auth_user(self):
+        """Test get announcements list limited to auth user."""
+        other_user = create_user(
             email="other@example.com",
             password="pass12345",
         )
         create_announcement(user=self.user)
-        create_announcement(user=self.user)
-        # create_announcement(user=other_user)
+        create_announcement(user=other_user)
 
         res = self.client.get(ANNOUNCEMENT_URL)
 
-        announcements = models.Announcement.objects.filter(user=self.user).order_by('id')
+        announcements = models.Announcement.objects.filter(user=self.user).order_by(
+            "title"
+        )
+        serializer = serializers.AnnouncementSerializer(announcements, many=True)
+        print("ann: ", res.data)
+        print("------------------")
+        print("ser: ", serializer.data)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_get_announcements_list(self):
+        """Test get announcements list."""
+        other_user = create_user(
+            email="other@example.com",
+            password="pass12345",
+        )
+        create_announcement(user=self.user)
+        create_announcement(user=other_user)
+
+        res = self.client.get(ANNOUNCEMENT_URL)
+
+        announcements = models.Announcement.objects.all().order_by("id")
         serializer = serializers.AnnouncementSerializer(announcements, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def NOtest_get_announcement_detail(self):
+    def test_get_announcement_detail(self):
         """Test get announcement detail."""
         announcement = create_announcement(user=self.user)
 
-        url = detail_url(announcement_slug=announcement.slug)
+        url = ann_detail_url(announcement_slug=announcement.slug)
         res = self.client.get(url)
 
         serializer = serializers.AnnouncementDetailSerializer(announcement)
 
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
     def test_create_announcement(self):

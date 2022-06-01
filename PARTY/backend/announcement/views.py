@@ -14,6 +14,7 @@ from rest_framework.generics import (
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import (
     AllowAny,
+    IsAdminUser,
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
@@ -27,17 +28,18 @@ from rest_framework_simplejwt.tokens import Token
 
 # try viewsets
 class CategoryViewSet(viewsets.ModelViewSet):
-    """ View tomanage category APIs. """
-    serializer_class=serializers.CategorySerializer
-    queryset=models.Category.objects.all()
-    # permission_classes=(IsAuthenticated,)
-    # authentication_classes=(JWTTokenUserAuthentication,)
-    # lookup_field = "uuid"
+    """View tomanage category APIs."""
 
-    # def list(self, request):
-        # """ Return list of categories. """
-        # serializer_class=serializers.CategorySerializer(self.queryset,many=True)
-        # return Response(serializer_class.data)
+    serializer_class = serializers.CategorySerializer
+    queryset = models.Category.objects.all()
+    # permission_classes = (IsAdminUser,)
+    # authentication_classes = (JWTTokenUserAuthentication,)
+    lookup_field = "uuid"
+
+    def get_queryset(self):
+        """Define custom queryset."""
+        return models.Category.objects.all()
+
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
     """View for manage announcement APIs."""
@@ -45,7 +47,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
     # serializer_class = serializers.AnnouncementSerializer
-    # queryset = models.Announcement.objects.all()
+    queryset = models.Announcement.objects.all()
     # authentication_classes = (JWTTokenUserAuthentication,)
     permission_classes = (
         # IsAuthenticated,
@@ -65,7 +67,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def get_object(self,queryset=None,**kwargs):
         """ Get object by slug. """
         item=self.kwargs.get('pk')
-        # print('item: ',item)
         return get_object_or_404(models.Announcement,slug=item)
 
     # def list(self, request):
@@ -75,36 +76,37 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     #         many=True,
     #     )
     #     return Response(serializer_class.data)
+
     # def create(self, validated_data):  # request):
     #     """Create a new announcement."""
     #     authentication_classes = (JWTTokenUserAuthentication,)
     #     permission_classes = (IsAuthenticated,)
     #     return models.Announcement.objects.create(**validated_data)
 
-    # # def create(self, request, *args, **kwargs):
-    # #     data = {
-    # #         "title": request.data.get("title"),
-    # #         "description": request.data.get("description"),
-    # #         "user": request.user,
-    # #         "category": request.data.get("category"),
-    # #     }
+    # def create(self, request, *args, **kwargs):
+    #     data = {
+    #         "title": request.data.get("title"),
+    #         "description": request.data.get("description"),
+    #         "user": request.user,
+    #         "category": request.data.get("category"),
+    #     }
 
-    # #     serializer = self.get_serializer(data=data)
-    # #     serializer.is_valid(raise_exception=True)
-    # #     # self.perform_create(serializer)
-    # #     headers = self.get_success_headers(serializer.data)
-    # #     return Response(
-    # #         serializer.data,
-    # #         status=status.HTTP_201_CREATED,
-    # #         headers=headers,
+    #     serializer = self.get_serializer(data=data)
+    #     serializer.is_valid(raise_exception=True)
+    #     # self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(
+    #         serializer.data,
+    #         status=status.HTTP_201_CREATED,
+    #         headers=headers,
     #     )
 
 
-def perform_create(self, serializer):
-    """Create a new announcement."""
-    # authentication_classes = (JWTTokenUserAuthentication,)
-    # permission_classes = (IsAuthenticated,)
-    serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        """Create a new announcement."""
+        # authentication_classes = (JWTTokenUserAuthentication,)
+        # permission_classes = (IsAuthenticated,)
+        serializer.save(user=self.request.user)
 
 
 

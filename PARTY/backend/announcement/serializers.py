@@ -7,7 +7,6 @@ from rest_framework import serializers
 from .models import Announcement, Category, Image
 
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -96,10 +95,10 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         print(f'val data: {validated_data}; user: {user}; cat: {category_obj}')
         # announcement = Announcement.objects.create(**validated_data,user=user,category=category['name'])
         # announcement = Announcement.objects.create(**validated_data)
-        # announcement.category=category_obj
-        # announcement.user=user
+        # announcement.category = category_obj
+        # announcement.user = user
         ann=Announcement(**validated_data,user=user,category=category_obj)
-        # ann.save()
+        ann.save()
         # print('-----announcement: ',announcement)
         # return announcement
         return ann
