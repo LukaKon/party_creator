@@ -42,9 +42,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class AnnouncementViewSet(viewsets.ModelViewSet):
     """View for manage announcement APIs."""
 
-    model = models.Announcement
-    # serializer_class = serializers.AnnouncementDetailSerializer
-    serializer_class = serializers.AnnouncementSerializer
+    # model = models.Announcement
+    serializer_class = serializers.AnnouncementDetailSerializer
+    # serializer_class = serializers.AnnouncementSerializer
     # queryset = models.Announcement.objects.all()
     # authentication_classes = (JWTTokenUserAuthentication,)
     permission_classes = (

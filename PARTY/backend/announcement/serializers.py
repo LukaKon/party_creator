@@ -7,6 +7,7 @@ from rest_framework import serializers
 from .models import Announcement, Category, Image
 
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -51,16 +52,11 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class AnnouncementSerializer(serializers.ModelSerializer):
 
-    images = ImageSerializer(many=True, read_only=True)
+    # images = ImageSerializer(many=True,)# read_only=True)
     # user = UserSerializer(many=False)
-    # category = ServiceCategorySerializer()
-    # category = ServiceCategorySerializer(read_only=True)
 
-    # event_type = EventType()  # many=True, read_only=True)
+    # event_type = EventType(many=True)#, read_only=True)
     category = CategorySerializer(many=False, required=True)
-
-    # TODO: create 'create' function?
-    # print("in serializer: ", user, category)
 
     class Meta:
         model = Announcement
@@ -72,7 +68,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "user",
             "category",
             # "event_type",
-            "images",
+            # "images",
             "created",
             "slug",
             "uuid",
@@ -90,23 +86,23 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         print("data: ", validated_data)
-        # announcement = Announcement(title=xyz...)
-        # announcement.save(commit=False)
         user = validated_data.pop("user")
         category = validated_data.pop("category")
-        announcement = Announcement(title=validated_data.get("title"))
-        # for inp in validated_data:
-        # announcement(inp=validated_data.get(inp))
-
-        test = announcement.save(commit=False)
-        test.user = user
-        test.category = category
-        test.save()
+        cat={}
+        for k,v in category.items():
+            print(k,v)
+            cat[k]=v
+        category_obj=Category.objects.get(name=cat['name'])
+        print(f'val data: {validated_data}; user: {user}; cat: {category_obj}')
+        # announcement = Announcement.objects.create(**validated_data,user=user,category=category['name'])
         # announcement = Announcement.objects.create(**validated_data)
-        # announcement.user = user
-        # announcement.category = category
-        # announcement.save()
-        return announcement
+        # announcement.category=category_obj
+        # announcement.user=user
+        ann=Announcement(**validated_data,user=user,category=category_obj)
+        # ann.save()
+        # print('-----announcement: ',announcement)
+        # return announcement
+        return ann
 
     # def update(self, instance, validated_data):
     # return  # TODO: create update function
