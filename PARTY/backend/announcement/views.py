@@ -47,7 +47,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
     # serializer_class = serializers.AnnouncementSerializer
-    queryset = models.Announcement.objects.all()
+    # queryset = models.Announcement.objects.all()
     # authentication_classes = (JWTTokenUserAuthentication,)
     permission_classes = (
         # IsAuthenticated,
@@ -64,10 +64,34 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """ Define custom queryset. """
         return models.Announcement.objects.all().order_by('title')
 
-    def get_object(self,queryset=None,**kwargs):
-        """ Get object by slug. """
-        item=self.kwargs.get('pk')
-        return get_object_or_404(models.Announcement,slug=item)
+    def get_object(self, queryset=None, **kwargs):
+        """Get object by slug."""
+        item = self.kwargs.get("pk")
+        return get_object_or_404(models.Announcement, slug=item)
+
+    def create(self, validated_data):  # validated_data == request
+        test1 = self.request.data
+        test = test1.dict()
+        print("TEST: ", test)
+        serializer = self.get_serializer(data=test)
+        # print(self.validated_data)
+        # print(self.request.data)
+        # test = self.request.data
+        user_id = test.pop("user")
+        category = test.pop("category.name")
+        # category_instance = models.Category.objects.get(name=category)
+        user_instance = get_user_model().objects.get(id=user_id)
+        category_instance = models.Category.objects.all().first()
+        # print("====cat:", category_instance)
+        if not serializer.is_valid():
+            print("========error", serializer.errors)
+        data = serializer.validated_data
+        serializer.save(user=user_instance, category=category_instance)
+        # serializer.save(user=user_instance, category=category_instance)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     # def list(self, request):
     #     """Return list of announcements."""
