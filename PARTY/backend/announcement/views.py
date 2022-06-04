@@ -69,29 +69,29 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         item = self.kwargs.get("pk")
         return get_object_or_404(models.Announcement, slug=item)
 
-    def create(self, validated_data):  # validated_data == request
-        test1 = self.request.data
-        test = test1.dict()
-        print("TEST: ", test)
-        serializer = self.get_serializer(data=test)
-        # print(self.validated_data)
-        # print(self.request.data)
-        # test = self.request.data
-        user_id = test.pop("user")
-        category = test.pop("category.name")
-        # category_instance = models.Category.objects.get(name=category)
-        user_instance = get_user_model().objects.get(id=user_id)
-        category_instance = models.Category.objects.all().first()
-        # print("====cat:", category_instance)
-        if not serializer.is_valid():
-            print("========error", serializer.errors)
-        data = serializer.validated_data
-        serializer.save(user=user_instance, category=category_instance)
-        # serializer.save(user=user_instance, category=category_instance)
-        headers = self.get_success_headers(serializer.data)
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
-        )
+    # def create(self, validated_data):  # validated_data == request
+    #     test1 = self.request.data
+    #     test = test1.dict()
+    #     print("TEST: ", test)
+    #     serializer = self.get_serializer(data=test)
+    #     # print(self.validated_data)
+    #     # print(self.request.data)
+    #     # test = self.request.data
+    #     user_id = test.pop("user")
+    #     category = test.pop("category.name")
+    #     # category_instance = models.Category.objects.get(name=category)
+    #     user_instance = get_user_model().objects.get(id=user_id)
+    #     category_instance = models.Category.objects.all().first()
+    #     # print("====cat:", category_instance)
+    #     if not serializer.is_valid():
+    #         print("========error", serializer.errors)
+    #     data = serializer.validated_data
+    #     serializer.save(user=user_instance, category=category_instance)
+    #     # serializer.save(user=user_instance, category=category_instance)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(
+    #         serializer.data, status=status.HTTP_201_CREATED, headers=headers
+    #     )
 
     # def list(self, request):
     #     """Return list of announcements."""
@@ -125,14 +125,26 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     #         headers=headers,
     #     )
 
-
-    def perform_create(self, serializer):
+    def create(self, request):
         """Create a new announcement."""
+        print("====: ", request.data)
         # authentication_classes = (JWTTokenUserAuthentication,)
         # permission_classes = (IsAuthenticated,)
-        serializer.save(user=self.request.user)
+        csrf = self.request.data.pop("csrfmiddlewaretoken")
+        # user=self.request.data.pop('user')
+        # category=self.request.data.pop('category')
+        announcement = models.Announcement.objects.create(**self.request.data)
+        announcement.save()
+        # serializer = self.get_serializer_class()(announcement)
+        serializer = self.self.get_serializer(announcement)
+        return Response(serializer.data)
 
-
+    # def perform_create(self, serializer):
+    # """Create a new announcement."""
+    # # authentication_classes = (JWTTokenUserAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+    # print("serializer: ", self.request.data)
+    # serializer.save(user=self.request.user)
 
 
 # class CreateAnnouncementView(CreateAPIView):

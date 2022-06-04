@@ -1,6 +1,7 @@
 """
 Serializers for announcements API.
 """
+from account import models
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -55,7 +56,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     # user = UserSerializer(many=False)
 
     # event_type = EventType(many=True)#, read_only=True)
-    category = CategorySerializer(many=False, required=True)
+    # category = CategorySerializer(many=False, required=True)
 
     class Meta:
         model = Announcement
@@ -77,31 +78,27 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             # "event_type",
             # "user",
             "slug",
-            "uuid",
-            "created",
+            # "uuid",
+            # "created",
         )
+        depth = 1
+
     # def get_category(self, obj):
     #     return obj.get_category_display()
 
     # def create(self, validated_data):
-    # print("data: ", validated_data)
-    # user = validated_data.pop("user")
-    # category = validated_data.pop("category")
-    # cat={}
-    # for k,v in category.items():
-    #     print(k,v)
-    #     cat[k]=v
-    # category_obj=Category.objects.get(name=cat['name'])
-    # print(f'val data: {validated_data}; user: {user}; cat: {category_obj}')
-    # announcement = Announcement.objects.create(**validated_data,user=user,category=category['name'])
-    # announcement = Announcement.objects.create(**validated_data)
-    # announcement.category = category_obj
-    # announcement.user = user
-    # ann=Announcement(**validated_data,user=user,category=category_obj)
-    # ann.save()
-    # print('-----announcement: ',announcement)
-    # return announcement
-    # return ann
+    #     print("data: ", validated_data)
+    #     title = validated_data.pop("title")
+    #     description = validated_data.pop("description")
+    #     user = validated_data.pop("user")
+    #     category = validated_data.pop("category")
+    #     announcement = Announcement(**validated_data)
+    #     announcement.title = title
+    #     announcement.description = description
+    #     announcement.user = user
+    #     announcement.category = category
+    #     return announcement
+
 
     # def update(self, instance, validated_data):
     # return  # TODO: create update function
