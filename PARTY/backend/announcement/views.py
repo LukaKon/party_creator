@@ -3,15 +3,10 @@ Views for announcements APIs.
 """
 from announcement import models, serializers
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.generics import (
-    CreateAPIView,
-    ListAPIView,
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView,
-)
-from rest_framework.parsers import FormParser, MultiPartParser
+
+# from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
@@ -19,19 +14,14 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
 )
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework_simplejwt.authentication import (
-    JWTTokenUserAuthentication,
-)  # JWTAuthentication,
-from rest_framework_simplejwt.tokens import Token
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 
-# try viewsets
 class CategoryViewSet(viewsets.ModelViewSet):
-    """View tomanage category APIs."""
+    """View to manage category APIs."""
 
     serializer_class = serializers.CategorySerializer
-    queryset = models.Category.objects.all()
+    # queryset = models.Category.objects.all()
     # permission_classes = (IsAdminUser,)
     # authentication_classes = (JWTTokenUserAuthentication,)
     lookup_field = "uuid"
@@ -39,6 +29,27 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Define custom queryset."""
         return models.Category.objects.all()
+
+
+class ImageViewSet(viewsets.ModelViewSet):
+    """View to manage image APIs."""
+
+    serializer_class = serializers.ImageSerializer
+
+    def get_queryset(self):
+        """Define custom queryset."""
+        return models.Image.objects.all()
+
+    def perform_create(self, serializer):
+        """Create a new image."""
+        # TODO: I can create without authentication...
+        permission_classes = (IsAuthenticated,)
+        authentication_classes = (JWTTokenUserAuthentication,)
+        # print("data:::: ", serializer.data)
+        print("request:::: ", self.request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
@@ -55,7 +66,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     )
 
     def get_serializer_class(self):
-        """Return serializer class for requset."""
+        """Return serializer class for request."""
         if self.action == "list":
             return serializers.AnnouncementSerializer
         return self.serializer_class
@@ -69,7 +80,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         item = self.kwargs.get("pk")
         return get_object_or_404(models.Announcement, slug=item)
 
-
     def perform_create(self, serializer):
         """Create a new announcement."""
         # authentication_classes = (JWTTokenUserAuthentication,)
@@ -77,4 +87,5 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         print("serializer: ", self.request.data)
         user = get_user_model().objects.get(email=self.request.data.get("user"))
         category = models.Category.objects.get(uuid=self.request.data.get("category"))
+        # TODO: add image...
         serializer.save(user=user, category=category)

@@ -1,7 +1,6 @@
 """
 Serializers for announcements API.
 """
-from account import models
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -39,20 +38,26 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    """Image serializer."""
+
     class Meta:
         model = Image
         fields = (
             "id",
-            # "announcement",
+            "announcement",
             # "event_type",
             "image",
             "is_main",
         )
         read_only_fields = ("id",)
 
-class AnnouncementSerializer(serializers.ModelSerializer):
 
-    # images = ImageSerializer(many=True,)# read_only=True)
+class AnnouncementSerializer(serializers.ModelSerializer):
+    """Announcement serializer."""
+
+    # images = ImageSerializer(
+    #     # many=True,
+    # )  # read_only=True)
     # user = UserSerializer(many=False)
 
     # event_type = EventType(many=True)#, read_only=True)
@@ -98,7 +103,6 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     #     announcement.user = user
     #     announcement.category = category
     #     return announcement
-
 
     # def update(self, instance, validated_data):
     # return  # TODO: create update function

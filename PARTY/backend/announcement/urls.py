@@ -20,7 +20,14 @@ router.register(
     viewset=views.CategoryViewSet,
     basename='category',
 )
-urlpatterns=router.urls+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+router.register(
+    prefix="images",
+    viewset=views.ImageViewSet,
+    basename="image",
+)
+urlpatterns = router.urls + static(
+    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+)
 # urlpatterns = [
     # announcements
     # path("", include(router.urls)),

@@ -1,11 +1,9 @@
 import uuid as uuid_lib
 
 import stdimage
-from account.models import User
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
-from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
 
 from .utils.announcement import unique_slug_generator
@@ -16,7 +14,7 @@ upload_to_pattern = FilePattern(
 
 
 class Category(models.Model):
-    """Category(type) of announcement. e.g local, photograph etc."""
+    """Category(type) of announcement. e.g. local, photograph etc."""
 
     CATEGORY_NAME = (
         ("muzyka", "music"),
@@ -84,11 +82,10 @@ class Announcement(models.Model):
         editable=False,
     )
     user = models.ForeignKey(
-        # User,
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='announcements'
-    )  # default=None)
+    )
     category = models.ForeignKey(
         Category,
         verbose_name="announcement_categories",
@@ -97,7 +94,7 @@ class Announcement(models.Model):
     # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
-    is_active=models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         index_together = (("id", "slug"),)
