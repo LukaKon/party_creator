@@ -104,7 +104,7 @@ class PublicAnnouncementAPITests(TestCase):
 
     def test_get_announcement_list_for_unauth_user(self):
         """Test get announcement list for anonymous user."""
-        user = create_user("test@test.com", "testpass123")
+        user = create_user(email="test@test.com", password="testpass123",)
         create_announcement(user)
         create_announcement(user)
 
