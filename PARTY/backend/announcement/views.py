@@ -5,7 +5,6 @@ from announcement import models, serializers
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-
 # from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import (
     AllowAny,
@@ -17,13 +16,11 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
 
     serializer_class = serializers.CategorySerializer
     # queryset = models.Category.objects.all()
-    # permission_classes = (IsAdminUser,)
-    # authentication_classes = (JWTTokenUserAuthentication,)
     lookup_field = "uuid"
 
     def get_queryset(self):
@@ -35,6 +32,15 @@ class ImageViewSet(viewsets.ModelViewSet):
     """View to manage image APIs."""
 
     serializer_class = serializers.ImageSerializer
+
+    def get_permissions(self):
+        """Instantiates and returns the list of permissions that this view requires."""
+
+        if self.action == "list":
+            permission_classes = (AllowAny,)
+        else:
+            permission_classes = (IsAuthenticated,)
+            authentication_classes = (JWTTokenUserAuthentication,)
 
     def get_queryset(self):
         """Define custom queryset."""
@@ -57,13 +63,15 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
-    # serializer_class = serializers.AnnouncementSerializer
-    # queryset = models.Announcement.objects.all()
-    # authentication_classes = (JWTTokenUserAuthentication,)
-    permission_classes = (
-        # IsAuthenticated,
-        AllowAny,
-    )
+
+    def get_permissions(self):
+        """Instantiates and returns the list of permissions that this view requires."""
+
+        if self.action == "list":
+            permission_classes = (AllowAny,)
+        else:
+            permission_classes = (IsAuthenticated,)
+            authentication_classes = (JWTTokenUserAuthentication,)
 
     def get_serializer_class(self):
         """Return serializer class for request."""

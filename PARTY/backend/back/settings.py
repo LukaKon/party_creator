@@ -181,9 +181,11 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
+    # "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
+    "AUTH_HEADER_TYPES": ("JWT",),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
     "ROTATE_REFRESH_TOKENS": True,
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
 CORS_ALLOWED_ORIGINS = [
