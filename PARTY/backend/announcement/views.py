@@ -3,7 +3,9 @@ Views for announcements APIs.
 """
 from announcement import models, serializers
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from rest_framework import status, viewsets
 # from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import (
@@ -32,25 +34,28 @@ class ImageViewSet(viewsets.ModelViewSet):
     """View to manage image APIs."""
 
     serializer_class = serializers.ImageSerializer
-
+    # permission_classes = (IsAuthenticated,)
     def get_permissions(self):
         """Instantiates and returns the list of permissions that this view requires."""
+        print(self.request.data)
 
-        if self.action == "list":
-            permission_classes = (AllowAny,)
+        # if self.action == "list":
+        if self.request.method == "GET":
+            return [AllowAny()]
         else:
-            permission_classes = (IsAuthenticated,)
-            authentication_classes = (JWTTokenUserAuthentication,)
+            return [IsAuthenticated()]
+            # authentication_classes = (JWTTokenUserAuthentication,)
 
     def get_queryset(self):
         """Define custom queryset."""
         return models.Image.objects.all()
 
+    # @method_decorator(login_required)
     def perform_create(self, serializer):
         """Create a new image."""
         # TODO: I can create without authentication...
-        permission_classes = (IsAuthenticated,)
-        authentication_classes = (JWTTokenUserAuthentication,)
+        # permission_classes = (IsAuthenticated,)
+        # authentication_classes = (JWTTokenUserAuthentication,)
         # print("data:::: ", serializer.data)
         print("request:::: ", self.request.data)
         if serializer.is_valid():
@@ -64,14 +69,24 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
 
+    # def get_permissions(self):
+    #     """Instantiates and returns the list of permissions that this view requires."""
+
+    #     if self.action == "list":
+    #         permission_classes = (AllowAny,)
+    #     else:
+    #         permission_classes = (IsAuthenticated,)
+    #         authentication_classes = (JWTTokenUserAuthentication,)
     def get_permissions(self):
         """Instantiates and returns the list of permissions that this view requires."""
+        print(self.request.data)
 
-        if self.action == "list":
-            permission_classes = (AllowAny,)
+        # if self.action == "list":
+        if self.request.method == "GET":
+            return [AllowAny()]
         else:
-            permission_classes = (IsAuthenticated,)
-            authentication_classes = (JWTTokenUserAuthentication,)
+            return [IsAuthenticated()]
+        # authentication_classes = (JWTTokenUserAuthentication,)
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -95,5 +110,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         print("serializer: ", self.request.data)
         user = get_user_model().objects.get(email=self.request.data.get("user"))
         category = models.Category.objects.get(uuid=self.request.data.get("category"))
+        # category = self.request.data.get("category")
         # TODO: add image...
         serializer.save(user=user, category=category)
+        # serializer.save()

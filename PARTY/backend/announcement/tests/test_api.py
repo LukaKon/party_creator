@@ -109,7 +109,7 @@ class PublicAnnouncementAPITests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_auth_not_required(self):
+    def NOtest_auth_not_required(self):
         """Test auth is not required."""
         res = self.client.get(ANNOUNCEMENT_URL)
 
@@ -206,23 +206,29 @@ class PrivateAnnouncementAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def NOtest_create_announcement(self):
+    def test_create_announcement(self):
         """Test creating an announcement."""
         category = models.Category.objects.create(name="test category")
         payload = {
             "title": "Sample announcement title",
             "description": "Description of announcement",
             "category": category.uuid,
-            "user": self.user,
+            "user": self.user.email,
         }
         # test = self.client.get(ANNOUNCEMENT_URL)
         res = self.client.post(ANNOUNCEMENT_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        # ann = models.Announcement.objects.get(id=res.data["id"])
+        ann = models.Announcement.objects.get(id=res.data["id"])
 
-        # for k, v in payload.items():
-        # self.assertEqual(getattr(ann, k), v)
-        # self.assertEqual(ann.user, self.user)
+        for k, v in payload.items():
+            if k == "category":
+                self.assertEqual(getattr(ann, k).uuid, v)
+            elif k == "user":
+                self.assertEqual(getattr(ann, k).email, v)
+            else:
+                self.assertEqual(getattr(ann, k), v)
+
+            # self.assertEqual(ann.user, self.user)
 
 
 class PublicImageAPITest(TestCase):
@@ -231,7 +237,7 @@ class PublicImageAPITest(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_get_images_list(self):
+    def NOtest_get_images_list(self):
         """Test get images list."""
         user = create_user(email="test@test.com", password="testpass123")
         announcement = create_announcement(user)
@@ -263,7 +269,7 @@ class PrivateImageAPITest(TestCase):
             user=self.user  # , token=self.refresh_token.access_token
         )
 
-    def test_create_image(self):
+    def NOtest_create_image(self):
         """Test create an image"""
         announcement = create_announcement(self.user)
         # create_image(announcement)
