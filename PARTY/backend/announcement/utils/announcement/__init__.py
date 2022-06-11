@@ -4,7 +4,7 @@ import string
 from django.utils.text import slugify
 
 
-def random_string_generator( size=10, chars=string.ascii_lowercase + string.digits):
+def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
     """Generate random sufix (string) for slug."""
     return "".join(random.choice(chars) for _ in range(size))
 

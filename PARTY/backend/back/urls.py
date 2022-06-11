@@ -5,14 +5,9 @@ URLs mapping for backend.
 from announcement import urls as announcement_url
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-# TODO: do we need this?
-# template = TemplateView.as_view(template_name="index.html")
-
 urlpatterns = [
-    # path("", template),
     path("admin/", admin.site.urls),
     path(
         route="api/schema/",
