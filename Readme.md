@@ -10,6 +10,6 @@ _Work in progress..._
 Technologies used in project:
 
 -   Django (Python) - backend api
--   React (Javascript) - frondend
+-   React (Javascript) - frontend
 -   Postgresql - database
 -   Docker - contenerization
