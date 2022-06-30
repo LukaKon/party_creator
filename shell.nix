@@ -1,6 +1,6 @@
 with import <nixpkgs> { };
 let
-  name = "JWT";
+  name = "Party Wizard";
   pythonEnv = python310.withPackages (ps: [
     ps.autopep8
     ps.flake8
@@ -26,5 +26,6 @@ mkShell {
     pythonEnv
 
     black
+        gtop
   ];
 }

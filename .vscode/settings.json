@@ -5,5 +5,5 @@
     "python.formatting.blackPath": "/home/lk/dev/Python/party_creator/PARTY/backend/venv/bin/darker",
     // "python.formatting.blackArgs": [],
     "python.formatting.blackArgs": ["--diff", "--isort"],
-    "nixEnvSelector.nixFile": "${workspaceRoot}/default.nix"
+    "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
 }
