@@ -35,6 +35,7 @@ export const AnnouncementList = () => {
         dispatch(fetchAnnouncements());
     }, []);
 
+  // console.log('ent: ',entities)
     let content;
     if (loading) {
         content = <Typography>Fetching in progress...</Typography>;
@@ -69,6 +70,7 @@ export const AnnouncementList = () => {
         <Typography>
             List of announcements.
             <br />
+            <bold>CONTENT</bold>
             {content}
         </Typography>
     );

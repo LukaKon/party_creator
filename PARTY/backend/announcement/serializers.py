@@ -73,7 +73,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "user",
             "category",
             # "event_type",
-            # "images",
+            "images",
             "created",
             "slug",
             "uuid",

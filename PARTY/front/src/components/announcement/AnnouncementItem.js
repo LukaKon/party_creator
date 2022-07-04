@@ -1,9 +1,14 @@
 import React from "react";
 import {
-    Avatar,
-    ButtonBase,
-    Paper,
+    // Avatar,
+    // ButtonBase,
+    // Paper,
     Grid,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    Button,
     Typography,
     // makeStyles,
 } from "@mui/material";
@@ -29,43 +34,72 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const AnnouncementItem = ({
-    title,
-    description,
-    uuid,
-    created,
-    category,
-}) => {
-    const classes = useStyles();
-
-    return (
-        <Paper className={classes.paper}>
-            {/* <Grid container wrap="nowrap" spacing={1}> */}
-            <Grid container wrap="nowrap" spacing={5}>
-                <Grid item xs={5}>
-                    <ButtonBase className={classes.image}>
-                        <img className={classes.img} alt="complex" src="" />
-                    </ButtonBase>
-                </Grid>
-                <Grid item xs={12} sm container>
-                    <Grid item xs container direction="column" spacing={2}>
-                        <Grid item xs>
-                            <Typography gutterBottom variant="subtitle1">
-                                {title}
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                {description}
-                            </Typography>
-                            <Typography variant="body2">
-                                cat: {category}
-                            </Typography>
-                            <Typography variant="body2">
-                                date: {created}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Paper>
-    );
+export const AnnouncementItem = (
+  props
+  // {
+    // title,
+    // uuid,
+    // created,
+    // category,
+    // images,
+// }
+) => {
+  console.log(props)
+  return (
+    <Card sx={{ maxWidth: 550 }}>
+      <CardMedia 
+        component="img"
+        height="140"
+        // image={props.images.image}
+        alt="some image"
+      />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+          {props.title}
+          </Typography>
+          <Typography variant="body2">
+          {/* {props.category.name} */}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+          {props.created}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">Link to details</Button>
+        </CardActions>
+    </Card>
+  )
+  //   const classes = useStyles();
+  //
+  // // let created_date= created.slice(0,8)
+  //   return (
+  //       <Paper className={classes.paper}>
+  //           {/* <Grid container wrap="nowrap" spacing={1}> */}
+  //           <Grid container wrap="nowrap" spacing={5}>
+  //               <Grid item xs={5}>
+  //                   <ButtonBase className={classes.image}>
+  //                       <img className={classes.img} alt="complex" src="" />
+  //                   </ButtonBase>
+  //               </Grid>
+  //               <Grid item xs={12} sm container>
+  //                   <Grid item xs container direction="column" spacing={2}>
+  //                       <Grid item xs>
+  //                           <Typography gutterBottom variant="subtitle2">
+  //                               {title}
+  //                           </Typography>
+  //                           {/* <Typography variant="body1" gutterBottom> */}
+  //                               {/* {description} */}
+  //                           {/* </Typography> */}
+  //                           <Typography variant="h6">
+  //                                 {/* cat: {category} */}
+  //                           </Typography>
+  //                           <Typography variant="caption">
+  //                                created: {created}
+  //                           </Typography>
+  //                       </Grid>
+  //                   </Grid>
+  //               </Grid>
+  //           </Grid>
+  //       </Paper>
+  //   );
 };

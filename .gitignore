@@ -167,6 +167,10 @@ dmypy.json
 !.vscode/extensions.json
 .history
 
+# eclipse
+.project
+.pydevproject
+
 # dependencies
 /.pnp
 .pnp.js

@@ -30,19 +30,19 @@ test:
 	docker compose run --rm backend sh -c 'python manage.py test'
 
 migrate:
-	docker compose run --rm backend sh -c 'python3 manage.py migrate --noinput'
+	docker compose run --rm backend sh -c 'python manage.py migrate --noinput'
 
 makemigrations:
-	docker compose run --rm backend sh -c 'python3 manage.py makemigrations'
+	docker compose run --rm backend sh -c 'python manage.py makemigrations'
 
 superuser:
-	docker compose run --rm backend sh -c 'python3 manage.py createsuperuser'
+	docker compose run --rm backend sh -c 'python manage.py createsuperuser'
 
 volume:
 	docker volume inspect party_creator_pgdata
 
 shell:
-	docker compose run --rm backend sh -c 'python3 manage.py shell_plus'
+	docker compose run --rm backend sh -c 'python manage.py shell_plus'
 #	 docker compose exec backend python3 manage.py shell_plus
 
 dump:
@@ -51,18 +51,3 @@ dump:
 
 restore:
 	docker exec -i postgres_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) psql -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" < dump.sql
-
-# PODMAN
-pbuild:
-	set -e
-	podman-compose down
-	podman-compose up --build -d
-
-pup:
-	podman-compose up -d
-
-pstop:
-	podman-compose stop
-
-pdown:
-	podman-compose down
