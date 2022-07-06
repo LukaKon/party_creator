@@ -17,7 +17,7 @@ import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        maxWidth: 300,
+        maxWidth: 400,
         margin: "1px auto",
         padding: 2,
         background: "#d0f4f9",
@@ -44,24 +44,37 @@ export const AnnouncementItem = (
     // images,
 // }
 ) => {
-  console.log(props)
+  
+  const main_image = props.images.filter((item) => {
+     return item.is_main==true
+    })
+  
+
+  let render_image
+  if(main_image.length){
+      const link = main_image[0].image
+      render_image=link
+    }else{
+        render_image="http://127.0.0.1:8000/media/default.jpg"
+    }
+
   return (
     <Card sx={{ maxWidth: 550 }}>
       <CardMedia 
         component="img"
         height="140"
-        // image={props.images.image}
+        image={render_image}
         alt="some image"
       />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
           {props.title}
           </Typography>
-          <Typography variant="body2">
-          {/* {props.category.name} */}
+          <Typography variant="body1">
+          {props.category.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-          {props.created}
+          {props.created.slice(0,10)}
           </Typography>
         </CardContent>
         <CardActions>
