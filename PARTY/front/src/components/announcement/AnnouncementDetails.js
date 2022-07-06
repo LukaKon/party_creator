@@ -10,5 +10,5 @@ export const AnnouncementDetails = () => {
     useEffect(() => {
         // axiosInstance.get(slug).then(res=>)...
     }, [setData]);
-    return pass;
+    return <div>TODO: announcement details</div>;
 };

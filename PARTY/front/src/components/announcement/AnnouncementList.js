@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
 import { AnnouncementItem } from "./AnnouncementItem";
 import {
+    Box,
     Grid,
     Paper,
     Typography,
@@ -35,7 +36,6 @@ export const AnnouncementList = () => {
         dispatch(fetchAnnouncements());
     }, []);
 
-  // console.log('ent: ',entities)
     let content;
     if (loading) {
         content = <Typography>Fetching in progress...</Typography>;
@@ -48,31 +48,30 @@ export const AnnouncementList = () => {
             );
         } else {
             content = (
-                <Typography className={classes.root}>
-                    {/* <Paper className={classes.paper}> */}
-                    <Grid container spacing={4}>
+                <Box sx={{ flexGrow: 1 }}>
+                    <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
                         {entities.map((ann) => {
                             return (
-                                <>
-                                    {/* TODO: Warning: Each child in a list should have a unique "key" prop. Why??? */}
-                                    {/* {ann.uuid} */}
+                                <Grid item xs={2} sm={4} md={4} key={ann.uuid}>
                                     <AnnouncementItem key={ann.uuid} {...ann} />
-                                </>
+                                </Grid>
                             );
                         })}
                     </Grid>
-                    {/* </Paper> */}
-                </Typography>
+                </Box>
             );
         }
     }
     return (
-        <Typography>
+        <div>
             List of announcements.
             <br />
-            <bold>CONTENT</bold>
             {content}
-        </Typography>
+        </div>
     );
 };
 
