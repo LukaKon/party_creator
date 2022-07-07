@@ -46,7 +46,9 @@ export const App = () => {
                         element={<AnnouncementList />}
                     />
                     <Route
-                        path="announcements/:slug"
+                        path=":slug"
+                        // path="xyz"
+                        // path="announcements/:slug"
                         element={<AnnouncementDetails />}
                     />
                     <Route

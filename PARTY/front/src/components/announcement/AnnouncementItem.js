@@ -69,7 +69,8 @@ export const AnnouncementItem = (props) => {
             <CardActions>
                 <Button
                     size="small"
-                    href={"/announcements/" + props.slug + "/"}
+                    // href={props.slug + "/"}
+                    href={"/announcements/" + props.slug}
                 >
                     Link to details
                 </Button>
