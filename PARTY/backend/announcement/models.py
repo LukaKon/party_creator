@@ -1,12 +1,12 @@
-import uuid as uuid_lib
-
-import stdimage
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
 from dynamic_filenames import FilePattern
+import stdimage
+import uuid as uuid_lib
 
 from .utils.announcement import unique_slug_generator
+
 
 upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"

@@ -17,35 +17,26 @@ import { makeStyles } from "@material-ui/styles";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        maxWidth: 400,
-        margin: "1px auto",
-        padding: 2,
-        background: "#d0f4f9",
-    },
-    image: {
-        width: 128,
-        height: 128,
-    },
-    img: {
-        margin: "auto",
-        display: "block",
-        maxWidth: "100%",
-        maxHeight: "100%",
-    },
-}));
+// const useStyles = makeStyles((theme) => ({
+//     paper: {
+//         maxWidth: 400,
+//         margin: "1px auto",
+//         padding: 2,
+//         background: "#d0f4f9",
+//     },
+//     image: {
+//         width: 128,
+//         height: 128,
+//     },
+//     img: {
+//         margin: "auto",
+//         display: "block",
+//         maxWidth: "100%",
+//         maxHeight: "100%",
+//     },
+// }));
 
-export const AnnouncementItem = (
-    props
-    // {
-    // title,
-    // uuid,
-    // created,
-    // category,
-    // images,
-    // }
-) => {
+export const AnnouncementItem = (props) => {
     const main_image = props.images.filter((item) => {
         return item.is_main == true;
     });
@@ -59,7 +50,7 @@ export const AnnouncementItem = (
     }
 
     return (
-        <Card sx={{ maxWidth: 550 }}>
+        <Card sx={{ maxWidth: 400 }}>
             <CardMedia
                 component="img"
                 height="140"
@@ -78,7 +69,7 @@ export const AnnouncementItem = (
             <CardActions>
                 <Button
                     size="small"
-                    href={LOCALHOST + "/announcements/" + props.slug + "/"}
+                    href={"/announcements/" + props.slug + "/"}
                 >
                     Link to details
                 </Button>

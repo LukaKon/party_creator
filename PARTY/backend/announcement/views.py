@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from rest_framework import status, viewsets
-# from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
@@ -19,6 +18,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 
+# from rest_framework.parsers import FormParser, MultiPartParser
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
 
@@ -80,14 +80,18 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     #         authentication_classes = (JWTTokenUserAuthentication,)
     def get_permissions(self):
         """Instantiates and returns the list of permissions that this view requires."""
-        print(self.request.data)
+        # print(self.request.data)
 
-        # if self.action == "list":
         if self.request.method == "GET":
             return [AllowAny()]
         else:
             return [IsAuthenticated()]
-        # authentication_classes = (JWTTokenUserAuthentication,)
+
+    def get_authenticators(self):
+        if self.request.method=='GET':
+            return []
+        else:
+            return[JWTTokenUserAuthentication()]
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -108,7 +112,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """Create a new announcement."""
         # authentication_classes = (JWTTokenUserAuthentication,)
         # permission_classes = (IsAuthenticated,)
-        print("serializer: ", self.request.data)
+        # print("serializer: ", self.request.data)
         user = get_user_model().objects.get(email=self.request.data.get("user"))
         category = models.Category.objects.get(uuid=self.request.data.get("category"))
         # category = self.request.data.get("category")

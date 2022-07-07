@@ -7,6 +7,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+
 CREATE_USER_URL = reverse("account:register")
 TOKEN_URL = reverse("account:login")
 USER_URL = reverse("account:GetUser")

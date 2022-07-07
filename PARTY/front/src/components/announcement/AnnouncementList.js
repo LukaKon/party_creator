@@ -3,30 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
 import { AnnouncementItem } from "./AnnouncementItem";
-import {
-    Box,
-    Grid,
-    Paper,
-    Typography,
-    //    makeStyles
-} from "@mui/material";
-import { makeStyles } from "@material-ui/styles";
+import { Box, Grid, Paper, Typography } from "@mui/material";
+// import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        overflow: "hidden",
-        padding: 3,
-    },
-    paper: {
-        maxWidth: 200,
-        margin: "1px auto",
-        padding: 2,
-    },
-}));
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//         flexGrow: 1,
+//         overflow: "hidden",
+//         padding: 3,
+//     },
+//     paper: {
+//         maxWidth: 200,
+//         margin: "1px auto",
+//         padding: 2,
+//     },
+// }));
 
 export const AnnouncementList = () => {
-    const classes = useStyles();
+    // const classes = useStyles();
     const { loading, entities, error } = useSelector(
         (state) => state.announcements
     );
@@ -48,7 +42,7 @@ export const AnnouncementList = () => {
             );
         } else {
             content = (
-                <Box sx={{ flexGrow: 1 }}>
+                <Box pa sx={{ flexGrow: 1 }}>
                     <Grid
                         container
                         spacing={{ xs: 2, md: 3 }}
@@ -66,13 +60,7 @@ export const AnnouncementList = () => {
             );
         }
     }
-    return (
-        <div>
-            List of announcements.
-            <br />
-            {content}
-        </div>
-    );
+    return <div>{content}</div>;
 };
 
 const mapState = ({ loading, announcements }) => ({

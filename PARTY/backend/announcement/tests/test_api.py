@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
 # ADD_ANNOUNCEMENT_URL = reverse("announcement:announcement-detail")
 ANNOUNCEMENT_URL = reverse("announcement:announcement-list")
 CATEGORY_URL = reverse("announcement:category-list")

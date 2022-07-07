@@ -10,12 +10,26 @@ import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
 import { AnnouncementList } from "./announcement/AnnouncementList";
 import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
+import {
+    Box,
+    Grid,
+    Typography,
+    //    makeStyles
+} from "@mui/material";
 
 export const App = () => {
     return (
         <div className="App">
             <BrowserRouter>
+                {/* <Grid */}
+                {/* container */}
+                {/* spacing={{ xs: 2, md: 3 }} */}
+                {/* columns={{ xs: 4, sm: 8, md: 12 }} */}
+                {/* > */}
+                {/* <Grid> */}
                 <Header />
+                {/* </Grid> */}
+                {/* <Grid> */}
                 <Routes>
                     <Route path="example" element={<div>example</div>} />
                     <Route path="signin" element={<SignIn />} />
@@ -44,7 +58,11 @@ export const App = () => {
                         }
                     />
                 </Routes>
+                {/* </Grid> */}
+                {/* <Grid> */}
                 <Footer />
+                {/* </Grid> */}
+                {/* </Grid> */}
             </BrowserRouter>
         </div>
     );
