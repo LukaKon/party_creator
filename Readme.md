@@ -9,7 +9,7 @@ _Work in progress..._
 
 Technologies used in project:
 
--   Django (Python 3.9) - backend api
--   React-18 (Javascript) - frondend
+-   Django 4.0.3 (Python 3.9) - backend api
+-   React-17.2 (Javascript) - frontend
 -   Postgresql-14 - database
 -   Docker - contenerization
