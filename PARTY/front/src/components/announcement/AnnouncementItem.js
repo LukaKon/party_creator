@@ -1,9 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
-    // Avatar,
-    // ButtonBase,
-    // Paper,
-    Grid,
     Card,
     CardActions,
     CardContent,
@@ -12,6 +9,7 @@ import {
     Typography,
     // makeStyles,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/styles";
 
@@ -37,6 +35,13 @@ const LOCALHOST = process.env.REACT_LOCALHOST;
 // }));
 
 export const AnnouncementItem = (props) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        // const link = "announcements/" + props.slug;
+        navigate(props.slug);
+    };
+
     const main_image = props.images.filter((item) => {
         return item.is_main == true;
     });
@@ -67,13 +72,8 @@ export const AnnouncementItem = (props) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button
-                    size="small"
-                    // href={props.slug + "/"}
-                    href={"/announcements/" + props.slug}
-                >
-                    Link to details
-                </Button>
+                <Button onClick={handleClick}>Button to details</Button>
+                <Link to={props.slug}>Link to details</Link>
             </CardActions>
         </Card>
     );
