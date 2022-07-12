@@ -9,12 +9,6 @@ import { Profile } from "./Profile";
 import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
 import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
-import {
-    Box,
-    Grid,
-    Typography,
-    //    makeStyles
-} from "@mui/material";
 
 export const App = () => {
     return (

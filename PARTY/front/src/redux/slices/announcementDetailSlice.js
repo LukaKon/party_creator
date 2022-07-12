@@ -5,7 +5,8 @@ export const fetchAnnouncementDetails = createAsyncThunk(
     "announcement/getDetails",
     async (slug) => {
         try {
-            const response = await axiosInstance("announcements/", slug);
+            const response = await axiosInstance(`api/announcements/${slug}`); //, slug);
+            console.log("resp in thunk: ", response);
             return response.data;
         } catch (err) {
             console.log("Fetch announcement details error: ", err);
@@ -17,7 +18,7 @@ const announcementDetailsSlice = createSlice({
     name: "announcementDetails",
     initialState: {
         loading: false,
-        details: null,
+        entities: null,
         error: null,
     },
     reducers: {},
@@ -28,7 +29,7 @@ const announcementDetailsSlice = createSlice({
             })
             .addCase(fetchAnnouncementDetails.fulfilled, (state, action) => {
                 state.loading = false;
-                state.details = action.payload;
+                state.entities = action.payload;
             })
             .addCase(fetchAnnouncementDetails.rejected, (state, action) => {
                 state.loading = false;

@@ -105,7 +105,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def get_object(self, queryset=None, **kwargs):
         """Get object by slug."""
-        item = self.kwargs.get("pk")
+        item = self.kwargs.get("pk")    # slug
         return get_object_or_404(models.Announcement, slug=item)
 
     def perform_create(self, serializer):
