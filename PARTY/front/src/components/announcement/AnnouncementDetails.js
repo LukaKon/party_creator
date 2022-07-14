@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
@@ -34,7 +34,9 @@ export const AnnouncementDetails = () => {
         <Box pa sx={{ flexGrow: 1 }}>
           <Grid container>
             <Typography variant='h3'>Title: {entities.title}</Typography>
-            <Typography variant="body1">Description: {entities.description}</Typography> 
+            <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
+            <Typography variant='caption'>Created by: {entities.user.email}</Typography>
+            <Typography variant="body1">Description: {entities.description}</Typography>
           </Grid>
         </Box>
       )
