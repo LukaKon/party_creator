@@ -11,7 +11,6 @@ import {
   ImageListItem,
 } from "@mui/material";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
 // https://youtu.be/dCbfOZurCQk
 
 export const AnnouncementDetails = () => {
