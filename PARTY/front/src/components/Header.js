@@ -21,7 +21,6 @@ import {handleButton} from "../utils";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
 
-//const imgUrl = process.env.IMAGE_URL; // TODO it is not working
 const imgUrl = "http://127.0.0.1:8000/api"
 
 
@@ -39,11 +38,11 @@ export const Header = () => {
         (state) => state.profile
     );
 
-    const showAvatar = async () => {
+    const showAvatar = () => {
         const dispatch = useDispatch();
 
         if (entities === "initial") {
-            await dispatch(fetchProfile());
+            dispatch(fetchProfile());
         }
 
         image = imgUrl + entities.image

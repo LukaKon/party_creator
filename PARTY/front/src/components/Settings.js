@@ -1,55 +1,66 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Grid, Input, Button, Typography} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {styled} from '@mui/material/styles';
 import {handleButton} from "../utils";
+import {axiosInstance} from "../axios";
+import {fetchProfile} from "../redux/slices/profileSlice";
 
 export const Settings = () => {
+    const dispatch = useDispatch();
     const imgUrl = "http://127.0.0.1:8000/api"
-    const [selectFile, setSelectFile] = useState()
+
+    const {entities} = useSelector(
+        (state) => state.profile
+    )
+
+    useEffect(() => {
+            setImage({...image, imageToShow: imgUrl + entities.image})
+        },
+        [entities]
+    )
+
+    const [image, setImage] = useState({
+        imageToShow: 'test',
+        imageToUpload: 'test'
+    })
 
     const Input = styled('input')({
         display: 'none',
     });
 
-    const upload = (file, onUploadProgress) => {
-        let formData = new FormData();
-        formData.append("file", file);
-        return http.post("/upload", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-            onUploadProgress,
-        });
+
+    const upload = (event) => {
+        setImage({
+            imageToUpload: event.target.files[0],
+            imageToShow: URL.createObjectURL(event.target.files[0])
+        })
     }
 
-    const handleInput = (event) => {
-        let formData = new FormData()
-        formData.append("image",)
-        console.log(event.target.files[0])
-        const file = event.target.files[0];
-        // const reader = new FileReader();
-        // const url = reader.readAsDataURL(file);
-        const url = URL.createObjectURL(file)
-        console.log('tutaj jestem', url)
+    const handleInput = () => {
+        const data = new FormData()
+        data.append('image', image["imageToUpload"])
+        axiosInstance.patch('account/updateprofile/', data)
+            .then(response => {
+                dispatch(fetchProfile());
+            })
     }
-
-    const {entities, loading} = useSelector(
-        (state) => state.profile
-    );
 
     return (
         <Grid margin={2}>
             <Typography variant="h7" component="div">
-                Twój aktualny avatar, naciśnij aby dodać nowy
+                Twój aktualny avatar, naciśnij aby zmienić
             </Typography>
 
             <Grid margin={2}>
 
                 <label htmlFor="avatar">
-                    <img src={imgUrl + entities.image}/>
-                    <Input onInput={(event) => handleInput(event)} accept="image/*" id="avatar" multiple type="file"/>
+
+                    <img width={100} height={100} src={image["imageToShow"]}/>
+                    {/*<img src={xyz}/>*/}
+                    <Input onInput={(event) => upload(event)} accept="image/*" id="avatar" multiple type="file"/>
                 </label>
+                <Button variant="contained" onClick={() => handleInput()}>Upload</Button>
 
             </Grid>
         </Grid>

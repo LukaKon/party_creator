@@ -76,4 +76,18 @@ class GetUserAPI(RetrieveAPIView):
         return Response(user_information)
 
 
-class UpdateUserAPI(UpdateAPIView)
+class UpdateUserAPI(UpdateAPIView):
+    model = get_user_model()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = self.model.objects.get(email=self.request.user.email)
+        return queryset
+
+    def patch(self, request, *args, **kwargs):
+        user = self.get_queryset()
+        user.image = request.data.get('image')
+        user.save()
+        return Response({})
+

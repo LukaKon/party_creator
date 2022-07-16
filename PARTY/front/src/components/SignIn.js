@@ -77,7 +77,7 @@ export const SignIn = () => {
                         <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Zaloguj się
                     </Typography>
                     <Typography component={'p'} color={'red'}>
                         {loginError}

@@ -39,10 +39,10 @@ export const App = () => {
                         </main>}/>
 
                     {/*Views only for logged users*/}
+
                     {isAuthenticatedFunction('profile', <Profile/>)}
                     {isAuthenticatedFunction('settings', <Settings/>)}
                     {isAuthenticatedFunction('addannouncement', <AddAnnouncement/>)}
-
 
                 </Routes>
                 <Footer/>
