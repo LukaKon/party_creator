@@ -29,7 +29,8 @@ const announcementSlice = createSlice({
     name: "announcements",
     initialState: {
         loading: false,
-        entities: ["test 1", "test 2"],
+        // entities: ["test 1", "test 2"],
+        entities: [],
         error: null,
     },
     reducers: {

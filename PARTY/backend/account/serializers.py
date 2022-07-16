@@ -2,12 +2,12 @@
 Serializers for the user API View.
 """
 from account.models import User
+from announcement.serializers import AnnouncementSerializer
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from announcement.serializers import AnnouncementSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -16,7 +16,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
 
         # Add custom claims
-        token["username"] = user.username
+        # TODO: not visible in decoding -> jwt.io
+        # token["username"] = user.username
+        token["test"] = "test claim :)" # ,- it works localhost:8000/account/login
         return token
 
 
@@ -61,6 +63,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        """Create a new user."""
         user = User.objects.create_user(
             validated_data["email"],
             validated_data["password"],

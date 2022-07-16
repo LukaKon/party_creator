@@ -1,2 +1,4 @@
-black
-isort
+# black
+# isort
+flake8>=4.0.1,<4.1
+bpython==0.22.1

@@ -1,16 +1,12 @@
-import uuid as uuid_lib
-
-import stdimage
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
-from django.utils.translation import gettext as _
 from dynamic_filenames import FilePattern
-
-from account.models import User
+import stdimage
+import uuid as uuid_lib
 
 from .utils.announcement import unique_slug_generator
+
 
 upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
@@ -18,7 +14,7 @@ upload_to_pattern = FilePattern(
 
 
 class Category(models.Model):
-    """Category(type) of announcement. e.g local, photograph etc."""
+    """Category(type) of announcement. e.g. local, photograph etc."""
 
     CATEGORY_NAME = (
         ("muzyka", "music"),
@@ -75,10 +71,10 @@ class Category(models.Model):
 
 
 class Announcement(models.Model):
-    """Model of announcement."""
+    """Announcement object."""
 
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.TextField(blank=False)
     slug = models.SlugField(unique=True)
     uuid = models.UUIDField(  # Used by the API to look up the record
         db_index=True,
@@ -86,10 +82,10 @@ class Announcement(models.Model):
         editable=False,
     )
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='announcements'
-    )  # default=None)
+    )
     category = models.ForeignKey(
         Category,
         verbose_name="announcement_categories",
@@ -115,8 +111,8 @@ class Announcement(models.Model):
             img.delete()
         super().delete()
 
-    # def get_absolute_url(self):
-    # return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
+    def get_absolute_url(self):
+        return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.title

@@ -1,29 +1,29 @@
+"""
+URLs mapping for announcement app.
+"""
+from announcement import views
+from django.conf import settings
+from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 
-from django.urls import path
-
-from . import views
 
 app_name = "announcement"
 
-urlpatterns = [
-    # announcements
-    path(
-        route="announcements/",
-        view=views.AnnouncementListView.as_view(),
-        name="announcement_api",
-    ),
-    path(
-        route="addannouncement/",
-        view=views.AnnouncementCraeteView.as_view(),
-        name="add_announcement",
-    ),
-    path(
-        route="announcement/<uuid:uuid>/",
-        view=views.AnnouncementRetriveUpdateDestroyAPIView.as_view(),
-        name="announcement_api",
-    ),
-    # categories
-    path(
-        route="categories/", view=views.CategoryListView.as_view(), name="category_api"
-    ),
-]
+
+router = DefaultRouter()
+router.register(
+    prefix="announcements",
+    viewset=views.AnnouncementViewSet,
+    basename="announcement",
+)
+router.register(
+    prefix="categories",
+    viewset=views.CategoryViewSet,
+    basename='category',
+)
+router.register(
+    prefix="images",
+    viewset=views.ImageViewSet,
+    basename="image",
+)
+urlpatterns = router.urls

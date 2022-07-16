@@ -10,10 +10,11 @@ services:
         - DEV=true
     container_name: django_back
     # command: >
-    #   sh -c "python manage.py wait_for_database &&
+    #   sh -c "python manage.py wait_for_db &&
+    #           python manage.py migrate &&
     #          gunicorn back.wsgi --bind 0.0.0.0:8000"
     command: >
-      sh -c   "python manage.py wait_for_database &&
+      sh -c  "python manage.py wait_for_db &&
               python manage.py migrate &&
               python manage.py runserver 0.0.0.0:8000"
     env_file:
@@ -34,7 +35,6 @@ services:
       - db
 
   db:
-    # image: postgres:14
     image: postgres:14-alpine3.15
     container_name: postgres_db
     environment:
