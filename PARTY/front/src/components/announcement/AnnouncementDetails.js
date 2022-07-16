@@ -46,17 +46,25 @@ export const AnnouncementDetails = () => {
             <Grid item>
               <Typography variant="body1">Description: {entities.description}</Typography>
             </Grid>
-            <Grid item>
-              Images: {entities.images.map(img => {
-                return (
-                  <CardMedia
-                    component="img"
-                    height="50"
-                    image={img.image}
-                    alt="image desc could be dynamic..."
-                  />
+            <Grid item xs={8}> 
+              Images:
+              <ImageList
+                sx={{ width: 500, height: 450 }}
+                cols={3}
+                rowHeight={120}
+              />
+              {entities.images.map(img => (
+                (
+                  <ImageListItem key={img.uuid} >
+                    <img
+                      src={img.image}
+                      // srcSet={}
+                      alt="description - make it dynamic"
+                      loading="lazy"
+                    />
+                  </ImageListItem>
                 )
-              })}
+              ))}
             </Grid>
           </Grid>
         </Box>

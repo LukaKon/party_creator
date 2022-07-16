@@ -127,6 +127,12 @@ class Multimedia(models.Model):
         blank=True,
         related_name="%(class)ss",
     )
+    
+    uuid = models.UUIDField(
+        db_index=True,
+        default=uuid_lib.uuid4,
+        editable=False,
+    )
 
     class Meta:
         abstract = True
