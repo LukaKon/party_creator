@@ -1,30 +1,15 @@
-"""back URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+URLs mapping for backend.
+"""
+from announcement import urls as announcement_url
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from announcement import urls as announcement_url
-
-# TODO: do we need this?
-template = TemplateView.as_view(template_name="index.html")
 
 urlpatterns = [
-    path("", template),
     path("admin/", admin.site.urls),
     path(
         route="api/schema/",
@@ -38,4 +23,4 @@ urlpatterns = [
     ),
     path("account/", include("account.urls", "account")),
     path("api/", include(announcement_url, "announcement")),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

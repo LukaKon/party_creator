@@ -9,11 +9,12 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import os
 from datetime import timedelta
+import os
 from pathlib import Path
 
 from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,7 +46,6 @@ PROJECT_APPS = [
 ADDITIONAL_APPS = [
     "django_extensions",
     "rest_framework",
-    "django_probes",
     "django_filters",
     "corsheaders",
     "rest_framework_simplejwt.token_blacklist",
@@ -73,6 +73,12 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+)
 
 ROOT_URLCONF = "back.urls"
 
@@ -155,7 +161,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR / "static")  # TODO: to change
+    # os.path.join(BASE_DIR / "static")
     # os.path.join(BASE_DIR, "../front/build/static")
 ]
 
@@ -172,19 +178,34 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_PERMISSION_CLASSES":(
+        'rest_framework.permissions.AllowAny',
+        ),
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 5,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
+    # "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    # "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
+    # "AUTH_HEADER_TYPES": ("JWT",),
+    # "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+    # "ROTATE_REFRESH_TOKENS": True,
+    # "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
     "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "USER_ID_FIELD": "id",  # TODO: -> email?
+    "USER_ID_CLAIM": "user_id", # TODO: -> email?
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
 }
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Party creator service",

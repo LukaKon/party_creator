@@ -1,68 +1,121 @@
-from django.shortcuts import render
-from rest_framework import status
-from rest_framework.generics import (
-    CreateAPIView,
-    ListAPIView,
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView,
-)
-from rest_framework.parsers import FormParser, MultiPartParser
+"""
+Views for announcements APIs.
+"""
+
+from announcement import models, serializers
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from rest_framework import status, viewsets
 from rest_framework.permissions import (
     AllowAny,
+    IsAdminUser,
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
 from rest_framework.response import Response
-from rest_framework.views import APIView
-
-from .models import Announcement, Category
-from .serializers import AnnouncementSerializer, CategorySerializer
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 
-class CategoryListView(ListAPIView):
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
-    # lookup_field = "uuid"
+# from rest_framework.parsers import FormParser, MultiPartParser
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    """View to manage category APIs."""
+
+    serializer_class = serializers.CategorySerializer
+    # queryset = models.Category.objects.all()
+    lookup_field = "uuid"
+
+    def get_queryset(self):
+        """Define custom queryset."""
+        return models.Category.objects.all()
 
 
-class AnnouncementCraeteView(CreateAPIView):
-    queryset = Announcement.objects.all()
-    serializer_class = AnnouncementSerializer
+class ImageViewSet(viewsets.ModelViewSet):
+    """View to manage image APIs."""
 
-    def post(self, request, *args, **kwargs):
-        """
-        add announcement
-        """
-        data = {
-            "title": request.data.get("title"),
-            "description": request.data.get("description"),
-            "user": request.user.pk,
-            #         # "category": request.data.get("category"),
-            #         # 'event_type':request.data.get('event_type'),
-            #         # 'images':request.data.get('images'),
-        }
-        print("data: ", data)
-        permission_classes = (IsAuthenticated,)
+    serializer_class = serializers.ImageSerializer
+    # permission_classes = (IsAuthenticated,)
+    def get_permissions(self):
+        """Instantiates and returns the list of permissions that this view requires."""
+        print(self.request.data)
 
-        serializer = AnnouncementSerializer(data=data)
+        # if self.action == "list":
+        if self.request.method == "GET":
+            return [AllowAny()]
+        else:
+            return [IsAuthenticated()]
+            # authentication_classes = (JWTTokenUserAuthentication,)
+
+    def get_queryset(self):
+        """Define custom queryset."""
+        return models.Image.objects.all()
+
+    # @method_decorator(login_required)
+    def perform_create(self, serializer):
+        """Create a new image."""
+        # TODO: I can create without authentication...
+        # permission_classes = (IsAuthenticated,)
+        # authentication_classes = (JWTTokenUserAuthentication,)
+        # print("data:::: ", serializer.data)
+        print("request:::: ", self.request.data)
         if serializer.is_valid():
-            print("in post")
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class AnnouncementListView(ListAPIView):
-    serializer_class = AnnouncementSerializer
-    # queryset = Announcement.objects.all()
-    queryset = Announcement.objects.all()[:3]
-    lookup_field = "uuid"
-    # parser_classes = (FormParser, MultiPartParser)
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    """View for manage announcement APIs."""
 
+    # model = models.Announcement
+    serializer_class = serializers.AnnouncementDetailSerializer
 
-class AnnouncementRetriveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Announcement.objects.all()
-    permission_classes = (IsAuthenticated, AllowAny)
-    serializer_class = AnnouncementSerializer
-    lookup_field = "uuid"
+    # def get_permissions(self):
+    #     """Instantiates and returns the list of permissions that this view requires."""
+
+    #     if self.action == "list":
+    #         permission_classes = (AllowAny,)
+    #     else:
+    #         permission_classes = (IsAuthenticated,)
+    #         authentication_classes = (JWTTokenUserAuthentication,)
+    def get_permissions(self):
+        """Instantiates and returns the list of permissions that this view requires."""
+        # print(self.request.data)
+
+        if self.request.method == "GET":
+            return [AllowAny()]
+        else:
+            return [IsAuthenticated()]
+
+    def get_authenticators(self):
+        if self.request.method=='GET':
+            return []
+        else:
+            return[JWTTokenUserAuthentication()]
+
+    def get_serializer_class(self):
+        """Return serializer class for request."""
+        if self.action == "list":
+            return serializers.AnnouncementSerializer
+        return self.serializer_class
+
+    def get_queryset(self):
+        """ Define custom queryset. """
+        return models.Announcement.objects.all().order_by('title')
+
+    def get_object(self, queryset=None, **kwargs):
+        """Get object by slug."""
+        item = self.kwargs.get("pk")    # slug
+        return get_object_or_404(models.Announcement, slug=item)
+
+    def perform_create(self, serializer):
+        """Create a new announcement."""
+        # authentication_classes = (JWTTokenUserAuthentication,)
+        # permission_classes = (IsAuthenticated,)
+        # print("serializer: ", self.request.data)
+        user = get_user_model().objects.get(email=self.request.data.get("user"))
+        category = models.Category.objects.get(uuid=self.request.data.get("category"))
+        # category = self.request.data.get("category")
+        # TODO: add image...
+        serializer.save(user=user, category=category)
+        # serializer.save()

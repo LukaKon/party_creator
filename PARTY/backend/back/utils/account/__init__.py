@@ -1,5 +1,5 @@
-import stdimage
 from django.db.models.fields.files import FileField
+import stdimage
 
 
 class stdimage_save_defaultimg(stdimage.StdImageField):
