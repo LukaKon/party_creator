@@ -5,17 +5,17 @@ import {styled} from '@mui/material/styles';
 import {handleButton} from "../utils";
 import {axiosInstance} from "../axios";
 import {fetchProfile} from "../redux/slices/profileSlice";
+import {BACKEND_LOCALHOST} from "../../Settings";
 
 export const Settings = () => {
     const dispatch = useDispatch();
-    const imgUrl = "http://127.0.0.1:8000/api"
 
     const {entities} = useSelector(
         (state) => state.profile
     )
 
     useEffect(() => {
-            setImage({...image, imageToShow: imgUrl + entities.image})
+            setImage({...image, imageToShow: BACKEND_LOCALHOST.slice(0, -1) + entities.image})
         },
         [entities]
     )
@@ -57,7 +57,6 @@ export const Settings = () => {
                 <label htmlFor="avatar">
 
                     <img width={100} height={100} src={image["imageToShow"]}/>
-                    {/*<img src={xyz}/>*/}
                     <Input onInput={(event) => upload(event)} accept="image/*" id="avatar" multiple type="file"/>
                 </label>
                 <Button variant="contained" onClick={() => handleInput()}>Upload</Button>

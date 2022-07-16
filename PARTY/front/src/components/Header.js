@@ -20,8 +20,7 @@ import {makeStyles} from "@mui/styles";
 import {handleButton} from "../utils";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
-
-const imgUrl = "http://127.0.0.1:8000/api"
+import {BACKEND_LOCALHOST} from '../../Settings'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +44,7 @@ export const Header = () => {
             dispatch(fetchProfile());
         }
 
-        image = imgUrl + entities.image
+        image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
 
     }
 
