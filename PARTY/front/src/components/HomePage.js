@@ -5,7 +5,7 @@ import {AnnouncementList} from "./announcement/AnnouncementList";
 export const HomePage = () => {
     return (
         <Typography>
-            <AnnouncementList/>
+            {/*<AnnouncementList/>*/}
             {sessionStorage.getItem("access_token")
                 ? "Zalogowany"
                 : "Niezalogowany"}
