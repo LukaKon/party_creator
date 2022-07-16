@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
 import { AnnouncementItem } from "./AnnouncementItem";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 // import { makeStyles } from "@material-ui/styles";
+import {AnnouncementSkeleton} from "../skeletons/AnnouncementSkeletons";
 
 // const useStyles = makeStyles((theme) => ({
 //     root: {
@@ -32,7 +33,7 @@ export const AnnouncementList = () => {
 
     let content;
     if (loading) {
-        content = <Typography>Fetching in progress...</Typography>;
+        content = <AnnouncementSkeleton/>
     } else {
         if (!entities) {
             content = (

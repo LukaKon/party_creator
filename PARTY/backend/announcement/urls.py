@@ -9,6 +9,7 @@ from rest_framework.routers import DefaultRouter
 
 app_name = "announcement"
 
+
 router = DefaultRouter()
 router.register(
     prefix="announcements",

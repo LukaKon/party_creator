@@ -5,7 +5,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 
-const test = "http://127.0.0.1:8000/api"
+//const imgUrl = process.env.IMAGE_URL; // TODO it is not working
+const imgUrl = "http://127.0.0.1:8000/api"
+
 
 export const Announcement = ({ title, description, images }) => {
   return (
@@ -14,7 +16,7 @@ export const Announcement = ({ title, description, images }) => {
         <CardMedia
           component="img"
           height="100"
-          image={test + images[0].image}
+          image={imgUrl + images[0].image}
           alt={title}
         />
         <CardContent>

@@ -79,4 +79,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'is_firma', 'announcements')
+        fields = ('email', 'is_firma', 'announcements', 'image')

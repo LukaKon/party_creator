@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import {
     Avatar,
+    Alert,
     Button,
     CssBaseline,
     TextField,
@@ -46,15 +47,16 @@ export const SignIn = () => {
                 sessionStorage.setItem("refresh_token", response.data.refresh);
                 axiosInstance.defaults.headers["Authorization"] =
                     "JWT" + localStorage.getItem("access_token");
-                navigate('/')
-                window.location.reload();
+                window.location.replace('/');
+
             })
             .catch((error) => {
+                console.log(error)
                 if (error.response.status === 401 &&
                     error.response.statusText === "Unauthorized") {
-                    setLoginError('Podaj prawidłowe dane')
+                    setLoginError(<Alert severity="warning">Podany email lub hasło jest nieprawidłowe.</Alert>)
                 } else {
-                    setLoginError('Skontaktuj się z farmaceutą')
+                    setLoginError('Nieobsługiwany błąd')
                 }
             })
     }
@@ -75,7 +77,7 @@ export const SignIn = () => {
                         <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Zaloguj się
                     </Typography>
                     <Typography component={'p'} color={'red'}>
                         {loginError}

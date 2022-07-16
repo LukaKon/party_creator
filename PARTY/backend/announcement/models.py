@@ -128,17 +128,6 @@ class Multimedia(models.Model):
         related_name="%(class)ss",
     )
 
-    # event_type = models.OneToOneField(
-    #     EventType,
-    #     verbose_name="%(class)s",
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
-
-    # def __str__(self):
-    #     return str(self.image.thumbnail)
-
     class Meta:
         abstract = True
 
