@@ -6,8 +6,12 @@ import {
   Box,
   Grid,
   Typography,
+  CardMedia,
+  ImageList,
+  ImageListItem,
 } from "@mui/material";
 
+// const LOCALHOST = process.env.REACT_LOCALHOST;
 // https://youtu.be/dCbfOZurCQk
 
 export const AnnouncementDetails = () => {
@@ -21,8 +25,6 @@ export const AnnouncementDetails = () => {
     dispatch(fetchAnnouncementDetails(slug));
   }, []);
 
-  // console.log("entities: ", entities);
-
   let content
   if (loading) {
     content = <Typography variant="h3">Fetching in progress...</Typography>
@@ -32,11 +34,31 @@ export const AnnouncementDetails = () => {
     } else {
       content = (
         <Box pa sx={{ flexGrow: 1 }}>
-          <Grid container>
-            <Typography variant='h3'>Title: {entities.title}</Typography>
-            <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
-            <Typography variant='caption'>Created by: {entities.user.email}</Typography>
-            <Typography variant="body1">Description: {entities.description}</Typography>
+          <Grid container spacing={5}>
+            <Grid item xs={8}>
+              <Typography variant='h6'>Title: {entities.title}</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant='caption'>Created by: {entities.user.email}, category: {entities.category.name}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body1">Description: {entities.description}</Typography>
+            </Grid>
+            <Grid item>
+              Images: {entities.images.map(img => {
+                return (
+                  <CardMedia
+                    component="img"
+                    height="50"
+                    image={img.image}
+                    alt="image desc could be dynamic..."
+                  />
+                )
+              })}
+            </Grid>
           </Grid>
         </Box>
       )
