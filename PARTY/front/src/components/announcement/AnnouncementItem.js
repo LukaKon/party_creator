@@ -10,10 +10,9 @@ import {
     // makeStyles,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { BACKEND_LOCALHOST } from "../../../Settings"
 
 import { makeStyles } from "@material-ui/styles";
-
-const LOCALHOST = process.env.REACT_LOCALHOST;
 
 // const useStyles = makeStyles((theme) => ({
 //     paper: {
@@ -51,7 +50,7 @@ export const AnnouncementItem = (props) => {
         const link = main_image[0].image;
         render_image = link;
     } else {
-        render_image = LOCALHOST + "/media/announcement/default.jpg";
+        render_image = BACKEND_LOCALHOST + "/media/announcement/default.jpg";
     }
 
     return (

@@ -22,9 +22,6 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {axiosInstance} from "../axios";
 import {useState} from "react";
 
-const LOCALHOST = process.env.REACT_LOCALHOST;
-console.log("localhost: ", LOCALHOST);
-
 const theme = createTheme();
 
 export const SignIn = () => {
