@@ -17,7 +17,6 @@ from rest_framework.permissions import (
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
-
 # from rest_framework.parsers import FormParser, MultiPartParser
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
@@ -36,6 +35,7 @@ class ImageViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.ImageSerializer
     # permission_classes = (IsAuthenticated,)
+
     def get_permissions(self):
         """Instantiates and returns the list of permissions that this view requires."""
         print(self.request.data)

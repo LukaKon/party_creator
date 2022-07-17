@@ -9,7 +9,7 @@ class TestView(TestCase):
     """Test views"""
 
     def NOtest_announcement_list_view(self):
-        """Testing listing announcement view."""
+        """ Testing listing announcement view. """
         ann = Announcement.objects.all()
         client = APIClient()
         res = client.get("/api/announcements/")
@@ -18,7 +18,7 @@ class TestView(TestCase):
         self.assertEqual(res.data, [*ann])
 
     def NOtest_announcement_list_url_resolves_to_announcement_list(self):
-        '''Test announcement_list resolves to AnnouncementListView.'''
+        ''' Test announcement_list resolves to AnnouncementListView. '''
         found = resolve('/api/announcements/')
         self.assertEqual(found.func.__name__,views.AnnouncementListView.as_view().__name__)
 

@@ -3,8 +3,7 @@ URL mapping for the user API.
 """
 from account import views
 from django.urls import path
-from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
-
+from rest_framework_simplejwt.views import TokenRefreshView
 
 app_name = "account"
 
