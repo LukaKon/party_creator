@@ -67,6 +67,7 @@ export const AnnouncementDetails = () => {
                 ))}
               </ImageList>
             </Grid>
+
           </Grid>
         </Box>
       )
