@@ -193,6 +193,7 @@ SIMPLE_JWT = {
     # "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
     # "ROTATE_REFRESH_TOKENS": True,
     # "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
     "ROTATE_REFRESH_TOKENS": True,

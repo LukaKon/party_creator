@@ -70,6 +70,12 @@ axiosInstance.interceptors.response.use(
                             refresh: refreshToken,
                         })
                         .then((response) => {
+
+                            console.log('stary refresh', refreshToken)
+                            console.log('nowy refresh', response.data.refresh)
+                            console.log('stary access', sessionStorage.getItem('access_token'))
+                            console.log('nowy access', response.data.access)
+
                             sessionStorage.setItem(
                                 "access_token",
                                 response.data.access

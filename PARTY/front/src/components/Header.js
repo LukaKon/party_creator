@@ -21,6 +21,7 @@ import {handleButton} from "../utils";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from '../../Settings'
+import {fetchCategories} from "../redux/slices/categorySlice";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,9 +41,9 @@ export const Header = () => {
     const showAvatar = () => {
         const dispatch = useDispatch();
 
-        if (entities === "initial") {
-            dispatch(fetchProfile());
-        }
+        useEffect(() => {
+            dispatch(fetchProfile())
+        }, [entities.image]);
 
         image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
 

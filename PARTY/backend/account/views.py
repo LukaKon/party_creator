@@ -18,7 +18,7 @@ from rest_framework_simplejwt.token_blacklist.models import (
     BlacklistedToken,
     OutstandingToken,
 )
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, api_settings, TokenViewBase
 
 
 class LoginView(TokenObtainPairView):
@@ -90,4 +90,3 @@ class UpdateUserAPI(UpdateAPIView):
         user.image = request.data.get('image')
         user.save()
         return Response({})
-
