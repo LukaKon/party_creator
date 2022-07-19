@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./HomePage";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
-import { Settings } from "./Settings";
+import { ProfileSettings } from "./ProfileSettings";
 import { Profile } from "./Profile";
 import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
@@ -43,7 +43,7 @@ export const App = () => {
                     {/*Views only for logged users*/}
 
                     {isAuthenticatedFunction('profile', <Profile/>)}
-                    {isAuthenticatedFunction('settings', <Settings/>)}
+                    {isAuthenticatedFunction('settings', <ProfileSettings/>)}
                     {isAuthenticatedFunction('addannouncement', <AddAnnouncement/>)}
 
                 </Routes>
