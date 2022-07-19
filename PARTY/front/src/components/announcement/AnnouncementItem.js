@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { BACKEND_LOCALHOST } from "../../../Settings"
 
 import { makeStyles } from "@material-ui/styles";
+import {indexOf} from "core-js/internals/array-includes";
 
 // const useStyles = makeStyles((theme) => ({
 //     paper: {
@@ -42,15 +43,20 @@ export const AnnouncementItem = (props) => {
     };
 
     const main_image = props.images.filter((item) => {
-        return item.is_main == true;
+        return item.is_main === true;
     });
 
     let render_image;
-    if (main_image.length) {
+
+    if (main_image.length && main_image[0].image.includes(BACKEND_LOCALHOST)) {
         const link = main_image[0].image;
         render_image = link;
-    } else {
-        render_image = BACKEND_LOCALHOST + "/media/announcement/default.jpg";
+    }else if(main_image.length){
+        const link = main_image[0].image;
+        render_image = BACKEND_LOCALHOST.slice(0,-1) + link;
+    }else
+    {
+        render_image = BACKEND_LOCALHOST + "media/announcement/default.jpg";
     }
 
     return (

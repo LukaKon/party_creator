@@ -32,7 +32,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 export const Header = () => {
-    let image
+    let image;
+    let menuIcon;
+    let profile_menu;
 
     const {entities} = useSelector(
         (state) => state.profile
@@ -73,6 +75,18 @@ export const Header = () => {
         settings["Profil"] = "/profile"
         settings["Ustawienia konta"] = "/settings"
         settings['Wyloguj sie'] = "signout"
+
+        // Set profile menu
+        profile_menu = (
+            <Tooltip title="Ustawienia">
+                <IconButton
+                    onClick={(e) => handleOpenUserMenu(e)}
+                    sx={{p: 0}}
+                >
+                    <Avatar alt="avatar" src={image}/>
+                </IconButton>
+            </Tooltip>
+        )
     } else {
         // Set settings/options
         pages["Zarejestruj"] = "/signup"
@@ -111,7 +125,6 @@ export const Header = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-    let menuIcon;
     if (isMobile) {
         menuIcon = (
             <Box>
@@ -177,14 +190,7 @@ export const Header = () => {
                     <Box sx={{flexGrow: 1, display: "flex"}}>{menuIcon}</Box>
 
                     <Box sx={{flexGrow: 0}}>
-                        <Tooltip title="Ustawienia">
-                            <IconButton
-                                onClick={handleOpenUserMenu}
-                                sx={{p: 0}}
-                            >
-                                <Avatar alt="avatar" src={image}/>
-                            </IconButton>
-                        </Tooltip>
+                        {profile_menu}
                         <Menu
                             sx={{mt: "45px"}}
                             id="menu-appbar"
