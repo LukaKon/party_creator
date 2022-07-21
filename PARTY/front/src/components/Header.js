@@ -46,7 +46,6 @@ export const Header = () => {
         }, [entities.image]);
 
         image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
-
     }
 
     const pages = {

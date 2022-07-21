@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
-import { AnnouncementSkeleton} from "../../components/skeletons/AnnouncementSkeletons"
+import { AnnouncementSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
 import {
   Box,
   Grid,
@@ -27,7 +27,7 @@ export const AnnouncementDetails = () => {
 
   let content
   if (loading) {
-    content = <AnnouncementSkeleton/>
+    content = <AnnouncementSkeleton />
   } else {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
@@ -63,7 +63,7 @@ export const AnnouncementDetails = () => {
                 rowHeight={120}
               >
                 {entities.images.map(img => (
-                    <ImageItem key={img.uuid} {...img} />
+                  <ImageItem key={img.uuid} {...img} />
                 ))}
               </ImageList>
             </Grid>
