@@ -43,7 +43,7 @@ export const AddAnnouncement = () => {
   const dispatch = useDispatch();
 
   console.log('categories: ', categories)
-
+  
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);

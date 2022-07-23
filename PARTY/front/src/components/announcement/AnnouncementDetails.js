@@ -55,6 +55,7 @@ export const AnnouncementDetails = () => {
               </Grid>
             </Grid>
 
+      
             <Grid item xs={6}>
               Images:
               <ImageList
