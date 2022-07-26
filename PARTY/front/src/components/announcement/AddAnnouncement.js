@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 // import { makeStyles } from "@mui/styles";
@@ -36,14 +36,20 @@ import { fetchCategories } from "../../redux/slices/categorySlice";
 export const AddAnnouncement = () => {
   // const classes = useStyles();
   const { loading, categories, error } = useSelector(
-    state => state.categories
-  )
+    (state) => state.categories
+  );
   const [updateValue, submitHandler, errors] = useForm({});
   const theme = createTheme();
   const dispatch = useDispatch();
 
-  console.log('categories: ', categories)
-  
+  const [selectedImages, setSelectedImages] = useState()
+
+  const imageHandleChange = (e) => {
+
+  }
+
+  console.log("categories: ", categories);
+
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
@@ -58,9 +64,9 @@ export const AddAnnouncement = () => {
   } else {
     saveButton = false;
   }
-  let content
+  let content;
   if (loading) {
-    content = (<Typography variant="body2"> Fetching data...</Typography>)
+    content = <Typography variant="body2"> Fetching data...</Typography>;
   } else {
     content = (
       <ThemeProvider theme={theme}>
@@ -80,9 +86,7 @@ export const AddAnnouncement = () => {
                   Add announcement
                 </Typography>
               </Grid>
-              <Grid item>
-                {checkInputs}
-              </Grid>
+              <Grid item>{checkInputs}</Grid>
               {/*
             <Box
               component="form"
@@ -131,18 +135,28 @@ export const AddAnnouncement = () => {
                     onChange={updateValue}
                     value={updateValue}
                   >
-                    {categories.map(cat => {
+                    {categories.map((cat) => {
                       return (
-                        <MenuItem key={cat.uuid} value={cat.name}>
+                        <MenuItem
+                          key={cat.uuid}
+                          value={cat.name}
+                        >
                           {cat.name}
                         </MenuItem>
-                      )
-                    })
-                    }
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>
-
+              <Grid item>
+                <input type="file" multiple id='file' />
+                <div>
+                  <label htmlFor="file">
+                    <i className="material-icons">add photos</i>
+                  </label>
+                </div>
+              </Grid>
+              {/* TODO */}
               <div>
                 <ul>
                   <li>"add images/multimedia"</li>
@@ -168,11 +182,7 @@ export const AddAnnouncement = () => {
           </Box>
         </Container>
       </ThemeProvider>
-    )
+    );
   }
-  return (
-    <>
-      {content}
-    </>
-  );
+  return <>{content}</>;
 };
