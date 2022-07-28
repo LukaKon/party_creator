@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createAnnouncement } from "../../../redux/slices/announcementSlice";
 import { useDispatch } from "react-redux";
-import { axiosInstance } from "../../../axios";
 
 const validate = (values) => {
     const errors = [];
@@ -43,6 +42,7 @@ export const useForm = (initialValues) => {
         if (errors.length === 0) {
             console.log("Sending... ", values);
             dispatch(createAnnouncement(values));
+            // setValues('')
         }
     };
 

@@ -9,6 +9,8 @@ import {
   CssBaseline,
   FormControl,
   Grid,
+  ImageList,
+  ImageListItem,
   InputLabel,
   MenuItem,
   Select,
@@ -45,14 +47,27 @@ export const AddAnnouncement = () => {
   const [selectedImages, setSelectedImages] = useState()
 
   const imageHandleChange = (e) => {
+    // console.log('images: ', e.target.files)
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file))
+      // console.log('urls: ', fileArray)
 
+      // setSelectedImages(prevImages => prevImages.concat(fileArray))
+      setSelectedImages(fileArray)
+    }
   }
-
-  console.log("categories: ", categories);
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
+
+  let images
+  if (selectedImages) {
+    // images = renderPhoto(selectedImages)
+    images = <UploadedImageList images={selectedImages} />
+  } else {
+    images = <p>Add some images :)</p>
+  }
 
   let checkInputs;
   let saveButton;
@@ -86,14 +101,9 @@ export const AddAnnouncement = () => {
                   Add announcement
                 </Typography>
               </Grid>
+
               <Grid item>{checkInputs}</Grid>
-              {/*
-            <Box
-              component="form"
-              // onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
-            */}
+
               <Grid item>
                 <TextField
                   margin="normal"
@@ -105,6 +115,7 @@ export const AddAnnouncement = () => {
                   onChange={updateValue}
                 />
               </Grid>
+
               <Grid item>
                 <TextareaAutosize
                   margin="normal"
@@ -122,7 +133,6 @@ export const AddAnnouncement = () => {
                   onChange={updateValue}
                 />
               </Grid>
-              {/* <FormControl className={classes.formControl}> */}
 
               <Grid item>
                 <FormControl>
@@ -133,7 +143,7 @@ export const AddAnnouncement = () => {
                     labelId="select_category_label"
                     id="select_category"
                     onChange={updateValue}
-                    value={updateValue}
+                    // value={updateValue}
                   >
                     {categories.map((cat) => {
                       return (
@@ -148,13 +158,15 @@ export const AddAnnouncement = () => {
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item>
-                <input type="file" multiple id='file' />
+                <input type="file" multiple id='file' onChange={imageHandleChange} />
                 <div>
                   <label htmlFor="file">
                     <i className="material-icons">add photos</i>
                   </label>
                 </div>
+                {images}
               </Grid>
               {/* TODO */}
               <div>
@@ -175,9 +187,7 @@ export const AddAnnouncement = () => {
                   Save
                 </Button>
               </Grid>
-              {/*
-            </Box>
-      */}
+
             </Grid>
           </Box>
         </Container>
@@ -186,3 +196,22 @@ export const AddAnnouncement = () => {
   }
   return <>{content}</>;
 };
+
+
+const UploadedImageList = ({ images }) => {
+  console.log('props', images)
+  return (
+    <ImageList sx={{ width: 400, height: 350 }} cols={3} rowHeight={164}>
+      {images.map((image, index) => (
+        <ImageListItem key={index}>
+          <img
+            src={image}
+            // srcSet={}
+            alt={image}
+            loading="lazy"
+          />
+        </ImageListItem>
+      ))}
+    </ImageList>
+  )
+}
