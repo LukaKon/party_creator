@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import { makeStyles } from "@mui/styles";
 import {
   Box,
   Button,
   Container,
-  CssBaseline,
   FormControl,
   Grid,
   ImageList,
@@ -22,29 +19,20 @@ import { useForm } from "./hooks/useForm";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "../../redux/slices/categorySlice";
 
-// const useStyles = makeStyles((theme) => ({
-//     formControl: {
-//         // margin: theme.spacing(1),
-//         margin: 1,
-//         minWidth: 120,
-//     },
-//     selectEmpty: {
-//         // marginTop: theme.spacing(2),
-//         marginTop: 2,
-//     },
-// }));
 
-// export const AddAnnouncement = ({ categories }) => {
 export const AddAnnouncement = () => {
-  // const classes = useStyles();
   const { loading, categories, error } = useSelector(
     (state) => state.categories
   );
   const [updateValue, submitHandler, errors] = useForm({});
-  const theme = createTheme();
   const dispatch = useDispatch();
 
+  const [category, setCategory] = useState('')
   const [selectedImages, setSelectedImages] = useState()
+
+  const categorySelectHandle = (e) => {
+    setCategory(e.target.value)
+  }
 
   const imageHandleChange = (e) => {
     // console.log('images: ', e.target.files)
@@ -60,6 +48,9 @@ export const AddAnnouncement = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
+
+
+  console.log('selected category: ', category)
 
   let images
   if (selectedImages) {
@@ -81,117 +72,107 @@ export const AddAnnouncement = () => {
   }
   let content;
   if (loading) {
-    content = <Typography variant="body2"> Fetching data...</Typography>;
+    content = (<p>Loading</p>);
   } else {
     content = (
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Grid container>
-              <Grid item>
-                <Typography component="h1" variant="h5">
-                  Add announcement
-                </Typography>
-              </Grid>
+      <Container component="main" maxWidth="xs">
+        <Grid container>
+          <Grid item>
+            <Typography component="h1" variant="h5">
+              Add announcement
+            </Typography>
+          </Grid>
 
-              <Grid item>{checkInputs}</Grid>
+          <Grid item>{checkInputs}</Grid>
 
-              <Grid item>
-                <TextField
-                  margin="normal"
-                  required
-                  id="title"
-                  label="Title"
-                  name="title"
-                  autoFocus
-                  onChange={updateValue}
-                />
-              </Grid>
+          <Grid item>
+            <TextField
+              margin="normal"
+              required
+              id="title"
+              label="Title"
+              name="title"
+              autoFocus
+              onChange={updateValue}
+            />
+          </Grid>
 
-              <Grid item>
-                <TextareaAutosize
-                  margin="normal"
-                  required
-                  id="description"
-                  label="Description"
-                  name="description"
-                  autoFocus
-                  aria-label="minimum height"
-                  minRows={3}
-                  maxRows={10}
-                  maxLength={1000}
-                  placeholder="Description..."
-                  style={{ width: 200 }}
-                  onChange={updateValue}
-                />
-              </Grid>
+          <Grid item>
+            <TextareaAutosize
+              margin="normal"
+              required
+              id="description"
+              label="Description"
+              name="description"
+              autoFocus
+              aria-label="minimum height"
+              minRows={3}
+              maxRows={10}
+              maxLength={1000}
+              placeholder="Description..."
+              style={{ width: 200 }}
+              onChange={updateValue}
+            />
+          </Grid>
 
-              <Grid item>
-                <FormControl>
-                  <InputLabel id="select_category_label">
-                    Category
-                  </InputLabel>
-                  <Select
-                    labelId="select_category_label"
-                    id="select_category"
-                    onChange={updateValue}
-                    // value={updateValue}
-                  >
-                    {categories.map((cat) => {
-                      return (
-                        <MenuItem
-                          key={cat.uuid}
-                          value={cat.name}
-                        >
-                          {cat.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item>
-                <input type="file" multiple id='file' onChange={imageHandleChange} />
-                <div>
-                  <label htmlFor="file">
-                    <i className="material-icons">add photos</i>
-                  </label>
-                </div>
-                {images}
-              </Grid>
-              {/* TODO */}
-              <div>
-                <ul>
-                  <li>"add images/multimedia"</li>
-                  <li>"event type: list with checkboxes"</li>
-                </ul>
-              </div>
-              <Grid item>
-                <Button
-                  type="submit"
-                  disabled={saveButton}
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={submitHandler}
-                // onClick={handleSubmit}
+          <Grid item>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullwidth>
+                <InputLabel id="select_category_label">
+                  Category
+                </InputLabel>
+                <Select
+                  labelId="select_category_label"
+                  id="select_category"
+                  value={category}
+                  onChange={categorySelectHandle}
                 >
-                  Save
-                </Button>
-              </Grid>
+                  {categories.map((cat) => {
+                    return (
+                      <MenuItem
+                        key={cat.uuid}
+                        value={cat.name}
+                      >
+                        {cat.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+          </Grid>
 
-            </Grid>
-          </Box>
-        </Container>
-      </ThemeProvider>
+          <Grid item>
+            <input type="file" multiple id='file' onChange={imageHandleChange} />
+            <div>
+              <label htmlFor="file">
+                <i className="material-icons">add photos</i>
+              </label>
+            </div>
+            {images}
+          </Grid>
+          {/* TODO */}
+          <div>
+            <ul>
+              <li>"add images/multimedia"</li>
+              <li>"event type: list with checkboxes"</li>
+            </ul>
+          </div>
+          <Grid item>
+            <Button
+              type="submit"
+              disabled={saveButton}
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={submitHandler}
+            // onClick={handleSubmit}
+            >
+              Save
+            </Button>
+          </Grid>
+
+        </Grid>
+      </Container>
     );
   }
   return <>{content}</>;

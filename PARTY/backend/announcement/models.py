@@ -91,6 +91,9 @@ class Announcement(models.Model):
         verbose_name="announcement_categories",
         on_delete=models.PROTECT,
     )
+    # TODO: announcement can have many categories
+    # category = models.ManyToManyField(Category,related_name="categories")
+
     # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
