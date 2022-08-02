@@ -20,7 +20,6 @@ export const AnnouncementDetailsSkeleton = () => {
   return (
     <Grid container>
       <Grid item>
-        TEST
         <Skeleton
           variant="rectangular"
           width={600}

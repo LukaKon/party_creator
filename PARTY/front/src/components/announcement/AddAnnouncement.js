@@ -19,16 +19,52 @@ import { useForm } from "./hooks/useForm";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "../../redux/slices/categorySlice";
 
+import { useInput } from "./hooks/useInput"
+import { createAnnouncement } from "../../redux/slices/announcementSlice";
+
 
 export const AddAnnouncement = () => {
+
+  const {
+    value: enteredTitle,
+    isValid: enteredTitleIsValid,
+    hasError: titleInputHasError,
+    valueChangeHandler: titleChangedHandler,
+    inputBlurHandler: titleBlurHandler,
+    reset: resetTitleInput,
+  } = useInput(value => value.trim() !== '')
+
   const { loading, categories, error } = useSelector(
     (state) => state.categories
   );
+
+
   const [updateValue, submitHandler, errors] = useForm({});
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState('')
   const [selectedImages, setSelectedImages] = useState()
+
+
+  let formIsValid = false
+  if (enteredTitleIsValid) {
+    formIsValid = true
+  }
+
+  const formSubmissionHandler = e => {
+    e.prevenDefault()
+
+    if (!enteredTitleIsValid) {
+      return
+    }
+    console.log('entered title: ', enteredTitle)
+    const ann={
+      title: enteredTitle,
+    }
+    dispatch(createAnnouncement(ann))
+
+    resetTitleInput()
+  }
 
   const categorySelectHandle = (e) => {
     setCategory(e.target.value)
@@ -93,8 +129,13 @@ export const AddAnnouncement = () => {
               label="Title"
               name="title"
               autoFocus
-              onChange={updateValue}
+              defaultValue='Tytuł'
+              // onChange={updateValue}
+              onChange={titleChangedHandler}
+              onBlur={titleBlurHandler}
+              value={enteredTitle}
             />
+            {titleInputHasError && (<p style={{color: "red"}}>Title must not be empty.</p>)}
           </Grid>
 
           <Grid item>

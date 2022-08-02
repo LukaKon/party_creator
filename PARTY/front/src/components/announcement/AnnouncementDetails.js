@@ -26,12 +26,24 @@ export const AnnouncementDetails = () => {
   }, []);
 
   let content
+
   if (loading) {
     content = <AnnouncementDetailsSkeleton />
   } else {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
+      // if (typeof entities.category === 'Array') {
+      // category = (
+      // entities.category.map(cat =>
+      // <h4>{cat.name} </h4>
+      // ))
+      // } else {
+      // category = (
+      // <h4>{entities.category.name}</h4>
+      // )
+      // }
+
       content = (
         <Box pa sx={{ flexGrow: 1 }}>
           <Grid
@@ -47,17 +59,30 @@ export const AnnouncementDetails = () => {
               <Grid item>
                 <Typography variant='h6'>Title: {entities.title}</Typography>
               </Grid>
+
               <Grid item>
                 <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
               </Grid>
+
               <Grid item>
-                <Typography variant='caption'>Created by: {entities.user.email}, category: {entities.category.name}</Typography>
+                <Typography variant='caption'>
+                  Created by: {entities.user.email},
+                  category/ies: {entities.category.map(cat => (
+                    <CategoryItem key={cat.uuid} {...cat} />
+                  ))}
+                  {/*
+                  {typeof entities.category === 'Array'
+                    ? entities.category.map(cat => (<h4>{cat.name} </h4>))
+                    : (<h4>{entities.category.name}</h4>)
+                  }
+      */}
+                </Typography>
               </Grid>
+
               <Grid item>
                 <Typography variant="body1">Description: {entities.description}</Typography>
               </Grid>
             </Grid>
-
 
             <Grid item xs={6}>
               Images:
@@ -83,7 +108,8 @@ export const AnnouncementDetails = () => {
       {content}
     </Grid>
   );
-};
+}
+
 
 const ImageItem = (props) => {
   // console.log('props: ',props)
@@ -99,5 +125,11 @@ const ImageItem = (props) => {
         />
       </ImageListItem>
     </Link>
+  )
+}
+
+const CategoryItem = (props) => {
+  return (
+    <h4>{props.name}</h4>
   )
 }
