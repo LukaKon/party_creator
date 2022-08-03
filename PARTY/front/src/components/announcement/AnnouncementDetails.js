@@ -33,17 +33,6 @@ export const AnnouncementDetails = () => {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
-      // if (typeof entities.category === 'Array') {
-      // category = (
-      // entities.category.map(cat =>
-      // <h4>{cat.name} </h4>
-      // ))
-      // } else {
-      // category = (
-      // <h4>{entities.category.name}</h4>
-      // )
-      // }
-
       content = (
         <Box pa sx={{ flexGrow: 1 }}>
           <Grid
@@ -67,15 +56,14 @@ export const AnnouncementDetails = () => {
               <Grid item>
                 <Typography variant='caption'>
                   Created by: {entities.user.email},
+                </Typography>
+              </Grid>
+
+              <Grid item>
+                <Typography variant='h6'>
                   category/ies: {entities.category.map(cat => (
                     <CategoryItem key={cat.uuid} {...cat} />
                   ))}
-                  {/*
-                  {typeof entities.category === 'Array'
-                    ? entities.category.map(cat => (<h4>{cat.name} </h4>))
-                    : (<h4>{entities.category.name}</h4>)
-                  }
-      */}
                 </Typography>
               </Grid>
 
@@ -130,6 +118,7 @@ const ImageItem = (props) => {
 
 const CategoryItem = (props) => {
   return (
-    <h4>{props.name}</h4>
+    // TODO: category as link to filtering by category
+    <h6>{props.name}</h6>
   )
 }

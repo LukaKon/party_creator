@@ -22,6 +22,8 @@ import { fetchCategories } from "../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput"
 import { createAnnouncement } from "../../redux/slices/announcementSlice";
 
+import { SelectCategory } from '../announcement/SelectCategory'
+
 
 export const AddAnnouncement = () => {
 
@@ -39,7 +41,7 @@ export const AddAnnouncement = () => {
   );
 
 
-  const [updateValue, submitHandler, errors] = useForm({});
+  // const [updateValue, submitHandler, errors] = useForm({});
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState('')
@@ -47,6 +49,7 @@ export const AddAnnouncement = () => {
 
 
   let formIsValid = false
+
   if (enteredTitleIsValid) {
     formIsValid = true
   }
@@ -58,8 +61,9 @@ export const AddAnnouncement = () => {
       return
     }
     console.log('entered title: ', enteredTitle)
-    const ann={
+    const ann = {
       title: enteredTitle,
+      description: enteredDescription,
     }
     dispatch(createAnnouncement(ann))
 
@@ -98,14 +102,14 @@ export const AddAnnouncement = () => {
 
   let checkInputs;
   let saveButton;
-  if (errors.length !== 0) {
-    checkInputs = (
-      <Typography color={"red"}>{errors.map((err) => err)}</Typography>
-    );
-    saveButton = true;
-  } else {
-    saveButton = false;
-  }
+  // if (errors.length !== 0) {
+    // checkInputs = (
+      // <Typography color={"red"}>{errors.map((err) => err)}</Typography>
+    // );
+    // saveButton = true;
+  // } else {
+    // saveButton = false;
+  // }
   let content;
   if (loading) {
     content = (<p>Loading</p>);
@@ -135,7 +139,7 @@ export const AddAnnouncement = () => {
               onBlur={titleBlurHandler}
               value={enteredTitle}
             />
-            {titleInputHasError && (<p style={{color: "red"}}>Title must not be empty.</p>)}
+            {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
           </Grid>
 
           <Grid item>
@@ -147,17 +151,22 @@ export const AddAnnouncement = () => {
               name="description"
               autoFocus
               aria-label="minimum height"
-              minRows={3}
+              minRows={5}
               maxRows={10}
               maxLength={1000}
               placeholder="Description..."
               style={{ width: 200 }}
-              onChange={updateValue}
+              // onChange={updateValue}
             />
           </Grid>
 
           <Grid item>
-            <Box sx={{ minWidth: 120 }}>
+            <SelectCategory
+              categories={categories}
+              selectedCategoryCallBack={category => setCategory(category)}
+            />
+            {/*
+            <Box sx={{ minWidth: 300 }}>
               <FormControl fullwidth>
                 <InputLabel id="select_category_label">
                   Category
@@ -181,6 +190,7 @@ export const AddAnnouncement = () => {
                 </Select>
               </FormControl>
             </Box>
+  */}
           </Grid>
 
           <Grid item>
@@ -205,8 +215,9 @@ export const AddAnnouncement = () => {
               disabled={saveButton}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={submitHandler}
-            // onClick={handleSubmit}
+              // onClick={submitHandler}
+              // onClick={handleSubmit}
+              onClick={formSubmissionHandler}
             >
               Save
             </Button>
