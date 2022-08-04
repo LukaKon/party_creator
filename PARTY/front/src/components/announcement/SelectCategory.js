@@ -19,28 +19,34 @@ const MenuProps = {
   },
 }
 
-const getStyle = (name, personName, theme) => {
+const getStyle = (category, categoryName, theme) => {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      categoryName.indexOf(category) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium
   }
 }
 
-export const SelectCategory = ({ categories, selectCategoryCallBack }) => {
+export const SelectCategory = (props) => {
+
+  // console.log('props in select: ',props)
+
   const theme = useTheme()
   const [categoryName, setCategoryName] = useState([])
 
   const handleChange = e => {
+    e.preventDefault()
     const { target: { value }, } = e
     setCategoryName(
       typeof value === 'string' ? value.split('.') : value
     )
-    if (typeof selectCategoryCallBack==='function'){
-      selectCategoryCallBack(categoryName)
+    if (typeof props.selectedCategory === 'function') {
+      console.log('cat in if: ', categoryName)
+      props.selectedCategory(categoryName)
     }
   }
+
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
@@ -54,7 +60,7 @@ export const SelectCategory = ({ categories, selectCategoryCallBack }) => {
           input={<OutlinedInput label='Cat' />}
           MenuProps={MenuProps}
         >
-          {categories.map(category => (
+          {props.categories.map(category => (
             <MenuItem
               key={category.uuid}
               value={category.name}

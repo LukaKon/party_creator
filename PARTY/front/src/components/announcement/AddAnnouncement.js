@@ -55,7 +55,7 @@ export const AddAnnouncement = () => {
   }
 
   const formSubmissionHandler = e => {
-    e.prevenDefault()
+    e.preventDefault()
 
     if (!enteredTitleIsValid) {
       return
@@ -70,8 +70,9 @@ export const AddAnnouncement = () => {
     resetTitleInput()
   }
 
-  const categorySelectHandle = (e) => {
-    setCategory(e.target.value)
+  const categorySelectHandle = (category) => {
+    console.log('selected cat in children:' ,category)
+    setCategory(category)
   }
 
   const imageHandleChange = (e) => {
@@ -163,7 +164,7 @@ export const AddAnnouncement = () => {
           <Grid item>
             <SelectCategory
               categories={categories}
-              selectedCategoryCallBack={category => setCategory(category)}
+              selectedCategory={categorySelectHandle}
             />
             {/*
             <Box sx={{ minWidth: 300 }}>
