@@ -7,6 +7,7 @@ import {
   FormControl,
   Select,
 } from '@mui/material'
+import { useInput } from "./hooks/useInput";
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -34,9 +35,21 @@ export const SelectCategory = (props) => {
   const theme = useTheme()
   const [categoryName, setCategoryName] = useState([])
 
+  const {
+    value: selectedCategory,
+    isValid: selectedCategoryValid,
+    hasError: categoryInputHasError,
+    valueChangeHandler: categoryChangedHandler,
+    inputBlurHandler: categoryBlurHandler,
+    reset: resetCategoryInput,//will be different
+  } = useInput(value => value.length !== 0)
+
   const handleChange = e => {
     e.preventDefault()
-    const { target: { value }, } = e
+    const value=e.target.value
+
+    // console.log('value: ',e )
+
     setCategoryName(
       typeof value === 'string' ? value.split('.') : value
     )
