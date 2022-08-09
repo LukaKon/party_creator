@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  Box,
   Button,
   Container,
-  FormControl,
   Grid,
   ImageList,
   ImageListItem,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextareaAutosize,
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "./hooks/useForm";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "../../redux/slices/categorySlice";
 
@@ -36,12 +29,28 @@ export const AddAnnouncement = () => {
     reset: resetTitleInput,
   } = useInput(value => value.trim() !== '')
 
+  const {
+    value: enteredDescription,
+    isValid: enteredDescriptionValid,
+    hasError: descriptionInputHasError,
+    valueChangeHandler: descriptionChangedHandler,
+    inputBlurHandler: descriptionBlurHandler,
+    reset: resetDescriptionInput,
+  } = useInput(value => value.trim() !== '')
+
+  const {
+    value: selectedCategory,
+    isValid: selectedCategoryValid,
+    hasError: categoryInputHasError,
+    valueChangeHandler: categoryChangedHandler,
+    inputBlurHandler: categoryBlurHandler,
+    reset: resetCategoryInput,//will be different
+  } = useInput(value => value.length !== 0)
+
   const { loading, categories, error } = useSelector(
     (state) => state.categories
   );
 
-
-  // const [updateValue, submitHandler, errors] = useForm({});
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState('')
@@ -50,28 +59,32 @@ export const AddAnnouncement = () => {
 
   let formIsValid = false
 
-  if (enteredTitleIsValid) {
+  if (enteredTitleIsValid && enteredDescriptionValid) {
     formIsValid = true
   }
+
+  console.log('form is valid: ', formIsValid)
 
   const formSubmissionHandler = e => {
     e.preventDefault()
 
-    if (!enteredTitleIsValid) {
+    if (!enteredTitleIsValid && !enteredDescriptionValid) {
       return
     }
-    console.log('entered title: ', enteredTitle)
     const ann = {
       title: enteredTitle,
       description: enteredDescription,
+      category: category,
     }
+    console.log('data to sent: ', ann)
     dispatch(createAnnouncement(ann))
 
     resetTitleInput()
+    resetDescriptionInput()
   }
 
   const categorySelectHandle = (category) => {
-    console.log('selected cat in children:' ,category)
+    console.log('selected cat in children:', category)
     setCategory(category)
   }
 
@@ -102,25 +115,20 @@ export const AddAnnouncement = () => {
   }
 
   let checkInputs;
-  let saveButton;
   // if (errors.length !== 0) {
-    // checkInputs = (
-      // <Typography color={"red"}>{errors.map((err) => err)}</Typography>
-    // );
-    // saveButton = true;
-  // } else {
-    // saveButton = false;
-  // }
+  // checkInputs = (
+  // <Typography color={"red"}>{errors.map((err) => err)}</Typography>
+  // );
   let content;
   if (loading) {
-    content = (<p>Loading</p>);
+    content = (<p>Loading...</p>);
   } else {
     content = (
       <Container component="main" maxWidth="xs">
         <Grid container>
           <Grid item>
             <Typography component="h1" variant="h5">
-              Add announcement
+              Dodaj ogłoszenie:
             </Typography>
           </Grid>
 
@@ -133,32 +141,37 @@ export const AddAnnouncement = () => {
               id="title"
               label="Title"
               name="title"
-              autoFocus
+              // autoFocus
               defaultValue='Tytuł'
-              // onChange={updateValue}
               onChange={titleChangedHandler}
               onBlur={titleBlurHandler}
               value={enteredTitle}
+              error={titleInputHasError}
             />
             {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
           </Grid>
 
           <Grid item>
-            <TextareaAutosize
+            <TextField
               margin="normal"
               required
               id="description"
               label="Description"
               name="description"
-              autoFocus
-              aria-label="minimum height"
+              // autoFocus
+              // aria-label="minimum height"
+              multiline
               minRows={5}
               maxRows={10}
               maxLength={1000}
               placeholder="Description..."
-              style={{ width: 200 }}
-              // onChange={updateValue}
+              style={{ width: 500 }}
+              onChange={descriptionChangedHandler}
+              onBlur={descriptionBlurHandler}
+              value={enteredDescription}
+              error={descriptionInputHasError}
             />
+            {descriptionInputHasError && (<p style={{ color: 'red' }}>Description must not be empty.</p>)}
           </Grid>
 
           <Grid item>
@@ -166,32 +179,6 @@ export const AddAnnouncement = () => {
               categories={categories}
               selectedCategory={categorySelectHandle}
             />
-            {/*
-            <Box sx={{ minWidth: 300 }}>
-              <FormControl fullwidth>
-                <InputLabel id="select_category_label">
-                  Category
-                </InputLabel>
-                <Select
-                  labelId="select_category_label"
-                  id="select_category"
-                  value={category}
-                  onChange={categorySelectHandle}
-                >
-                  {categories.map((cat) => {
-                    return (
-                      <MenuItem
-                        key={cat.uuid}
-                        value={cat.name}
-                      >
-                        {cat.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Box>
-  */}
           </Grid>
 
           <Grid item>
@@ -204,20 +191,18 @@ export const AddAnnouncement = () => {
             {images}
           </Grid>
           {/* TODO */}
-          <div>
+          <Grid item>
             <ul>
               <li>"add images/multimedia"</li>
               <li>"event type: list with checkboxes"</li>
             </ul>
-          </div>
+          </Grid>
           <Grid item>
             <Button
               type="submit"
-              disabled={saveButton}
+              disabled={!formIsValid}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              // onClick={submitHandler}
-              // onClick={handleSubmit}
               onClick={formSubmissionHandler}
             >
               Save

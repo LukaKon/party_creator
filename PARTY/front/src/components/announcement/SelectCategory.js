@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles'
 import {
   OutlinedInput,
@@ -10,6 +10,7 @@ import {
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
+
 const MenuProps = {
   PaperProps: {
     style: {
@@ -30,8 +31,6 @@ const getStyle = (category, categoryName, theme) => {
 
 export const SelectCategory = (props) => {
 
-  // console.log('props in select: ',props)
-
   const theme = useTheme()
   const [categoryName, setCategoryName] = useState([])
 
@@ -41,19 +40,24 @@ export const SelectCategory = (props) => {
     setCategoryName(
       typeof value === 'string' ? value.split('.') : value
     )
+  }
+
+  useEffect(() => {
     if (typeof props.selectedCategory === 'function') {
-      console.log('cat in if: ', categoryName)
+      // console.log('cat in if: ', categoryName)
       props.selectedCategory(categoryName)
     }
-  }
+  }, [categoryName])
 
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id='category-label'>Category</InputLabel>
         <Select
+    margin='normal'
           labelId="category-label"
           id='category'
+    required
           multiple
           value={categoryName}
           onChange={handleChange}
