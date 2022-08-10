@@ -38,15 +38,6 @@ export const AddAnnouncement = () => {
     reset: resetDescriptionInput,
   } = useInput(value => value.trim() !== '')
 
-  const {
-    value: selectedCategory,
-    isValid: selectedCategoryValid,
-    hasError: categoryInputHasError,
-    valueChangeHandler: categoryChangedHandler,
-    inputBlurHandler: categoryBlurHandler,
-    reset: resetCategoryInput,//will be different
-  } = useInput(value => value.length !== 0)
-
   const { loading, categories, error } = useSelector(
     (state) => state.categories
   );
@@ -54,12 +45,14 @@ export const AddAnnouncement = () => {
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState('')
+  const [categoryValid, setCategoryValid] = useState(false)
   const [selectedImages, setSelectedImages] = useState()
 
 
   let formIsValid = false
 
-  if (enteredTitleIsValid && enteredDescriptionValid) {
+  if (enteredTitleIsValid && enteredDescriptionValid && categoryValid) {
+    console.log('title: ', enteredTitleIsValid, 'desc: ',enteredDescriptionValid, 'cat: ',categoryValid)
     formIsValid = true
   }
 
@@ -68,7 +61,7 @@ export const AddAnnouncement = () => {
   const formSubmissionHandler = e => {
     e.preventDefault()
 
-    if (!enteredTitleIsValid && !enteredDescriptionValid) {
+    if (!enteredTitleIsValid && !enteredDescriptionValid && !categoryValid) {
       return
     }
     const ann = {
@@ -84,8 +77,12 @@ export const AddAnnouncement = () => {
   }
 
   const categorySelectHandle = (category) => {
-    console.log('selected cat in children:', category)
+    // console.log('selected cat in children:', category)
     setCategory(category)
+  }
+
+  const isCategoryValid = (validCategory) => {
+    setCategoryValid(validCategory)
   }
 
   const imageHandleChange = (e) => {
@@ -159,7 +156,6 @@ export const AddAnnouncement = () => {
               label="Description"
               name="description"
               // autoFocus
-              // aria-label="minimum height"
               multiline
               minRows={5}
               maxRows={10}
@@ -178,7 +174,9 @@ export const AddAnnouncement = () => {
             <SelectCategory
               categories={categories}
               selectedCategory={categorySelectHandle}
+              categoryIsValid={isCategoryValid}
             />
+            {error && (<p style={{ color: 'red' }}>Error: {error}</p>)}
           </Grid>
 
           <Grid item>
@@ -190,13 +188,7 @@ export const AddAnnouncement = () => {
             </div>
             {images}
           </Grid>
-          {/* TODO */}
-          <Grid item>
-            <ul>
-              <li>"add images/multimedia"</li>
-              <li>"event type: list with checkboxes"</li>
-            </ul>
-          </Grid>
+
           <Grid item>
             <Button
               type="submit"
@@ -207,6 +199,14 @@ export const AddAnnouncement = () => {
             >
               Save
             </Button>
+          </Grid>
+
+          <Grid item>
+          TODO: 
+            <ul>
+              <li>"add images/multimedia"</li>
+              <li>"event type: list with checkboxes"</li>
+            </ul>
           </Grid>
 
         </Grid>
