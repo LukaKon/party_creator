@@ -15,7 +15,9 @@ import { fetchCategories } from "../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput"
 import { createAnnouncement } from "../../redux/slices/announcementSlice";
 
-import { SelectCategory } from '../announcement/SelectCategory'
+import { TitleInput } from './TitleInput'
+import { SelectCategory } from './SelectCategory'
+import { SelectImages } from './SelectImages'
 
 
 export const AddAnnouncement = () => {
@@ -27,7 +29,7 @@ export const AddAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput(value => value.trim() !== '')
+  } = useInput(value => value.trim() !== '', '')
 
   const {
     value: enteredDescription,
@@ -36,7 +38,7 @@ export const AddAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput(value => value.trim() !== '')
+  } = useInput(value => value.trim() !== '', '')
 
   const { loading, categories, error } = useSelector(
     (state) => state.categories
@@ -46,17 +48,19 @@ export const AddAnnouncement = () => {
 
   const [category, setCategory] = useState('')
   const [categoryValid, setCategoryValid] = useState(false)
-  const [selectedImages, setSelectedImages] = useState()
 
+  const [resetForm, setResetForm] = useState(false)
+
+  // const [selectedImages, setSelectedImages] = useState()
 
   let formIsValid = false
 
   if (enteredTitleIsValid && enteredDescriptionValid && categoryValid) {
-    console.log('title: ', enteredTitleIsValid, 'desc: ',enteredDescriptionValid, 'cat: ',categoryValid)
+    console.log('title: ', enteredTitleIsValid, 'desc: ', enteredDescriptionValid, 'cat: ', categoryValid)
     formIsValid = true
   }
 
-  console.log('form is valid: ', formIsValid)
+  // console.log('form is valid: ', formIsValid)
 
   const formSubmissionHandler = e => {
     e.preventDefault()
@@ -74,6 +78,7 @@ export const AddAnnouncement = () => {
 
     resetTitleInput()
     resetDescriptionInput()
+    setResetForm(true)
   }
 
   const categorySelectHandle = (category) => {
@@ -85,37 +90,32 @@ export const AddAnnouncement = () => {
     setCategoryValid(validCategory)
   }
 
-  const imageHandleChange = (e) => {
-    // console.log('images: ', e.target.files)
-    if (e.target.files) {
-      const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file))
-      // console.log('urls: ', fileArray)
+  // const imageHandleChange = (e) => {
+  //   // console.log('images: ', e.target.files)
+  //   if (e.target.files) {
+  //     const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file))
+  //     // console.log('urls: ', fileArray)
 
-      // setSelectedImages(prevImages => prevImages.concat(fileArray))
-      setSelectedImages(fileArray)
-    }
-  }
+  //     // setSelectedImages(prevImages => prevImages.concat(fileArray))
+  //     setSelectedImages(fileArray)
+  //   }
+  // }
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
 
 
-  console.log('selected category: ', category)
+  // console.log('selected category: ', category)
 
-  let images
-  if (selectedImages) {
-    // images = renderPhoto(selectedImages)
-    images = <UploadedImageList images={selectedImages} />
-  } else {
-    images = <p>Add some images :)</p>
-  }
+  // let images
+  // if (selectedImages) {
+  //   // images = renderPhoto(selectedImages)
+  //   images = <UploadedImageList images={selectedImages} />
+  // } else {
+  //   images = <p>Add some images :)</p>
+  // }
 
-  let checkInputs;
-  // if (errors.length !== 0) {
-  // checkInputs = (
-  // <Typography color={"red"}>{errors.map((err) => err)}</Typography>
-  // );
   let content;
   if (loading) {
     content = (<p>Loading...</p>);
@@ -128,8 +128,6 @@ export const AddAnnouncement = () => {
               Dodaj ogłoszenie:
             </Typography>
           </Grid>
-
-          <Grid item>{checkInputs}</Grid>
 
           <Grid item>
             <TextField
@@ -146,6 +144,12 @@ export const AddAnnouncement = () => {
               error={titleInputHasError}
             />
             {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
+          </Grid>
+
+          <Grid item>
+            <TitleInput
+              reset={resetForm}
+            />
           </Grid>
 
           <Grid item>
@@ -175,10 +179,12 @@ export const AddAnnouncement = () => {
               categories={categories}
               selectedCategory={categorySelectHandle}
               categoryIsValid={isCategoryValid}
+              reset={resetForm}
             />
             {error && (<p style={{ color: 'red' }}>Error: {error}</p>)}
           </Grid>
 
+    {/*
           <Grid item>
             <input type="file" multiple id='file' onChange={imageHandleChange} />
             <div>
@@ -187,6 +193,12 @@ export const AddAnnouncement = () => {
               </label>
             </div>
             {images}
+          </Grid>
+    */}
+
+          <Grid item>
+            <span style={{color:'red'}}>TEST</span>
+            <SelectImages />
           </Grid>
 
           <Grid item>
@@ -202,7 +214,7 @@ export const AddAnnouncement = () => {
           </Grid>
 
           <Grid item>
-          TODO: 
+            TODO:
             <ul>
               <li>"add images/multimedia"</li>
               <li>"event type: list with checkboxes"</li>

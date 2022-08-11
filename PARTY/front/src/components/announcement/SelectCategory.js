@@ -7,6 +7,8 @@ import {
   FormControl,
   Select,
 } from '@mui/material'
+import { useInput } from "./hooks/useInput";
+
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -31,23 +33,38 @@ const getStyle = (category, selectedCategory, theme) => {
 
 export const SelectCategory = (props) => {
 
+  const {
+    value: selectedCategory,
+    isValid: selectedCategoryIsValid,
+    hasError: selectedCategoryHasError,
+    valueChangeHandler: selectedCategoryChangedHandler,
+    inputBlurHandler: selectedCategoryBlurHandler,
+    reset: resetSelectedCategory,
+  } = useInput(value => value.length > 0, [])
+
   const theme = useTheme()
-  const [selectedCategory, setSelectedCategory] = useState([])
-  const [isTouched, setIsTouched] = useState(false)
+  // const [selectedCategory, setSelectedCategory] = useState([])
+  // const [isTouched, setIsTouched] = useState(false)
 
-  const valueIsValid = selectedCategory.length > 0
-  const hasError = !valueIsValid && isTouched
+  // const valueIsValid = selectedCategory.length > 0
+  // const hasError = !valueIsValid && isTouched
 
-  const valueChangeHandler = e => {
-    const value = e.target.value
+  // const valueChangeHandler = e => {
+  //   const value = e.target.value
 
-    setSelectedCategory(
-      typeof value === 'string' ? value.split('.') : value
-    )
-  }
+  //   setSelectedCategory(
+  //     typeof value === 'string' ? value.split('.') : value
+  //   )
+  // }
 
-  const inputBlurHandler = e => {
-    setIsTouched(true)
+  // const inputBlurHandler = e => {
+  //   setIsTouched(true)
+  // }
+  
+  // TODO: reset category field to init state
+  console.log('reset?: ',props.reset)
+  if (props.reset){
+    // resetSelectedCategory()
   }
 
   useEffect(() => {
@@ -55,11 +72,13 @@ export const SelectCategory = (props) => {
       // console.log('cat in if: ', selectedCategory)
       props.selectedCategory(selectedCategory)
     }
-    if (typeof props.categoryIsValid=== 'function') {
+    if (typeof props.categoryIsValid === 'function') {
       // console.log('is cat valid in component: ', valueIsValid)
-      props.categoryIsValid(valueIsValid)
+      // props.categoryIsValid(valueIsValid)
+      props.categoryIsValid(selectedCategoryIsValid)
     }
-  }, [selectedCategory, valueIsValid])
+    // }, [selectedCategory, valueIsValid])
+  }, [selectedCategory, selectedCategoryIsValid])
 
   return (
     <>
@@ -72,9 +91,12 @@ export const SelectCategory = (props) => {
           required
           multiple
           value={selectedCategory}
-          onChange={valueChangeHandler}
-          onBlur={inputBlurHandler}
-          error={hasError}
+          // onChange={valueChangeHandler}
+          // onBlur={inputBlurHandler}
+          // error={hasError}
+          onChange={selectedCategoryChangedHandler}
+          onBlur={selectedCategoryBlurHandler}
+          error={selectedCategoryHasError}
           input={<OutlinedInput label='Cat' />}
           MenuProps={MenuProps}
         >
@@ -89,7 +111,8 @@ export const SelectCategory = (props) => {
           ))}
         </Select>
       </FormControl>
-      {hasError && (<p style={{ color: "red" }}>Category must be selected.</p>)}
+      {/*}{hasError && (<p style={{ color: "red" }}>Category must be selected.</p>)}*/}
+      {selectedCategoryHasError && (<p style={{ color: "red" }}>Category must be selected.</p>)}
     </>
   )
 }
