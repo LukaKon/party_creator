@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from rest_framework import status, viewsets
+from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
@@ -69,6 +70,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
+    parser_classesses = (MultiPartParser,FormParser,)
 
     # def get_permissions(self):
     #     """Instantiates and returns the list of permissions that this view requires."""

@@ -22,6 +22,13 @@ import { SelectImages } from './SelectImages'
 
 export const AddAnnouncement = () => {
 
+  const [dataToSend, setDataToSend] = useState({
+    title: '',
+    description: '',
+    category: [],
+    images: [],
+  })
+
   const {
     value: enteredTitle,
     isValid: enteredTitleIsValid,
@@ -184,7 +191,7 @@ export const AddAnnouncement = () => {
             {error && (<p style={{ color: 'red' }}>Error: {error}</p>)}
           </Grid>
 
-    {/*
+          {/*
           <Grid item>
             <input type="file" multiple id='file' onChange={imageHandleChange} />
             <div>
@@ -197,7 +204,7 @@ export const AddAnnouncement = () => {
     */}
 
           <Grid item>
-            <span style={{color:'red'}}>TEST</span>
+            <span style={{ color: 'red' }}>TEST</span>
             <SelectImages />
           </Grid>
 

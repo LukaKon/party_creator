@@ -4,9 +4,8 @@ import {
   ImageListItem,
 } from '@mui/material'
 import {
-  AddPhotoAlternateIcon,
-  AddPhotoOutlined,
-   }from '@mui/icons-material';
+  AddAPhotoOutlined,
+} from '@mui/icons-material';
 
 export const SelectImages = (props) => {
 
@@ -33,13 +32,14 @@ export const SelectImages = (props) => {
         type='file'
         multiple
         id='file'
+        accept="image/jpeg,image/png"
         onChange={imageHandleChange}
       />
       <div>
         <label htmlFor="file">
-    // <svg data-testid='AddPhotoAlternateIcon'>ikona</svg>
-    <AddPhotoOutlined />
-          <i className="material-icons">add photos</i>
+          <AddAPhotoOutlined>
+            <i className="material-icons">add photos</i>
+          </AddAPhotoOutlined>
         </label>
       </div>
       {images}
