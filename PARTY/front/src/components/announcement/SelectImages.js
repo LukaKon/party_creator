@@ -37,9 +37,11 @@ export const SelectImages = (props) => {
       />
       <div>
         <label htmlFor="file">
-          <AddAPhotoOutlined>
+          <AddAPhotoOutlined/>
+    {/*
             <i className="material-icons">add photos</i>
           </AddAPhotoOutlined>
+  */}
         </label>
       </div>
       {images}

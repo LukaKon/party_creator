@@ -16,7 +16,9 @@ export const TitleInput = (props) => {
   console.log('Title reset: ',props.reset)
   if (props.reset) {
     console.log('reset Tytuł func')
+    console.log('reset?: ',props.reset)
     // resetTitleInput()
+
   }
 
   //TODO: return entered value and if it is Valid
