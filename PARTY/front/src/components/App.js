@@ -10,6 +10,7 @@ import { Profile } from "./Profile";
 import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
 import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
+import { AllAnnouncement } from "./AllAnnouncement";
 
 export const App = () => {
     const isAuthenticated = sessionStorage.getItem('access_token')
@@ -39,6 +40,7 @@ export const App = () => {
                         path=":slug"
                         element={<AnnouncementDetails />}
                     />
+                    <Route path="announcement" element={<AllAnnouncement/>}/>
 
                     {/*Views only for logged users*/}
 
