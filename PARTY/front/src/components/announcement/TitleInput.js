@@ -17,7 +17,6 @@ export const TitleInput = (props) => {
   if (props.reset) {
     console.log('reset?: ',props.reset)
     resetTitleInput()
-    props.reset=false
 
   }
 
@@ -25,18 +24,18 @@ export const TitleInput = (props) => {
 
   return (
     <>
-    <TextField
-      margin='normal'
-      required
-      id='title'
-      label='Tytuł'
-      name='title'
-      // defaultValue='Tytuł'
-      value={enteredTitle}
-      onChange={titleChangedHandler}
-      onBlur={titleBlurHandler}
-      error={titleInputHasError}
-    />
+      <TextField
+        margin='normal'
+        required
+        id='title'
+        label='Tytuł'
+        name='title'
+        // defaultValue='Tytuł'
+        value={enteredTitle}
+        onChange={titleChangedHandler}
+        onBlur={titleBlurHandler}
+        error={titleInputHasError}
+      />
     {titleInputHasError && (<p style={{ color: 'red' }}>Tytuł nie może zostać pusty.</p>)}
   </>
   )
