@@ -15,15 +15,16 @@ export const TitleInput = (props) => {
 
   console.log('Title reset: ',props.reset)
   if (props.reset) {
-    console.log('reset Tytuł func')
     console.log('reset?: ',props.reset)
-    // resetTitleInput()
+    resetTitleInput()
+    props.reset=false
 
   }
 
   //TODO: return entered value and if it is Valid
 
-  return (<>
+  return (
+    <>
     <TextField
       margin='normal'
       required
@@ -37,5 +38,6 @@ export const TitleInput = (props) => {
       error={titleInputHasError}
     />
     {titleInputHasError && (<p style={{ color: 'red' }}>Tytuł nie może zostać pusty.</p>)}
-  </>)
+  </>
+  )
 }

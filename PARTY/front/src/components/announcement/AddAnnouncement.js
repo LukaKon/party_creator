@@ -86,6 +86,7 @@ export const AddAnnouncement = () => {
     resetTitleInput()
     resetDescriptionInput()
     setResetForm(true)
+    // setResetForm(false)
   }
 
   const categorySelectHandle = (category) => {

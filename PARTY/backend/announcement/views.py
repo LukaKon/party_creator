@@ -1,14 +1,16 @@
 """
 Views for announcements APIs.
 """
-
 from announcement import models, serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from rest_framework import status, viewsets
-from rest_framework.parsers import MultiPartParser,FormParser
+from rest_framework.parsers import (
+    MultiPartParser,
+    FormParser,
+)
 from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
@@ -17,6 +19,7 @@ from rest_framework.permissions import (
 )
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
+
 
 # from rest_framework.parsers import FormParser, MultiPartParser
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -70,7 +73,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
-    parser_classesses = (MultiPartParser,FormParser,)
+    parser_classesses = (MultiPartParser, FormParser,)
 
     # def get_permissions(self):
     #     """Instantiates and returns the list of permissions that this view requires."""
@@ -81,7 +84,10 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     #         permission_classes = (IsAuthenticated,)
     #         authentication_classes = (JWTTokenUserAuthentication,)
     def get_permissions(self):
-        """Instantiates and returns the list of permissions that this view requires."""
+        """
+        Instantiates and returns the list of permissions
+        that this view requires.
+        """
         # print(self.request.data)
 
         if self.request.method == "GET":
@@ -89,11 +95,12 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         else:
             return [IsAuthenticated()]
 
-    def get_authenticators(self):
-        if self.request.method=='GET':
-            return []
-        else:
-            return[JWTTokenUserAuthentication()]
+    # FIXME
+    # def get_authenticators(self):
+    #     if self.request.method == 'GET':
+    #         return []
+    #     else:
+    #         return[JWTTokenUserAuthentication()]
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -116,7 +123,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         # permission_classes = (IsAuthenticated,)
         # print("serializer: ", self.request.data)
         user = get_user_model().objects.get(email=self.request.data.get("user"))
-        category = models.Category.objects.get(uuid=self.request.data.get("category"))
+        category = models.Category.objects.get(
+            uuid=self.request.data.get("category"))
         # category = self.request.data.get("category")
         # TODO: add image...
         serializer.save(user=user, category=category)

@@ -17,7 +17,7 @@ export const useInput = (validateValue,initState) => {
 
 	const reset = () => {
 		setEnteredValue(initState)
-		setIsTouched(false)
+		// setIsTouched(false)
 	}
 
 	return {
