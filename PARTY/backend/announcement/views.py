@@ -1,6 +1,13 @@
 """
 Views for announcements APIs.
 """
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter,
+    OpenApiTypes,
+)
+
 from announcement import models, serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -67,7 +74,17 @@ class ImageViewSet(viewsets.ModelViewSet):
             serializer.save()
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'slug',
+                OpenApiTypes.STR,
+                description='Slug of announcement.'
+            ),
+        ]
+    )
+)
 class AnnouncementViewSet(viewsets.ModelViewSet):
     """View for manage announcement APIs."""
 

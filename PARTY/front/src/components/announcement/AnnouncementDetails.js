@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+   useDispatch,
+   useSelector,
+} from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
@@ -25,6 +28,8 @@ export const AnnouncementDetails = () => {
     dispatch(fetchAnnouncementDetails(slug));
   }, []);
 
+  console.log('error in detail: ', error, entities)
+  
   let content
 
   if (loading) {

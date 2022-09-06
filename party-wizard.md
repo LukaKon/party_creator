@@ -7,7 +7,7 @@
         - [ ] send data from form to backand and save it in the database
         - [ ] nice add image field with preview
     - work on 'announcement details':
-        - [ ] make it nicer
+        - [ ] make it nicer ;)
         - [ ] list other owner announcements or something similar
 
 2. Django:
@@ -18,4 +18,4 @@
     - [ ] user should have additional field: nick/name - email is not the best
 
 3. Docker:
-    - [ ] implement Redis
+    - [ ] implement Redis for casching data

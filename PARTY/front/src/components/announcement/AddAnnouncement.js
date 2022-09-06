@@ -238,7 +238,7 @@ export const AddAnnouncement = () => {
 
 
 const UploadedImageList = ({ images }) => {
-  console.log('props', images)
+  // console.log('props', images)
   return (
     <ImageList sx={{ width: 400, height: 350 }} cols={3} rowHeight={164}>
       {images.map((image, index) => (

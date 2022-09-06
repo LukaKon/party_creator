@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
 import { AnnouncementItem } from "./AnnouncementItem";
-import { Box, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
 
 

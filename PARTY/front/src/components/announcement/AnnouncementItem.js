@@ -7,38 +7,16 @@ import {
     CardMedia,
     Button,
     Typography,
-    // makeStyles,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { BACKEND_LOCALHOST } from "../../../Settings"
 
-import { makeStyles } from "@material-ui/styles";
-
-// const useStyles = makeStyles((theme) => ({
-//     paper: {
-//         maxWidth: 400,
-//         margin: "1px auto",
-//         padding: 2,
-//         background: "#d0f4f9",
-//     },
-//     image: {
-//         width: 128,
-//         height: 128,
-//     },
-//     img: {
-//         margin: "auto",
-//         display: "block",
-//         maxWidth: "100%",
-//         maxHeight: "100%",
-//     },
-// }));
 
 export const AnnouncementItem = (props) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        // const link = "announcements/" + props.slug;
-        navigate(props.slug);
+        navigate('announcement/' + props.slug);
     };
 
     const main_image = props.images.filter((item) => {
@@ -72,7 +50,7 @@ export const AnnouncementItem = (props) => {
             </CardContent>
             <CardActions>
                 <Button onClick={handleClick}>Button to details</Button>
-                <Link to={props.slug}>Link to details</Link>
+                <Link to={'announcement/' + props.slug}>Link to details</Link>
             </CardActions>
         </Card>
     );
