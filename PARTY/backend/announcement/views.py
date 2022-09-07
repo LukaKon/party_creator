@@ -74,13 +74,14 @@ class ImageViewSet(viewsets.ModelViewSet):
             serializer.save()
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 @extend_schema_view(
     list=extend_schema(
         parameters=[
             OpenApiParameter(
-                'slug',
+                'category',
                 OpenApiTypes.STR,
-                description='Slug of announcement.'
+                description='Comma separated list of categories uuid to filter'
             ),
         ]
     )
@@ -91,6 +92,15 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
     parser_classesses = (MultiPartParser, FormParser,)
+    queryset = models.Announcement.objects.all()
+    lookup_field = 'slug'
+    
+    def _params_to_uuid(self, qs):
+        """Convert params to list of strings."""
+        print('qs: ', qs)
+        print('uuid list: ', [uuid for uuid in qs.split(',')])
+
+        return [uuid for uuid in qs.split(',')]
 
     # def get_permissions(self):
     #     """Instantiates and returns the list of permissions that this view requires."""
@@ -116,8 +126,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     # def get_authenticators(self):
     #     if self.request.method == 'GET':
     #         return []
-    #     else:
-    #         return[JWTTokenUserAuthentication()]
+#         return[JWTTokenUserAuthentication()]
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -127,7 +136,15 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """ Define custom queryset. """
-        return models.Announcement.objects.all().order_by('title')
+        categories = self.request.query_params.get('category')
+        categories_uuid=self._params_to_uuid(categories)
+        queryset = self.queryset
+        if categories:
+            queryset = queryset.filter(category__uuid__in=categories_uuid)
+
+        
+        return queryset.order_by('title').distinct()
+        # return models.Announcement.objects.all().order_by('title')
 
     def get_object(self, queryset=None, **kwargs):
         """Get object by slug."""
