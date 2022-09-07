@@ -1,23 +1,14 @@
 import React, {useEffect} from 'react'
 import {Grid, Typography} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchProfile} from "../redux/slices/profileSlice";
-import {Announcement} from "./Announcement";
-import {announcementReducer} from "../redux/slices/announcementSlice";
-import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {AnnouncementSkeleton} from "./skeletons/AnnouncementSkeletons";
+import {AnnouncementItem} from "./announcement/AnnouncementItem";
 
 
 export const Profile = () => {
-    // const navigate = useNavigate()
-    // const dispatch = useDispatch();
     const {entities, loading} = useSelector(
         (state) => state.profile
     );
-
-    // useEffect(() => {
-    //     dispatch(fetchProfile());
-    // }, []);
 
     const handleAnnouncement = () => {
         // navigate('/')
@@ -44,19 +35,15 @@ export const Profile = () => {
                 </Typography>
 
             </Grid>
+            {entities.announcements.map((ann) => {
+                            return (
 
-            <Grid item container xs={12}>
-                {entities.announcements.map(ann => {
-                    return (
-                        <Grid item key={ann.title + '1'} xs={12} md={6}>
-                            <Announcement {...ann}/>
-                        </Grid>
-                    )
-                })}
-            </Grid>
-
+                                <Grid item xs={2} sm={4} md={4} key={ann.uuid}>
+                                    <AnnouncementItem key={ann.uuid} {...ann} />
+                                </Grid>
+                            );
+            })}
         </Grid>
-        // console.log(Object.keys(entities.announcements).map((key) => [Number(key), entities.announcements[key]]));
     }
 
 
