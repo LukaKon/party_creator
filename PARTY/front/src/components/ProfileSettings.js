@@ -18,7 +18,7 @@ import {axiosInstance} from "../axios";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from "../../Settings";
 
-export const Settings = () => {
+export const ProfileSettings = () => {
     const dispatch = useDispatch();
 
     const {entities} = useSelector(

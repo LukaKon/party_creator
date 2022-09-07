@@ -9,22 +9,22 @@ import {
     Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { BACKEND_LOCALHOST } from "../../../Settings"
-
+import { BACKEND_LOCALHOST } from "../../../Settings";
 
 export const AnnouncementItem = (props) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('announcement/' + props.slug);
+        navigate("announcement/" + props.slug);
     };
 
     const main_image = props.images.filter((item) => {
-        return item.is_main == true;
+        return item.is_main === true;
     });
 
     let render_image;
-    if (main_image.length) {
+
+    if (main_image.length && main_image[0].image.includes(BACKEND_LOCALHOST)) {
         const link = main_image[0].image;
         render_image = link;
     } else {
@@ -50,7 +50,7 @@ export const AnnouncementItem = (props) => {
             </CardContent>
             <CardActions>
                 <Button onClick={handleClick}>Button to details</Button>
-                <Link to={'announcement/' + props.slug}>Link to details</Link>
+                <Link to={"announcement/" + props.slug}>Link to details</Link>
             </CardActions>
         </Card>
     );
