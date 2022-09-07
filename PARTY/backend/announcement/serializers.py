@@ -44,6 +44,7 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = (
             "id",
+            "uuid",
             "announcement",
             # "event_type",
             "image",

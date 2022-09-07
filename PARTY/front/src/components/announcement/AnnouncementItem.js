@@ -7,39 +7,15 @@ import {
     CardMedia,
     Button,
     Typography,
-    // makeStyles,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { BACKEND_LOCALHOST } from "../../../Settings"
-
-import { makeStyles } from "@material-ui/styles";
-import {indexOf} from "core-js/internals/array-includes";
-
-// const useStyles = makeStyles((theme) => ({
-//     paper: {
-//         maxWidth: 400,
-//         margin: "1px auto",
-//         padding: 2,
-//         background: "#d0f4f9",
-//     },
-//     image: {
-//         width: 128,
-//         height: 128,
-//     },
-//     img: {
-//         margin: "auto",
-//         display: "block",
-//         maxWidth: "100%",
-//         maxHeight: "100%",
-//     },
-// }));
+import { BACKEND_LOCALHOST } from "../../../Settings";
 
 export const AnnouncementItem = (props) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        // const link = "announcements/" + props.slug;
-        navigate(props.slug);
+        navigate("announcement/" + props.slug);
     };
 
     const main_image = props.images.filter((item) => {
@@ -51,11 +27,7 @@ export const AnnouncementItem = (props) => {
     if (main_image.length && main_image[0].image.includes(BACKEND_LOCALHOST)) {
         const link = main_image[0].image;
         render_image = link;
-    }else if(main_image.length){
-        const link = main_image[0].image;
-        render_image = BACKEND_LOCALHOST.slice(0,-1) + link;
-    }else
-    {
+    } else {
         render_image = BACKEND_LOCALHOST + "media/announcement/default.jpg";
     }
 
@@ -78,7 +50,7 @@ export const AnnouncementItem = (props) => {
             </CardContent>
             <CardActions>
                 <Button onClick={handleClick}>Button to details</Button>
-                <Link to={props.slug}>Link to details</Link>
+                <Link to={"announcement/" + props.slug}>Link to details</Link>
             </CardActions>
         </Card>
     );

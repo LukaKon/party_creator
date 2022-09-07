@@ -40,16 +40,15 @@ export const Header = () => {
         (state) => state.profile
     );
 
-    const showAvatar = () => {
-        const dispatch = useDispatch();
+    // const showAvatar = () => {
+    //     const dispatch = useDispatch();
 
-        useEffect(() => {
-            dispatch(fetchProfile())
-        }, [entities.image]);
+    //     useEffect(() => {
+    //         dispatch(fetchProfile())
+    //     }, [entities.image]);
 
-        image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
-
-    }
+    //     image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
+    // }
 
     const pages = {
         // for example:
@@ -68,7 +67,8 @@ export const Header = () => {
 
     if (sessionStorage.getItem("access_token")) {
         // Set profile picture
-        showAvatar()
+        // showAvatar()
+        <ShowAvatar {...entities}/>
 
         // Set settings/options
         pages["Add announcement"] = "/addannouncement"
@@ -226,3 +226,14 @@ export const Header = () => {
         </AppBar>
     );
 };
+
+
+    const ShowAvatar = (props) => {
+        const dispatch = useDispatch();
+
+        useEffect(() => {
+            dispatch(fetchProfile())
+        }, [props.image]);
+
+        image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
+    }

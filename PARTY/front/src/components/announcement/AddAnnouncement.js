@@ -1,146 +1,256 @@
-import React, { useEffect } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { makeStyles } from "@mui/styles";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
-    Box,
-    Button,
-    Container,
-    CssBaseline,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextareaAutosize,
-    TextField,
-    Typography,
+  Button,
+  Container,
+  Grid,
+  ImageList,
+  ImageListItem,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { useForm } from "./hooks/useForm";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "../../redux/slices/categorySlice";
 
-// const useStyles = makeStyles((theme) => ({
-//     formControl: {
-//         // margin: theme.spacing(1),
-//         margin: 1,
-//         minWidth: 120,
-//     },
-//     selectEmpty: {
-//         // marginTop: theme.spacing(2),
-//         marginTop: 2,
-//     },
-// }));
+import { useInput } from "./hooks/useInput"
+import { createAnnouncement } from "../../redux/slices/announcementSlice";
 
-// export const AddAnnouncement = ({ categories }) => {
-export const AddAnnouncement = (props) => {
-    console.log("props: ", props);
-    // const classes = useStyles();
-    const [updateValue, submitHandler, errors] = useForm({});
-    const theme = createTheme();
-    const dispatch = useDispatch();
+import { TitleInput } from './TitleInput'
+import { SelectCategory } from './SelectCategory'
+import { SelectImages } from './SelectImages'
 
-    useEffect(() => {
-        dispatch(fetchCategories());
-    }, []);
 
-    let checkInputs;
-    let saveButton;
-    if (errors.length !== 0) {
-        checkInputs = (
-            <Typography color={"red"}>{errors.map((err) => err)}</Typography>
-        );
-        saveButton = true;
-    } else {
-        saveButton = false;
+export const AddAnnouncement = () => {
+
+  const [dataToSend, setDataToSend] = useState({
+    title: '',
+    description: '',
+    category: [],
+    images: [],
+  })
+
+  const {
+    value: enteredTitle,
+    isValid: enteredTitleIsValid,
+    hasError: titleInputHasError,
+    valueChangeHandler: titleChangedHandler,
+    inputBlurHandler: titleBlurHandler,
+    reset: resetTitleInput,
+  } = useInput(value => value.trim() !== '', '')
+
+  const {
+    value: enteredDescription,
+    isValid: enteredDescriptionValid,
+    hasError: descriptionInputHasError,
+    valueChangeHandler: descriptionChangedHandler,
+    inputBlurHandler: descriptionBlurHandler,
+    reset: resetDescriptionInput,
+  } = useInput(value => value.trim() !== '', '')
+
+  const { loading, categories, error } = useSelector(
+    (state) => state.categories
+  );
+
+  const dispatch = useDispatch();
+
+  const [category, setCategory] = useState('')
+  const [categoryValid, setCategoryValid] = useState(false)
+
+  const [resetForm, setResetForm] = useState(false)
+
+  // const [selectedImages, setSelectedImages] = useState()
+
+  let formIsValid = false
+
+  if (enteredTitleIsValid && enteredDescriptionValid && categoryValid) {
+    console.log('title: ', enteredTitleIsValid, 'desc: ', enteredDescriptionValid, 'cat: ', categoryValid)
+    formIsValid = true
+  }
+
+  // console.log('form is valid: ', formIsValid)
+
+  const formSubmissionHandler = e => {
+    e.preventDefault()
+
+    if (!enteredTitleIsValid && !enteredDescriptionValid && !categoryValid) {
+      return
     }
+    const ann = {
+      title: enteredTitle,
+      description: enteredDescription,
+      category: category,
+    }
+    console.log('data to sent: ', ann)
+    dispatch(createAnnouncement(ann))
 
-    return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
-                >
-                    <Typography component="h1" variant="h5">
-                        Add announcement
-                    </Typography>
-                    {checkInputs}
-                    <Box
-                        component="form"
-                        // onSubmit={handleSubmit}
-                        sx={{ mt: 1 }}
-                    >
-                        <TextField
-                            margin="normal"
-                            required
-                            id="title"
-                            label="Title"
-                            name="title"
-                            autoFocus
-                            onChange={updateValue}
-                        />
-                        <TextareaAutosize
-                            margin="normal"
-                            required
-                            id="description"
-                            label="Description"
-                            name="description"
-                            autoFocus
-                            aria-label="minimum height"
-                            minRows={3}
-                            maxRows={10}
-                            maxLength={1000}
-                            placeholder="Description..."
-                            style={{ width: 200 }}
-                            onChange={updateValue}
-                        />
-                        {/* <FormControl className={classes.formControl}> */}
-                        <FormControl>
-                            <InputLabel id="select_category_label">
-                                Category
-                            </InputLabel>
-                            <Select
-                                labelId="select_category_label"
-                                id="select_category"
-                                onChange={updateValue}
-                                // value={updateValue}
-                            >
-                                {/* TODO: check after add thunk function to fetch categories */}
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                {/* {categories.map((category) => { */}
-                                {/* return ( */}
-                                {/* <MenuItem value={category.id}> */}
-                                {/* {category.name} */}
-                                {/* </MenuItem> */}
-                                {/* ); */}
-                                {/* })} */}
-                            </Select>
-                        </FormControl>
-                        <div>
-                            <ul>
-                                <li>"add images/multimedia"</li>
-                                <li>"event type: list with checkboxes"</li>
-                            </ul>
-                        </div>
-                        <Button
-                            type="submit"
-                            disabled={saveButton}
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            onClick={submitHandler}
-                            // onClick={handleSubmit}
-                        >
-                            Save
-                        </Button>
-                    </Box>
-                </Box>
-            </Container>
-        </ThemeProvider>
+    resetTitleInput()
+    resetDescriptionInput()
+    setResetForm(true)
+    // setResetForm(false)
+  }
+
+  const categorySelectHandle = (category) => {
+    // console.log('selected cat in children:', category)
+    setCategory(category)
+  }
+
+  const isCategoryValid = (validCategory) => {
+    setCategoryValid(validCategory)
+  }
+
+  // const imageHandleChange = (e) => {
+  //   // console.log('images: ', e.target.files)
+  //   if (e.target.files) {
+  //     const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file))
+  //     // console.log('urls: ', fileArray)
+
+  //     // setSelectedImages(prevImages => prevImages.concat(fileArray))
+  //     setSelectedImages(fileArray)
+  //   }
+  // }
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
+
+
+  // console.log('selected category: ', category)
+
+  // let images
+  // if (selectedImages) {
+  //   // images = renderPhoto(selectedImages)
+  //   images = <UploadedImageList images={selectedImages} />
+  // } else {
+  //   images = <p>Add some images :)</p>
+  // }
+
+  let content;
+  if (loading) {
+    content = (<p>Loading...</p>);
+  } else {
+    content = (
+      <Container component="main" maxWidth="xs">
+        <Grid container>
+          <Grid item>
+            <Typography component="h1" variant="h5">
+              Dodaj ogłoszenie:
+            </Typography>
+          </Grid>
+
+          <Grid item>
+            <TextField
+              margin="normal"
+              required
+              id="title"
+              label="Title"
+              name="title"
+              // autoFocus
+              defaultValue='Tytuł'
+              onChange={titleChangedHandler}
+              onBlur={titleBlurHandler}
+              value={enteredTitle}
+              error={titleInputHasError}
+            />
+            {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
+          </Grid>
+
+          <Grid item>
+            <TitleInput
+              reset={resetForm}
+            />
+          </Grid>
+
+          <Grid item>
+            <TextField
+              margin="normal"
+              required
+              id="description"
+              label="Description"
+              name="description"
+              // autoFocus
+              multiline
+              minRows={5}
+              maxRows={10}
+              maxLength={1000}
+              placeholder="Description..."
+              style={{ width: 500 }}
+              onChange={descriptionChangedHandler}
+              onBlur={descriptionBlurHandler}
+              value={enteredDescription}
+              error={descriptionInputHasError}
+            />
+            {descriptionInputHasError && (<p style={{ color: 'red' }}>Description must not be empty.</p>)}
+          </Grid>
+
+          <Grid item>
+            <SelectCategory
+              categories={categories}
+              selectedCategory={categorySelectHandle}
+              categoryIsValid={isCategoryValid}
+              reset={resetForm}
+            />
+            {error && (<p style={{ color: 'red' }}>Error: {error}</p>)}
+          </Grid>
+
+          {/*
+          <Grid item>
+            <input type="file" multiple id='file' onChange={imageHandleChange} />
+            <div>
+              <label htmlFor="file">
+                <i className="material-icons">add photos</i>
+              </label>
+            </div>
+            {images}
+          </Grid>
+    */}
+
+          <Grid item>
+            <span style={{ color: 'red' }}>TEST</span>
+            <SelectImages />
+          </Grid>
+
+          <Grid item>
+            <Button
+              type="submit"
+              disabled={!formIsValid}
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={formSubmissionHandler}
+            >
+              Save
+            </Button>
+          </Grid>
+
+          <Grid item>
+            TODO:
+            <ul>
+              <li>"add images/multimedia"</li>
+              <li>"event type: list with checkboxes"</li>
+            </ul>
+          </Grid>
+
+        </Grid>
+      </Container>
     );
+  }
+  return <>{content}</>;
 };
+
+
+const UploadedImageList = ({ images }) => {
+  // console.log('props', images)
+  return (
+    <ImageList sx={{ width: 400, height: 350 }} cols={3} rowHeight={164}>
+      {images.map((image, index) => (
+        <ImageListItem key={index}>
+          <img
+            src={image}
+            // srcSet={}
+            alt={image}
+            loading="lazy"
+          />
+        </ImageListItem>
+      ))}
+    </ImageList>
+  )
+}

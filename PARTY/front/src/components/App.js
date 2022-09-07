@@ -1,6 +1,7 @@
 import React from "react";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { NotFound } from "./NotFound";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./HomePage";
 import { SignIn } from "./SignIn";
@@ -31,16 +32,11 @@ export const App = () => {
                     <Route path="signup" element={<SignUp/>}/>
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="testapi" element={<TestApi/>}/>
-                    <Route path='*' element={
-                        <main style={{padding: "1rem"}}>
-                            <p>There's nothing here!</p>
-                        </main>}/>
                     <Route
-                        path=":slug"
+                        path="announcement/:slug"
                         element={<AnnouncementDetails />}
                     />
-
-                    {/*Views only for logged users*/}
+                    <Route path='*' element={ <NotFound /> }/>
 
                     {isAuthenticatedFunction('profile', <Profile/>)}
                     {isAuthenticatedFunction('settings', <ProfileSettings/>)}

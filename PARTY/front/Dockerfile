@@ -1,5 +1,5 @@
 # stage 1 - build react app
-FROM node:18-alpine3.15 as builder
+FROM node:18-alpine3.16 as builder
 
 WORKDIR /app
 
@@ -12,16 +12,14 @@ COPY package.json .
 
 RUN npm install
 
+# RUN adduser --disabled-password --no-create-home react-user
+
 COPY . .
 
 RUN npm run build
-# RUN npm run build && \
-# adduser \
-# --disabled-password \
-# --no-create-home \
-# react-user
 
 # USER react-user
+
 
 # stage 2 - copy react build app to nginx
 # FROM nginx:alpine
