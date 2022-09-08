@@ -97,9 +97,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
-        print('qs: ', qs)
-        print('uuid list: ', [uuid for uuid in qs.split(',')])
-
         return [uuid for uuid in qs.split(',')]
 
     # def get_permissions(self):
@@ -137,12 +134,12 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """ Define custom queryset. """
         categories = self.request.query_params.get('category')
-        categories_uuid=self._params_to_uuid(categories)
         queryset = self.queryset
+        print('type of categories: ', categories)
         if categories:
+            categories_uuid=self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
 
-        
         return queryset.order_by('title').distinct()
         # return models.Announcement.objects.all().order_by('title')
 
