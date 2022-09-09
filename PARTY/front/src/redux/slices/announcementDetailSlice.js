@@ -10,7 +10,7 @@ export const fetchAnnouncementDetails = createAsyncThunk(
             return response.data;
         } catch (err) {
             console.log("Fetch announcement details error: ", err);
-            console.log(err.data)
+            console.log(err)
             return err.data
         }
     }
