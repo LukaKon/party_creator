@@ -4,24 +4,9 @@ import { connect } from "react-redux";
 import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
 import { AnnouncementItem } from "./AnnouncementItem";
 import { Box, Grid, Typography } from "@mui/material";
-// import { makeStyles } from "@material-ui/styles";
-import {AnnouncementSkeleton} from "../skeletons/AnnouncementSkeletons";
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         flexGrow: 1,
-//         overflow: "hidden",
-//         padding: 3,
-//     },
-//     paper: {
-//         maxWidth: 200,
-//         margin: "1px auto",
-//         padding: 2,
-//     },
-// }));
+import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
 
 export const AnnouncementList = () => {
-    // const classes = useStyles();
     const { loading, entities, error } = useSelector(
         (state) => state.announcements
     );
@@ -33,7 +18,7 @@ export const AnnouncementList = () => {
 
     let content;
     if (loading) {
-        content = <AnnouncementSkeleton/>
+        content = <AnnouncementSkeleton />;
     } else {
         if (!entities) {
             content = (
@@ -52,7 +37,7 @@ export const AnnouncementList = () => {
                         {entities.map((ann) => {
                             return (
                                 <Grid item xs={2} sm={4} md={4} key={ann.uuid}>
-                                    <AnnouncementItem key={ann.uuid} images={"test"} {...ann} />
+                                    <AnnouncementItem key={ann.uuid} {...ann} />
                                 </Grid>
                             );
                         })}

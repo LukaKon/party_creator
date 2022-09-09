@@ -1,6 +1,7 @@
 import React from "react";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { NotFound } from "./NotFound";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./HomePage";
 import { SignIn } from "./SignIn";
@@ -33,25 +34,19 @@ export const App = () => {
                     <Route path="signup" element={<SignUp/>}/>
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="testapi" element={<TestApi/>}/>
-                    <Route path='*' element={
-                        <main style={{padding: "1rem"}}>
-                            <p>There's nothing here!</p>
-                        </main>}/>
-
-                    {/* To poniżej działa?!*/}
                     <Route
-                        path=":slug"
+                        path="announcement/:slug"
                         element={<AnnouncementDetails />}
                     />
-
+                    <Route path='*' element={ <NotFound /> }/>
                     <Route path="categories" element={<Categories/>}/>
                     <Route path="categories/:category" element={<AnnouncementsByCategory />} />
-                    {/*Views only for logged users*/}
 
+                    {/*Views only for logged users*/}
+                    
                     {isAuthenticatedFunction('profile', <Profile/>)}
                     {isAuthenticatedFunction('settings', <ProfileSettings/>)}
                     {isAuthenticatedFunction('addannouncement', <AddAnnouncement/>)}
-
                 </Routes>
                 <Footer/>
             </BrowserRouter>

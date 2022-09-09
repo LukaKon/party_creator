@@ -86,11 +86,14 @@ class Announcement(models.Model):
         on_delete=models.CASCADE,
         related_name='announcements'
     )
-    category = models.ForeignKey(
-        Category,
-        verbose_name="announcement_categories",
-        on_delete=models.PROTECT,
-    )
+    # category = models.ForeignKey(
+        # Category,
+        # verbose_name="announcement_categories",
+        # on_delete=models.PROTECT,
+    # )
+    # TODO: announcement can have many categories
+    category = models.ManyToManyField(Category,related_name="categories")
+
     # event_type = models.ManyToManyField(EventType, related_name="announcements")
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
@@ -126,6 +129,12 @@ class Multimedia(models.Model):
         null=True,
         blank=True,
         related_name="%(class)ss",
+    )
+    
+    uuid = models.UUIDField(
+        db_index=True,
+        default=uuid_lib.uuid4,
+        editable=False,
     )
 
     class Meta:

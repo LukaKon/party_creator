@@ -9,12 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-from datetime import timedelta
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from decouple import config
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,6 +50,7 @@ ADDITIONAL_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
 ]
+
 STANDARD_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -59,6 +59,7 @@ STANDARD_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
 INSTALLED_APPS = STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
@@ -85,7 +86,8 @@ ROOT_URLCONF = "back.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "../front/dist")],  # TODO: is the path ok?
+        # TODO: Do we need this???
+        "DIRS": [os.path.join(BASE_DIR, "../front/dist")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -174,27 +176,23 @@ MEDIA_URL = "/media/"  # url that will serve media files
 AUTH_USER_MODEL = "account.User"
 
 REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend"
+    ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    "DEFAULT_PERMISSION_CLASSES":(
+    "DEFAULT_PERMISSION_CLASSES": (
         'rest_framework.permissions.AllowAny',
-        ),
+    ),
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 5,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
-    # "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    # "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
-    # "AUTH_HEADER_TYPES": ("JWT",),
-    # "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
-    # "ROTATE_REFRESH_TOKENS": True,
-    # "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    # "ACCESS_TOKEN_LIFETIME": timedelta(seconds=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -203,7 +201,7 @@ SIMPLE_JWT = {
     "VERIFYING_KEY": None,
     "AUTH_HEADER_TYPES": ("JWT",),
     "USER_ID_FIELD": "id",  # TODO: -> email?
-    "USER_ID_CLAIM": "user_id", # TODO: -> email?
+    "USER_ID_CLAIM": "user_id",  # TODO: -> email?
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "TOKEN_TYPE_CLAIM": "token_type",
 }
