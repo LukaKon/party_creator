@@ -60,7 +60,7 @@ export const AnnouncementDetails = () => {
 
               <Grid item>
                 <Typography variant='caption'>
-                  Created by: {entities.user.email},
+                  Created by: {entities.user.email}
                 </Typography>
               </Grid>
 
