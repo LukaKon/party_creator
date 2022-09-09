@@ -10,7 +10,8 @@ import { Profile } from "./Profile";
 import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
 import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
-import { AllAnnouncement } from "./AllAnnouncement";
+import { Categories } from "./Categories";
+import { AnnouncementsByCategory } from "./AnnouncementsByCategory";
 
 export const App = () => {
     const isAuthenticated = sessionStorage.getItem('access_token')
@@ -36,12 +37,15 @@ export const App = () => {
                         <main style={{padding: "1rem"}}>
                             <p>There's nothing here!</p>
                         </main>}/>
+
+                    {/* To poniżej działa?!*/}
                     <Route
                         path=":slug"
                         element={<AnnouncementDetails />}
                     />
-                    <Route path="announcement" element={<AllAnnouncement/>}/>
 
+                    <Route path="categories" element={<Categories/>}/>
+                    <Route path="categories/:category" element={<AnnouncementsByCategory />} />
                     {/*Views only for logged users*/}
 
                     {isAuthenticatedFunction('profile', <Profile/>)}
@@ -54,3 +58,4 @@ export const App = () => {
         </div>
     );
 };
+

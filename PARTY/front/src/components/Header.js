@@ -58,7 +58,7 @@ export const Header = () => {
 
         "strona główna": '/',
         'test api': "/testapi",
-        'Ogłoszenia' : '/announcement'
+        'Ogłoszenia' : '/categories'
     }
 
     const settings = {
