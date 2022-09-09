@@ -19,3 +19,7 @@
 
 3. Docker:
     - [ ] implement Redis for casching data
+        
+TODO:
+- [x] DJANGO: problem to recive details of announcement: 404 - Not found
+- [ ] Handle wrong slug on front site

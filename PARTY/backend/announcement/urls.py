@@ -11,6 +11,7 @@ app_name = "announcement"
 
 
 router = DefaultRouter()
+
 router.register(
     prefix="announcements",
     viewset=views.AnnouncementViewSet,
