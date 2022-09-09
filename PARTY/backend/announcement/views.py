@@ -27,7 +27,10 @@ from rest_framework.permissions import (
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
-from announcement import models, serializers
+from announcement import (
+    models,
+    serializers,
+)
 
 
 # from rest_framework.parsers import FormParser, MultiPartParser
@@ -137,7 +140,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """ Define custom queryset. """
         categories = self.request.query_params.get('category')
         queryset = self.queryset
-        print('type of categories: ', categories)
         if categories:
             categories_uuid=self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
