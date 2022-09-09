@@ -21,4 +21,5 @@
     - [ ] implement Redis for casching data
         
 TODO:
-- [ ] DJANGO: problem to recive details of announcement: 404 - Not found
+- [x] DJANGO: problem to recive details of announcement: 404 - Not found
+- [ ] Handle wrong slug on front site
