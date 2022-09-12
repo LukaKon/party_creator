@@ -37,10 +37,12 @@ export const App = () => {
                     <Route
                         path="announcement/:slug"
                         element={<AnnouncementDetails />}
-                    />
+                    >
+
+                    </Route>
                     <Route path='*' element={ <NotFound /> }/>
                     <Route path="categories" element={<Categories/>}/>
-                    <Route path="categories/:category" element={<AnnouncementsByCategory />} />
+                    <Route path="categories/:categoryName" element={<AnnouncementsByCategory />} />
 
                     {/*Views only for logged users*/}
                     

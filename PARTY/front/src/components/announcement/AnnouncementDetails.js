@@ -19,6 +19,7 @@ import {
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
+  console.log('slug - ', slug)
   const { loading, entities, error } = useSelector(
     (state) => state.announcementDetails
   );
