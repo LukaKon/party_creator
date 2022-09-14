@@ -16,7 +16,7 @@ export const Profile = () => {
 
 
     let content;
-    if (loading === true || loading === 'before') {
+    if (loading) {
         content = <AnnouncementSkeleton/>
     } else {
         content = <Grid container spacing={3}>
@@ -36,16 +36,14 @@ export const Profile = () => {
 
             </Grid>
             {entities.announcements.map((ann) => {
-                            return (
-
-                                <Grid item xs={2} sm={4} md={4} key={ann.uuid}>
-                                    <AnnouncementItem key={ann.uuid} {...ann} />
-                                </Grid>
-                            );
+                return (
+                    <Grid item xs={2} sm={4} md={4} key={ann.uuid}>
+                        <AnnouncementItem key={ann.uuid} {...ann} />
+                    </Grid>
+                );
             })}
         </Grid>
     }
-
 
     return (
         <Grid>

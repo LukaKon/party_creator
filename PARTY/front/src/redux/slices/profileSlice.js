@@ -8,7 +8,7 @@ export const fetchProfile = createAsyncThunk(
             const response = await axiosInstance.post("account/getprofile/", data);
             return response.data;
         } catch (err) {
-            console.log("thunk error: ", err.message);
+            console.log("Fetch profile error: ", err.message);
         }
     }
 );
@@ -17,7 +17,7 @@ export const fetchProfile = createAsyncThunk(
 const profileSlice = createSlice({
         name: "profile",
         initialState: {
-            loading: "before",
+            loading: false,
             entities: "initial",
             error: null,
         },
@@ -27,11 +27,11 @@ const profileSlice = createSlice({
                 state.loading = true
             },
             [fetchProfile.fulfilled]: (state, action)=>{
-                state.loading = "after"
+                state.loading = false
                 state.entities = action.payload
             },
             [fetchProfile.rejected]: (state, action)=> {
-                state.loading = "after"
+                state.loading = false
             }
         }
     }
