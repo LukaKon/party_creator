@@ -70,10 +70,11 @@ class GetUserAPI(RetrieveAPIView):
             queryset = self.model.objects.get(email=self.request.data.get('email'))
         return queryset
 
+
     def post(self, request):
         user = self.get_queryset()
-        user_information = self.serializer_class(user).data
-        return Response(user_information)
+        user_serializer = self.serializer_class(user)
+        return Response(user_serializer.data)
 
 
 class UpdateUserAPI(UpdateAPIView):

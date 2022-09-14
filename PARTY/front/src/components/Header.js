@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {
     AppBar,
@@ -32,7 +32,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 export const Header = () => {
-    let image;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchProfile())
+    }, [image]);
+
+    let image
     let menuIcon;
     let profile_menu;
 
@@ -40,15 +46,9 @@ export const Header = () => {
         (state) => state.profile
     );
 
-    // const showAvatar = () => {
-    //     const dispatch = useDispatch();
-
-    //     useEffect(() => {
-    //         dispatch(fetchProfile())
-    //     }, [entities.image]);
-
-    //     image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
-    // }
+    const showAvatar = () => {
+        image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
+    }
 
     const pages = {
         // for example:
@@ -57,7 +57,7 @@ export const Header = () => {
 
         "strona główna": '/',
         'test api': "/testapi",
-        'Ogłoszenia' : '/categories'
+        'Kategorie' : '/categories'
     }
 
     const settings = {
@@ -68,8 +68,7 @@ export const Header = () => {
 
     if (sessionStorage.getItem("access_token")) {
         // Set profile picture
-        // showAvatar()
-        <ShowAvatar {...entities}/>
+        showAvatar()
 
         // Set settings/options
         pages["Add announcement"] = "/addannouncement"
@@ -227,14 +226,3 @@ export const Header = () => {
         </AppBar>
     );
 };
-
-
-    const ShowAvatar = (props) => {
-        const dispatch = useDispatch();
-
-        useEffect(() => {
-            dispatch(fetchProfile())
-        }, [props.image]);
-
-        image = BACKEND_LOCALHOST.slice(0,-1) + entities.image
-    }

@@ -22,7 +22,7 @@ export const Categories = () => {
             <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
                 {entities.categories.map(category => {
                     return(
-                        <Link to={category.name}>
+                        <Link to={category.name} state={{ categoryUuid: category.uuid }} >
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar>

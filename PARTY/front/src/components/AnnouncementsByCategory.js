@@ -1,44 +1,46 @@
-import React from 'react';
-import {Typography} from "@mui/material";
-import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {axiosInstance} from "../axios";
+import React, {useEffect} from 'react';
+import {Box, Grid, Typography} from "@mui/material";
+import {useLocation} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAnnouncements} from "../redux/slices/announcementSlice";
+import {AnnouncementItem} from "./announcement/AnnouncementItem";
 
 export const AnnouncementsByCategory = () => {
-    let {categoryName} = useParams();
-    let categoryUuid
-    let announcementsByCategory
+    const location = useLocation()
+    const { categoryUuid } = location.state
+    const dispatch = useDispatch();
     let viewAnnouncements
-    const entities = useSelector((state)=> state.categories);
+    const announcements= useSelector(state => state.announcements);
 
-    entities.categories.map(category=>{
-        if(category.name===categoryName){
-            categoryUuid = category.uuid
-        }
-    })
+    useEffect(()=>{
+        dispatch(fetchAnnouncements(categoryUuid))
+    },[categoryUuid])
 
-    axiosInstance.get("api/announcements/?category="+categoryUuid)
-        .then((response)=>{
-            announcementsByCategory = response.data
-            console.log(announcementsByCategory)
-        })
-
-    if(announcementsByCategory){
+    if(announcements.entities.length > 0){
         viewAnnouncements=(
-                <Typography>
-                    {announcementsByCategory.map(announcement=>{
-                        return announcement.title
-                        }
-                    )}
-                </Typography>)
+                <Box pa sx={{ flexGrow: 1 }}>
+                    <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        {announcements.entities.map((ann) => {
+                            return (
+                                <Grid item xs={2} sm={4} md={4} key={ann.uuid}>
+                                    <AnnouncementItem key={ann.uuid} {...ann} />
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </Box>
+            );
     }else{
-        viewAnnouncements=(<Typography>TEST</Typography>)
+        viewAnnouncements=(<Typography variant="h3">No announcement in data base.</Typography>)
     }
+    console.log('viewann', announcements)
 
     return(
         <Typography>
-            Nazwa kategori: {categoryName}
-            <Typography> Uuid kategori: {categoryUuid}</Typography>
             {viewAnnouncements}
         </Typography>
 
