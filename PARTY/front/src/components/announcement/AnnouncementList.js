@@ -13,7 +13,7 @@ export const AnnouncementList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchAnnouncements());
+        dispatch(fetchAnnouncements({amount: 1, category: "e32c904b-a5b5-4e11-9121-53a0b41b34d0"}));
     }, []);
 
     let content;

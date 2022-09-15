@@ -4,6 +4,7 @@ import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchAnnouncements} from "../redux/slices/announcementSlice";
 import {AnnouncementItem} from "./announcement/AnnouncementItem";
+import {AnnouncementSkeleton} from "./skeletons/AnnouncementSkeletons";
 
 export const AnnouncementsByCategory = () => {
     const location = useLocation()
@@ -11,12 +12,14 @@ export const AnnouncementsByCategory = () => {
     const dispatch = useDispatch();
     let viewAnnouncements
     const announcements= useSelector(state => state.announcements);
-
     useEffect(()=>{
-        dispatch(fetchAnnouncements(categoryUuid))
+        dispatch(fetchAnnouncements({category: categoryUuid}))
     },[categoryUuid])
 
-    if(announcements.entities.length > 0){
+
+    if(announcements.loading){
+        viewAnnouncements=(<AnnouncementSkeleton/>)
+    }else if(announcements.entities.length > 0 && announcements.loading === false){
         viewAnnouncements=(
                 <Box pa sx={{ flexGrow: 1 }}>
                     <Grid
@@ -35,14 +38,12 @@ export const AnnouncementsByCategory = () => {
                 </Box>
             );
     }else{
-        viewAnnouncements=(<Typography variant="h3">No announcement in data base.</Typography>)
+        viewAnnouncements=(<Typography variant="h3">No announcement in this category.</Typography>)
     }
-    console.log('viewann', announcements)
 
     return(
         <Typography>
             {viewAnnouncements}
         </Typography>
-
     )
 }

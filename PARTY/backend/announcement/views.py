@@ -88,6 +88,11 @@ class ImageViewSet(viewsets.ModelViewSet):
                 OpenApiTypes.STR,
                 description='Comma separated list of categories uuid to filter'
             ),
+            OpenApiParameter(
+                'amount',
+                OpenApiTypes.INT,
+                description='Amount of announcements'
+            )
         ]
     )
 )
@@ -133,13 +138,18 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """ Define custom queryset. """
         categories = self.request.query_params.get('category')
-
+        amount = self.request.query_params.get('amount')
         queryset = self.queryset
-        if categories:
-            categories_uuid=self._params_to_uuid(categories)
-            queryset = queryset.filter(category__uuid__in=categories_uuid)
 
-        return queryset.order_by('title').distinct()
+        if categories:
+            categories_uuid = self._params_to_uuid(categories)
+            queryset = queryset.filter(category__uuid__in=categories_uuid)
+        if amount:
+            queryset = queryset[:int(amount)]
+
+        return queryset
+        # FIXME
+        # return queryset.order_by('title').distinct()
         # return models.Announcement.objects.all().order_by('title')
 
     def get_object(self, queryset=None, **kwargs):

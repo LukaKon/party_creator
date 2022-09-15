@@ -4,10 +4,17 @@ import { axiosInstance } from "../../axios";
 // Thunk function
 export const fetchAnnouncements = createAsyncThunk(
     "announcements/fetchAnnouncements",
-    async (categoryUuid) => {
+    async (data) => {
         try {
-            if(categoryUuid){
-                const response = await axiosInstance.get("/api/announcements/?category=" + categoryUuid)
+            console.log('dejta', data)
+            if(data.amount && data.category){
+                const response = await axiosInstance.get("/api/announcements/?category="+ data.category + "&amount=" + data.amount)
+                return response.data;
+            }else if (data.amount){
+                const response = await axiosInstance.get("/api/announcements/?amount=" + data.amount)
+                return response.data;
+            }else if (data.category) {
+                const response = await axiosInstance.get("/api/announcements/?category=" + data.category)
                 return response.data;
             }else{
                 const response = await axiosInstance.get("/api/announcements/");
