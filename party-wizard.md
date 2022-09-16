@@ -19,7 +19,9 @@
 
 3. Docker:
     - [ ] implement Redis for casching data
+    - [ ] CI/CD ??
         
 TODO:
 - [x] DJANGO: problem to recive details of announcement: 404 - Not found
 - [ ] Handle wrong slug on front site
+- [ ] Check how to update profile avatar correctly
