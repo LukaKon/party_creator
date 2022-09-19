@@ -16,7 +16,7 @@ let
 in
 mkShell {
   buildInputs = [
-    pythonEnv
+    # pythonEnv
 
     bmake
     http-prompt
