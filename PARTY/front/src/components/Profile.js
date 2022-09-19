@@ -10,11 +10,6 @@ export const Profile = () => {
         (state) => state.profile
     );
 
-    const handleAnnouncement = () => {
-        // navigate('/')
-    }
-
-
     let content;
     if (loading) {
         content = <AnnouncementSkeleton/>
@@ -30,9 +25,11 @@ export const Profile = () => {
                 <Typography component="div" variant="p">
                     Twój email : {entities.email}
                 </Typography>
-                <Typography variant="p">
-                    Twoje ogłoszenia :
-                </Typography>
+                <Grid xs={12} textAlign={"center"} variant="p" color={"red"}>
+                    <Typography variant={"h3"}>
+                        Twoje ogłoszenia
+                    </Typography>
+                </Grid>
 
             </Grid>
             {entities.announcements.map((ann) => {

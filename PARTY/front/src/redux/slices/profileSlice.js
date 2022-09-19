@@ -13,11 +13,10 @@ export const fetchProfile = createAsyncThunk(
     }
 );
 
-
 const profileSlice = createSlice({
         name: "profile",
         initialState: {
-            loading: false,
+            loading: true,
             entities: "initial",
             error: null,
         },

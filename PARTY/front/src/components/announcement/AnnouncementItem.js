@@ -15,7 +15,7 @@ export const AnnouncementItem = (props) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate("announcement/" + props.slug);
+        navigate("/announcement/" + props.slug);
     };
 
     const main_image = props.images.filter((item) => {
@@ -50,7 +50,7 @@ export const AnnouncementItem = (props) => {
             </CardContent>
             <CardActions>
                 <Button onClick={handleClick}>Button to details</Button>
-                <Link to={"announcement/" + props.slug}>Link to details</Link>
+                <Link to={"/announcement/" + props.slug}>Link to details</Link>
             </CardActions>
         </Card>
     );

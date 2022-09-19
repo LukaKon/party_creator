@@ -56,7 +56,6 @@ export const Header = () => {
         // "Test Button" : "/testSite"
 
         "strona główna": '/',
-        'test api': "/testapi",
         'Kategorie' : '/categories'
     }
 
@@ -71,7 +70,7 @@ export const Header = () => {
         showAvatar()
 
         // Set settings/options
-        pages["Add announcement"] = "/addannouncement"
+        pages["Dodaj ogłoszenie"] = "/addannouncement"
         settings["Profil"] = "/profile"
         settings["Ustawienia konta"] = "/settings"
         settings['Wyloguj sie'] = "signout"
@@ -103,15 +102,18 @@ export const Header = () => {
             window.location.replace('/');
         } else {
             navigate(pageURL);
+            setAnchorElUser(null)
         }
     }
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
+        // setAnchorElNav(null)
     };
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
+        // setAnchorElUser(null)
     };
 
     const handleCloseNavMenu = () => {
@@ -183,10 +185,11 @@ export const Header = () => {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Typography noWrap component="div" sx={{mr: 1}}>
-                        <img src={require('../media/logo.png')} alt="logo"/>
-                    </Typography>
-
+                    <Button onClick={()=>handleMenu('/')}>
+                        <Typography noWrap component="div" sx={{mr: 1}}>
+                            <img src={require('../media/logo.png')} alt="logo"/>
+                        </Typography>
+                    </Button>
                     <Box sx={{flexGrow: 1, display: "flex"}}>{menuIcon}</Box>
 
                     <Box sx={{flexGrow: 0}}>

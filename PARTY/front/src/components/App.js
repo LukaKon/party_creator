@@ -8,7 +8,6 @@ import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { ProfileSettings } from "./ProfileSettings";
 import { Profile } from "./Profile";
-import { TestApi } from "./testAPI";
 import { AddAnnouncement } from "./announcement/AddAnnouncement";
 import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
 import { Categories } from "./Categories";
@@ -33,7 +32,6 @@ export const App = () => {
                     <Route path="signin" element={<SignIn/>}/>
                     <Route path="signup" element={<SignUp/>}/>
                     <Route path="/" element={<HomePage/>}/>
-                    <Route path="testapi" element={<TestApi/>}/>
                     <Route
                         path="announcement/:slug"
                         element={<AnnouncementDetails />}

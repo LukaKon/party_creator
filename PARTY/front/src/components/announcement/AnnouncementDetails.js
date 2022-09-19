@@ -19,7 +19,6 @@ import {
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
-  console.log('slug - ', slug)
   const { loading, entities, error } = useSelector(
     (state) => state.announcementDetails
   );
@@ -29,8 +28,6 @@ export const AnnouncementDetails = () => {
     dispatch(fetchAnnouncementDetails(slug));
   }, []);
 
-  console.log('error in detail: ', error, entities)
-  
   let content
 
   if (loading) {
@@ -106,7 +103,6 @@ export const AnnouncementDetails = () => {
 
 
 const ImageItem = (props) => {
-  // console.log('props: ',props)
 
   return (
     <Link href={props.image} underline="none">
