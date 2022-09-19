@@ -6,6 +6,7 @@ export const Footer = () => {
     return (
         <footer>
             <Box
+                margin={1}
                 px={{xs: 3}}
                 py={{xs: 3}}
                 bgcolor="text.secondary"

@@ -21,7 +21,7 @@ export const AnnouncementsByCategory = () => {
         viewAnnouncements=(<AnnouncementSkeleton/>)
     }else if(announcements.entities.length > 0 && announcements.loading === false){
         viewAnnouncements=(
-                <Box pa sx={{ flexGrow: 1 }}>
+                <Grid margin={1}>
                     <Grid
                         container
                         spacing={{ xs: 2, md: 3 }}
@@ -35,15 +35,15 @@ export const AnnouncementsByCategory = () => {
                             );
                         })}
                     </Grid>
-                </Box>
+                </Grid>
             );
     }else{
         viewAnnouncements=(<Typography variant="h3">No announcement in this category.</Typography>)
     }
 
     return(
-        <Typography>
+        <Box spacing={{ xs: 2, md: 3 }}>
             {viewAnnouncements}
-        </Typography>
+        </Box>
     )
 }

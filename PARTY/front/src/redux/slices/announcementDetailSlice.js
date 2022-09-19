@@ -19,7 +19,7 @@ export const fetchAnnouncementDetails = createAsyncThunk(
 const announcementDetailsSlice = createSlice({
     name: "announcementDetails",
     initialState: {
-        loading: false,
+        loading: true,
         entities: null,
         error: null,
     },

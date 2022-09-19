@@ -13,7 +13,7 @@ export const AnnouncementList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchAnnouncements({amount: 1, category: "e32c904b-a5b5-4e11-9121-53a0b41b34d0"}));
+        dispatch(fetchAnnouncements({amount: 9}));
     }, []);
 
     let content;
@@ -46,7 +46,7 @@ export const AnnouncementList = () => {
             );
         }
     }
-    return <div>{content}</div>;
+    return <Typography>{content}</Typography>;
 };
 
 const mapState = ({ loading, announcements }) => ({

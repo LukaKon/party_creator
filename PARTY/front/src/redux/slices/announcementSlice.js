@@ -40,7 +40,7 @@ export const createAnnouncement = createAsyncThunk(
 const announcementSlice = createSlice({
     name: "announcements",
     initialState: {
-        loading: false,
+        loading: true,
         // entities: ["test 1", "test 2"],
         entities: [],
         error: null,

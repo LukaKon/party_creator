@@ -13,7 +13,6 @@ import {
     useSelector,
 } from "react-redux";
 import {styled} from '@mui/material/styles';
-import {handleButton} from "../utils";
 import {axiosInstance} from "../axios";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from "../../Settings";
@@ -32,8 +31,8 @@ export const ProfileSettings = () => {
     )
 
     const [image, setImage] = useState({
-        imageToShow: 'test',
-        imageToUpload: 'test'
+        imageToShow: undefined,
+        imageToUpload: undefined
     })
 
     const Input = styled('input')({
@@ -49,12 +48,16 @@ export const ProfileSettings = () => {
     }
 
     const handleInput = () => {
-        const data = new FormData()
-        data.append('image', image["imageToUpload"])
-        axiosInstance.patch('account/updateprofile/', data)
-            .then(response => {
-                dispatch(fetchProfile());
-            })
+        if(image["imageToUpload"] !== undefined){
+            const data = new FormData()
+            data.append('image', image["imageToUpload"])
+            axiosInstance.patch('account/updateprofile/', data)
+                .then(response => {
+                    dispatch(fetchProfile());
+                })
+        }else{
+            console.log('najpierw foto wybierz')
+        }
     }
 
     return (

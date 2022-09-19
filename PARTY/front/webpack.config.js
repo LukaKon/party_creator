@@ -14,6 +14,7 @@ const config = {
         filename: "[name][contenthash].js",
         clean: true,
         assetModuleFilename: "[name][ext]",
+        publicPath: '/',
     },
     module: {
         rules: [
@@ -50,6 +51,7 @@ const config = {
         compress: true,
         historyApiFallback: true,
     },
+
     plugins: [
         new HtmlWebpackPlugin({
             title: "PartyWizard",

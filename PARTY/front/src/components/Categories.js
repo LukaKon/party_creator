@@ -17,7 +17,9 @@ export const Categories = () => {
 
     let categoriesView
 
-    if(entities.categories.length > 0){
+    if(entities.loading){
+        categoriesView = AnnouncementSkeleton
+    }else{
         categoriesView = (
             <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
                 {entities.categories.map(category => {
@@ -36,8 +38,6 @@ export const Categories = () => {
                 })}
             </List>
         )
-    }else{
-        categoriesView = AnnouncementSkeleton
     }
 
 

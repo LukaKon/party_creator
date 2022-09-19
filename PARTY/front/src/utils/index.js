@@ -8,3 +8,5 @@ export const handleButton = () => {
         .then(response => console.log(response))
     window.location.reload();
 }
+
+// TODO - przy faktoryzacji będzie trzeba zrobić funkcje, które będą pobierane z tego pliku
