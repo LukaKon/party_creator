@@ -49,6 +49,7 @@ ADDITIONAL_APPS = [
     "corsheaders",
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
+    'django_rest_passwordreset',
 ]
 
 STANDARD_APPS = [
