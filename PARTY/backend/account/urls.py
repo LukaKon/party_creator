@@ -2,7 +2,7 @@
 URL mapping for the user API.
 """
 from account import views
-from django.urls import path
+from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 
 

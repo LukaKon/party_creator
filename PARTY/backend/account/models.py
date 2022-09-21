@@ -1,8 +1,13 @@
 import back.utils.account as utils
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
+from django.core.mail import send_mail
 from django.db import models
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
+
 from dynamic_filenames import FilePattern
 
 
@@ -69,3 +74,19 @@ class User(AbstractUser):
 
 class Firma(models.Model):
     name = models.CharField(max_length=255)
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    email_plaintext_message = "127.0.0.1:3000/resetpassword/{}".format(reset_password_token.key)
+
+    send_mail(
+        # title:
+        "Password Reset for {title}".format(title="Party Wizard"),
+        # message:
+        email_plaintext_message,
+        # from:
+        "noreply@partywizard.local",
+        # to:
+        [reset_password_token.user.email]
+    )

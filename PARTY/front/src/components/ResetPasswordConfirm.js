@@ -1,14 +1,9 @@
 import React, {useState} from "react";
 import {
     Avatar,
-    Alert,
     Button,
     CssBaseline,
     TextField,
-    FormControlLabel,
-    Checkbox,
-    Link,
-    Grid,
     Box,
     Typography,
     Container,
@@ -17,38 +12,27 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 
 import {axiosInstance} from "../axios";
+import {useParams} from "react-router-dom";
 
 const theme = createTheme();
 
-export const SignIn = () => {
-    const [loginError, setLoginError] = useState(null)
+export const ResetPasswordConfirm = () => {
+    const { token } = useParams();
     const handleSubmit = (event) => {
         event.preventDefault()
         let data = new FormData(event.currentTarget);
         data = {
-            email: data.get("email"),
+            token: token,
             password: data.get("password"),
         };
 
-
         axiosInstance
-            .post("account/login/", data)
+            .post("account/password_reset/confirm/", data)
             .then((response) => {
-                sessionStorage.setItem("access_token", response.data.access);
-                sessionStorage.setItem("refresh_token", response.data.refresh);
-                axiosInstance.defaults.headers["Authorization"] =
-                    "JWT" + localStorage.getItem("access_token");
-                window.location.replace('/');
-
+                console.log(response)
             })
             .catch((error) => {
                 console.log(error)
-                if (error.response.status === 401 &&
-                    error.response.statusText === "Unauthorized") {
-                    setLoginError(<Alert severity="warning">Podany email lub hasło jest nieprawidłowe.</Alert>)
-                } else {
-                    setLoginError('Nieobsługiwany błąd')
-                }
             })
     }
 
@@ -68,10 +52,7 @@ export const SignIn = () => {
                         <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Zaloguj się
-                    </Typography>
-                    <Typography component={'p'} color={'red'}>
-                        {loginError}
+                        Zresetuj hasło
                     </Typography>
                     <Box
                         component="form"
@@ -83,27 +64,11 @@ export const SignIn = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
                             name="password"
                             label="Password"
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary"/>
-                            }
-                            label="Remember me"
                         />
                         <Button
                             type="submit"
@@ -111,20 +76,8 @@ export const SignIn = () => {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                         >
-                            Sign In
+                            Zresetuj hasło
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="/resetpassword" variant="body2">
-                                    Zapomniałeś hasła
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="/signup" variant="body2">
-                                    Nie masz konta? Zarejestruj się
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </Box>
                 </Box>
             </Container>
