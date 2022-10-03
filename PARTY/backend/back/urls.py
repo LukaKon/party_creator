@@ -23,6 +23,8 @@ urlpatterns = [
     ),
     path("account/", include("account.urls", "account")),
     path("api/", include(announcement_url, "announcement")),
-    path('account/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
-
-    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path(
+        'account/password_reset/',
+        include('django_rest_passwordreset.urls', namespace='password_reset'),
+    ),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -73,7 +73,7 @@ class ImageViewSet(viewsets.ModelViewSet):
         # TODO: I can create without authentication...
         # permission_classes = (IsAuthenticated,)
         # authentication_classes = (JWTTokenUserAuthentication,)
-        # print("data:::: ", serializer.data)
+        print("data:::: ", serializer.data)
         print("request:::: ", self.request.data)
         if serializer.is_valid():
             serializer.save()
@@ -161,7 +161,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """Create a new announcement."""
         # authentication_classes = (JWTTokenUserAuthentication,)
         # permission_classes = (IsAuthenticated,)
-        # print("serializer: ", self.request.data)
+        print("serializer: ", self.request.data)
+        print('ser data: ', serializerliz.data)
         user = get_user_model().objects.get(email=self.request.data.get("user"))
         category = models.Category.objects.get(
             uuid=self.request.data.get("category"))

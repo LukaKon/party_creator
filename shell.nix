@@ -17,8 +17,16 @@ in
 mkShell {
   buildInputs = [
     # pythonEnv
+    python310
 
     bmake
     http-prompt
   ];
+
+  shellHook = ''
+    echo "${name} env"
+    
+    source env/bin/activate
+    echo done
+  '';
 }

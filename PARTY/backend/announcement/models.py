@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
+
 from dynamic_filenames import FilePattern
+
 import stdimage
 import uuid as uuid_lib
 
@@ -86,16 +88,9 @@ class Announcement(models.Model):
         on_delete=models.CASCADE,
         related_name='announcements'
     )
-    # category = models.ForeignKey(
-        # Category,
-        # verbose_name="announcement_categories",
-        # on_delete=models.PROTECT,
-    # )
-    # TODO: announcement can have many categories
-    category = models.ManyToManyField(Category,related_name="categories")
 
-    # event_type = models.ManyToManyField(EventType, related_name="announcements")
-    # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
+    # TODO: announcement can have many categories
+    category = models.ManyToManyField(Category, related_name="categories")
     created = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
@@ -109,13 +104,16 @@ class Announcement(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, using=None, keep_parents=False):
-        ann = Announcement.objects.get(pk=self.pk)
-        for img in ann.image.all():
+        announcement = Announcement.objects.get(pk=self.pk)
+        for img in announcement.image.all():
             img.delete()
         super().delete()
 
     def get_absolute_url(self):
-        return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
+        return reverse(
+            "announcement:announcement_details",
+            kwargs={"slug": self.slug}
+        )
 
     def __str__(self):
         return self.title
@@ -130,7 +128,7 @@ class Multimedia(models.Model):
         blank=True,
         related_name="%(class)ss",
     )
-    
+
     uuid = models.UUIDField(
         db_index=True,
         default=uuid_lib.uuid4,
@@ -159,7 +157,8 @@ class Image(Multimedia):
         default="media/default.jpg",
     )
 
-    is_main = models.BooleanField(default=False, null=True)  # is image main - for front
+    # is image main - for front
+    is_main = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return str(self.image)

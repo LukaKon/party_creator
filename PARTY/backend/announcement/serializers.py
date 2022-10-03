@@ -56,10 +56,8 @@ class ImageSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
 
-    # images = ImageSerializer(
-    #     # many=True,
-    # )  # read_only=True)
-    # user = UserSerializer(many=False)
+    images = ImageSerializer(many=True)  # read_only=True)
+    user = UserSerializer(many=False)
 
     # event_type = EventType(many=True)#, read_only=True)
     # category = CategorySerializer(many=False, required=True)
