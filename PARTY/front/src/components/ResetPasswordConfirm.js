@@ -49,7 +49,7 @@ export const ResetPasswordConfirm = () => {
                         )
                     }
                 })
-            // window.location.replace('/signin');
+            window.location.replace('/signin');
         }else{
             setStatus(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
         }
