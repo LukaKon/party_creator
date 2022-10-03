@@ -16,8 +16,9 @@ import {axiosInstance} from "../axios";
 const theme = createTheme();
 
 export const ChangePassword = () => {
-    const [passwordError, setPasswordError] = useState(null)
+    const [status, setStatus] = useState(null)
     const handleSubmit = (event) =>{
+        setStatus(null)
         event.preventDefault()
         let data = new FormData(event.currentTarget);
 
@@ -30,17 +31,27 @@ export const ChangePassword = () => {
             axiosInstance
                 .put("account/changepassword/", data)
                 .then((response) => {
+                    setStatus(
+                        <Alert severity="success">Hasło zostało pomyślnie zmienione.</Alert>
+                    )
                     console.log(response)
                 })
                 .catch((error) => {
-                    console.log(error.response.data)
-                    if(error.response.data.old_password === "Wrong password"){
-                        setPasswordError(<Alert severity="warning">Podane aktualne hasło nie jest prawidłowe!</Alert>)
+                    if(error.response.data.password){
+                        setStatus(
+                            <Typography variant="div">
+                                {error.response.data.password.map(error=>{
+                                    return(
+                                        <Alert severity="warning">{error}</Alert>
+                                    )
+                                })}
+                            </Typography>
+                        )
                     }
                 })
             // window.location.replace('/signin');
         }else{
-            setPasswordError(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
+            setStatus(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
         }
     }
 
@@ -62,9 +73,7 @@ export const ChangePassword = () => {
                     <Typography variant="h5">
                         Zmień hasło
                     </Typography>
-
-                    {passwordError}
-
+                    {status}
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
