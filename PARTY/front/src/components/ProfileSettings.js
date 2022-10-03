@@ -8,6 +8,7 @@ import {
     Button,
     Typography,
 } from "@mui/material";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import {
     useDispatch,
     useSelector,
@@ -16,10 +17,11 @@ import {styled} from '@mui/material/styles';
 import {axiosInstance} from "../axios";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from "../../Settings";
+import {useNavigate} from "react-router-dom";
 
 export const ProfileSettings = () => {
+    let navigate = useNavigate();
     const dispatch = useDispatch();
-
     const {entities} = useSelector(
         (state) => state.profile
     )
@@ -29,6 +31,10 @@ export const ProfileSettings = () => {
         },
         [entities]
     )
+
+    const handleButton = (pageURL) => {
+        navigate(pageURL)
+    }
 
     const [image, setImage] = useState({
         imageToShow: undefined,
@@ -48,7 +54,7 @@ export const ProfileSettings = () => {
     }
 
     const handleInput = () => {
-        if(image["imageToUpload"] !== undefined){
+        if(image["imageToUpload"]){
             const data = new FormData()
             data.append('image', image["imageToUpload"])
             axiosInstance.patch('account/updateprofile/', data)
@@ -56,12 +62,15 @@ export const ProfileSettings = () => {
                     dispatch(fetchProfile());
                 })
         }else{
-            console.log('najpierw foto wybierz')
+            console.log('Brak zdjęcia')
         }
     }
 
     return (
         <Grid margin={2}>
+            <Typography>
+                <Button onClick={()=>handleButton('/changepassword')}>Change password</Button>
+            </Typography>
             <Typography variant="h7" component="div">
                 Twój aktualny avatar, naciśnij aby zmienić
             </Typography>
