@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {makeStyles} from "@mui/styles";
-import {handleButton} from "../utils";
+import {removeToken} from "../utils";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from '../../Settings'
@@ -33,9 +33,12 @@ const useStyles = makeStyles((theme) => ({
 
 export const Header = () => {
     const dispatch = useDispatch();
+    let loged = sessionStorage.getItem("access_token")
 
     useEffect(() => {
-        dispatch(fetchProfile())
+        if (loged){
+            dispatch(fetchProfile())
+        }
     }, [image]);
 
     let image
@@ -65,7 +68,7 @@ export const Header = () => {
         // "Test Button" : "/testSite"
     };
 
-    if (sessionStorage.getItem("access_token")) {
+    if (loged) {
         // Set profile picture
         showAvatar()
 
@@ -98,7 +101,7 @@ export const Header = () => {
 
     const handleMenu = (pageURL) => {
         if (pageURL === 'signout') {
-            handleButton()
+            removeToken()
             window.location.replace('/');
         } else {
             navigate(pageURL);

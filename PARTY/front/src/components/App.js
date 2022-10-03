@@ -14,6 +14,7 @@ import { Categories } from "./Categories";
 import { AnnouncementsByCategory } from "./AnnouncementsByCategory";
 import {ResetPassword} from "./ResetPassword";
 import {ResetPasswordConfirm} from "./ResetPasswordConfirm";
+import {ChangePassword} from "./ChangePassword";
 
 export const App = () => {
     const isAuthenticated = sessionStorage.getItem('access_token')
@@ -51,6 +52,7 @@ export const App = () => {
                     {isAuthenticatedFunction('profile', <Profile/>)}
                     {isAuthenticatedFunction('settings', <ProfileSettings/>)}
                     {isAuthenticatedFunction('addannouncement', <AddAnnouncement/>)}
+                    {isAuthenticatedFunction('changepassword', <ChangePassword/>)}
                 </Routes>
                 <Footer/>
             </BrowserRouter>
