@@ -75,6 +75,7 @@ export const Header = () => {
         // Set settings/options
         pages["Dodaj ogłoszenie"] = "/addannouncement"
         settings["Profil"] = "/profile"
+        settings["Moje ogłoszenia"] = "/myannouncements"
         settings["Ustawienia konta"] = "/settings"
         settings['Wyloguj sie'] = "signout"
 
