@@ -9,8 +9,10 @@ from account.serializers import (
     ChangePasswordSerializer,
 )
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password, get_password_validators
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
-from rest_framework import status
+from rest_framework import status, exceptions
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -20,6 +22,7 @@ from rest_framework_simplejwt.token_blacklist.models import (
     OutstandingToken,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, api_settings, TokenViewBase
+import back.settings as settings
 
 
 class LoginView(TokenObtainPairView):
@@ -103,10 +106,25 @@ class ChangePasswordView(UpdateAPIView):
         if serializer.is_valid():
             # Check old password
             if not self.object.check_password(serializer.data.get("old_password")):
-                return Response({"old_password": "Wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"password": ["Wrong password"]}, status=status.HTTP_400_BAD_REQUEST)
             # set_password also hashes the password that the user will get
+
+            try:
+                # validate the password against existing validators
+                validate_password(
+                    serializer.data.get("new_password"),
+                    user=request.user,
+                    password_validators=get_password_validators(settings.AUTH_PASSWORD_VALIDATORS)
+                )
+            except ValidationError as e:
+                # raise a validation error for the serializer
+                raise exceptions.ValidationError({
+                    'password': e.messages
+                })
+
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
+
             response = {
                 'status': 'success',
                 'code': status.HTTP_200_OK,

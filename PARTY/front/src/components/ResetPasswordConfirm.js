@@ -18,7 +18,7 @@ const theme = createTheme();
 
 export const ResetPasswordConfirm = () => {
     const { token } = useParams();
-    const [passwordError, setPasswordError] = useState(null)
+    const [status, setStatus] = useState(null)
     const handleSubmit = (event) => {
         event.preventDefault()
         let data = new FormData(event.currentTarget);
@@ -32,14 +32,26 @@ export const ResetPasswordConfirm = () => {
             axiosInstance
                 .post("account/password_reset/confirm/", data)
                 .then((response) => {
-                    console.log(response)
+                    setStatus(
+                        <Alert severity="success">Hasło zostało pomyślnie zmienione.</Alert>
+                    )
                 })
                 .catch((error) => {
-                    console.log('error:', error)
+                     if(error.response.data.password){
+                        setStatus(
+                            <Typography variant="div">
+                                {error.response.data.password.map(error=>{
+                                    return(
+                                        <Alert severity="warning">{error}</Alert>
+                                    )
+                                })}
+                            </Typography>
+                        )
+                    }
                 })
             // window.location.replace('/signin');
         }else{
-            setPasswordError(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
+            setStatus(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
         }
     }
 
@@ -61,7 +73,7 @@ export const ResetPasswordConfirm = () => {
                     <Typography variant="h5">
                         Zresetuj hasło
                     </Typography>
-                    {passwordError}
+                    {status}
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
