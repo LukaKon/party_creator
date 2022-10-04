@@ -30,13 +30,6 @@ class CategorySerializer(serializers.ModelSerializer):
             "uuid",
         )
 
-
-# class EventTypeSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = EventType
-#         fields = ("name",)
-
-
 class ImageSerializer(serializers.ModelSerializer):
     """Image serializer."""
 
@@ -46,7 +39,6 @@ class ImageSerializer(serializers.ModelSerializer):
             "id",
             "uuid",
             "announcement",
-            # "event_type",
             "image",
             "is_main",
         )
@@ -56,10 +48,9 @@ class ImageSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
 
-    images = ImageSerializer(many=True)  # read_only=True)
-    user = UserSerializer(many=False)
+    images = ImageSerializer(many=True, required=False)  # read_only=True)
+    # user = UserSerializer(many=False)
 
-    # event_type = EventType(many=True)#, read_only=True)
     # category = CategorySerializer(many=False, required=True)
 
     class Meta:
@@ -68,10 +59,8 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             # TODO: should it be in order like in model?
             "id",
             "title",
-            # "description",
             "user",
             "category",
-            # "event_type",
             "images",
             "created",
             "slug",
@@ -79,11 +68,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             "id",
-            # "event_type",
-            # "user",
             "slug",
-            # "uuid",
-            # "created",
         )
         depth = 1
 

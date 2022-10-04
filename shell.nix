@@ -25,8 +25,7 @@ mkShell {
 
   shellHook = ''
     echo "${name} env"
-    
     source env/bin/activate
-    echo done
+    echo "Env activated"
   '';
 }

@@ -13,10 +13,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 
-from rest_framework import status, viewsets
+from rest_framework import (
+    status,
+    viewsets,
+)
+from rest_framework.decorators import action
 from rest_framework.parsers import (
-    MultiPartParser,
     FormParser,
+    MultiPartParser,
 )
 from rest_framework.permissions import (
     AllowAny,
@@ -33,7 +37,6 @@ from announcement import (
 )
 
 
-# from rest_framework.parsers import FormParser, MultiPartParser
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
 
@@ -50,6 +53,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     """View to manage image APIs."""
 
     serializer_class = serializers.ImageSerializer
+    parser_classes = (FormParser, MultiPartParser,)
     # permission_classes = (IsAuthenticated,)
 
     def get_permissions(self):
@@ -67,7 +71,20 @@ class ImageViewSet(viewsets.ModelViewSet):
         """Define custom queryset."""
         return models.Image.objects.all()
 
+    # @action(methods=['POST'], detail=True, url_path='upload-image')
+    # def upload_image(self, request, pk=None):
+    #     """Upload an image to recipe."""
+    #     recipe = self.get_object()
+    #     serializer = self.get_serializer(recipe, data=request.data)
+
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     # @method_decorator(login_required)
+    # @action(detail=False, url_path='upload-image' )
     def perform_create(self, serializer):
         """Create a new image."""
         # TODO: I can create without authentication...
@@ -99,9 +116,8 @@ class ImageViewSet(viewsets.ModelViewSet):
 class AnnouncementViewSet(viewsets.ModelViewSet):
     """View for manage announcement APIs."""
 
-    # model = models.Announcement
     serializer_class = serializers.AnnouncementDetailSerializer
-    parser_classesses = (MultiPartParser, FormParser,)
+    # parser_classesses = (MultiPartParser, FormParser,)
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
     permission_classes = ()
@@ -154,7 +170,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def get_object(self, queryset=None, **kwargs):
         """Get object by slug."""
-        slug= self.kwargs.get("slug")    # slug
+        slug= self.kwargs.get("slug")
         return get_object_or_404(models.Announcement, slug=slug)
 
     def perform_create(self, serializer):
@@ -162,7 +178,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         # authentication_classes = (JWTTokenUserAuthentication,)
         # permission_classes = (IsAuthenticated,)
         print("serializer: ", self.request.data)
-        print('ser data: ', serializerliz.data)
+        print('ser data: ', serializerliz)
         user = get_user_model().objects.get(email=self.request.data.get("user"))
         category = models.Category.objects.get(
             uuid=self.request.data.get("category"))

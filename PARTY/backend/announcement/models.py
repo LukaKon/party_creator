@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
+from django.utils.translation import gettext_lazy as _
 
 from dynamic_filenames import FilePattern
 
@@ -88,6 +89,7 @@ class Announcement(models.Model):
         on_delete=models.CASCADE,
         related_name='announcements'
     )
+    image = models.ManyToManyField('Image', related_name='announcements')
 
     # TODO: announcement can have many categories
     category = models.ManyToManyField(Category, related_name="categories")
