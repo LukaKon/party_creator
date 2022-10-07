@@ -4,7 +4,12 @@ Serializers for announcements API.
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Announcement, Category, Image
+from .models import (
+    Announcement,
+    Category,
+    Image,
+    Movie,
+)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -44,11 +49,24 @@ class ImageSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ("id",)
 
+class MovieSerializer(serializers.ModelSerializer):
+    """Movie serializer."""
+    
+    class Meta:
+        model = Movie
+        fields = (
+            'id',
+            'uuid',
+            'announcement',
+            'movie_url',
+        )
+        read_only_fields = ('id',)
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
 
     images = ImageSerializer(many=True, required=False)  # read_only=True)
+    movies = MovieSerializer(many=True, required=False)
     # user = UserSerializer(many=False)
 
     # category = CategorySerializer(many=False, required=True)
@@ -62,6 +80,9 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "user",
             "category",
             "images",
+            'movies',
+            # 'image',
+            # 'movie_url',
             "created",
             "slug",
             "uuid",

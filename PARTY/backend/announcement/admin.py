@@ -57,6 +57,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
         "slug",
         "uuid",
         "created",
+        "updated",
     )
     add_fieldsets = (
         None,
@@ -122,7 +123,11 @@ class ImageAdmin(admin.ModelAdmin):
             },
         ),
     )
-    readonly_fields = []
+    readonly_fields = [
+        'uuid',
+        'created',
+        'updated',
+    ]
     add_fieldsets = (
         (
             None,
@@ -138,6 +143,41 @@ class ImageAdmin(admin.ModelAdmin):
     )
 
 
+class MovieAdmin(admin.ModelAdmin):
+    """Define the admin page for movies."""
+
+    ordering = ["id"]
+    list_display = ("movie_url",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "movie_url",
+                    "announcement",
+                ),
+            },
+        ),
+    )
+    readonly_fields = [
+        'uuid',
+        'created',
+        'updated',
+    ]
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "movie_url",
+                    "announcement",
+                ),
+            },
+        ),
+    )
+
 admin.site.register(models.Announcement, AnnouncementAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Image, ImageAdmin)
+admin.site.register(models.Movie, MovieAdmin)

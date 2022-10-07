@@ -76,6 +76,11 @@ class Category(models.Model):
 class Announcement(models.Model):
     """Announcement object."""
 
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='announcements'
+    )
     title = models.CharField(max_length=200)
     description = models.TextField(blank=False)
     slug = models.SlugField(unique=True)
@@ -84,16 +89,12 @@ class Announcement(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='announcements'
-    )
-    image = models.ManyToManyField('Image', related_name='announcements')
-
+    image = models.ManyToManyField('Image', related_name='announcements_image')
+    movie_url = models.ManyToManyField('Movie', related_name='announcement_movie')
     # TODO: announcement can have many categories
     category = models.ManyToManyField(Category, related_name="categories")
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -109,6 +110,8 @@ class Announcement(models.Model):
         announcement = Announcement.objects.get(pk=self.pk)
         for img in announcement.image.all():
             img.delete()
+        for mov in announcement.movie_url.all():
+            mov.delete()
         super().delete()
 
     def get_absolute_url(self):
@@ -128,14 +131,15 @@ class Multimedia(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="%(class)ss",
+        related_name="%(class)s_related",
     )
-
     uuid = models.UUIDField(
         db_index=True,
         default=uuid_lib.uuid4,
         editable=False,
     )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
@@ -158,19 +162,19 @@ class Image(Multimedia):
         verbose_name="images",
         default="media/default.jpg",
     )
-
     # is image main - for front
     is_main = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return str(self.image)
 
-# class Movie(Multimedia):
-#     """Movie attached to announcement."""
+class Movie(Multimedia):
+    """Movie attached to announcement."""
 
-#     movie = models.FileField(
-#         null=True,
-#         upload_to=upload_to_pattern,
-#         # delete_orphans=True,
-#         verbose_name="movies",
-#     )
+    # movie = models.FileField(
+        # null=True,
+        # upload_to=upload_to_pattern,
+        # delete_orphans=True,
+        # verbose_name="movies",
+    # )
+    movie_url = models.URLField()

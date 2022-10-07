@@ -27,4 +27,9 @@ router.register(
     viewset=views.ImageViewSet,
     basename="image",
 )
+router.register(
+    prefix="movies",
+    viewset=views.MovieViewSet,
+    basename='movie_url',
+)
 urlpatterns = router.urls

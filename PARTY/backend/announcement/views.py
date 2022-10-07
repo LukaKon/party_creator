@@ -54,18 +54,17 @@ class ImageViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.ImageSerializer
     parser_classes = (FormParser, MultiPartParser,)
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    def get_permissions(self):
-        """Instantiates and returns the list of permissions that this view requires."""
-        print(self.request.data)
+    # def get_permissions(self):
+        # """Instantiates and returns the list of permissions that this view requires."""
+        # print(self.request.data)
 
         # if self.action == "list":
-        if self.request.method == "GET":
-            return [AllowAny()]
-        else:
-            return [IsAuthenticated()]
-            # authentication_classes = (JWTTokenUserAuthentication,)
+        # if self.request.method == "GET":
+            # return [AllowAny()]
+        # else:
+            # return [IsAuthenticated()]
 
     def get_queryset(self):
         """Define custom queryset."""
@@ -85,16 +84,27 @@ class ImageViewSet(viewsets.ModelViewSet):
 
     # @method_decorator(login_required)
     # @action(detail=False, url_path='upload-image' )
-    def perform_create(self, serializer):
-        """Create a new image."""
+    # def perform_create(self, serializer):
+        # """Create a new image."""
         # TODO: I can create without authentication...
         # permission_classes = (IsAuthenticated,)
         # authentication_classes = (JWTTokenUserAuthentication,)
-        print("data:::: ", serializer.data)
-        print("request:::: ", self.request.data)
-        if serializer.is_valid():
-            serializer.save()
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        # print("data:::: ", serializer.data)
+        # print("request:::: ", self.request.data)
+        # if serializer.is_valid():
+            # serializer.save()
+        # return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class MovieViewSet(viewsets.ModelViewSet):
+    """View to manage movie APIs."""
+    
+    serializer_class = serializers.MovieSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        """Define custom queryset."""
+        return models.Movie.objects.all()
 
 
 @extend_schema_view(
@@ -121,7 +131,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
     permission_classes = ()
-    authentication_classes = ()
+    authentication_classes = (IsAuthenticatedOrReadOnly,)
     
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""

@@ -3,20 +3,20 @@ let
   name = "Party Wizard";
   pythonEnv = python310.withPackages (ps: [
     #   # ps.django_4
-    ps.djangorestframework
-    ps.django-cors-headers
-    ps.djangorestframework-simplejwt
-    ps.pyjwt
-    ps.django-filter
+    # ps.djangorestframework
+    # ps.django-cors-headers
+    # ps.djangorestframework-simplejwt
+    # ps.pyjwt
+    # ps.django-filter
 
     ps.bpython
-    ps.black
+    # ps.black
   ]);
 
 in
 mkShell {
   buildInputs = [
-    # pythonEnv
+    pythonEnv
     python310
 
     bmake
@@ -24,7 +24,7 @@ mkShell {
   ];
 
   shellHook = ''
-    echo "${name} env"
+    echo "Enter to '${name}' env..."
     source env/bin/activate
     echo "Env activated"
   '';
