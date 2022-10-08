@@ -34,6 +34,7 @@ export const ResetPasswordConfirm = () => {
                 .then((response) => {
                     setStatus(
                         <Alert severity="success">Hasło zostało pomyślnie zmienione.</Alert>
+                        // window.location.replace('/signin');
                     )
                 })
                 .catch((error) => {
@@ -49,7 +50,6 @@ export const ResetPasswordConfirm = () => {
                         )
                     }
                 })
-            window.location.replace('/signin');
         }else{
             setStatus(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
         }

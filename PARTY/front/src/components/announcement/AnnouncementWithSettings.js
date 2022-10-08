@@ -1,21 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
     Card,
     CardActions,
     CardContent,
     CardMedia,
     Button,
+    Grid,
     Typography,
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Link } from "react-router-dom";
 import { BACKEND_LOCALHOST } from "../../../Settings";
+import { deleteAnnouncement } from "../../redux/slices/announcementSlice";
 
 export const AnnouncementWithSettings = (props) => {
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const handleClick = () => {
         navigate("/announcement/" + props.slug);
     };
@@ -26,43 +28,62 @@ export const AnnouncementWithSettings = (props) => {
 
     let render_image;
 
+    const removeAnnouncement = (event, announcementSlug) => {
+        console.log(event)
+        const data = {'slug' : announcementSlug}
+        dispatch(deleteAnnouncement(data))
+    }
+
     if (main_image.length && main_image[0].image.includes(BACKEND_LOCALHOST)) {
-        const link = main_image[0].image;
-        render_image = link;
-    } else {
+        render_image = main_image[0].image;
+    }else if(main_image.length){
+        console.log(main_image)
+        render_image = BACKEND_LOCALHOST + main_image[0].image
+    }else {
         render_image = BACKEND_LOCALHOST + "media/announcement/default.jpg";
     }
 
     return (
-        <Card sx={{ display: 'flex', margin:1, border:"ridge" }}>
-            <CardMedia
-                component="img"
-                height="200"
-                image={render_image}
-                alt="some image"
-                sx={{ width: 200 }}
-            />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    {props.title}
-                </Typography>
-                <Typography variant="body1">{props.category.name}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {props.created.slice(0, 10)}
-                </Typography>
-            </CardContent>
-            <CardActions sx={{ display:"", alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button variant="outlined" size="small" startIcon={<DeleteIcon />}>
-                  Usuń
-                </Button>
-                <Button variant="outlined" size="small" startIcon={<EditIcon />}>
-                  Edytuj
-                </Button>
-                <Button variant="contained" size="small" onClick={handleClick}>
-                    Szczegóły
-                </Button>
+        <Card sx={{ display: 'flex', marginBottom: 1, border:"ridge" }}>
+            <Grid container>
 
-            </CardActions>
+                <Grid item xs={1}>
+                    <CardMedia
+                    component="img"
+                    image={render_image}
+                    alt="some image"
+                    sx={{ width: 150, height: 150, objectFit: 'contain' }}
+                    />
+                </Grid>
+
+                <Grid item xs={10}>
+                    <CardContent>
+                        <Typography variant="body2" color="text.secondary">
+                            {props.created.slice(0, 10)}
+                        </Typography>
+                        <Typography gutterBottom variant="h5" component="div">
+                            {props.title}
+                        </Typography>
+
+                    </CardContent>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <CardActions sx={{ display: '' }}>
+                        <Button variant="outlined" size="small" startIcon={<EditIcon />}>
+                          Edytuj
+                        </Button>
+                        <Button variant="contained" size="small" onClick={handleClick}>
+                            Szczegóły
+                        </Button>
+                        <Button variant="outlined" size="small" color="error"
+                                startIcon={<DeleteIcon />} onClick={()=>{removeAnnouncement(event, props.slug)}}>
+                          Usuń
+                        </Button>
+                    </CardActions>
+                </Grid>
+
+            </Grid>
         </Card>
     );
 };
