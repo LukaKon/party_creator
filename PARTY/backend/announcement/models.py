@@ -41,7 +41,7 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 # class EventType(models.Model):
@@ -89,8 +89,8 @@ class Announcement(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    image = models.ManyToManyField('Image', related_name='announcements_image')
-    movie_url = models.ManyToManyField('Movie', related_name='announcement_movie')
+    # image = models.ManyToManyField('Image', related_name='announcements_image')
+    # movie_url = models.ManyToManyField('Movie', related_name='announcement_movie')
     # TODO: announcement can have many categories
     category = models.ManyToManyField(Category, related_name="categories")
     created = models.DateTimeField(auto_now_add=True)
@@ -125,13 +125,18 @@ class Announcement(models.Model):
 
 
 class Multimedia(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="%(class)ss",
+    )
     announcement = models.ForeignKey(
         Announcement,
         verbose_name="announcement_%(class)ss",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="%(class)s_related",
+        related_name="%(class)ss",
     )
     uuid = models.UUIDField(
         db_index=True,

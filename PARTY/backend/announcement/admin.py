@@ -119,6 +119,7 @@ class ImageAdmin(admin.ModelAdmin):
                     "image",
                     "is_main",
                     "announcement",
+                    "user",
                 ),
             },
         ),
@@ -137,6 +138,7 @@ class ImageAdmin(admin.ModelAdmin):
                     "image",
                     "is_main",
                     "announcement",
+                    'user',
                 ),
             },
         ),
@@ -155,6 +157,7 @@ class MovieAdmin(admin.ModelAdmin):
                 "fields": (
                     "movie_url",
                     "announcement",
+                    'user',
                 ),
             },
         ),
@@ -172,6 +175,7 @@ class MovieAdmin(admin.ModelAdmin):
                 "fields": (
                     "movie_url",
                     "announcement",
+                    'user',
                 ),
             },
         ),

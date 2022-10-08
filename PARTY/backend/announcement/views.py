@@ -1,17 +1,19 @@
 """
 Views for announcements APIs.
 """
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
     OpenApiParameter,
     OpenApiTypes,
 )
-
-from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
+from drf_spectacular.types import OpenApiTypes
 
 from rest_framework import (
     status,
@@ -41,7 +43,6 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
 
     serializer_class = serializers.CategorySerializer
-    # queryset = models.Category.objects.all()
     lookup_field = "uuid"
 
     def get_queryset(self):
@@ -98,13 +99,18 @@ class ImageViewSet(viewsets.ModelViewSet):
 
 class MovieViewSet(viewsets.ModelViewSet):
     """View to manage movie APIs."""
-    
+
     serializer_class = serializers.MovieSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    # authentication_classes = (JWTTokenUserAuthentication,)
 
     def get_queryset(self):
         """Define custom queryset."""
         return models.Movie.objects.all()
+
+    def perform_create(self, serializer):
+        print('=====request: ', self.request.user)
+        serializer.save(user=self.request.user)
 
 
 @extend_schema_view(
@@ -130,9 +136,10 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     # parser_classesses = (MultiPartParser, FormParser,)
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
-    permission_classes = ()
-    authentication_classes = (IsAuthenticatedOrReadOnly,)
-    
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    authentication_classes = ()
+
+
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
         return [uuid for uuid in qs.split(',')]

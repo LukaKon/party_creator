@@ -43,6 +43,7 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "uuid",
+            'user',
             "announcement",
             "image",
             "is_main",
@@ -57,6 +58,7 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'uuid',
+            'user',
             'announcement',
             'movie_url',
         )
@@ -65,8 +67,8 @@ class MovieSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
 
-    images = ImageSerializer(many=True, required=False)  # read_only=True)
-    movies = MovieSerializer(many=True, required=False)
+    # images = ImageSerializer(many=True, required=False)  # read_only=True)
+    # movies = MovieSerializer(many=True, required=False)
     # user = UserSerializer(many=False)
 
     # category = CategorySerializer(many=False, required=True)
@@ -79,10 +81,10 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "title",
             "user",
             "category",
-            "images",
+            # "images",
+            # 'movies',
+            'images',
             'movies',
-            # 'image',
-            # 'movie_url',
             "created",
             "slug",
             "uuid",
