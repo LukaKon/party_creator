@@ -3,6 +3,7 @@ Django admin customization.
 """
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import Group
 
 from . import models
 
@@ -11,7 +12,8 @@ class AnnouncementAdmin(admin.ModelAdmin):
     """Define the admin page for announcements."""
 
     ordering = ["id"]
-    list_display = ("title", "created")
+    list_display = ("title", "created", 'updated',)
+    list_filter = ('categories','user',)
     prepopulated_fields = {
         # "slug": ("title",),
     }
@@ -29,7 +31,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
             _("Categories"),
             {
                 "fields": (
-                    "category",
+                    "categories",
                     # 'event',
                 )
             },
@@ -49,6 +51,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
                     "slug",
                     "uuid",
                     "created",
+                    'updated',
                 )
             },
         ),
@@ -69,7 +72,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
                 "slug",
                 "uuid",
                 "user",
-                "category",
+                "categories",
             ),
         },
     )
@@ -111,6 +114,7 @@ class ImageAdmin(admin.ModelAdmin):
 
     ordering = ["id"]
     list_display = ("image",)
+    list_filter = ('announcement',)
     fieldsets = (
         (
             None,
@@ -119,7 +123,7 @@ class ImageAdmin(admin.ModelAdmin):
                     "image",
                     "is_main",
                     "announcement",
-                    "user",
+                    # "user",
                 ),
             },
         ),
@@ -138,7 +142,7 @@ class ImageAdmin(admin.ModelAdmin):
                     "image",
                     "is_main",
                     "announcement",
-                    'user',
+                    # 'user',
                 ),
             },
         ),
@@ -150,6 +154,7 @@ class MovieAdmin(admin.ModelAdmin):
 
     ordering = ["id"]
     list_display = ("movie_url",)
+    list_filter = ('announcement',)
     fieldsets = (
         (
             None,
@@ -157,7 +162,7 @@ class MovieAdmin(admin.ModelAdmin):
                 "fields": (
                     "movie_url",
                     "announcement",
-                    'user',
+                    # 'user',
                 ),
             },
         ),
@@ -175,7 +180,7 @@ class MovieAdmin(admin.ModelAdmin):
                 "fields": (
                     "movie_url",
                     "announcement",
-                    'user',
+                    # 'user',
                 ),
             },
         ),
@@ -185,3 +190,7 @@ admin.site.register(models.Announcement, AnnouncementAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Image, ImageAdmin)
 admin.site.register(models.Movie, MovieAdmin)
+
+admin.site.unregister(Group)
+
+admin.site.site_header = 'Party Wizard admin page'

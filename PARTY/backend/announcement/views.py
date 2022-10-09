@@ -96,6 +96,9 @@ class ImageViewSet(viewsets.ModelViewSet):
             # serializer.save()
         # return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    def perform_create(self, serializer):
+        serializer.save()
+
 
 class MovieViewSet(viewsets.ModelViewSet):
     """View to manage movie APIs."""
@@ -109,8 +112,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         return models.Movie.objects.all()
 
     def perform_create(self, serializer):
-        print('=====request: ', self.request.user)
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 @extend_schema_view(
@@ -195,7 +197,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         # authentication_classes = (JWTTokenUserAuthentication,)
         # permission_classes = (IsAuthenticated,)
         print("serializer: ", self.request.data)
-        print('ser data: ', serializerliz)
+        print('ser data: ', serializer)
         user = get_user_model().objects.get(email=self.request.data.get("user"))
         category = models.Category.objects.get(
             uuid=self.request.data.get("category"))

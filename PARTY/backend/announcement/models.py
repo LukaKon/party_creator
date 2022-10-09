@@ -92,7 +92,7 @@ class Announcement(models.Model):
     # image = models.ManyToManyField('Image', related_name='announcements_image')
     # movie_url = models.ManyToManyField('Movie', related_name='announcement_movie')
     # TODO: announcement can have many categories
-    category = models.ManyToManyField(Category, related_name="categories")
+    categories = models.ManyToManyField(Category, related_name="categories")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
@@ -125,11 +125,11 @@ class Announcement(models.Model):
 
 
 class Multimedia(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="%(class)ss",
-    )
+    # user = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     on_delete=models.CASCADE,
+    #     related_name="%(class)ss",
+    # )
     announcement = models.ForeignKey(
         Announcement,
         verbose_name="announcement_%(class)ss",
@@ -176,10 +176,7 @@ class Image(Multimedia):
 class Movie(Multimedia):
     """Movie attached to announcement."""
 
-    # movie = models.FileField(
-        # null=True,
-        # upload_to=upload_to_pattern,
-        # delete_orphans=True,
-        # verbose_name="movies",
-    # )
     movie_url = models.URLField()
+    
+    def __str__(self):
+        return str(self.movie_url)
