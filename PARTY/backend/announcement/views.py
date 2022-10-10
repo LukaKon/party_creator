@@ -135,11 +135,9 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     """View for manage announcement APIs."""
 
     serializer_class = serializers.AnnouncementDetailSerializer
-    # parser_classesses = (MultiPartParser, FormParser,)
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    authentication_classes = ()
 
 
     def _params_to_uuid(self, qs):

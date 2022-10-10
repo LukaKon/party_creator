@@ -13,7 +13,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
     ordering = ["id"]
     list_display = ("title", "created", 'updated',)
-    list_filter = ('categories','user',)
+    list_filter = ('category','user',)
     prepopulated_fields = {
         # "slug": ("title",),
     }
@@ -31,7 +31,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
             _("Categories"),
             {
                 "fields": (
-                    "categories",
+                    "category",
                     # 'event',
                 )
             },
@@ -72,14 +72,14 @@ class AnnouncementAdmin(admin.ModelAdmin):
                 "slug",
                 "uuid",
                 "user",
-                "categories",
+                "category",
             ),
         },
     )
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    """Define the admin page for categories."""
+    """Define the admin page for category."""
 
     ordering = ["id"]
     list_display = ("name",)

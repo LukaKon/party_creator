@@ -89,10 +89,7 @@ class Announcement(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    # image = models.ManyToManyField('Image', related_name='announcements_image')
-    # movie_url = models.ManyToManyField('Movie', related_name='announcement_movie')
-    # TODO: announcement can have many categories
-    categories = models.ManyToManyField(Category, related_name="categories")
+    category = models.ManyToManyField(Category, related_name="categories")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
@@ -125,11 +122,6 @@ class Announcement(models.Model):
 
 
 class Multimedia(models.Model):
-    # user = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     on_delete=models.CASCADE,
-    #     related_name="%(class)ss",
-    # )
     announcement = models.ForeignKey(
         Announcement,
         verbose_name="announcement_%(class)ss",

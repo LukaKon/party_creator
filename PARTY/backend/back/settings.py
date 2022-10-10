@@ -43,13 +43,13 @@ PROJECT_APPS = [
 ]
 
 ADDITIONAL_APPS = [
-    "django_extensions",
-    "rest_framework",
-    "django_filters",
     "corsheaders",
-    "rest_framework_simplejwt.token_blacklist",
-    "drf_spectacular",
+    "django_extensions",
+    "django_filters",
     'django_rest_passwordreset',
+    "drf_spectacular",
+    "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 STANDARD_APPS = [
@@ -74,21 +74,22 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    'http://127.0.0.1:3000',
 ]
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8000',
-)
+CSRF_TRUSTED_ORIGINS = [
+    "https://localhost:3000",
+    'https://127.0.0.1:3000',
+]
+# CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "back.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        # TODO: Do we need this???
-        "DIRS": [os.path.join(BASE_DIR, "../front/dist")],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

@@ -77,7 +77,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "user",
-            "categories",
+            "category",
             'images',
             'movies',
             "created",

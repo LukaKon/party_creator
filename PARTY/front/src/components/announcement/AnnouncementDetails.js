@@ -88,6 +88,19 @@ export const AnnouncementDetails = () => {
               </ImageList>
             </Grid>
 
+            <Grid item xs={6}>
+              Movies:
+                <ul>
+                  {entities.movies.map(mov => (
+                    <li key={mov.uuid}>
+                      <Link underline="hover" to={mov.movie_url}>
+                        {mov.movie_url}
+                    </Link>
+                  </li>
+                ))}
+                </ul>
+            </Grid>
+
           </Grid>
         </Box>
       )
