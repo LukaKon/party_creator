@@ -96,23 +96,16 @@ class ImageViewSet(viewsets.ModelViewSet):
             # serializer.save()
         # return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def perform_create(self, serializer):
-        serializer.save()
-
 
 class MovieViewSet(viewsets.ModelViewSet):
     """View to manage movie APIs."""
 
     serializer_class = serializers.MovieSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    # authentication_classes = (JWTTokenUserAuthentication,)
 
     def get_queryset(self):
         """Define custom queryset."""
         return models.Movie.objects.all()
-
-    def perform_create(self, serializer):
-        serializer.save()
 
 
 @extend_schema_view(

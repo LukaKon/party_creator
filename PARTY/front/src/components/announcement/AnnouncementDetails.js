@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import {
-   useDispatch,
-   useSelector,
+  useDispatch,
+  useSelector,
 } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
@@ -30,12 +30,14 @@ export const AnnouncementDetails = () => {
 
   let content
 
+
   if (loading) {
     content = <AnnouncementDetailsSkeleton />
   } else {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
+      console.log('########: ', entities.images.length)
       content = (
         <Box pa sx={{ flexGrow: 1 }}>
           <Grid
@@ -82,23 +84,29 @@ export const AnnouncementDetails = () => {
                 cols={3}
                 rowHeight={120}
               >
-                {entities.images.map(img => (
-                  <ImageItem key={img.uuid} {...img} />
-                ))}
+                {entities.images.length > 0
+                  ? entities.images.map(img => (
+                    <ImageItem key={img.uuid} {...img} />
+                  ))
+                  : <Typography variant="body2" color="red">No images.</Typography>
+                }
               </ImageList>
             </Grid>
 
             <Grid item xs={6}>
               Movies:
-                <ul>
+              {entities.movies.length > 0
+                ? <ul>
                   {entities.movies.map(mov => (
                     <li key={mov.uuid}>
                       <Link underline="hover" to={mov.movie_url}>
                         {mov.movie_url}
-                    </Link>
-                  </li>
-                ))}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
+                : <Typography variant="body2" color="red">No movies.</Typography>
+              }
             </Grid>
 
           </Grid>
