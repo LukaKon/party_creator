@@ -135,8 +135,8 @@ class Multimedia(TimeStampedModel):
         Announcement,
         verbose_name="announcement_%(class)ss",
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
+        # null=True,
+        # blank=True,
         related_name="%(class)ss",
     )
     uuid = models.UUIDField(

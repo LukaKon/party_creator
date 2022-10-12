@@ -12,7 +12,12 @@ class AnnouncementAdmin(admin.ModelAdmin):
     """Define the admin page for announcements."""
 
     ordering = ["id"]
-    list_display = ("title", "created", 'updated',)
+    list_display = (
+        'id',
+        "title",
+        "created",
+        # 'updated',
+    )
     list_filter = ('category','user',)
     prepopulated_fields = {
         # "slug": ("title",),
