@@ -15,6 +15,16 @@ upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
 )
 
+class TimeStampedModel(models.Model):
+    """
+        An abstract base class model that provides
+        self updating ''created'' and ''modified'' fields.
+    """
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
 
 class Category(models.Model):
     """Category(type) of announcement. e.g. local, photograph etc."""
@@ -73,7 +83,7 @@ class Category(models.Model):
 #     return self.name
 
 
-class Announcement(models.Model):
+class Announcement(TimeStampedModel):
     """Announcement object."""
 
     user = models.ForeignKey(
@@ -93,8 +103,8 @@ class Announcement(models.Model):
     # movie_url = models.ManyToManyField('Movie', related_name='announcement_movie')
     # TODO: announcement can have many categories
     categories = models.ManyToManyField(Category, related_name="categories")
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    # created = models.DateTimeField(auto_now_add=True)
+    # updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -124,12 +134,7 @@ class Announcement(models.Model):
         return self.title
 
 
-class Multimedia(models.Model):
-    # user = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     on_delete=models.CASCADE,
-    #     related_name="%(class)ss",
-    # )
+class Multimedia(TimeStampedModel):
     announcement = models.ForeignKey(
         Announcement,
         verbose_name="announcement_%(class)ss",
@@ -143,8 +148,8 @@ class Multimedia(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    # created = models.DateTimeField(auto_now_add=True)
+    # updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
