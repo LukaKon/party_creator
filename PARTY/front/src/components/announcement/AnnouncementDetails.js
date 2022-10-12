@@ -37,7 +37,6 @@ export const AnnouncementDetails = () => {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
-      console.log('########: ', entities.images.length)
       content = (
         <Box pa sx={{ flexGrow: 1 }}>
           <Grid
