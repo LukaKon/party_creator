@@ -135,8 +135,6 @@ class Multimedia(TimeStampedModel):
         Announcement,
         verbose_name="announcement_%(class)ss",
         on_delete=models.CASCADE,
-        # null=True,
-        # blank=True,
         related_name="%(class)ss",
     )
     uuid = models.UUIDField(
@@ -155,8 +153,8 @@ class Image(Multimedia):
     """Pictures attached to announcement."""
 
     image = stdimage.StdImageField(
-        null=True,
-        blank=True,
+        # null=True,
+        # blank=True,
         upload_to=upload_to_pattern,
         variations={
             "large": (800, 600),
