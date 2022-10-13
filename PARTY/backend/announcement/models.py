@@ -110,7 +110,7 @@ class Announcement(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         ann = Announcement.objects.get(pk=self.pk)
-        for img in ann.image.all():
+        for img in ann.images.all():
             img.delete()
         super().delete()
 

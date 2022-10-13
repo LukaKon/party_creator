@@ -6,7 +6,6 @@ export const fetchAnnouncements = createAsyncThunk(
     "announcements/fetchAnnouncements",
     async (data) => {
         try {
-            console.log('dejta', data)
             if(data.amount && data.category){
                 const response = await axiosInstance.get("/api/announcements/?category="+ data.category + "&amount=" + data.amount)
                 return response.data;
@@ -30,9 +29,20 @@ export const createAnnouncement = createAsyncThunk(
     "announcements/createAnnouncement",
     async (data) => {
         try {
-            await axiosInstance.post("api/addannouncement/", data);
+            await axiosInstance.post("api/announcements/", data);
         } catch (err) {
             console.log("Sent announcement error: ", err.message);
+        }
+    }
+);
+
+export const deleteAnnouncement = createAsyncThunk(
+    "announcements/deleteAnnouncement",
+    async(data) => {
+        try {
+            await axiosInstance.delete("api/announcements/" + data.slug)
+        } catch (err) {
+            console.log("Delete announcement error:", err.message);
         }
     }
 );
@@ -41,26 +51,10 @@ const announcementSlice = createSlice({
     name: "announcements",
     initialState: {
         loading: true,
-        // entities: ["test 1", "test 2"],
         entities: [],
         error: null,
     },
-    reducers: {
-        addAnnouncement(state, action) {
-            return {
-                ...state,
-                entities: action.payload,
-            };
-        },
-        deleteAnnouncement(state, action) {
-            return {
-                ...state,
-                entities: state.entities.filter(
-                    (ann) => ann !== action.payload
-                ),
-            };
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchAnnouncements.pending, (state, action) => {
@@ -71,7 +65,8 @@ const announcementSlice = createSlice({
                 state.entities = action.payload;
             })
             .addCase(fetchAnnouncements.rejected, (state, action) => {
-                (state.error = action.payload), (state.loading = false);
+                state.error = action.payload;
+                state.loading = false;
             })
             .addCase(createAnnouncement.pending, (state, action) => {
                 state.loading = true;
@@ -81,14 +76,27 @@ const announcementSlice = createSlice({
                 state.entities.push(action.payload);
             })
             .addCase(createAnnouncement.rejected, (state, action) => {
-                (state.error = action.payload), (state.loading = false);
+                state.error = action.payload;
+                state.loading = false;
+            })
+            .addCase(deleteAnnouncement.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(deleteAnnouncement.fulfilled, (state, action) => {
+                state.loading = false;
+                state.entities = state.entities.filter(element=>{
+                    return element !== action.payload.slug
+                });
+            })
+            .addCase(deleteAnnouncement.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
             });
     },
 });
 
 export const {
     addAnnouncement,
-    deleteAnnouncement,
     // announcementFetching,
     // announcementFetched,
     // announcementError,

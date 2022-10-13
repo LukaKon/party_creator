@@ -105,7 +105,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
     permission_classes = ()
-    authentication_classes = ()
+    # authentication_classes = ()
     
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
