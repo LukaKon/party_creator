@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from dynamic_filenames import FilePattern
@@ -26,19 +27,39 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
+
 class Category(models.Model):
     """Category(type) of announcement. e.g. local, photograph etc."""
 
+    MUSIC = 'MU'
+    CATTERING = 'CA'
+    PHOTOGRAPH = 'PH'
+    LOCAL = 'LO'
+    ANIMATOR = 'AN'
+
     CATEGORY_NAME = (
-        ("muzyka", "music"),
-        ("cattering", "cattering"),
-        ("fotograf", "photograph"),
-        ("lokal", "local"),
-        ("animator", "animator"),
+        # ("muzyka", "music"),
+        # ("cattering", "cattering"),
+        # ("fotograf", "photograph"),
+        # ("lokal", "local"),
+        # ("animator", "animator"),
+
+        (MUSIC, "muzyka"),
+        (CATTERING, "cattering"),
+        (PHOTOGRAPH, "fotograf"),
+        (LOCAL, "lokal"),
+        (ANIMATOR, "animator"),
+        
+        
+        # ( "muzyka",MUSIC),
+        # ( "cattering",CATTERING),
+        # ( "fotograf",PHOTOGRAPH),
+        # ( "lokal",LOCAL),
+        # ( "animator",ANIMATOR),
     )
 
     name = models.CharField(
-        max_length=25,
+        max_length=2,
         choices=CATEGORY_NAME,
     )
     uuid = models.UUIDField(
@@ -48,10 +69,13 @@ class Category(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = "categories"
+        verbose_name = _('category')
+        verbose_name_plural = _("categories")
+
 
     def __str__(self):
         return f"{self.name}"
+        # return self.get_name_display()
 
 
 # class EventType(models.Model):
@@ -83,6 +107,13 @@ class Category(models.Model):
 #     return self.name
 
 
+class AnnouncementManager(models.Manager):
+    """Announcement manager."""
+    
+    def top_nine(self, **kwargs):
+        return self.filter(updated__lte=timezone.now(), **kwargs)[:9]
+
+
 class Announcement(TimeStampedModel):
     """Announcement object."""
 
@@ -102,6 +133,9 @@ class Announcement(TimeStampedModel):
     # TODO: announcement can have many categories
     category = models.ManyToManyField(Category, related_name="categories")
     is_active = models.BooleanField(default=True)
+    
+    
+    objects = AnnouncementManager()
 
     class Meta:
         index_together = (("id", "slug"),)

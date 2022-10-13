@@ -13,8 +13,8 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
     ordering = ["id"]
     list_display = (
-        'id',
         "title",
+        'id',
         "created",
         # 'updated',
     )

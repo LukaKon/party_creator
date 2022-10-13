@@ -13,11 +13,13 @@ from .models import (
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='get_name_display')
     class Meta:
         model = Category
         fields = (
             "id",
             "name",
+            'get_name_display',
             "uuid",
         )
         read_only_fields = (

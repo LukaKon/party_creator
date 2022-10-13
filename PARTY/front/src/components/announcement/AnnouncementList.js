@@ -13,6 +13,7 @@ export const AnnouncementList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        // TODO: top_nine in AnnouncementManager
         dispatch(fetchAnnouncements({amount: 9}));
     }, []);
 
