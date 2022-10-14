@@ -6,21 +6,27 @@ export const fetchAnnouncements = createAsyncThunk(
     "announcements/fetchAnnouncements",
     async (data) => {
         try {
-            console.log('dejta', data)
-            if(data.amount && data.category){
-                const response = await axiosInstance.get("/api/announcements/?category="+ data.category + "&amount=" + data.amount)
-                return response.data;
-            }else if (data.amount){
-                const response = await axiosInstance.get("/api/announcements/?amount=" + data.amount)
-                return response.data;
-            }else if (data.category) {
-                const response = await axiosInstance.get("/api/announcements/?category=" + data.category)
-                return response.data;
-            }else{
-                const response = await axiosInstance.get("/api/announcements/");
-                return response.data;
+            // console.log('dejta', data)
+            if (data.main_page){
+                const response = await axiosInstance.get(`/api/announcements/?main_page=${data.main_page}`)
+                return response.data
             }
-        } catch (err) {
+            // if(data.amount && data.category){
+            //     const response = await axiosInstance.get("/api/announcements/?category="+ data.category + "&amount=" + data.amount)
+            //     return response.data;
+            // }else if (data.amount){
+            //     const response = await axiosInstance.get("/api/announcements/?amount=" + data.amount)
+            //     return response.data;
+            // }
+            else if (data.category) {
+                const response = await axiosInstance.get("/api/announcements/?category=" + data.category)
+                return response.data
+            }
+            // }else{
+            //     const response = await axiosInstance.get("/api/announcements/");
+            //     return response.data;
+            }
+         catch (err) {
             console.log("Fetch announcements error: ", err.message);
         }
     }

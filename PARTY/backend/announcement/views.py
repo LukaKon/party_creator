@@ -57,44 +57,9 @@ class ImageViewSet(viewsets.ModelViewSet):
     parser_classes = (FormParser, MultiPartParser,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    # def get_permissions(self):
-        # """Instantiates and returns the list of permissions that this view requires."""
-        # print(self.request.data)
-
-        # if self.action == "list":
-        # if self.request.method == "GET":
-            # return [AllowAny()]
-        # else:
-            # return [IsAuthenticated()]
-
     def get_queryset(self):
         """Define custom queryset."""
         return models.Image.objects.all()
-
-    # @action(methods=['POST'], detail=True, url_path='upload-image')
-    # def upload_image(self, request, pk=None):
-    #     """Upload an image to recipe."""
-    #     recipe = self.get_object()
-    #     serializer = self.get_serializer(recipe, data=request.data)
-
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # @method_decorator(login_required)
-    # @action(detail=False, url_path='upload-image' )
-    # def perform_create(self, serializer):
-        # """Create a new image."""
-        # TODO: I can create without authentication...
-        # permission_classes = (IsAuthenticated,)
-        # authentication_classes = (JWTTokenUserAuthentication,)
-        # print("data:::: ", serializer.data)
-        # print("request:::: ", self.request.data)
-        # if serializer.is_valid():
-            # serializer.save()
-        # return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class MovieViewSet(viewsets.ModelViewSet):
@@ -112,15 +77,20 @@ class MovieViewSet(viewsets.ModelViewSet):
     list=extend_schema(
         parameters=[
             OpenApiParameter(
+                'main_page',
+                OpenApiTypes.BOOL,
+                description='If true get announcements for main page',
+            ),
+            OpenApiParameter(
                 'category',
                 OpenApiTypes.STR,
                 description='Comma separated list of categories uuid to filter'
             ),
-            OpenApiParameter(
-                'amount',
-                OpenApiTypes.INT,
-                description='Amount of announcements'
-            )
+            # OpenApiParameter(
+                # 'amount',
+                # OpenApiTypes.INT,
+                # description='Amount of announcements'
+            # )
         ]
     )
 )
@@ -163,20 +133,20 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """ Define custom queryset. """
+        main_page = self.request.query_params.get('main_page')
         categories = self.request.query_params.get('category')
         amount = self.request.query_params.get('amount')
         queryset = self.queryset
 
+        if main_page:
+            return models.Announcement.objects.main_page_ann()
         if categories:
             categories_uuid = self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
-        if amount:
-            queryset = queryset[:int(amount)]
+        # if amount:
+            # queryset = queryset[:int(amount)]
 
         return queryset
-        # FIXME
-        # return queryset.order_by('title').distinct()
-        # return models.Announcement.objects.all().order_by('title')
 
     def get_object(self, queryset=None, **kwargs):
         """Get object by slug."""
@@ -185,7 +155,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new announcement."""
-        # authentication_classes = (JWTTokenUserAuthentication,)
         # permission_classes = (IsAuthenticated,)
         print("serializer: ", self.request.data)
         print('ser data: ', serializer)

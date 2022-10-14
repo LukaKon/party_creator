@@ -49,13 +49,6 @@ class Category(models.Model):
         (PHOTOGRAPH, "fotograf"),
         (LOCAL, "lokal"),
         (ANIMATOR, "animator"),
-        
-        
-        # ( "muzyka",MUSIC),
-        # ( "cattering",CATTERING),
-        # ( "fotograf",PHOTOGRAPH),
-        # ( "lokal",LOCAL),
-        # ( "animator",ANIMATOR),
     )
 
     name = models.CharField(
@@ -110,8 +103,8 @@ class Category(models.Model):
 class AnnouncementManager(models.Manager):
     """Announcement manager."""
     
-    def top_nine(self, **kwargs):
-        return self.filter(updated__lte=timezone.now(), **kwargs)[:9]
+    def main_page_ann(self, **kwargs):
+        return self.filter(updated__lte=timezone.now(), **kwargs).order_by('-updated')[:9]
 
 
 class Announcement(TimeStampedModel):
@@ -130,7 +123,6 @@ class Announcement(TimeStampedModel):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    # TODO: announcement can have many categories
     category = models.ManyToManyField(Category, related_name="categories")
     is_active = models.BooleanField(default=True)
     
@@ -176,8 +168,6 @@ class Multimedia(TimeStampedModel):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    # created = models.DateTimeField(auto_now_add=True)
-    # updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
