@@ -1,7 +1,6 @@
 """
 Serializers for announcements API.
 """
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from .models import (
@@ -14,6 +13,7 @@ from .models import (
 
 class CategorySerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='get_name_display')
+
     class Meta:
         model = Category
         fields = (
@@ -27,6 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
             "uuid",
         )
 
+
 class ImageSerializer(serializers.ModelSerializer):
     """Image serializer."""
 
@@ -35,7 +36,6 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "uuid",
-            # 'user',
             "announcement",
             "image",
             "is_main",
@@ -49,15 +49,15 @@ class ImageSerializer(serializers.ModelSerializer):
             'updated',
         )
 
+
 class MovieSerializer(serializers.ModelSerializer):
     """Movie serializer."""
-    
+
     class Meta:
         model = Movie
         fields = (
             'id',
             'uuid',
-            # 'user',
             'announcement',
             'movie_url',
             'created',
@@ -70,8 +70,10 @@ class MovieSerializer(serializers.ModelSerializer):
             'updated',
             )
 
+
 class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
+    # category = serializers.CharField(source='get_name_display()')
 
     class Meta:
         model = Announcement

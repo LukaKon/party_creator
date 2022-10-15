@@ -16,6 +16,7 @@ upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
 )
 
+
 class TimeStampedModel(models.Model):
     """
         An abstract base class model that provides
@@ -65,7 +66,6 @@ class Category(models.Model):
         verbose_name = _('category')
         verbose_name_plural = _("categories")
 
-
     def __str__(self):
         return f"{self.name}"
         # return self.get_name_display()
@@ -102,7 +102,7 @@ class Category(models.Model):
 
 class AnnouncementManager(models.Manager):
     """Announcement manager."""
-    
+
     def main_page_ann(self, **kwargs):
         return self.filter(updated__lte=timezone.now(), **kwargs).order_by('-updated')[:9]
 
@@ -125,8 +125,7 @@ class Announcement(TimeStampedModel):
     )
     category = models.ManyToManyField(Category, related_name="categories")
     is_active = models.BooleanField(default=True)
-    
-    
+
     objects = AnnouncementManager()
 
     class Meta:
@@ -196,10 +195,11 @@ class Image(Multimedia):
     def __str__(self):
         return str(self.image)
 
+
 class Movie(Multimedia):
     """Movie attached to announcement."""
 
     movie_url = models.URLField()
-    
+
     def __str__(self):
         return str(self.movie_url)

@@ -3,9 +3,7 @@ Views for announcements APIs.
 """
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
 
 from drf_spectacular.utils import (
     extend_schema_view,
@@ -19,7 +17,6 @@ from rest_framework import (
     status,
     viewsets,
 )
-from rest_framework.decorators import action
 from rest_framework.parsers import (
     FormParser,
     MultiPartParser,
@@ -30,8 +27,6 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
-from rest_framework.response import Response
-from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 from announcement import (
     models,
@@ -102,28 +97,20 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
-
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
         return [uuid for uuid in qs.split(',')]
 
     def get_permissions(self):
         """
-        Instantiates and returns the list of permissions
-        that this view requires.
+            Instantiates and returns the list of permissions
+            that this view requires.
         """
-        # print(self.request.data)
 
         if self.request.method == "GET":
             return [AllowAny()]
         else:
             return [IsAuthenticated()]
-
-    # FIXME
-    # def get_authenticators(self):
-    #     if self.request.method == 'GET':
-    #         return []
-#         return[JWTTokenUserAuthentication()]
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -135,7 +122,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """ Define custom queryset. """
         main_page = self.request.query_params.get('main_page')
         categories = self.request.query_params.get('category')
-        amount = self.request.query_params.get('amount')
+        # amount = self.request.query_params.get('amount')
         queryset = self.queryset
 
         if main_page:
@@ -150,18 +137,37 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def get_object(self, queryset=None, **kwargs):
         """Get object by slug."""
-        slug= self.kwargs.get("slug")
+        slug = self.kwargs.get("slug")
         return get_object_or_404(models.Announcement, slug=slug)
 
     def perform_create(self, serializer):
         """Create a new announcement."""
-        # permission_classes = (IsAuthenticated,)
-        print("serializer: ", self.request.data)
-        print('ser data: ', serializer)
-        user = get_user_model().objects.get(email=self.request.data.get("user"))
-        category = models.Category.objects.get(
-            uuid=self.request.data.get("category"))
-        # category = self.request.data.get("category")
-        # TODO: add image...
-        serializer.save(user=user, category=category)
-        # serializer.save()
+        user = get_user_model().objects .get(email=self.request.user)
+        categories_uuid = self.request.data.get('category')
+        movies_url = self.request.data.get('movies')
+        images = self.request.data.get('images')
+
+        categories = []
+        if categories_uuid:
+            for uuid in categories_uuid:
+                cat = models.Category.objects.get(uuid=uuid)
+                categories.append(cat)
+
+        announcement = serializer.save(user=user, category=categories)
+
+        if movies_url:
+            for movie_url in movies_url:
+                models.Movie.objects.create(
+                    movie_url=movie_url,
+                    announcement=announcement,
+                )
+
+        if images:
+            for image in images:
+                img = image.get('image')
+                is_main = image.get('is_main')
+                models.Image.objects.create(
+                    announcement=announcement,
+                    image=img,
+                    is_main=is_main,
+                )
