@@ -96,6 +96,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    # parser_classes = (FormParser, MultiPartParser,)
 
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
@@ -158,8 +159,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         if movies_url:
             for movie_url in movies_url:
                 models.Movie.objects.create(
-                    movie_url=movie_url,
-                    announcement=announcement,
+                  movie_url=movie_url,
+                  announcement=announcement,
                 )
 
         if images:
