@@ -1,7 +1,7 @@
 """
 Views for announcements APIs.
 """
-
+import pprint
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
@@ -144,10 +144,12 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new announcement."""
         user = get_user_model().objects .get(email=self.request.user)
-        categories_uuid = self.request.data.get('category')
-        movies_url = self.request.data.get('movies')
-        images = self.request.data.get('images')
+        categories_uuid = self.request.data.getlist('category')
+        movies_url = self.request.data.getlist('movies')
+        images = self.request.data.getlist('images[0]')
 
+        # print("request: ", self.request.data)
+        print('@@@ images:', images)
         categories = []
         if categories_uuid:
             for uuid in categories_uuid:
@@ -163,12 +165,14 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
                   announcement=announcement,
                 )
 
-        if images:
-            for image in images:
-                img = image.get('image')
-                is_main = image.get('is_main')
-                models.Image.objects.create(
-                    announcement=announcement,
-                    image=img,
-                    is_main=is_main,
-                )
+        # if images:
+        #     for image in images:
+
+        #         pprint("img: ", image)
+                # img = image.get('image')
+                # is_main = image.get('is_main')
+                # models.Image.objects.create(
+                #     announcement=announcement,
+                #     image=img,
+                #     is_main=is_main,
+                # )
