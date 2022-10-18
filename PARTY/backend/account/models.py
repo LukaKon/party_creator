@@ -5,7 +5,6 @@ from django.core.mail import send_mail
 from django.db import models
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 
 from dynamic_filenames import FilePattern
@@ -43,7 +42,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    """User with email as a login field. Added flag 'is_moderator' for future."""
+    """
+        User with email as a login field. Added flag 'is_moderator' for future.
+    """
 
     username = None
     email = models.EmailField(_("email address"), unique=True)
@@ -78,7 +79,7 @@ class Firma(models.Model):
 
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
-    email_plaintext_message = "127.0.0.1:3000/resetpassword/{}".format(reset_password_token.key)
+    email_plaintext_message = f"127.0.0.1:3000/resetpassword/{reset_password_token.key}"
 
     send_mail(
         # title:

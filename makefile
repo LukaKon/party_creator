@@ -17,8 +17,10 @@ stop:
 	docker compose stop
 
 down:
-	docker compose down
-	# docker compose down -v
+	# docker compose down
+	docker compose down -v
+
+rest: stop up 
 
 logs:
 	docker compose logs

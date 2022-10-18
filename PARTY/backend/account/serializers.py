@@ -18,7 +18,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         # TODO: not visible in decoding -> jwt.io
         # token["username"] = user.username
-        token["test"] = "test claim :)" # ,- it works localhost:8000/account/login
+        # token["test"] = "test claim :)" # ,- it works localhost:8000/account/login
         return token
 
 

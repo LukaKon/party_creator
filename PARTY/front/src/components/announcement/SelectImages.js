@@ -14,7 +14,6 @@ export const SelectImages = (props) => {
   const imageHandleChange = e => {
     if (e.target.files) {
       const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file))
-
       setSelectedImages(fileArray)
     }
   }

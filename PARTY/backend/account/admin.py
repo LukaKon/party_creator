@@ -13,6 +13,7 @@ class UserAdmin(BaseUserAdmin):
 
     ordering = ["id"]
     list_display = [
+        'id',
         "email",
         "is_moderator",
     ]

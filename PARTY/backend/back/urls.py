@@ -5,8 +5,14 @@ from announcement import urls as announcement_url
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.urls import (
+    include,
+    path,
+)
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+)
 
 
 urlpatterns = [
@@ -22,7 +28,12 @@ urlpatterns = [
         name="api-docs",
     ),
     path("account/", include("account.urls", "account")),
+    path(
+        'account/password_reset/',
+        include('django_rest_passwordreset.urls', namespace='password_reset'),
+    ),
     path("api/", include(announcement_url, "announcement")),
-    path('account/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+]
 
-    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

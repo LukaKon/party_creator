@@ -4,6 +4,7 @@
 # PARTY WIZARD :)
 
 **Service** that help you organize your life event:)
+![image](img.png)
 
 _Work in progress..._
 
