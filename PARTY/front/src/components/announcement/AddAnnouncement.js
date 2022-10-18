@@ -15,7 +15,7 @@ import { fetchCategories } from "../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput"
 import { createAnnouncement } from "../../redux/slices/announcementSlice";
 
-import { TitleInput } from './TitleInput'
+// import { TitleInput } from './TitleInput'
 import { SelectCategory } from './SelectCategory'
 import { SelectImages } from './SelectImages'
 
@@ -26,6 +26,7 @@ export const AddAnnouncement = () => {
     title: '',
     description: '',
     category: [],
+    movies: [],
     images: [],
   })
 
@@ -56,14 +57,26 @@ export const AddAnnouncement = () => {
   const [category, setCategory] = useState('')
   const [categoryValid, setCategoryValid] = useState(false)
 
-  const [resetForm, setResetForm] = useState(false)
+  const [movies, setMovies] = useState([])
+  const [selectedImages, setSelectedImages] = useState()
 
-  // const [selectedImages, setSelectedImages] = useState()
+  // const [resetForm, setResetForm] = useState(false)
+  
+  const movieChangeHandler = () => {
+    setMovies()
+  }
+  
 
   let formIsValid = false
 
   if (enteredTitleIsValid && enteredDescriptionValid && categoryValid) {
-    console.log('title: ', enteredTitleIsValid, 'desc: ', enteredDescriptionValid, 'cat: ', categoryValid)
+    console.log(
+      'title: ', enteredTitleIsValid,
+      'desc: ', enteredDescriptionValid,
+      'cat: ', categoryValid,
+      'images: ', 'not yet',
+      'movies: ', movies,
+    )
     formIsValid = true
   }
 
@@ -75,17 +88,19 @@ export const AddAnnouncement = () => {
     if (!enteredTitleIsValid && !enteredDescriptionValid && !categoryValid) {
       return
     }
-    const ann = {
+    const announcement_data = {
       title: enteredTitle,
       description: enteredDescription,
       category: category,
+      images: selectedImages,
+      movies: movies,
     }
-    console.log('data to sent: ', ann)
-    dispatch(createAnnouncement(ann))
+    console.log('data to sent: ', announcement_data)
+    dispatch(createAnnouncement(announcement_data))
 
     resetTitleInput()
     resetDescriptionInput()
-    setResetForm(true)
+    // setResetForm(true)
     // setResetForm(false)
   }
 
@@ -154,12 +169,13 @@ export const AddAnnouncement = () => {
             {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
           </Grid>
 
+        {/*}
           <Grid item>
             <TitleInput
               reset={resetForm}
             />
           </Grid>
-
+        */}
           <Grid item>
             <TextField
               margin="normal"
@@ -187,7 +203,7 @@ export const AddAnnouncement = () => {
               categories={categories}
               selectedCategory={categorySelectHandle}
               categoryIsValid={isCategoryValid}
-              reset={resetForm}
+              // reset={resetForm}
             />
             {error && (<p style={{ color: 'red' }}>Error: {error}</p>)}
           </Grid>
@@ -207,6 +223,24 @@ export const AddAnnouncement = () => {
           <Grid item>
             <span style={{ color: 'red' }}>TEST</span>
             <SelectImages />
+          </Grid>
+    
+    
+          <Grid item>
+            <TextField
+              margin="normal"
+              // required
+              id="movies"
+              label="Movies"
+              name="movies"
+              // autoFocus
+              defaultValue='Link do filmu'
+              onChange={movieChangeHandler}
+              // onBlur={titleBlurHandler}
+              // value={enteredTitle}
+              // error={titleInputHasError}
+            />
+            {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
           </Grid>
 
           <Grid item>

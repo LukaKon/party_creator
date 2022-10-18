@@ -62,10 +62,10 @@ export const SelectCategory = (props) => {
   // }
   
   // TODO: reset category field to init state
-  console.log('reset?: ',props.reset)
-  if (props.reset){
+  // console.log('reset?: ',props.reset)
+  // if (props.reset){
     // resetSelectedCategory()
-  }
+  // }
 
   useEffect(() => {
     if (typeof props.selectedCategory === 'function') {
