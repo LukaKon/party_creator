@@ -1,44 +1,43 @@
-import React, {useState} from "react";
+import React, {useState} from 'react'
 import {
+    Alert,
     Avatar,
-    Button,
-    CssBaseline,
-    TextField,
     Box,
+    Button,
+    Container,
+    CssBaseline,
     Typography,
-    Container, Alert,
+    TextField
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-
 import {axiosInstance} from "../axios";
-import {useParams} from "react-router-dom";
 
 const theme = createTheme();
 
-export const ResetPasswordConfirm = () => {
-    const { token } = useParams();
+export const ChangePassword = () => {
     const [status, setStatus] = useState(null)
-    const handleSubmit = (event) => {
+    const handleSubmit = (event) =>{
+        setStatus(null)
         event.preventDefault()
         let data = new FormData(event.currentTarget);
 
-        if(data.get("password") === data.get("password2")){
+        if(data.get("new_password") === data.get("new_password2")){
             data = {
-            token: token,
-            password: data.get("password"),
+            old_password: data.get("old_password"),
+            new_password: data.get("new_password"),
             };
 
             axiosInstance
-                .post("account/password_reset/confirm/", data)
+                .put("account/changepassword/", data)
                 .then((response) => {
                     setStatus(
                         <Alert severity="success">Hasło zostało pomyślnie zmienione.</Alert>
-                        // window.location.replace('/signin');
                     )
+                    console.log(response)
                 })
                 .catch((error) => {
-                     if(error.response.data.password){
+                    if(error.response.data.password){
                         setStatus(
                             <Typography variant="div">
                                 {error.response.data.password.map(error=>{
@@ -50,12 +49,13 @@ export const ResetPasswordConfirm = () => {
                         )
                     }
                 })
+            // window.location.replace('/signin');
         }else{
             setStatus(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
         }
     }
 
-    return (
+    return(
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
@@ -66,12 +66,12 @@ export const ResetPasswordConfirm = () => {
                         flexDirection: "column",
                         alignItems: "center",
                     }}
-                >
+                    >
                     <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
                         <LockOutlinedIcon/>
                     </Avatar>
                     <Typography variant="h5">
-                        Zresetuj hasło
+                        Zmień hasło
                     </Typography>
                     {status}
                     <Box
@@ -84,19 +84,28 @@ export const ResetPasswordConfirm = () => {
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
-                            label="Podaj nowe hasło"
+                            name="old_password"
+                            label="Tutaj wpisz stare hasło"
                             type="password"
-                            id="password"
+                            id="old_password"
                         />
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            name="password2"
-                            label="Potwierdź hasło"
+                            name="new_password"
+                            label="Tutaj wpisz nowe hasło"
                             type="password"
-                            id="password2"
+                            id="new_password"
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="new_password2"
+                            label="Tutaj powtórz nowe hasło"
+                            type="password"
+                            id="new_password2"
                         />
                         <Button
                             type="submit"
@@ -104,11 +113,11 @@ export const ResetPasswordConfirm = () => {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                         >
-                            Zresetuj hasło
+                            Ustaw nowe hasło
                         </Button>
                     </Box>
                 </Box>
             </Container>
         </ThemeProvider>
-    );
-};
+    )
+}

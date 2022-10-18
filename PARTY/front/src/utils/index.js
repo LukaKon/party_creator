@@ -1,7 +1,7 @@
 import {axiosInstance} from "../axios";
 
 
-export const handleButton = () => {
+export const removeToken = () => {
     sessionStorage.removeItem('access_token')
     sessionStorage.removeItem('refresh_token')
     axiosInstance.post('account/logout/')

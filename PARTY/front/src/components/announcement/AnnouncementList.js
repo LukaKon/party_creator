@@ -37,7 +37,7 @@ export const AnnouncementList = () => {
                     >
                         {entities.map((ann) => {
                             return (
-                                <Grid item xs={2} sm={4} md={4} key={ann.uuid}>
+                                <Grid item xs={6} sm={6} md={4} key={ann.uuid}>
                                     <AnnouncementItem key={ann.uuid} {...ann} />
                                 </Grid>
                             );
