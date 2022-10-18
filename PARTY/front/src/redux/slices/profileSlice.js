@@ -13,6 +13,19 @@ export const fetchProfile = createAsyncThunk(
     }
 );
 
+export const updateProfile = createAsyncThunk(
+    "profile/updateProfile",
+    async (data) => {
+        try {
+            const response = await axiosInstance.patch("account/updateprofile/", data);
+            return response.data;
+        } catch (err) {
+            console.log("Fetch profile error: ", err.message);
+        }
+    }
+);
+
+
 const profileSlice = createSlice({
         name: "profile",
         initialState: {

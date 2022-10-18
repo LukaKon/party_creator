@@ -84,7 +84,7 @@ export const SignIn = () => {
                             required
                             fullWidth
                             id="email"
-                            label="Email Address"
+                            label="Email"
                             name="email"
                             autoComplete="email"
                             autoFocus
@@ -94,7 +94,7 @@ export const SignIn = () => {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Hasło"
                             type="password"
                             id="password"
                             autoComplete="current-password"
