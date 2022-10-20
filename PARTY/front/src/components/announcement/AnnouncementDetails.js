@@ -28,6 +28,7 @@ export const AnnouncementDetails = () => {
     dispatch(fetchAnnouncementDetails(slug));
   }, []);
 
+
   let content
 
 
@@ -37,6 +38,7 @@ export const AnnouncementDetails = () => {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
+      console.log('###categories: ', entities.category)
       content = (
         <Box pa sx={{ flexGrow: 1 }}>
           <Grid
@@ -65,7 +67,8 @@ export const AnnouncementDetails = () => {
 
               <Grid item>
                 <Typography variant='h6'>
-                  category/ies: {entities.category.map(cat => (
+                  category/ies:
+                  {entities.category.map(cat => (
                     <CategoryItem key={cat.uuid} {...cat} />
                   ))}
                 </Typography>
@@ -139,8 +142,10 @@ const ImageItem = (props) => {
 }
 
 const CategoryItem = (props) => {
+
+  console.log('*#*#*#*', props)
   return (
     // TODO: category as link to filtering by category
-    <h6>{props.name}</h6>
+    <h6>{props.get_name}</h6>
   )
 }
