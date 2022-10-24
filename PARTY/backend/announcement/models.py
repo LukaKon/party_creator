@@ -98,6 +98,7 @@ class Announcement(models.Model):
     # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
     created = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+    displayed = models.IntegerField(default=0)
 
     class Meta:
         index_together = (("id", "slug"),)
@@ -173,3 +174,9 @@ class Image(Multimedia):
 #         # delete_orphans=True,
 #         verbose_name="movies",
 #     )
+
+
+class Favourite(models.Model):
+
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_favourites')
+    announcement = models.ManyToManyField(Announcement, related_name='announcement_favourites')

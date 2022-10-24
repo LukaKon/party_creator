@@ -8,14 +8,12 @@ import {
     Button,
     Typography,
 } from "@mui/material";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import {
     useDispatch,
     useSelector,
 } from "react-redux";
 import {styled} from '@mui/material/styles';
-import {axiosInstance} from "../axios";
-import {fetchProfile} from "../redux/slices/profileSlice";
+import {fetchProfile, updateProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from "../../Settings";
 import {useNavigate} from "react-router-dom";
 
@@ -54,10 +52,11 @@ export const ProfileSettings = () => {
     }
 
     const handleInput = () => {
-        if(image["imageToUpload"]){
+        if(image["imageToUpload"]) {
             const data = new FormData()
             data.append('image', image["imageToUpload"])
-            axiosInstance.patch('account/updateprofile/', data)
+            console.log('img', image["imageToUpload"])
+            dispatch(updateProfile(data))
                 .then(response => {
                     dispatch(fetchProfile());
                 })
@@ -67,23 +66,26 @@ export const ProfileSettings = () => {
     }
 
     return (
-        <Grid margin={2}>
-            <Typography>
-                <Button onClick={()=>handleButton('/changepassword')}>Change password</Button>
-            </Typography>
-            <Typography variant="h7" component="div">
-                Twój aktualny avatar, naciśnij aby zmienić
-            </Typography>
+        <Grid container padding={1}>
+            <Grid item xs={12}>
+                <Typography variant="h7" component="div">
+                    Twój aktualny avatar, naciśnij aby zmienić:
+                </Typography>
+            </Grid>
 
-            <Grid margin={2}>
-
+            <Grid item xs={10}>
                 <label htmlFor="avatar">
 
                     <img width={100} height={100} src={image["imageToShow"]}/>
                     <Input onInput={(event) => upload(event)} accept="image/*" id="avatar" multiple type="file"/>
                 </label>
-                <Button variant="contained" onClick={() => handleInput()}>Upload</Button>
+                <Button variant="contained" onClick={() => handleInput()}>Zmień avatar</Button>
+            </Grid>
 
+            <Grid item xs={2}>
+             <Typography>
+                <Button variant="contained" onClick={()=>handleButton('/changepassword')}>Zmień hasło</Button>
+            </Typography>
             </Grid>
         </Grid>
     )

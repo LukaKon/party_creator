@@ -28,7 +28,7 @@ export const AnnouncementList = () => {
             );
         } else {
             content = (
-                <Box pa sx={{ flexGrow: 1 }}>
+                <Box sx={{ flexGrow: 1 }}>
                     <Grid
                         container
                         spacing={{ xs: 2, md: 3 }}
@@ -46,7 +46,7 @@ export const AnnouncementList = () => {
             );
         }
     }
-    return <Typography>{content}</Typography>;
+    return <Grid>{content}</Grid>;
 };
 
 const mapState = ({ loading, announcements }) => ({

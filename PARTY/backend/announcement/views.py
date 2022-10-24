@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.parsers import (
     MultiPartParser,
     FormParser,
@@ -169,3 +170,32 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         # TODO: add image...
         serializer.save(user=user, category=category)
         # serializer.save()
+
+
+class FavouriteViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.FavouriteSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    @action(detail=False, methods=['post'])
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        announcement = self.request.data.get("announcement")
+        instance = models.Favourite.objects.filter(user=user, announcement=announcement)
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # def create(self, request, *args, **kwargs):
+    #     print('request - data', request.data)
+    #     data = request.data
+    #     data["user"] = [request.user.id, ]
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_queryset(self):
+        queryset = models.Favourite.objects.filter(user=self.request.user)
+        return queryset
+
+

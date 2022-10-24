@@ -2,7 +2,7 @@
 Serializers for the user API View.
 """
 from account.models import User
-from announcement.serializers import AnnouncementSerializer
+from announcement.serializers import AnnouncementDetailSerializer
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
@@ -75,11 +75,11 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the user object."""
 
-    announcements = AnnouncementSerializer(many=True)
+    announcements = AnnouncementDetailSerializer(many=True)
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'is_firma', 'announcements', 'image')
+        fields = ('id', 'email', 'is_firma', 'announcements', 'image', )
 
 
 class ChangePasswordSerializer(serializers.Serializer):

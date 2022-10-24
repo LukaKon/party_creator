@@ -4,7 +4,7 @@ Serializers for announcements API.
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Announcement, Category, Image
+from .models import Announcement, Category, Image, Favourite
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -78,6 +78,8 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "created",
             "slug",
             "uuid",
+            "announcement_favourites",
+            "displayed"
         )
         read_only_fields = (
             "id",
@@ -114,3 +116,12 @@ class AnnouncementDetailSerializer(AnnouncementSerializer):
 
     class Meta(AnnouncementSerializer.Meta):
         fields = AnnouncementSerializer.Meta.fields + ("description",)
+
+
+class FavouriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favourite
+        fields = (
+            "user",
+            "announcement"
+        )
