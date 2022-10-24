@@ -12,14 +12,14 @@ from .models import (
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='get_name_display')
+    get_name = serializers.CharField(source='get_name_display')
 
     class Meta:
         model = Category
         fields = (
             "id",
             "name",
-            'get_name_display',
+            'get_name',
             "uuid",
         )
         read_only_fields = (
@@ -73,7 +73,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
-    # category = serializers.CharField(source='get_name_display()')
+
+    category = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Announcement

@@ -45,11 +45,11 @@ class Category(models.Model):
         # ("lokal", "local"),
         # ("animator", "animator"),
 
-        (MUSIC, "muzyka"),
-        (CATTERING, "cattering"),
-        (PHOTOGRAPH, "fotograf"),
-        (LOCAL, "lokal"),
-        (ANIMATOR, "animator"),
+        (MUSIC, _("muzyka")),
+        (CATTERING, _("cattering")),
+        (PHOTOGRAPH, _("fotograf")),
+        (LOCAL, _("lokal")),
+        (ANIMATOR, _("animator")),
     )
 
     name = models.CharField(
@@ -67,8 +67,8 @@ class Category(models.Model):
         verbose_name_plural = _("categories")
 
     def __str__(self):
-        return f"{self.name}"
-        # return self.get_name_display()
+        # return f"{self.name}"
+        return self.get_name_display()
 
 
 # class EventType(models.Model):
@@ -104,7 +104,8 @@ class AnnouncementManager(models.Manager):
     """Announcement manager."""
 
     def main_page_ann(self, **kwargs):
-        return self.filter(updated__lte=timezone.now(), **kwargs).order_by('-updated')[:9]
+        return self.filter(updated__lte=timezone.now(), **kwargs) \
+            .order_by('-updated')[:9]
 
 
 class Announcement(TimeStampedModel):

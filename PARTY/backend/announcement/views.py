@@ -1,7 +1,6 @@
 """
 Views for announcements APIs.
 """
-import pprint
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
@@ -11,10 +10,10 @@ from drf_spectacular.utils import (
     OpenApiParameter,
     OpenApiTypes,
 )
-from drf_spectacular.types import OpenApiTypes
+# from drf_spectacular.types import OpenApiTypes
 
 from rest_framework import (
-    status,
+    # status,
     viewsets,
 )
 from rest_framework.parsers import (
@@ -23,7 +22,7 @@ from rest_framework.parsers import (
 )
 from rest_framework.permissions import (
     AllowAny,
-    IsAdminUser,
+    # IsAdminUser,
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
@@ -166,7 +165,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         # if images:
         #     for image in images:
 
-        #         pprint("img: ", image)
                 # img = image.get('image')
                 # is_main = image.get('is_main')
                 # models.Image.objects.create(
