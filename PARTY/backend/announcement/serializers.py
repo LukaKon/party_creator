@@ -8,6 +8,7 @@ from .models import (
     Category,
     Image,
     Movie,
+    Favourite,
 )
 
 

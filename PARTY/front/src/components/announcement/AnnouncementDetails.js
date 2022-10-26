@@ -39,12 +39,16 @@ const ImageItem = (props) => {
   )
 }
 
+
 const CategoryItem = (props) => {
+
+  console.log('*#*#*#*', props)
   return (
     // TODO: category as link to filtering by category
-    <h6>{props.name}</h6>
+    <h6>{props.get_name}</h6>
   )
 }
+
 
 const FavouriteButton = (props) => {
   const [checkInput, setCheckInput] = useState(()=>{
@@ -207,29 +211,4 @@ export const AnnouncementDetails = () => {
       {content}
     </Grid>
   );
-}
-
-const ImageItem = (props) => {
-
-  return (
-    <Link href={props.image} underline="none">
-      <ImageListItem key={props.uuid} >
-        <img
-          src={props.image}
-          // srcSet={}
-          alt="description - make it dynamic"
-          loading="lazy"
-        />
-      </ImageListItem>
-    </Link>
-  )
-}
-
-const CategoryItem = (props) => {
-
-  console.log('*#*#*#*', props)
-  return (
-    // TODO: category as link to filtering by category
-    <h6>{props.get_name}</h6>
-  )
 }
