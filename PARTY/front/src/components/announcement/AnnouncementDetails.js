@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
-   useDispatch,
-   useSelector,
+  useDispatch,
+  useSelector,
 } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
@@ -113,12 +113,14 @@ export const AnnouncementDetails = () => {
 
   let content
 
+
   if (loading) {
     content = <AnnouncementDetailsSkeleton />
   } else {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
+      console.log('###categories: ', entities.category)
       content = (
         <Box sx={{ flexGrow: 1 }}>
           <Grid
@@ -163,16 +165,37 @@ export const AnnouncementDetails = () => {
                 cols={3}
                 rowHeight={120}
               >
-                {entities.images.map(img => (
-                  <ImageItem key={img.uuid} {...img} />
-                ))}
+                {entities.images.length > 0
+                  ? entities.images.map(img => (
+                    <ImageItem key={img.uuid} {...img} />
+                  ))
+                  : <Typography variant="body2" color="red">No images.</Typography>
+                }
               </ImageList>
             </Grid>
+
 
             <FavouriteButton
                 announcementID={entities.id}
                 favourites={entities.announcement_favourites}
             />
+
+            <Grid item xs={6}>
+              Movies:
+              {entities.movies.length > 0
+                ? <ul>
+                  {entities.movies.map(mov => (
+                    <li key={mov.uuid}>
+                      <Link underline="hover" to={mov.movie_url}>
+                        {mov.movie_url}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                : <Typography variant="body2" color="red">No movies.</Typography>
+              }
+            </Grid>
+            
           </Grid>
         </Box>
       )
@@ -186,3 +209,27 @@ export const AnnouncementDetails = () => {
   );
 }
 
+const ImageItem = (props) => {
+
+  return (
+    <Link href={props.image} underline="none">
+      <ImageListItem key={props.uuid} >
+        <img
+          src={props.image}
+          // srcSet={}
+          alt="description - make it dynamic"
+          loading="lazy"
+        />
+      </ImageListItem>
+    </Link>
+  )
+}
+
+const CategoryItem = (props) => {
+
+  console.log('*#*#*#*', props)
+  return (
+    // TODO: category as link to filtering by category
+    <h6>{props.get_name}</h6>
+  )
+}

@@ -1,7 +1,11 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+
 from dynamic_filenames import FilePattern
+
 import stdimage
 import uuid as uuid_lib
 
@@ -13,19 +17,43 @@ upload_to_pattern = FilePattern(
 )
 
 
+class TimeStampedModel(models.Model):
+    """
+        An abstract base class model that provides
+        self updating ''created'' and ''modified'' fields.
+    """
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class Category(models.Model):
     """Category(type) of announcement. e.g. local, photograph etc."""
 
+    MUSIC = 'MU'
+    CATTERING = 'CA'
+    PHOTOGRAPH = 'PH'
+    LOCAL = 'LO'
+    ANIMATOR = 'AN'
+
     CATEGORY_NAME = (
-        ("muzyka", "music"),
-        ("cattering", "cattering"),
-        ("fotograf", "photograph"),
-        ("lokal", "local"),
-        ("animator", "animator"),
+        # ("muzyka", "music"),
+        # ("cattering", "cattering"),
+        # ("fotograf", "photograph"),
+        # ("lokal", "local"),
+        # ("animator", "animator"),
+
+        (MUSIC, _("muzyka")),
+        (CATTERING, _("cattering")),
+        (PHOTOGRAPH, _("fotograf")),
+        (LOCAL, _("lokal")),
+        (ANIMATOR, _("animator")),
     )
 
     name = models.CharField(
-        max_length=25,
+        max_length=2,
         choices=CATEGORY_NAME,
     )
     uuid = models.UUIDField(
@@ -35,10 +63,12 @@ class Category(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = "categories"
+        verbose_name = _('category')
+        verbose_name_plural = _("categories")
 
     def __str__(self):
-        return self.name
+        # return f"{self.name}"
+        return self.get_name_display()
 
 
 # class EventType(models.Model):
@@ -70,9 +100,22 @@ class Category(models.Model):
 #     return self.name
 
 
-class Announcement(models.Model):
+class AnnouncementManager(models.Manager):
+    """Announcement manager."""
+
+    def main_page_ann(self, **kwargs):
+        return self.filter(updated__lte=timezone.now(), **kwargs) \
+            .order_by('-updated')[:9]
+
+
+class Announcement(TimeStampedModel):
     """Announcement object."""
 
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='announcements'
+    )
     title = models.CharField(max_length=200)
     description = models.TextField(blank=False)
     slug = models.SlugField(unique=True)
@@ -81,24 +124,11 @@ class Announcement(models.Model):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='announcements'
-    )
-    # category = models.ForeignKey(
-        # Category,
-        # verbose_name="announcement_categories",
-        # on_delete=models.PROTECT,
-    # )
-    # TODO: announcement can have many categories
-    category = models.ManyToManyField(Category,related_name="categories")
-
-    # event_type = models.ManyToManyField(EventType, related_name="announcements")
-    # event = models.CharField(max_length=30, choices=EVENT, default=DEFAULT)
-    created = models.DateTimeField(auto_now=True)
+    category = models.ManyToManyField(Category, related_name="categories")
     is_active = models.BooleanField(default=True)
     displayed = models.IntegerField(default=0)
+
+    objects = AnnouncementManager()
 
     class Meta:
         index_together = (("id", "slug"),)
@@ -110,28 +140,30 @@ class Announcement(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, using=None, keep_parents=False):
-        ann = Announcement.objects.get(pk=self.pk)
-        for img in ann.images.all():
+        announcement = Announcement.objects.get(pk=self.pk)
+        for img in announcement.image.all():
             img.delete()
+        for mov in announcement.movie_url.all():
+            mov.delete()
         super().delete()
 
     def get_absolute_url(self):
-        return reverse("announcement:announcement_details", kwargs={"slug": self.slug})
+        return reverse(
+            "announcement:announcement_details",
+            kwargs={"slug": self.slug}
+        )
 
     def __str__(self):
         return self.title
 
 
-class Multimedia(models.Model):
+class Multimedia(TimeStampedModel):
     announcement = models.ForeignKey(
         Announcement,
         verbose_name="announcement_%(class)ss",
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
         related_name="%(class)ss",
     )
-    
     uuid = models.UUIDField(
         db_index=True,
         default=uuid_lib.uuid4,
@@ -146,8 +178,8 @@ class Image(Multimedia):
     """Pictures attached to announcement."""
 
     image = stdimage.StdImageField(
-        null=True,
-        blank=True,
+        # null=True,
+        # blank=True,
         upload_to=upload_to_pattern,
         variations={
             "large": (800, 600),
@@ -159,24 +191,24 @@ class Image(Multimedia):
         verbose_name="images",
         default="media/default.jpg",
     )
-
-    is_main = models.BooleanField(default=False, null=True)  # is image main - for front
+    # is image main - for front
+    is_main = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return str(self.image)
 
-# class Movie(Multimedia):
-#     """Movie attached to announcement."""
-
-#     movie = models.FileField(
-#         null=True,
-#         upload_to=upload_to_pattern,
-#         # delete_orphans=True,
-#         verbose_name="movies",
-#     )
 
 
 class Favourite(models.Model):
 
     user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_favourites')
     announcement = models.ManyToManyField(Announcement, related_name='announcement_favourites')
+    
+    
+class Movie(Multimedia):
+    """Movie attached to announcement."""
+    
+    movie_url = models.URLField()
+
+    def __str__(self):
+        return str(self.movie_url)

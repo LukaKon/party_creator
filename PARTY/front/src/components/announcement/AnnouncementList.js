@@ -13,7 +13,8 @@ export const AnnouncementList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchAnnouncements({amount: 9}));
+        // dispatch(fetchAnnouncements({amount: 9}));
+        dispatch(fetchAnnouncements({main_page: true}))
     }, []);
 
     let content;
