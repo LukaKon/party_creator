@@ -24,7 +24,7 @@ export const Categories = () => {
             <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
                 {entities.categories.map(category => {
                     return(
-                        <Link to={category.get_name} state={{ categoryUuid: category.uuid }} >
+                        <Link key={category.uuid} to={category.get_name} state={{ categoryUuid: category.uuid }} >
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar>
@@ -33,7 +33,7 @@ export const Categories = () => {
                                 </ListItemAvatar>
                             <ListItemText 
                             primary={category.get_name} 
-                            secondary={`Znajdź coś dla siebie w kategorii ${category.name}` }/>
+                            secondary={`Znajdź coś dla siebie w kategorii ${category.get_name}` }/>
                             </ListItem>
                         </Link>
                     )
