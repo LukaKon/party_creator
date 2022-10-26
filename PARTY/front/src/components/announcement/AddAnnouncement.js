@@ -154,7 +154,7 @@ export const AddAnnouncement = () => {
 
           <Grid item>
             <TextField
-              margin="normal"
+              // margin="normal"
               required
               id="title"
               label="Title"
@@ -178,7 +178,7 @@ export const AddAnnouncement = () => {
         */}
           <Grid item>
             <TextField
-              margin="normal"
+              // margin="normal"
               required
               id="description"
               label="Description"
@@ -267,7 +267,7 @@ export const AddAnnouncement = () => {
       </Container>
     );
   }
-  return <>{content}</>;
+  return <Grid>{content}</Grid>;
 };
 
 

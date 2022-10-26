@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
+import {Avatar, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategories} from "../redux/slices/categorySlice";
 import {AnnouncementSkeleton} from "./skeletons/AnnouncementSkeletons";
@@ -18,7 +18,7 @@ export const Categories = () => {
     let categoriesView
 
     if(entities.loading){
-        categoriesView = AnnouncementSkeleton
+        categoriesView = <AnnouncementSkeleton/>
     }else{
         categoriesView = (
             <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
@@ -31,7 +31,9 @@ export const Categories = () => {
                                         <PhotoIcon />
                                     </Avatar>
                                 </ListItemAvatar>
-                            <ListItemText primary={category.get_name} secondary={'testujemy'}/>
+                            <ListItemText 
+                            primary={category.get_name} 
+                            secondary={`Znajdź coś dla siebie w kategorii ${category.name}` }/>
                             </ListItem>
                         </Link>
                     )
@@ -42,8 +44,8 @@ export const Categories = () => {
 
 
     return(
-        <Typography>
+        <Grid>
         {categoriesView}
-        </Typography>
+        </Grid>
     )
 }

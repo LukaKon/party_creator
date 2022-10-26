@@ -126,6 +126,7 @@ class Announcement(TimeStampedModel):
     )
     category = models.ManyToManyField(Category, related_name="categories")
     is_active = models.BooleanField(default=True)
+    displayed = models.IntegerField(default=0)
 
     objects = AnnouncementManager()
 
@@ -197,9 +198,16 @@ class Image(Multimedia):
         return str(self.image)
 
 
+
+class Favourite(models.Model):
+
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_favourites')
+    announcement = models.ManyToManyField(Announcement, related_name='announcement_favourites')
+    
+    
 class Movie(Multimedia):
     """Movie attached to announcement."""
-
+    
     movie_url = models.URLField()
 
     def __str__(self):

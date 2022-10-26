@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from '../../Settings'
 import {fetchCategories} from "../redux/slices/categorySlice";
+import {loged} from "../utils/loged";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const Header = () => {
     const dispatch = useDispatch();
-    let loged = sessionStorage.getItem("access_token")
 
     useEffect(() => {
         if (loged){
