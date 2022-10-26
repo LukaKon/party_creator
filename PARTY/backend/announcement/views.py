@@ -12,10 +12,15 @@ from drf_spectacular.utils import (
 )
 # from drf_spectacular.types import OpenApiTypes
 
-from rest_framework import (
-    # status,
-    viewsets,
-)
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+
 from rest_framework.parsers import (
     FormParser,
     MultiPartParser,
@@ -172,3 +177,20 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
                 #     image=img,
                 #     is_main=is_main,
                 # )
+        
+        
+class FavouriteViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.FavouriteSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    @action(detail=False, methods=['post'])
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        announcement = self.request.data.get("announcement")
+        instance = models.Favourite.objects.filter(user=user, announcement=announcement)
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_queryset(self):
+        queryset = models.Favourite.objects.filter(user=self.request.user)
+        return queryset

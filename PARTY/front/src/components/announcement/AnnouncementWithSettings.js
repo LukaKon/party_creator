@@ -56,16 +56,36 @@ export const AnnouncementWithSettings = (props) => {
                     />
 
                     <CardContent>
-                        <Typography variant="body2" color="text.secondary">
-                            {props.created.slice(0, 10)}
-                        </Typography>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {props.title}
-                        </Typography>
+                        <Grid container>
+                            <Grid item xs={5}>
+                                <Typography variant="caption" color="text.secondary">
+                                    {props.created.slice(0, 10)}
+                                </Typography>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    {props.title}
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={5}>
+                                <Typography variant="body2">
+                                    {props.description}
+                                </Typography>
+                            </Grid>
+
+                            <Grid container item xs={2}>
+                                <Grid item xs={6}>
+                                    Osoby które dodały do ulubionych: {props.announcement_favourites.length}
+                                </Grid>
+                                <Grid item xs={6}>
+                                    Osoby które wyświetliło ogłoszenie: {props.displayed}
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
                     </CardContent>
 
                 </Grid>
-                
+
                 <Grid item xs={12}>
                     <CardActions sx={{ display: '' }}>
                         <Button variant="outlined" size="small" startIcon={<EditIcon />}>

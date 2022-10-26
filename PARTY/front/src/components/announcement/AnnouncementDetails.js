@@ -1,33 +1,119 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import {
   useDispatch,
   useSelector,
 } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
+import { addFavourite, deleteFavourite } from "../../redux/slices/favouriteSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
 import {
   Box,
+  Checkbox,
   Grid,
   Typography,
   ImageList,
   ImageListItem,
-  Link
+  Link,
 } from "@mui/material";
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
+import {fetchProfile} from "../../redux/slices/profileSlice";
+import {loged} from "../../utils/loged";
 
 // https://youtu.be/dCbfOZurCQk
 
-export const AnnouncementDetails = () => {
-  const { slug } = useParams();
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcementDetails
-  );
+const ImageItem = (props) => {
+
+  return (
+    <Link href={props.image} underline="none">
+      <ImageListItem key={props.uuid} >
+        <img
+          src={props.image}
+          // srcSet={}
+          alt="description - make it dynamic"
+          loading="lazy"
+        />
+      </ImageListItem>
+    </Link>
+  )
+}
+
+
+const CategoryItem = (props) => {
+
+  console.log('*#*#*#*', props)
+  return (
+    // TODO: category as link to filtering by category
+    <h6>{props.get_name}</h6>
+  )
+}
+
+
+const FavouriteButton = (props) => {
+  const [checkInput, setCheckInput] = useState(()=>{
+    props.favourites.map(favouriteAnn => {
+    if (favouriteAnn.user[0] === userID){
+      return true
+    }})
+    return false
+  })
+
+  useEffect(() => {
+    dispatch(fetchProfile());
+  }, []);
+
+  const userID = useSelector((state) =>
+  {
+    if (loged){
+      return state.profile.entities['id']
+    }
+    return null
+  })
+
   const dispatch = useDispatch();
 
+  const addOrRemoveFavourite = (checkInput) => {
+    if(checkInput){
+      dispatch(deleteFavourite({"announcement": props.announcementID}))
+
+      setCheckInput(false)
+    }else{
+      dispatch(addFavourite({"user": [userID], "announcement": [props.announcementID]}))
+      setCheckInput(true)
+    }
+  }
+
+  let content
+  if (loged){
+    content = (
+          <Checkbox icon={<FavoriteBorder/>}
+                    checkedIcon={<Favorite/>}
+                    defaultChecked={checkInput}
+                    onClick={()=>{addOrRemoveFavourite(checkInput)}}/>
+       )
+  }
+
+
+  return (
+      <Grid item xs={12}>
+        {content}
+      </Grid>
+  )
+}
+
+
+export const AnnouncementDetails = () => {
+  const { slug } = useParams();
+
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
   }, []);
 
+  const { loading, entities, error } = useSelector(
+    (state) => state.announcementDetails
+  );
 
   let content
 
@@ -40,7 +126,7 @@ export const AnnouncementDetails = () => {
     } else {
       console.log('###categories: ', entities.category)
       content = (
-        <Box pa sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }}>
           <Grid
             container
             direction="column"
@@ -49,7 +135,7 @@ export const AnnouncementDetails = () => {
             <Grid
               item xs={6}
               rowSpacing={9}
-              columntSpacing={{ xs: 1, sm: 2, md: 3 }}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item>
                 <Typography variant='h6'>Title: {entities.title}</Typography>
@@ -66,12 +152,9 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <Typography variant='h6'>
-                  category/ies:
-                  {entities.category.map(cat => (
+                  category/ies: {entities.category.map(cat => (
                     <CategoryItem key={cat.uuid} {...cat} />
                   ))}
-                </Typography>
               </Grid>
 
               <Grid item>
@@ -95,6 +178,12 @@ export const AnnouncementDetails = () => {
               </ImageList>
             </Grid>
 
+
+            <FavouriteButton
+                announcementID={entities.id}
+                favourites={entities.announcement_favourites}
+            />
+
             <Grid item xs={6}>
               Movies:
               {entities.movies.length > 0
@@ -110,7 +199,7 @@ export const AnnouncementDetails = () => {
                 : <Typography variant="body2" color="red">No movies.</Typography>
               }
             </Grid>
-
+            
           </Grid>
         </Box>
       )
@@ -122,30 +211,4 @@ export const AnnouncementDetails = () => {
       {content}
     </Grid>
   );
-}
-
-
-const ImageItem = (props) => {
-
-  return (
-    <Link href={props.image} underline="none">
-      <ImageListItem key={props.uuid} >
-        <img
-          src={props.image}
-          // srcSet={}
-          alt="description - make it dynamic"
-          loading="lazy"
-        />
-      </ImageListItem>
-    </Link>
-  )
-}
-
-const CategoryItem = (props) => {
-
-  console.log('*#*#*#*', props)
-  return (
-    // TODO: category as link to filtering by category
-    <h6>{props.get_name}</h6>
-  )
 }

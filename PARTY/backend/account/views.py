@@ -83,6 +83,7 @@ class UpdateUserAPI(UpdateAPIView):
 
     def patch(self, request, *args, **kwargs):
         user = self.get_queryset()
+        print(request.data.get('image'))
         user.image = request.data.get('image')
         user.save()
         return Response({})

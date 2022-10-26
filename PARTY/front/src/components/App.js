@@ -39,16 +39,15 @@ export const App = () => {
                     <Route
                         path="announcement/:slug"
                         element={<AnnouncementDetails />}
-                    >
+                    />
 
-                    </Route>
                     <Route path='*' element={ <NotFound /> }/>
                     <Route path="categories" element={<Categories/>}/>
                     <Route path="categories/:categoryName" element={<AnnouncementsByCategory />} />
                     <Route path="resetpassword" element={<ResetPassword />} />
                     <Route path="resetpassword/:token" element={<ResetPasswordConfirm />} />
 
-                    {/*Views only for logged users*/}
+                    {/*/!*Views only for logged users*!/*/}
                     
                     {isAuthenticatedFunction('profile', <Profile/>)}
                     {isAuthenticatedFunction('settings', <ProfileSettings/>)}

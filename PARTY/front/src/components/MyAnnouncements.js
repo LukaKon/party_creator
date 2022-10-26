@@ -1,12 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Grid, Typography, Alert, AlertTitle} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Link } from 'react-router-dom'
 import {AnnouncementSkeleton} from "./skeletons/AnnouncementSkeletons";
 import {AnnouncementWithSettings} from "./announcement/AnnouncementWithSettings";
+import {fetchProfile} from "../redux/slices/profileSlice";
 
 
 export const MyAnnouncements = () => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchProfile());
+    }, []);
+
     const {entities, loading} = useSelector(
         (state) => state.profile
     );

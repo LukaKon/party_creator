@@ -8,6 +8,7 @@ from .models import (
     Category,
     Image,
     Movie,
+    Favourite,
 )
 
 
@@ -89,6 +90,8 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             'updated',
             "slug",
             "uuid",
+            "announcement_favourites",
+            "displayed"
         )
         read_only_fields = (
             "id",
@@ -105,3 +108,12 @@ class AnnouncementDetailSerializer(AnnouncementSerializer):
 
     class Meta(AnnouncementSerializer.Meta):
         fields = AnnouncementSerializer.Meta.fields + ("description",)
+
+
+class FavouriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favourite
+        fields = (
+            "user",
+            "announcement"
+        )
