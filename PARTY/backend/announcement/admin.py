@@ -187,10 +187,20 @@ class MovieAdmin(admin.ModelAdmin):
         ),
     )
 
+
+class FavouriteAdmin(admin.ModelAdmin):
+    """Define the admin page for favourite announcements."""
+
+    ordering = ['id']
+    # list_display = ('user', 'announcement',)
+    list_display = ('id',)
+    list_filter = ('user', 'announcement',)
+
 admin.site.register(models.Announcement, AnnouncementAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Image, ImageAdmin)
 admin.site.register(models.Movie, MovieAdmin)
+admin.site.register(models.Favourite, FavouriteAdmin)
 
 admin.site.unregister(Group)
 
