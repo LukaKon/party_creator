@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   useDispatch,
   useSelector,
@@ -18,8 +18,9 @@ import {
 } from "@mui/material";
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
-import {fetchProfile} from "../../redux/slices/profileSlice";
-import {loged} from "../../utils/loged";
+import { fetchProfile } from "../../redux/slices/profileSlice";
+import { loged } from "../../utils/loged";
+import { getDateObj } from '../../utils/getDateObj'
 
 // https://youtu.be/dCbfOZurCQk
 
@@ -51,11 +52,12 @@ const CategoryItem = (props) => {
 
 
 const FavouriteButton = (props) => {
-  const [checkInput, setCheckInput] = useState(()=>{
+  const [checkInput, setCheckInput] = useState(() => {
     props.favourites.map(favouriteAnn => {
-    if (favouriteAnn.user[0] === userID){
-      return true
-    }})
+      if (favouriteAnn.user[0] === userID) {
+        return true
+      }
+    })
     return false
   })
 
@@ -63,9 +65,8 @@ const FavouriteButton = (props) => {
     dispatch(fetchProfile());
   }, []);
 
-  const userID = useSelector((state) =>
-  {
-    if (loged){
+  const userID = useSelector((state) => {
+    if (loged) {
       return state.profile.entities['id']
     }
     return null
@@ -74,31 +75,31 @@ const FavouriteButton = (props) => {
   const dispatch = useDispatch();
 
   const addOrRemoveFavourite = (checkInput) => {
-    if(checkInput){
-      dispatch(deleteFavourite({"announcement": props.announcementID}))
+    if (checkInput) {
+      dispatch(deleteFavourite({ "announcement": props.announcementID }))
 
       setCheckInput(false)
-    }else{
-      dispatch(addFavourite({"user": [userID], "announcement": [props.announcementID]}))
+    } else {
+      dispatch(addFavourite({ "user": [userID], "announcement": [props.announcementID] }))
       setCheckInput(true)
     }
   }
 
   let content
-  if (loged){
+  if (loged) {
     content = (
-          <Checkbox icon={<FavoriteBorder/>}
-                    checkedIcon={<Favorite/>}
-                    defaultChecked={checkInput}
-                    onClick={()=>{addOrRemoveFavourite(checkInput)}}/>
-       )
+      <Checkbox icon={<FavoriteBorder />}
+        checkedIcon={<Favorite />}
+        defaultChecked={checkInput}
+        onClick={() => { addOrRemoveFavourite(checkInput) }} />
+    )
   }
 
 
   return (
-      <Grid item xs={12}>
-        {content}
-      </Grid>
+    <Grid item xs={12}>
+      {content}
+    </Grid>
   )
 }
 
@@ -124,7 +125,12 @@ export const AnnouncementDetails = () => {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
-      console.log('###categories: ', entities.category)
+
+      const date = getDateObj(entities.created)
+      const day = date.toLocaleString('pl-PL', { day: '2-digit' })
+      const month = date.toLocaleString('pl-PL', { month: 'long' })
+      const year = date.getFullYear()
+
       content = (
         <Box sx={{ flexGrow: 1 }}>
           <Grid
@@ -142,19 +148,15 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
-              </Grid>
-
-              <Grid item>
                 <Typography variant='caption'>
-                  Created by: {entities.user.email}
+                  Created {day} {month} {year} by: {entities.user.email}
                 </Typography>
               </Grid>
 
               <Grid item>
-                  category/ies: {entities.category.map(cat => (
-                    <CategoryItem key={cat.uuid} {...cat} />
-                  ))}
+                category/ies: {entities.category.map(cat => (
+                  <CategoryItem key={cat.uuid} {...cat} />
+                ))}
               </Grid>
 
               <Grid item>
@@ -178,12 +180,6 @@ export const AnnouncementDetails = () => {
               </ImageList>
             </Grid>
 
-
-            <FavouriteButton
-                announcementID={entities.id}
-                favourites={entities.announcement_favourites}
-            />
-
             <Grid item xs={6}>
               Movies:
               {entities.movies.length > 0
@@ -199,7 +195,12 @@ export const AnnouncementDetails = () => {
                 : <Typography variant="body2" color="red">No movies.</Typography>
               }
             </Grid>
-            
+
+            <FavouriteButton
+              announcementID={entities.id}
+              favourites={entities.announcement_favourites}
+            />
+
           </Grid>
         </Box>
       )
