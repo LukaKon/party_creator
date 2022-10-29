@@ -88,7 +88,11 @@ class Announcement(TimeStampedModel):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    category = models.ManyToManyField(Category, related_name="categories")
+    category = models.ManyToManyField(
+        Category,
+        related_name="categories",
+        # blank=False
+    )
     is_active = models.BooleanField(default=True)
     displayed = models.IntegerField(default=0)
 

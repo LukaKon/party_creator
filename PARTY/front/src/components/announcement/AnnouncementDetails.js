@@ -14,8 +14,11 @@ import {
   Typography,
   ImageList,
   ImageListItem,
-  Link,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
+import { Link } from 'react-router-dom'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import { fetchProfile } from "../../redux/slices/profileSlice";
@@ -27,7 +30,7 @@ import { getDateObj } from '../../utils/getDateObj'
 const ImageItem = (props) => {
 
   return (
-    <Link href={props.image} underline="none">
+    <Link to={props.image} underline="none">
       <ImageListItem key={props.uuid} >
         <img
           src={props.image}
@@ -42,11 +45,14 @@ const ImageItem = (props) => {
 
 
 const CategoryItem = (props) => {
-
-  console.log('*#*#*#*', props)
   return (
-    // TODO: category as link to filtering by category
-    <h6>{props.get_name}</h6>
+    <Link key={props.uuid} to={'/categories/' + props.get_name} state={{ categoryUuid: props.uuid }} >
+      <ListItem>
+        <ListItemText
+          primary={props.get_name}
+        />
+      </ListItem>
+    </Link>
   )
 }
 
@@ -95,14 +101,12 @@ const FavouriteButton = (props) => {
     )
   }
 
-
   return (
     <Grid item xs={12}>
       {content}
     </Grid>
   )
 }
-
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
@@ -118,18 +122,32 @@ export const AnnouncementDetails = () => {
 
   let content
 
-
   if (loading) {
     content = <AnnouncementDetailsSkeleton />
   } else {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
+      console.log(entities.created === entities.updated, entities.created, entities.updated)
 
-      const date = getDateObj(entities.created)
-      const day = date.toLocaleString('pl-PL', { day: '2-digit' })
-      const month = date.toLocaleString('pl-PL', { month: 'long' })
-      const year = date.getFullYear()
+      const created_date = getDateObj(entities.created)
+      const day = created_date.toLocaleString('pl-PL', { day: '2-digit' })
+      const month = created_date.toLocaleString('pl-PL', { month: 'long' })
+      const year = created_date.getFullYear()
+
+      let modified = false
+      let update_day
+      let update_month
+      let update_year
+
+      if (entities.created.slice(0, 20) !== entities.updated.slice(0, 20)) {
+
+        const updated_date = getDateObj(entities.updated)
+        update_day = updated_date.toLocaleString('pl-PL', { day: '2-digit' })
+        update_month = updated_date.toLocaleString('pl-PL', { month: 'long' })
+        update_year = updated_date.getFullYear()
+        modified = true
+      }
 
       content = (
         <Box sx={{ flexGrow: 1 }}>
@@ -149,14 +167,18 @@ export const AnnouncementDetails = () => {
 
               <Grid item>
                 <Typography variant='caption'>
-                  Created {day} {month} {year} by: {entities.user.email}
+                  Created: {day} {month} {year} {modified
+                    && `updated: ${update_day} ${update_month} ${update_year}`} by: {entities.user.email}
                 </Typography>
               </Grid>
 
               <Grid item>
-                category/ies: {entities.category.map(cat => (
-                  <CategoryItem key={cat.uuid} {...cat} />
-                ))}
+                category/ies:
+                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                  {entities.category.map(cat => (
+                    <CategoryItem key={cat.uuid} {...cat} />
+                  ))}
+                </List>
               </Grid>
 
               <Grid item>
@@ -186,9 +208,9 @@ export const AnnouncementDetails = () => {
                 ? <ul>
                   {entities.movies.map(mov => (
                     <li key={mov.uuid}>
-                      <Link underline="hover" to={mov.movie_url}>
+                      <a href={mov.movie_url} underline="hover" >
                         {mov.movie_url}
-                      </Link>
+                      </a>
                     </li>
                   ))}
                 </ul>
