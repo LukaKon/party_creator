@@ -108,6 +108,38 @@ const FavouriteButton = (props) => {
   )
 }
 
+const CreateUpdateDate = (props) => {
+  const { entities } = props
+
+  const created_date = getDateObj(entities.created)
+  const day = created_date.day
+  const month = created_date.month
+  const year = created_date.year
+
+  let modified = false
+  let update_day
+  let update_month
+  let update_year
+
+  if (entities.created.slice(0, 20) !== entities.updated.slice(0, 20)) {
+    const updated_date = getDateObj(entities.updated)
+
+    update_day = updated_date.day
+    update_month = updated_date.month
+    update_year = updated_date.year
+
+    modified = true
+  }
+
+  return (
+    <Typography variant='caption'>
+      Created: {day} {month} {year} {modified
+        && `updated: ${update_day} ${update_month} ${update_year}`} by: {entities.user.email}
+    </Typography>
+  )
+}
+
+
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
 
@@ -130,24 +162,6 @@ export const AnnouncementDetails = () => {
     } else {
       console.log(entities.created === entities.updated, entities.created, entities.updated)
 
-      const created_date = getDateObj(entities.created)
-      const day = created_date.toLocaleString('pl-PL', { day: '2-digit' })
-      const month = created_date.toLocaleString('pl-PL', { month: 'long' })
-      const year = created_date.getFullYear()
-
-      let modified = false
-      let update_day
-      let update_month
-      let update_year
-
-      if (entities.created.slice(0, 20) !== entities.updated.slice(0, 20)) {
-
-        const updated_date = getDateObj(entities.updated)
-        update_day = updated_date.toLocaleString('pl-PL', { day: '2-digit' })
-        update_month = updated_date.toLocaleString('pl-PL', { month: 'long' })
-        update_year = updated_date.getFullYear()
-        modified = true
-      }
 
       content = (
         <Box sx={{ flexGrow: 1 }}>
@@ -166,10 +180,7 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <Typography variant='caption'>
-                  Created: {day} {month} {year} {modified
-                    && `updated: ${update_day} ${update_month} ${update_year}`} by: {entities.user.email}
-                </Typography>
+                <CreateUpdateDate entities={entities} />
               </Grid>
 
               <Grid item>
