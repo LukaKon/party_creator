@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
 import { addFavourite, deleteFavourite } from "../../redux/slices/favouriteSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
+import { CreateUpdateDate } from './CreateUpdateDate'
 import {
   Box,
   Checkbox,
@@ -23,7 +24,6 @@ import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import { fetchProfile } from "../../redux/slices/profileSlice";
 import { loged } from "../../utils/loged";
-import { getDateObj } from '../../utils/getDateObj'
 
 // https://youtu.be/dCbfOZurCQk
 
@@ -108,37 +108,6 @@ const FavouriteButton = (props) => {
   )
 }
 
-const CreateUpdateDate = (props) => {
-  const { entities } = props
-
-  const created_date = getDateObj(entities.created)
-  const day = created_date.day
-  const month = created_date.month
-  const year = created_date.year
-
-  let modified = false
-  let update_day
-  let update_month
-  let update_year
-
-  if (entities.created.slice(0, 20) !== entities.updated.slice(0, 20)) {
-    const updated_date = getDateObj(entities.updated)
-
-    update_day = updated_date.day
-    update_month = updated_date.month
-    update_year = updated_date.year
-
-    modified = true
-  }
-
-  return (
-    <Typography variant='caption'>
-      Created: {day} {month} {year} {modified
-        && `updated: ${update_day} ${update_month} ${update_year}`} by: {entities.user.email}
-    </Typography>
-  )
-}
-
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
@@ -160,9 +129,6 @@ export const AnnouncementDetails = () => {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
-      console.log(entities.created === entities.updated, entities.created, entities.updated)
-
-
       content = (
         <Box sx={{ flexGrow: 1 }}>
           <Grid
