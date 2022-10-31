@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   useDispatch,
   useSelector,
@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
 import { addFavourite, deleteFavourite } from "../../redux/slices/favouriteSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
+import { CreateUpdateDate } from './CreateUpdateDate'
 import {
   Box,
   Checkbox,
@@ -14,19 +15,22 @@ import {
   Typography,
   ImageList,
   ImageListItem,
-  Link,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
+import { Link } from 'react-router-dom'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
-import {fetchProfile} from "../../redux/slices/profileSlice";
-import {loged} from "../../utils/loged";
+import { fetchProfile } from "../../redux/slices/profileSlice";
+import { loged } from "../../utils/loged";
 
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
 
   return (
-    <Link href={props.image} underline="none">
+    <Link to={props.image} underline="none">
       <ImageListItem key={props.uuid} >
         <img
           src={props.image}
@@ -41,21 +45,25 @@ const ImageItem = (props) => {
 
 
 const CategoryItem = (props) => {
-
-  console.log('*#*#*#*', props)
   return (
-    // TODO: category as link to filtering by category
-    <h6>{props.get_name}</h6>
+    <Link key={props.uuid} to={'/categories/' + props.get_name} state={{ categoryUuid: props.uuid }} >
+      <ListItem>
+        <ListItemText
+          primary={props.get_name}
+        />
+      </ListItem>
+    </Link>
   )
 }
 
 
 const FavouriteButton = (props) => {
-  const [checkInput, setCheckInput] = useState(()=>{
+  const [checkInput, setCheckInput] = useState(() => {
     props.favourites.map(favouriteAnn => {
-    if (favouriteAnn.user[0] === userID){
-      return true
-    }})
+      if (favouriteAnn.user[0] === userID) {
+        return true
+      }
+    })
     return false
   })
 
@@ -63,9 +71,8 @@ const FavouriteButton = (props) => {
     dispatch(fetchProfile());
   }, []);
 
-  const userID = useSelector((state) =>
-  {
-    if (loged){
+  const userID = useSelector((state) => {
+    if (loged) {
       return state.profile.entities['id']
     }
     return null
@@ -74,31 +81,30 @@ const FavouriteButton = (props) => {
   const dispatch = useDispatch();
 
   const addOrRemoveFavourite = (checkInput) => {
-    if(checkInput){
-      dispatch(deleteFavourite({"announcement": props.announcementID}))
+    if (checkInput) {
+      dispatch(deleteFavourite({ "announcement": props.announcementID }))
 
       setCheckInput(false)
-    }else{
-      dispatch(addFavourite({"user": [userID], "announcement": [props.announcementID]}))
+    } else {
+      dispatch(addFavourite({ "user": [userID], "announcement": [props.announcementID] }))
       setCheckInput(true)
     }
   }
 
   let content
-  if (loged){
+  if (loged) {
     content = (
-          <Checkbox icon={<FavoriteBorder/>}
-                    checkedIcon={<Favorite/>}
-                    defaultChecked={checkInput}
-                    onClick={()=>{addOrRemoveFavourite(checkInput)}}/>
-       )
+      <Checkbox icon={<FavoriteBorder />}
+        checkedIcon={<Favorite />}
+        defaultChecked={checkInput}
+        onClick={() => { addOrRemoveFavourite(checkInput) }} />
+    )
   }
 
-
   return (
-      <Grid item xs={12}>
-        {content}
-      </Grid>
+    <Grid item xs={12}>
+      {content}
+    </Grid>
   )
 }
 
@@ -117,14 +123,12 @@ export const AnnouncementDetails = () => {
 
   let content
 
-
   if (loading) {
     content = <AnnouncementDetailsSkeleton />
   } else {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
-      console.log('###categories: ', entities.category)
       content = (
         <Box sx={{ flexGrow: 1 }}>
           <Grid
@@ -142,19 +146,16 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
+                <CreateUpdateDate entities={entities} />
               </Grid>
 
               <Grid item>
-                <Typography variant='caption'>
-                  Created by: {entities.user.email}
-                </Typography>
-              </Grid>
-
-              <Grid item>
-                  category/ies: {entities.category.map(cat => (
+                category/ies:
+                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                  {entities.category.map(cat => (
                     <CategoryItem key={cat.uuid} {...cat} />
                   ))}
+                </List>
               </Grid>
 
               <Grid item>
@@ -178,28 +179,27 @@ export const AnnouncementDetails = () => {
               </ImageList>
             </Grid>
 
-
-            <FavouriteButton
-                announcementID={entities.id}
-                favourites={entities.announcement_favourites}
-            />
-
             <Grid item xs={6}>
               Movies:
               {entities.movies.length > 0
                 ? <ul>
                   {entities.movies.map(mov => (
                     <li key={mov.uuid}>
-                      <Link underline="hover" to={mov.movie_url}>
+                      <a href={mov.movie_url} underline="hover" >
                         {mov.movie_url}
-                      </Link>
+                      </a>
                     </li>
                   ))}
                 </ul>
                 : <Typography variant="body2" color="red">No movies.</Typography>
               }
             </Grid>
-            
+
+            <FavouriteButton
+              announcementID={entities.id}
+              favourites={entities.announcement_favourites}
+            />
+
           </Grid>
         </Box>
       )
