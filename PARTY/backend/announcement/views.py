@@ -177,6 +177,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
                 #     image=img,
                 #     is_main=is_main,
                 # )
+        return Response(status=status.HTTP_201_CREATED)
         
         
 class FavouriteViewSet(viewsets.ModelViewSet):
