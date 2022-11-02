@@ -31,6 +31,7 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
+from rest_framework.response import Response
 
 from announcement import (
     models,
@@ -145,13 +146,14 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new announcement."""
+        print("request: ", self.request.data)
         user = get_user_model().objects .get(email=self.request.user)
-        categories_uuid = self.request.data.getlist('category')
-        movies_url = self.request.data.getlist('movies')
-        images = self.request.data.getlist('images[0]')
+        categories_uuid = self.request.data.get('category')
+        movies_url = self.request.data.get('movies')
+        # images = self.request.data.getlist('images[0]')
 
-        # print("request: ", self.request.data)
-        print('@@@ images:', images)
+        print('cat uuid: ',categories_uuid)
+        # print('@@@ images:', images)
         categories = []
         if categories_uuid:
             for uuid in categories_uuid:
@@ -160,12 +162,12 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         announcement = serializer.save(user=user, category=categories)
 
-        if movies_url:
-            for movie_url in movies_url:
-                models.Movie.objects.create(
-                  movie_url=movie_url,
-                  announcement=announcement,
-                )
+        # if movies_url:
+        #     for movie_url in movies_url:
+        #         models.Movie.objects.create(
+        #           movie_url=movie_url,
+        #           announcement=announcement,
+        #         )
 
         # if images:
         #     for image in images:

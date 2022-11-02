@@ -61,19 +61,19 @@ export const AddAnnouncement = () => {
   const [selectedImages, setSelectedImages] = useState()
 
   // const [resetForm, setResetForm] = useState(false)
-  
+
   const movieChangeHandler = () => {
     setMovies()
   }
-  
+
 
   let formIsValid = false
 
   if (enteredTitleIsValid && enteredDescriptionValid && categoryValid) {
     console.log(
-      'title: ', enteredTitleIsValid,
-      'desc: ', enteredDescriptionValid,
-      'cat: ', categoryValid,
+      'title: ', enteredTitleIsValid, enteredTitle,
+      'desc: ', enteredDescriptionValid, enteredDescription,
+      'cat: ', categoryValid,category,
       'images: ', 'not yet',
       'movies: ', movies,
     )
@@ -129,8 +129,6 @@ export const AddAnnouncement = () => {
   }, []);
 
 
-  // console.log('selected category: ', category)
-
   // let images
   // if (selectedImages) {
   //   // images = renderPhoto(selectedImages)
@@ -160,7 +158,6 @@ export const AddAnnouncement = () => {
               label="Title"
               name="title"
               // autoFocus
-              defaultValue='Tytuł'
               onChange={titleChangedHandler}
               onBlur={titleBlurHandler}
               value={enteredTitle}
@@ -169,7 +166,7 @@ export const AddAnnouncement = () => {
             {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
           </Grid>
 
-        {/*}
+          {/*}
           <Grid item>
             <TitleInput
               reset={resetForm}
@@ -203,7 +200,7 @@ export const AddAnnouncement = () => {
               categories={categories}
               selectedCategory={categorySelectHandle}
               categoryIsValid={isCategoryValid}
-              // reset={resetForm}
+            // reset={resetForm}
             />
             {error && (<p style={{ color: 'red' }}>Error: {error}</p>)}
           </Grid>
@@ -224,8 +221,8 @@ export const AddAnnouncement = () => {
             <span style={{ color: 'red' }}>TEST</span>
             <SelectImages />
           </Grid>
-    
-    
+
+
           <Grid item>
             <TextField
               margin="normal"
@@ -234,11 +231,10 @@ export const AddAnnouncement = () => {
               label="Movies"
               name="movies"
               // autoFocus
-              defaultValue='Link do filmu'
               onChange={movieChangeHandler}
-              // onBlur={titleBlurHandler}
-              // value={enteredTitle}
-              // error={titleInputHasError}
+            // onBlur={titleBlurHandler}
+            // value={enteredTitle}
+            // error={titleInputHasError}
             />
             {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
           </Grid>
@@ -253,14 +249,6 @@ export const AddAnnouncement = () => {
             >
               Save
             </Button>
-          </Grid>
-
-          <Grid item>
-            TODO:
-            <ul>
-              <li>"add images/multimedia"</li>
-              <li>"event type: list with checkboxes"</li>
-            </ul>
           </Grid>
 
         </Grid>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles'
 import {
-  OutlinedInput,
+  FormControl,
+  Grid,
   InputLabel,
   MenuItem,
-  FormControl,
+  OutlinedInput,
   Select,
 } from '@mui/material'
 import { useInput } from "./hooks/useInput";
@@ -43,57 +44,31 @@ export const SelectCategory = (props) => {
   } = useInput(value => value.length > 0, [])
 
   const theme = useTheme()
-  // const [selectedCategory, setSelectedCategory] = useState([])
-  // const [isTouched, setIsTouched] = useState(false)
-
-  // const valueIsValid = selectedCategory.length > 0
-  // const hasError = !valueIsValid && isTouched
-
-  // const valueChangeHandler = e => {
-  //   const value = e.target.value
-
-  //   setSelectedCategory(
-  //     typeof value === 'string' ? value.split('.') : value
-  //   )
-  // }
-
-  // const inputBlurHandler = e => {
-  //   setIsTouched(true)
-  // }
-  
   // TODO: reset category field to init state
   // console.log('reset?: ',props.reset)
   // if (props.reset){
-    // resetSelectedCategory()
+  // resetSelectedCategory()
   // }
 
   useEffect(() => {
     if (typeof props.selectedCategory === 'function') {
-      // console.log('cat in if: ', selectedCategory)
       props.selectedCategory(selectedCategory)
     }
     if (typeof props.categoryIsValid === 'function') {
-      // console.log('is cat valid in component: ', valueIsValid)
-      // props.categoryIsValid(valueIsValid)
       props.categoryIsValid(selectedCategoryIsValid)
     }
-    // }, [selectedCategory, valueIsValid])
   }, [selectedCategory, selectedCategoryIsValid])
 
   return (
-    <Grid>
+    <Grid item>
       <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id='category-label'>Category</InputLabel>
         <Select
-          margin='normal'
           labelId="category-label"
           id='category'
           required
           multiple
           value={selectedCategory}
-          // onChange={valueChangeHandler}
-          // onBlur={inputBlurHandler}
-          // error={hasError}
           onChange={selectedCategoryChangedHandler}
           onBlur={selectedCategoryBlurHandler}
           error={selectedCategoryHasError}
@@ -103,15 +78,14 @@ export const SelectCategory = (props) => {
           {props.categories.map(category => (
             <MenuItem
               key={category.uuid}
-              value={category.name}
-              style={getStyle(category.name, selectedCategory, theme)}
+              value={category.uuid}
+              style={getStyle(category.get_name, selectedCategory, theme)}
             >
-              {category.name}
+              {category.get_name}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-      {/*}{hasError && (<p style={{ color: "red" }}>Category must be selected.</p>)}*/}
       {selectedCategoryHasError && (<p style={{ color: "red" }}>Category must be selected.</p>)}
     </Grid>
   )
