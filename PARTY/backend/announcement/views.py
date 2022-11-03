@@ -1,24 +1,19 @@
 """
 Views for announcements APIs.
 """
-from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
-
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
     OpenApiParameter,
     OpenApiTypes,
 )
-# from drf_spectacular.types import OpenApiTypes
-
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
 
 from rest_framework import status, viewsets
+from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from rest_framework.parsers import (
@@ -27,10 +22,11 @@ from rest_framework.parsers import (
 )
 from rest_framework.permissions import (
     AllowAny,
-    # IsAdminUser,
+
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
+from django.db.utils import IntegrityError
 
 from announcement import (
     models,
@@ -145,7 +141,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new announcement."""
-        user = get_user_model().objects .get(email=self.request.user)
+        user = get_user_model().objects .get(email=self.request.user) # TODO <-- o co chodzi z tą kropką
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.getlist('movies')
         images = self.request.data.getlist('images[0]')
@@ -194,3 +190,25 @@ class FavouriteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = models.Favourite.objects.filter(user=self.request.user)
         return queryset
+
+    def perform_create(self, serializer):
+        announcement_id = self.request.data.get("announcement")[0]
+        announcement = models.Announcement.objects.get(id=announcement_id)
+        serializer.save(announcement=[announcement, ])
+
+
+class ViewsViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ViewsSerializer
+    permission_classes = [AllowAny, ]
+
+    def perform_create(self, serializer):
+        uuid_or_email = None
+        if self.request.user.is_anonymous:
+            uuid_or_email = self.request.data.get("uuid")
+        else:
+            uuid_or_email = str(self.request.user.email)
+        try:
+            serializer.save(uuid_or_email=uuid_or_email)
+        except IntegrityError:
+            pass
+

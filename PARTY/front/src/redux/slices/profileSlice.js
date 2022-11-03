@@ -1,14 +1,17 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {axiosInstance} from "../../axios";
+import {loged} from "../../utils/loged";
 
 export const fetchProfile = createAsyncThunk(
     "profile/getProfile",
     async (data) => {
-        try {
+        if(loged){
+            try {
             const response = await axiosInstance.post("account/getprofile/", data);
             return response.data;
-        } catch (err) {
-            console.log("Fetch profile error: ", err.message);
+            } catch (err) {
+                console.log("Fetch profile error: ", err.message);
+            }
         }
     }
 );

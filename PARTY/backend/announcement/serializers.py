@@ -6,9 +6,10 @@ from rest_framework import serializers
 from .models import (
     Announcement,
     Category,
+    Favourite,
     Image,
     Movie,
-    Favourite,
+    Views,
 )
 
 
@@ -76,8 +77,10 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
 
     category = CategorySerializer(many=True, read_only=True)
+    announcement_favourites = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
+
         model = Announcement
         fields = (
             "id",
@@ -91,7 +94,6 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "slug",
             "uuid",
             "announcement_favourites",
-            "displayed"
         )
         read_only_fields = (
             "id",
@@ -100,6 +102,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "created",
             'updated',
         )
+
         depth = 1
 
 
@@ -111,9 +114,23 @@ class AnnouncementDetailSerializer(AnnouncementSerializer):
 
 
 class FavouriteSerializer(serializers.ModelSerializer):
+
+    announcement = AnnouncementSerializer(many=True, read_only=True)
+
     class Meta:
         model = Favourite
         fields = (
+            "id",
             "user",
+            "announcement",
+        )
+
+
+class ViewsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Views
+        fields = (
+            "uuid_or_email",
             "announcement"
         )

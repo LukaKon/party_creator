@@ -1,26 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {
   useDispatch,
   useSelector,
 } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
-import { addFavourite, deleteFavourite } from "../../redux/slices/favouriteSlice";
-import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
 import {
   Box,
-  Checkbox,
   Grid,
   Typography,
   ImageList,
   ImageListItem,
   Link,
 } from "@mui/material";
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import Favorite from '@mui/icons-material/Favorite';
-import {fetchProfile} from "../../redux/slices/profileSlice";
-import {loged} from "../../utils/loged";
 
+import { AnnouncementDetailsSkeleton } from "../skeletons/AnnouncementSkeletons"
+import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
+import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
+import { fetchProfile } from "../../redux/slices/profileSlice";
+import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
+import { loged } from "../../utils/loged";
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
@@ -41,27 +39,29 @@ const ImageItem = (props) => {
 
 
 const CategoryItem = (props) => {
-
-  console.log('*#*#*#*', props)
   return (
     // TODO: category as link to filtering by category
     <h6>{props.get_name}</h6>
   )
 }
 
-
-const FavouriteButton = (props) => {
-  const [checkInput, setCheckInput] = useState(()=>{
-    props.favourites.map(favouriteAnn => {
-    if (favouriteAnn.user[0] === userID){
-      return true
-    }})
-    return false
-  })
+export const AnnouncementDetails = () => {
+  const { slug } = useParams();
+  const dispatch = useDispatch();
+  const { loading, entities, error } = useSelector(
+      (state) => state.announcementDetails
+    );
 
   useEffect(() => {
+    dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
   }, []);
+
+  useEffect(()=> {
+    if(entities){
+      addViewFunction({"announcementID": entities.id, "dispatch": dispatch})
+    }
+  },[entities])
 
   const userID = useSelector((state) =>
   {
@@ -70,50 +70,6 @@ const FavouriteButton = (props) => {
     }
     return null
   })
-
-  const dispatch = useDispatch();
-
-  const addOrRemoveFavourite = (checkInput) => {
-    if(checkInput){
-      dispatch(deleteFavourite({"announcement": props.announcementID}))
-
-      setCheckInput(false)
-    }else{
-      dispatch(addFavourite({"user": [userID], "announcement": [props.announcementID]}))
-      setCheckInput(true)
-    }
-  }
-
-  let content
-  if (loged){
-    content = (
-          <Checkbox icon={<FavoriteBorder/>}
-                    checkedIcon={<Favorite/>}
-                    defaultChecked={checkInput}
-                    onClick={()=>{addOrRemoveFavourite(checkInput)}}/>
-       )
-  }
-
-
-  return (
-      <Grid item xs={12}>
-        {content}
-      </Grid>
-  )
-}
-
-
-export const AnnouncementDetails = () => {
-  const { slug } = useParams();
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAnnouncementDetails(slug));
-  }, []);
-
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcementDetails
-  );
 
   let content
 
@@ -124,7 +80,6 @@ export const AnnouncementDetails = () => {
     if (!entities) {
       content = (<Typography variant="h3">No details!</Typography>)
     } else {
-      console.log('###categories: ', entities.category)
       content = (
         <Box sx={{ flexGrow: 1 }}>
           <Grid
@@ -180,8 +135,9 @@ export const AnnouncementDetails = () => {
 
 
             <FavouriteButton
+                userID={userID}
                 announcementID={entities.id}
-                favourites={entities.announcement_favourites}
+                favourite={entities.announcement_favourites}
             />
 
             <Grid item xs={6}>

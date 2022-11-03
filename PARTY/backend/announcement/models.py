@@ -126,7 +126,6 @@ class Announcement(TimeStampedModel):
     )
     category = models.ManyToManyField(Category, related_name="categories")
     is_active = models.BooleanField(default=True)
-    displayed = models.IntegerField(default=0)
 
     objects = AnnouncementManager()
 
@@ -198,7 +197,6 @@ class Image(Multimedia):
         return str(self.image)
 
 
-
 class Favourite(models.Model):
 
     user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_favourites')
@@ -212,3 +210,14 @@ class Movie(Multimedia):
 
     def __str__(self):
         return str(self.movie_url)
+
+
+class Views(models.Model):
+
+    uuid_or_email = models.CharField(
+        max_length=240,
+        db_index=True,
+        editable=False,
+        unique=True,
+    )
+    announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE)

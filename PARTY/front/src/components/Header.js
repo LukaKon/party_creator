@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {
     AppBar,
@@ -21,9 +21,8 @@ import {removeToken} from "../utils";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from '../../Settings'
-import {fetchCategories} from "../redux/slices/categorySlice";
 import {loged} from "../utils/loged";
-
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
     test: {
@@ -36,10 +35,14 @@ export const Header = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (loged){
-            dispatch(fetchProfile())
-        }
+        dispatch(fetchProfile())
     }, [image]);
+
+    useEffect(()=> {
+        if (!sessionStorage.getItem("uuid")){
+            sessionStorage.setItem('uuid', uuidv4())
+        }
+    })
 
     let image
     let menuIcon;
@@ -76,6 +79,7 @@ export const Header = () => {
         pages["Dodaj ogłoszenie"] = "/addannouncement"
         settings["Profil"] = "/profile"
         settings["Moje ogłoszenia"] = "/myannouncements"
+        settings["Moje ulubione"] = "/myfavourites"
         settings["Ustawienia konta"] = "/settings"
         settings['Wyloguj sie'] = "signout"
 
