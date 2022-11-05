@@ -218,6 +218,12 @@ class Views(models.Model):
         max_length=240,
         db_index=True,
         editable=False,
-        unique=True,
     )
-    announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE)
+    announcement = models.ForeignKey(
+        Announcement,
+        related_name='views',
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        unique_together = ['uuid_or_email', 'announcement']

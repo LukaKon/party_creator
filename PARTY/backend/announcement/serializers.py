@@ -94,6 +94,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "slug",
             "uuid",
             "announcement_favourites",
+            "views",
         )
         read_only_fields = (
             "id",
