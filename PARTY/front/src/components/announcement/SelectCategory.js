@@ -81,7 +81,7 @@ export const SelectCategory = (props) => {
   }, [selectedCategory, selectedCategoryIsValid])
 
   return (
-    <>
+    <Grid>
       <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id='category-label'>Category</InputLabel>
         <Select
@@ -113,6 +113,6 @@ export const SelectCategory = (props) => {
       </FormControl>
       {/*}{hasError && (<p style={{ color: "red" }}>Category must be selected.</p>)}*/}
       {selectedCategoryHasError && (<p style={{ color: "red" }}>Category must be selected.</p>)}
-    </>
+    </Grid>
   )
 }

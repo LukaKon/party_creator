@@ -39,12 +39,6 @@ class Category(models.Model):
     ANIMATOR = 'AN'
 
     CATEGORY_NAME = (
-        # ("muzyka", "music"),
-        # ("cattering", "cattering"),
-        # ("fotograf", "photograph"),
-        # ("lokal", "local"),
-        # ("animator", "animator"),
-
         (MUSIC, _("muzyka")),
         (CATTERING, _("cattering")),
         (PHOTOGRAPH, _("fotograf")),
@@ -67,37 +61,7 @@ class Category(models.Model):
         verbose_name_plural = _("categories")
 
     def __str__(self):
-        # return f"{self.name}"
         return self.get_name_display()
-
-
-# class EventType(models.Model):
-# """Event type. e.g weddings, baptism etc."""
-
-# DEFAULT = "default"
-# WEDDING = "wedding"
-# BAPTISM = "baptism"
-# INTEGRATION = "integration"
-# EVENT = [
-#     (DEFAULT, _("default")),
-#     (WEDDING, _("Wedding...")),
-#     (BAPTISM, _("Baptism...")),
-#     (INTEGRATION, _("Integration...")),
-# ]
-
-# name = models.CharField(
-#     max_length=30,
-#     choices=EVENT,
-# )  # default=DEFAULT)
-
-# #     name = models.CharField(max_length=100)
-# #     photo = models.ForeignKey(
-# #         "Image", verbose_name="event_type_image", on_delete=models.SET_NULL, null=True
-# #     )
-# #     category = models.ManyToManyField(ServiceCategory, related_name="event_types")
-
-# def __str__(self):
-#     return self.name
 
 
 class AnnouncementManager(models.Manager):
@@ -124,7 +88,11 @@ class Announcement(TimeStampedModel):
         default=uuid_lib.uuid4,
         editable=False,
     )
-    category = models.ManyToManyField(Category, related_name="categories")
+    category = models.ManyToManyField(
+        Category,
+        related_name="categories",
+        # blank=False
+    )
     is_active = models.BooleanField(default=True)
 
     objects = AnnouncementManager()
@@ -190,22 +158,14 @@ class Image(Multimedia):
         verbose_name="images",
         default="media/default.jpg",
     )
-    # is image main - for front
     is_main = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return str(self.image)
 
-
-class Favourite(models.Model):
-
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_favourites')
-    announcement = models.ManyToManyField(Announcement, related_name='announcement_favourites')
-    
-    
 class Movie(Multimedia):
     """Movie attached to announcement."""
-    
+
     movie_url = models.URLField()
 
     def __str__(self):
@@ -227,3 +187,10 @@ class Views(models.Model):
 
     class Meta:
         unique_together = ['uuid_or_email', 'announcement']
+
+
+class Favourite(models.Model):
+
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_favourites')
+    announcement = models.ManyToManyField(Announcement, related_name='announcement_favourites')
+
