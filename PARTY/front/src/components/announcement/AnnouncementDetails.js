@@ -1,36 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect} from "react";
 import {
   useDispatch,
   useSelector,
 } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
-import { addFavourite, deleteFavourite } from "../../redux/slices/favouriteSlice";
-import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
-import { CreateUpdateDate } from './CreateUpdateDate'
 import {
   Box,
-  Checkbox,
   Grid,
   Typography,
   ImageList,
   ImageListItem,
-  List,
-  ListItem,
-  ListItemText,
+  Link,
 } from "@mui/material";
-import { Link } from 'react-router-dom'
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import Favorite from '@mui/icons-material/Favorite';
-import { fetchProfile } from "../../redux/slices/profileSlice";
-import { loged } from "../../utils/loged";
 
+import { AnnouncementDetailsSkeleton } from "../skeletons/AnnouncementSkeletons"
+import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
+import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
+import { fetchProfile } from "../../redux/slices/profileSlice";
+import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
+import { loged } from "../../utils/loged";
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
 
   return (
-    <Link to={props.image} underline="none">
+    <Link href={props.image} underline="none">
       <ImageListItem key={props.uuid} >
         <img
           src={props.image}
@@ -46,82 +40,39 @@ const ImageItem = (props) => {
 
 const CategoryItem = (props) => {
   return (
-    <Link key={props.uuid} to={'/categories/' + props.get_name} state={{ categoryUuid: props.uuid }} >
-      <ListItem>
-        <ListItemText
-          primary={props.get_name}
-        />
-      </ListItem>
-    </Link>
+    // TODO: category as link to filtering by category
+    <h6>{props.get_name}</h6>
   )
 }
 
-
-const FavouriteButton = (props) => {
-  const [checkInput, setCheckInput] = useState(() => {
-    props.favourites.map(favouriteAnn => {
-      if (favouriteAnn.user[0] === userID) {
-        return true
-      }
-    })
-    return false
-  })
+export const AnnouncementDetails = () => {
+  const { slug } = useParams();
+  const dispatch = useDispatch();
+  const { loading, entities, error } = useSelector(
+      (state) => state.announcementDetails
+    );
 
   useEffect(() => {
+    dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
   }, []);
 
-  const userID = useSelector((state) => {
-    if (loged) {
+  useEffect(()=> {
+    if(entities){
+      addViewFunction({"announcementID": entities.id, "dispatch": dispatch})
+    }
+  },[entities])
+
+  const userID = useSelector((state) =>
+  {
+    if (loged){
       return state.profile.entities['id']
     }
     return null
   })
 
-  const dispatch = useDispatch();
-
-  const addOrRemoveFavourite = (checkInput) => {
-    if (checkInput) {
-      dispatch(deleteFavourite({ "announcement": props.announcementID }))
-
-      setCheckInput(false)
-    } else {
-      dispatch(addFavourite({ "user": [userID], "announcement": [props.announcementID] }))
-      setCheckInput(true)
-    }
-  }
-
   let content
-  if (loged) {
-    content = (
-      <Checkbox icon={<FavoriteBorder />}
-        checkedIcon={<Favorite />}
-        defaultChecked={checkInput}
-        onClick={() => { addOrRemoveFavourite(checkInput) }} />
-    )
-  }
 
-  return (
-    <Grid item xs={12}>
-      {content}
-    </Grid>
-  )
-}
-
-
-export const AnnouncementDetails = () => {
-  const { slug } = useParams();
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAnnouncementDetails(slug));
-  }, []);
-
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcementDetails
-  );
-
-  let content
 
   if (loading) {
     content = <AnnouncementDetailsSkeleton />
@@ -146,16 +97,19 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <CreateUpdateDate entities={entities} />
+                <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
               </Grid>
 
               <Grid item>
-                category/ies:
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                  {entities.category.map(cat => (
+                <Typography variant='caption'>
+                  Created by: {entities.user.email}
+                </Typography>
+              </Grid>
+
+              <Grid item>
+                  category/ies: {entities.category.map(cat => (
                     <CategoryItem key={cat.uuid} {...cat} />
                   ))}
-                </List>
               </Grid>
 
               <Grid item>
@@ -179,27 +133,29 @@ export const AnnouncementDetails = () => {
               </ImageList>
             </Grid>
 
+
+            <FavouriteButton
+                userID={userID}
+                announcementID={entities.id}
+                favourite={entities.announcement_favourites}
+            />
+
             <Grid item xs={6}>
               Movies:
               {entities.movies.length > 0
                 ? <ul>
                   {entities.movies.map(mov => (
                     <li key={mov.uuid}>
-                      <a href={mov.movie_url} underline="hover" >
+                      <Link underline="hover" to={mov.movie_url}>
                         {mov.movie_url}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
                 : <Typography variant="body2" color="red">No movies.</Typography>
               }
             </Grid>
-
-            <FavouriteButton
-              announcementID={entities.id}
-              favourites={entities.announcement_favourites}
-            />
-
+            
           </Grid>
         </Box>
       )

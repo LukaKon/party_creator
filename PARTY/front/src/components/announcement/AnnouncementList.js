@@ -5,15 +5,9 @@ import { AnnouncementItem } from "./AnnouncementItem";
 import { Box, Grid, Typography } from "@mui/material";
 import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
 
-export const AnnouncementList = () => {
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcements
-  );
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchAnnouncements({ main_page: true }))
-  }, []);
+export const AnnouncementList = (props) => {
+    const { loading, entities, error } = props
 
   let content;
   if (loading) {
