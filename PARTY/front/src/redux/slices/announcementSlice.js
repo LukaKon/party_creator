@@ -23,6 +23,10 @@ export const fetchAnnouncements = createAsyncThunk(
                 const response = await axiosInstance.get("/api/announcements/?category=" + data.category)
                 return response.data
             }
+            else if (data.search) {
+                const response = await axiosInstance.get("/api/announcements/?search=" + data.search)
+                return response.data
+            }
             // }else{
             //     const response = await axiosInstance.get("/api/announcements/");
             //     return response.data;

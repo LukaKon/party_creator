@@ -1,6 +1,7 @@
 """
 Views for announcements APIs.
 """
+from django.db.models import Q
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -121,6 +122,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """ Define custom queryset. """
         main_page = self.request.query_params.get('main_page')
         categories = self.request.query_params.get('category')
+        search = self.request.query_params.get('search')
         # amount = self.request.query_params.get('amount')
         queryset = self.queryset
 
@@ -131,6 +133,10 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category__uuid__in=categories_uuid)
         # if amount:
             # queryset = queryset[:int(amount)]
+        if search:
+            queryset = queryset.filter(
+                Q(description__icontains=search) | Q(title__icontains=search)
+            )
 
         return queryset
 
