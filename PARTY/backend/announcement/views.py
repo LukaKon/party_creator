@@ -123,6 +123,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         main_page = self.request.query_params.get('main_page')
         categories = self.request.query_params.get('category')
         search = self.request.query_params.get('search')
+        submit = self.request.query_params.get('submit')
         # amount = self.request.query_params.get('amount')
         queryset = self.queryset
 
@@ -137,6 +138,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(
                 Q(description__icontains=search) | Q(title__icontains=search)
             )
+            if submit == 'false':
+                queryset = queryset[:3]
 
         return queryset
 
