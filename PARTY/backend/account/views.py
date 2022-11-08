@@ -1,17 +1,12 @@
 """
 Views for the user API.
 """
-from account.models import User
-from account.serializers import (
-    MyTokenObtainPairSerializer,
-    RegisterSerializer,
-    UserSerializer,
-    ChangePasswordSerializer,
-)
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password, get_password_validators
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
+
 from rest_framework import status, exceptions
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -22,9 +17,16 @@ from rest_framework_simplejwt.token_blacklist.models import (
     OutstandingToken,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, api_settings, TokenViewBase
+
 import back.settings as settings
 
-
+from account.models import User
+from account.serializers import (
+    MyTokenObtainPairSerializer,
+    RegisterSerializer,
+    UserSerializer,
+    ChangePasswordSerializer,
+)
 class LoginView(TokenObtainPairView):
     """Create a new auth token for user."""
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Grid,
   ImageList,
   ImageListItem,
 } from '@mui/material'
@@ -26,7 +27,7 @@ export const SelectImages = (props) => {
   }
 
   return (
-    <>
+    <Grid>
       <input
         type='file'
         multiple
@@ -44,9 +45,8 @@ export const SelectImages = (props) => {
         </label>
       </div>
       {images}
-    </>
+    </Grid>
   )
-
 }
 
 const UploadedImageList = ({ images }) => {

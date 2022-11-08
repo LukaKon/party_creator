@@ -2,7 +2,7 @@ with import <nixpkgs> { };
 let
   name = "Party Wizard";
   pythonEnv = python3.withPackages (ps: [
-    #   # ps.django_4
+    # ps.django_4
     # ps.djangorestframework
     # ps.django-cors-headers
     # ps.djangorestframework-simplejwt
@@ -10,6 +10,7 @@ let
     # ps.django-filter
 
     ps.bpython
+    ps.autopep8
     # ps.black
   ]);
 
