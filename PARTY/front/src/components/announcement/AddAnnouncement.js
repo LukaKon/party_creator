@@ -266,11 +266,22 @@ const SelectImages = () => {
     }
   }
 
+  const deleteImage = (image) => {
+    console.log('img: ', image)
+    const filteredImages = selectedImages.filter(img => {
+      console.log(image, img)
+      return image !== img
+    })
+    setSelectedImages(filteredImages)
+    console.log('images list: ', selectedImages)
+    console.log('images filtered: ', filteredImages)
+  }
+  
   let images
   if (selectedImages) {
     images = (
       <Grid>
-        <UploadedImageList images={selectedImages} />
+        <UploadedImageList images={selectedImages} deleteImage={deleteImage} />
       </Grid>)
   } else {
     images = <Grid>Dodaj zdjęcia :)</Grid>
@@ -285,40 +296,40 @@ const SelectImages = () => {
         accept="image/jpeg,image/png"
         onChange={imageHandleChange}
       />
+    <Grid>
       {images}
+</Grid>
     </Grid>
   )
 }
 
-const UploadedImageList = ({ images }) => {
-  const [imagesList, setImagesList] = useState(images)
+const UploadedImageList = ({ images, deleteImage }) => {
 
-  const handleRemoveImage = e => {
-    // FIXIT: remove images but can't add new
-
-    console.log(`Image ${e.target.name} deleted.`)
-    // e.preventDefault()
-    const filteredImages = imagesList.filter(img => {
-      return img !== e.target.name
-    })
-    setImagesList(filteredImages)
+  const removeImageFromList = (e) => {
+    if (typeof deleteImage === 'function') {
+      deleteImage(e.target.name)
+    } else {
+      console.log('"deleteImage" not a function"')
+    }
   }
 
   return (
-    <ImageList sx={{ width: 400, height: 150 }} cols={3} rowHeight={100}>
-      {imagesList.map((image, index) => (
-        <Grid key={index}>
-          <ImageListItem onClick={handleRemoveImage}>
-            <img
-              src={image}
-              // srcSet={}
-              name={image}
-              alt={image}
-              loading="lazy"
-            />
-          </ImageListItem>
-        </Grid>
-      ))}
-    </ImageList>
+    <Grid>
+      <ImageList sx={{ width: 400, height: 150 }} cols={3} rowHeight={100}>
+        {images.map((image, index) => (
+          <Grid key={index}>
+            <ImageListItem onClick={removeImageFromList}>
+              <img
+                src={image}
+                // srcSet={}
+                name={image}
+                alt={image}
+                loading="lazy"
+              />
+            </ImageListItem>
+          </Grid>
+        ))}
+      </ImageList>
+    </Grid>
   )
 }
