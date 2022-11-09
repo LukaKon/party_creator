@@ -13,22 +13,34 @@ export const SearchBar = () => {
     const [searchOptions, setSearchOptions] = useState([])
 
     useEffect(()=>{
-        if(!loading && searchValue.length > 3){
+        if(!loading && searchValue.length > 2){
             setSearchOptions([])
             dispatch(searchAnnouncement({search: searchValue, submit: false}))
             announcementsFound.map(announcement=>setSearchOptions(oldState=>[...oldState, announcement.title]))
-        }},[searchValue])
+        }else{
+            setSearchOptions([])
+        }
+        },[searchValue])
 
     const {loading, announcementsFound, error} = useSelector(state => state.announcements);
 
     const setValue = (event) => {
-        setSearchValue(event.target.value)
+        if(event.target.value) {
+            setSearchValue(event.target.value)
+        }else{
+            setSearchValue('')
+        }
     }
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        dispatch(searchAnnouncement({search: searchValue, submit: true}))
-        navigate('/search')
+        if(searchValue.length > 3){
+            dispatch(searchAnnouncement({search: searchValue, submit: true}))
+            navigate('/search')
+        }else{
+            console.log('Fraza Wyszukiwania musi mieć więcej niz 3 znaki')
+        }
+
     }
 
     return (

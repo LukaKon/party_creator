@@ -7,7 +7,7 @@ export const SearchAnnouncement = () => {
     const {loading, announcementsFound, error} = useSelector(state => state.announcements);
     
     return(
-        <Grid>
+        <Grid sx={{padding: 1}}>
             <AnnouncementList loading={loading} entities={announcementsFound} error={error}/>
         </Grid>
     )
