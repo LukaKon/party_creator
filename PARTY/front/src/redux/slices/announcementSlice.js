@@ -105,8 +105,5 @@ const announcementSlice = createSlice({
 
 export const {
     addAnnouncement,
-    // announcementFetching,
-    // announcementFetched,
-    // announcementError,
 } = announcementSlice.actions;
 export const announcementReducer = announcementSlice.reducer;

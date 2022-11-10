@@ -22,10 +22,6 @@ import { fetchCategories } from "../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput"
 import { createAnnouncement } from "../../redux/slices/announcementSlice";
 
-// import { SelectCategory } from './SelectCategory'
-// import { SelectImages } from './SelectImages'
-
-
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -39,8 +35,7 @@ const MenuProps = {
   },
 }
 
-const getStyle = (category, selectedCategory, theme) => {
-  return {
+const getStyle = (category, selectedCategory, theme) => { return {
     fontWeight:
       selectedCategory.indexOf(category) === -1
         ? theme.typography.fontWeightRegular
@@ -51,8 +46,7 @@ const getStyle = (category, selectedCategory, theme) => {
 export const AddAnnouncement = () => {
 
   const {
-    value: enteredTitle,
-    isValid: enteredTitleIsValid,
+    value: enteredTitle, isValid: enteredTitleIsValid,
     hasError: titleInputHasError,
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
