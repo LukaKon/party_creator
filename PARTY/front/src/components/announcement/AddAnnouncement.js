@@ -70,14 +70,14 @@ export const AddAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput((value) => value.length > 0, []);
 
-  const {
-    value: selectedImages,
-    isValid: selectedImagesIsValid,
-    hasError: selectedImagesHasError,
-    valueChangeHandler: selectedImagesChangeHandler,
-    inputBlurHandler: selectedImagesBlurHandler,
-    reset: resetSelectedImages,
-  } = useInput((value) => value.includes("https://www"), "");
+  // const {
+  //   value: selectedImages,
+  //   isValid: selectedImagesIsValid,
+  //   hasError: selectedImagesHasError,
+  //   valueChangeHandler: selectedImagesChangeHandler,
+  //   inputBlurHandler: selectedImagesBlurHandler,
+  //   reset: resetSelectedImages,
+  // } = useInput((value) => value.includes(value=>value, ""));
 
   const {
     value: enteredMovieUrl,
@@ -87,6 +87,9 @@ export const AddAnnouncement = () => {
     inputBlurHandler: movieUrlBlurHandler,
     reset: resetMovieUrl,
   } = useInput((value) => value.includes("https://www"), "");
+
+  const [uploadedImages, setUploadedImages]=useState([])
+
 
   const theme = useTheme();
 
@@ -114,7 +117,7 @@ export const AddAnnouncement = () => {
       selectedCategoryIsValid,
       selectedCategory,
       "images: ",
-      "not yet",
+      uploadedImages,
       "movies: ",
       enteredMovieUrlValid,
       enteredMovieUrl
@@ -136,8 +139,8 @@ export const AddAnnouncement = () => {
       title: enteredTitle,
       description: enteredDescription,
       category: selectedCategory,
-      images: selectedImages,
-      movies: movies,
+      images: uploadedImages,
+      movies: movies && movies!=='',
     };
     console.log("data to sent: ", announcement_data);
     dispatch(createAnnouncement(announcement_data));
@@ -148,15 +151,10 @@ export const AddAnnouncement = () => {
     resetMovieUrl();
   };
 
-  const uploadedImages = (listOfImages) => {
-    // list of uploaded images
-    console.log("listOfImages: ", listOfImages);
-    selectedImages = listOfImages;
-  };
-
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
+
 
   let content;
   if (loading) {
@@ -243,7 +241,13 @@ export const AddAnnouncement = () => {
           </Grid>
 
           <Grid item>
-            <SelectImages uploadedImages={uploadedImages} />
+            <SelectImages
+              value={uploadedImages}
+              uploadedImages={setUploadedImages}
+            />
+            {false && (
+              <p style={{ color: "red" }}>FIXME!! Something wrong with images???</p>
+            )}
           </Grid>
 
           <Grid item>
@@ -286,35 +290,33 @@ const SelectImages = ({ uploadedImages }) => {
 
   const imageHandler = (e) => {
     if (typeof uploadedImages === "function") {
-      if (e.target.files) {
+      if (e.target.files[0]) {
+        // console.log('files: ', e.target.files)
         const fileArray = Array.from(e.target.files).map((file) =>
           URL.createObjectURL(file)
         );
         setSelectedImages(fileArray);
-        uploadedImages(selectedImages);
+        // console.log('selected img: ', fileArray)
+        // uploadedImages(selectedImages);
       }
     }
   };
 
-  // const imageHandleChange = (e) => {
-  //   if (e.target.files) {
-  //     const fileArray = Array.from(e.target.files).map((file) =>
-  //       URL.createObjectURL(file)
-  //     );
-  //     setSelectedImages(fileArray);
-  //   }
-  // };
-
   const deleteImage = (image) => {
-    console.log("img: ", image);
+    // console.log("img: ", image);
     const filteredImages = selectedImages.filter((img) => {
       console.log(image, img);
       return image !== img;
     });
     setSelectedImages(filteredImages);
-    console.log("images list: ", selectedImages);
-    console.log("images filtered: ", filteredImages);
+    // console.log("images list: ", selectedImages);
+    // console.log("images filtered: ", filteredImages);
   };
+
+  useEffect(()=>{
+    console.log('selectedImages in useEffect: ', selectedImages)
+    uploadedImages(selectedImages)
+  },[selectedImages])
 
   let images;
   if (selectedImages.length > 0) {
@@ -334,7 +336,6 @@ const SelectImages = ({ uploadedImages }) => {
         multiple
         id="file"
         accept="image/jpeg,image/png"
-        // onChange={imageHandleChange}
         onChange={imageHandler}
       />
       <Grid>{images}</Grid>

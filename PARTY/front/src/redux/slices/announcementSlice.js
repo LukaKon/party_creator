@@ -7,16 +7,17 @@ export const fetchAnnouncements = createAsyncThunk(
   async (data) => {
     try {
       if (data.main_page) {
-        const response = await axiosInstance.get(`/api/announcements/?main_page=${data.main_page}`)
-        return response.data
+        const response = await axiosInstance.get(
+          `/api/announcements/?main_page=${data.main_page}`
+        );
+        return response.data;
+      } else if (data.category) {
+        const response = await axiosInstance.get(
+          "/api/announcements/?category=" + data.category
+        );
+        return response.data;
       }
-      else if (data.category) {
-
-        const response = await axiosInstance.get("/api/announcements/?category=" + data.category)
-        return response.data
-      }
-    }
-    catch (err) {
+    } catch (err) {
       console.log("Fetch announcements error: ", err.message);
     }
   }
@@ -25,8 +26,13 @@ export const fetchAnnouncements = createAsyncThunk(
 export const createAnnouncement = createAsyncThunk(
   "announcements/createAnnouncement",
   async (data) => {
+    console.log('axios data: ', data)
     try {
-      await axiosInstance.post("api/announcements/", data);
+      await axiosInstance.post("api/announcements/", data, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
     } catch (err) {
       console.log("Sent announcement error: ", err.message);
     }
@@ -37,7 +43,7 @@ export const deleteAnnouncement = createAsyncThunk(
   "announcements/deleteAnnouncement",
   async (data) => {
     try {
-      await axiosInstance.delete("api/announcements/" + data.slug)
+      await axiosInstance.delete("api/announcements/" + data.slug);
     } catch (err) {
       console.log("Delete announcement error:", err.message);
     }
@@ -81,8 +87,8 @@ const announcementSlice = createSlice({
       })
       .addCase(deleteAnnouncement.fulfilled, (state, action) => {
         state.loading = false;
-        state.entities = state.entities.filter(element => {
-          return element !== action.payload.slug
+        state.entities = state.entities.filter((element) => {
+          return element !== action.payload.slug;
         });
       })
       .addCase(deleteAnnouncement.rejected, (state, action) => {
@@ -92,7 +98,5 @@ const announcementSlice = createSlice({
   },
 });
 
-export const {
-  addAnnouncement,
-} = announcementSlice.actions;
+export const { addAnnouncement } = announcementSlice.actions;
 export const announcementReducer = announcementSlice.reducer;

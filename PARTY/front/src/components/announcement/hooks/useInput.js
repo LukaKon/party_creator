@@ -8,6 +8,7 @@ export const useInput = (validateValue,initState) => {
 	const hasError = !valueIsValid && isTouched
 
 	const valueChangeHandler = e => {
+    console.log('useInput: e = ', e)
 		setEnteredValue(e.target.value)
 	}
 

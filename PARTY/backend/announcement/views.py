@@ -86,11 +86,6 @@ class MovieViewSet(viewsets.ModelViewSet):
                 OpenApiTypes.STR,
                 description='Comma separated list of categories uuid to filter'
             ),
-            # OpenApiParameter(
-                # 'amount',
-                # OpenApiTypes.INT,
-                # description='Amount of announcements'
-            # )
         ]
     )
 )
@@ -150,9 +145,10 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         user = get_user_model().objects .get(email=self.request.user)
         categories_uuid = self.request.data.get('category')
         movies_url = self.request.data.get('movies')
+        images = self.request.data.getlist('images[0]')
         # images = self.request.data.getlist('images[0]')
 
-        print('cat uuid: ',categories_uuid)
+        print('cat uuid: ', categories_uuid)
         # print('@@@ images:', images)
         categories = []
         if categories_uuid:
@@ -180,8 +176,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
                 #     is_main=is_main,
                 # )
         return Response(status=status.HTTP_201_CREATED)
-        
-        
+ 
+
 class FavouriteViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.FavouriteSerializer
     permission_classes = [IsAuthenticated, ]
