@@ -15,7 +15,6 @@ from drf_spectacular.utils import (
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 
 from rest_framework import status, viewsets
@@ -27,7 +26,6 @@ from rest_framework.parsers import (
 )
 from rest_framework.permissions import (
     AllowAny,
-    # IsAdminUser,
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
@@ -129,8 +127,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         if categories:
             categories_uuid = self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
-        # if amount:
-            # queryset = queryset[:int(amount)]
 
         return queryset
 
@@ -145,10 +141,10 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         user = get_user_model().objects .get(email=self.request.user)
         categories_uuid = self.request.data.get('category')
         movies_url = self.request.data.get('movies')
-        images = self.request.data.getlist('images[0]')
+        images = self.request.data.get('images')
         # images = self.request.data.getlist('images[0]')
 
-        print('cat uuid: ', categories_uuid)
+        # print('cat uuid: ', categories_uuid)
         # print('@@@ images:', images)
         categories = []
         if categories_uuid:
@@ -158,25 +154,25 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         announcement = serializer.save(user=user, category=categories)
 
-        # if movies_url:
-        #     for movie_url in movies_url:
-        #         models.Movie.objects.create(
-        #           movie_url=movie_url,
-        #           announcement=announcement,
-        #         )
+        if movies_url:
+            for movie_url in movies_url:
+                models.Movie.objects.create(
+                  movie_url=movie_url,
+                  announcement=announcement,
+                )
 
-        # if images:
-        #     for image in images:
+        if images:
+            for image in images:
+                img = image.get('image')
+                is_main = image.get('is_main')
+                models.Image.objects.create(
+                    announcement=announcement,
+                    image=img,
+                    is_main=is_main,
+                )
 
-                # img = image.get('image')
-                # is_main = image.get('is_main')
-                # models.Image.objects.create(
-                #     announcement=announcement,
-                #     image=img,
-                #     is_main=is_main,
-                # )
         return Response(status=status.HTTP_201_CREATED)
- 
+
 
 class FavouriteViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.FavouriteSerializer

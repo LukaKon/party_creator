@@ -26,11 +26,13 @@ export const fetchAnnouncements = createAsyncThunk(
 export const createAnnouncement = createAsyncThunk(
   "announcements/createAnnouncement",
   async (data) => {
-    console.log('axios data: ', data)
+    console.log("axios data: ", data);
     try {
       await axiosInstance.post("api/announcements/", data, {
-        headers: {
-          "content-type": "multipart/form-data",
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+
         },
       });
     } catch (err) {
