@@ -49,6 +49,7 @@ export const ProfileSettings = () => {
             imageToUpload: event.target.files[0],
             imageToShow: URL.createObjectURL(event.target.files[0])
         })
+        console.log("imageToUpload", image["imageToUpload"])
     }
 
     const handleInput = () => {
