@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  useDispatch,
-  useSelector,
-} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
-import { addFavourite, deleteFavourite } from "../../redux/slices/favouriteSlice";
-import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons"
-import { CreateUpdateDate } from './CreateUpdateDate'
+import {
+  addFavourite,
+  deleteFavourite,
+} from "../../redux/slices/favouriteSlice";
+import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
+import { CreateUpdateDate } from "./CreateUpdateDate";
 import {
   Box,
   Checkbox,
@@ -19,53 +19,58 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import { Link } from 'react-router-dom'
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import Favorite from '@mui/icons-material/Favorite';
+import { Link } from "react-router-dom";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
 import { fetchProfile } from "../../redux/slices/profileSlice";
 import { loged } from "../../utils/loged";
 
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
+  console.log("props in image details: ", props);
+  const style_is_main = { padding: 1, border: 3, borderColor: "lightgreen" };
+  const style_default = { padding: 1, border: 3, borderColor: "lightgrey" };
 
   return (
     <Link to={props.image} underline="none">
-      <ImageListItem key={props.uuid} >
+      <ImageListItem
+        key={props.uuid}
+        sx={props.is_main === true ? style_is_main : style_default}
+      >
         <img
           src={props.image}
-          // srcSet={}
           alt="description - make it dynamic"
           loading="lazy"
         />
       </ImageListItem>
     </Link>
-  )
-}
-
+  );
+};
 
 const CategoryItem = (props) => {
   return (
-    <Link key={props.uuid} to={'/categories/' + props.get_name} state={{ categoryUuid: props.uuid }} >
+    <Link
+      key={props.uuid}
+      to={"/categories/" + props.get_name}
+      state={{ categoryUuid: props.uuid }}
+    >
       <ListItem>
-        <ListItemText
-          primary={props.get_name}
-        />
+        <ListItemText primary={props.get_name} />
       </ListItem>
     </Link>
-  )
-}
-
+  );
+};
 
 const FavouriteButton = (props) => {
   const [checkInput, setCheckInput] = useState(() => {
-    props.favourites.map(favouriteAnn => {
+    props.favourites.map((favouriteAnn) => {
       if (favouriteAnn.user[0] === userID) {
-        return true
+        return true;
       }
-    })
-    return false
-  })
+    });
+    return false;
+  });
 
   useEffect(() => {
     dispatch(fetchProfile());
@@ -73,41 +78,46 @@ const FavouriteButton = (props) => {
 
   const userID = useSelector((state) => {
     if (loged) {
-      return state.profile.entities['id']
+      return state.profile.entities["id"];
     }
-    return null
-  })
+    return null;
+  });
 
   const dispatch = useDispatch();
 
   const addOrRemoveFavourite = (checkInput) => {
     if (checkInput) {
-      dispatch(deleteFavourite({ "announcement": props.announcementID }))
+      dispatch(deleteFavourite({ announcement: props.announcementID }));
 
-      setCheckInput(false)
+      setCheckInput(false);
     } else {
-      dispatch(addFavourite({ "user": [userID], "announcement": [props.announcementID] }))
-      setCheckInput(true)
+      dispatch(
+        addFavourite({ user: [userID], announcement: [props.announcementID] })
+      );
+      setCheckInput(true);
     }
-  }
+  };
 
-  let content
+  let content;
   if (loged) {
     content = (
-      <Checkbox icon={<FavoriteBorder />}
+      <Checkbox
+        icon={<FavoriteBorder />}
         checkedIcon={<Favorite />}
         defaultChecked={checkInput}
-        onClick={() => { addOrRemoveFavourite(checkInput) }} />
-    )
+        onClick={() => {
+          addOrRemoveFavourite(checkInput);
+        }}
+      />
+    );
   }
 
   return (
     <Grid item xs={12}>
       {content}
     </Grid>
-  )
-}
-
+  );
+};
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
@@ -121,28 +131,25 @@ export const AnnouncementDetails = () => {
     (state) => state.announcementDetails
   );
 
-  let content
+  let content;
 
   if (loading) {
-    content = <AnnouncementDetailsSkeleton />
+    content = <AnnouncementDetailsSkeleton />;
   } else {
     if (!entities) {
-      content = (<Typography variant="h3">No details!</Typography>)
+      content = <Typography variant="h3">No details!</Typography>;
     } else {
       content = (
         <Box sx={{ flexGrow: 1 }}>
-          <Grid
-            container
-            direction="column"
-            spacing={5}
-          >
+          <Grid container direction="column" spacing={5}>
             <Grid
-              item xs={6}
+              item
+              xs={6}
               rowSpacing={9}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item>
-                <Typography variant='h6'>Title: {entities.title}</Typography>
+                <Typography variant="h6">Title: {entities.title}</Typography>
               </Grid>
 
               <Grid item>
@@ -151,15 +158,23 @@ export const AnnouncementDetails = () => {
 
               <Grid item>
                 category/ies:
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                  {entities.category.map(cat => (
+                <List
+                  sx={{
+                    width: "100%",
+                    maxWidth: 360,
+                    bgcolor: "background.paper",
+                  }}
+                >
+                  {entities.category.map((cat) => (
                     <CategoryItem key={cat.uuid} {...cat} />
                   ))}
                 </List>
               </Grid>
 
               <Grid item>
-                <Typography variant="body1">Description: {entities.description}</Typography>
+                <Typography variant="body1">
+                  Description: {entities.description}
+                </Typography>
               </Grid>
             </Grid>
 
@@ -170,45 +185,46 @@ export const AnnouncementDetails = () => {
                 cols={3}
                 rowHeight={120}
               >
-                {entities.images.length > 0
-                  ? entities.images.map(img => (
+                {entities.images.length > 0 ? (
+                  entities.images.map((img) => (
                     <ImageItem key={img.uuid} {...img} />
                   ))
-                  : <Typography variant="body2" color="red">No images.</Typography>
-                }
+                ) : (
+                  <Typography variant="body2" color="red">
+                    No images.
+                  </Typography>
+                )}
               </ImageList>
             </Grid>
 
             <Grid item xs={6}>
               Movies:
-              {entities.movies.length > 0
-                ? <ul>
-                  {entities.movies.map(mov => (
+              {entities.movies.length > 0 ? (
+                <ul>
+                  {entities.movies.map((mov) => (
                     <li key={mov.uuid}>
-                      <a href={mov.movie_url} underline="hover" >
+                      <a href={mov.movie_url} underline="hover">
                         {mov.movie_url}
                       </a>
                     </li>
                   ))}
                 </ul>
-                : <Typography variant="body2" color="red">No movies.</Typography>
-              }
+              ) : (
+                <Typography variant="body2" color="red">
+                  No movies.
+                </Typography>
+              )}
             </Grid>
 
             <FavouriteButton
               announcementID={entities.id}
               favourites={entities.announcement_favourites}
             />
-
           </Grid>
         </Box>
-      )
+      );
     }
   }
 
-  return (
-    <Grid container>
-      {content}
-    </Grid>
-  );
-}
+  return <Grid container>{content}</Grid>;
+};

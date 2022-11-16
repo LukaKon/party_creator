@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "../../redux/slices/categorySlice";
@@ -90,7 +91,12 @@ export const AddAnnouncement = () => {
     reset: resetMovieUrl,
   } = useInput((value) => value.includes("https://www"), "");
 
-  const [uploadedImages, setUploadedImages] = useState([]);
+  const [listOfImages, setListOfImages] = useState([
+    {
+      image: "",
+      is_main: false,
+    },
+  ]);
 
   const theme = useTheme();
 
@@ -118,7 +124,7 @@ export const AddAnnouncement = () => {
       selectedCategoryIsValid,
       selectedCategory,
       "images: ",
-      uploadedImages,
+      listOfImages,
       "movies: ",
       enteredMovieUrlValid,
       enteredMovieUrl
@@ -140,8 +146,8 @@ export const AddAnnouncement = () => {
       title: enteredTitle,
       description: enteredDescription,
       category: selectedCategory,
-      images: uploadedImages,
-      movies: movies && movies !== "",
+      images: listOfImages,
+      movies: enteredMovieUrl,
     };
     console.log("data to sent: ", announcement_data);
     dispatch(createAnnouncement(announcement_data));
@@ -150,11 +156,24 @@ export const AddAnnouncement = () => {
     resetDescriptionInput();
     resetSelectedCategory();
     resetMovieUrl();
+    setListOfImages("");
   };
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
+
+  let listOfSelectedImages = <p>Dodaj zdjęcia do ogłoszenia.</p>;
+  if (listOfImages.length > 0) {
+    listOfSelectedImages = (
+      <Grid>
+        <UploadedImagesList
+          listOfSelectedImages={listOfImages}
+          updateListOfImages={setListOfImages}
+        />
+      </Grid>
+    );
+  }
 
   let content;
   if (loading) {
@@ -242,15 +261,12 @@ export const AddAnnouncement = () => {
 
           <Grid item>
             <SelectImages
-              value={uploadedImages}
-              uploadedImages={setUploadedImages}
+              value={listOfImages}
+              addImagesToList={setListOfImages}
             />
-            {false && (
-              <p style={{ color: "red" }}>
-                FIXME!! Something wrong with images???
-              </p>
-            )}
           </Grid>
+
+          <Grid item>{listOfSelectedImages}</Grid>
 
           <Grid item>
             <TextField
@@ -258,7 +274,6 @@ export const AddAnnouncement = () => {
               id="movies"
               label="Movies"
               name="movies"
-              // autoFocus
               onChange={movieUrlChangeHandler}
               onBlur={movieUrlBlurHandler}
               value={enteredMovieUrl}
@@ -287,43 +302,26 @@ export const AddAnnouncement = () => {
   return <Grid>{content}</Grid>;
 };
 
-const SelectImages = ({ uploadedImages }) => {
+const SelectImages = (props) => {
+  const { addImagesToList } = props;
   const [selectedImages, setSelectedImages] = useState([]);
 
   const imageHandler = (e) => {
-    if (typeof uploadedImages === "function") {
+    if (typeof addImagesToList === "function") {
       if (e.target.files[0]) {
-        const fileArray = Array.from(e.target.files).map((file) =>
-          URL.createObjectURL(file)
-        );
+        const fileArray = Array.from(e.target.files).map((file) => ({
+          toShow: URL.createObjectURL(file),
+          image: file,
+          is_main: false,
+        }));
         setSelectedImages(fileArray);
       }
     }
   };
 
-  const deleteImage = (image) => {
-    const filteredImages = selectedImages.filter((img) => {
-      console.log(image, img);
-      return image !== img;
-    });
-    setSelectedImages(filteredImages);
-  };
-
   useEffect(() => {
-    console.log("selectedImages in useEffect: ", selectedImages);
-    uploadedImages(selectedImages);
+    addImagesToList(selectedImages);
   }, [selectedImages]);
-
-  let images;
-  if (selectedImages.length > 0) {
-    images = (
-      <Grid>
-        <UploadedImageList images={selectedImages} deleteImage={deleteImage} />
-      </Grid>
-    );
-  } else {
-    images = <Grid>Dodaj zdjęcia :)</Grid>;
-  }
 
   return (
     <Grid>
@@ -334,43 +332,48 @@ const SelectImages = ({ uploadedImages }) => {
         accept="image/jpeg,image/png"
         onChange={imageHandler}
       />
-      <Grid>{images}</Grid>
     </Grid>
   );
 };
 
-const UploadedImageList = ({ images, deleteImage }) => {
-  const removeImageFromList = (image) => {
-    if (typeof deleteImage === "function") {
-      deleteImage(image);
-    } else {
-      console.log('"deleteImage" not a function"');
-    }
+const UploadedImagesList = (props) => {
+  const { listOfSelectedImages, updateListOfImages } = props;
+
+  const deleteImage = (image) => {
+    const filteredImages = listOfSelectedImages.filter((img) => {
+      return image.toShow !== img.toShow;
+    });
+    updateListOfImages(filteredImages);
   };
 
   return (
     <Grid container spacing={3}>
       <ImageList sx={{ width: 500, height: 150 }} cols={3} rowHeight={100}>
-        {images.map((image, index) => (
+        {listOfSelectedImages.map((image, index) => (
           <Grid container item direction="row" key={index}>
             <Grid item xs={8}>
               <ImageListItem
                 sx={{ width: 100, height: 100, objectFit: "contain" }}
               >
                 <img
-                  src={image}
+                  src={image.toShow}
                   // srcSet={}
-                  name={image}
-                  alt={image}
+                  name={image.toShow}
+                  alt={image.toShow}
+                  is_main={image.is_main.toString()}
                   loading="lazy"
                 />
               </ImageListItem>
             </Grid>
             <Grid item xs={4}>
-              <Button startIcon={<CheckBoxIcon />}></Button>
+              {image.is_main.toString() === "false" ? (
+                <Button startIcon={<Checkbox />}></Button>
+              ) : (
+                <Button startIcon={<CheckBoxIcon defaultChecked />}></Button>
+              )}
               <Button
                 startIcon={<DeleteForeverIcon />}
-                onClick={() => removeImageFromList(image)}
+                onClick={() => deleteImage(image)}
               ></Button>
             </Grid>
           </Grid>

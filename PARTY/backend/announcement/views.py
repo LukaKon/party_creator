@@ -146,6 +146,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         # print('cat uuid: ', categories_uuid)
         # print('@@@ images:', images)
+        print('list of images: ', images)
         categories = []
         if categories_uuid:
             for uuid in categories_uuid:
@@ -155,16 +156,16 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         announcement = serializer.save(user=user, category=categories)
 
         if movies_url:
-            for movie_url in movies_url:
-                models.Movie.objects.create(
-                  movie_url=movie_url,
-                  announcement=announcement,
-                )
+            # for movie_url in movies_url:
+            models.Movie.objects.create(
+              movie_url=movies_url,
+              announcement=announcement,
+            )
 
         if images:
             for image in images:
                 img = image.get('image')
-                is_main = image.get('is_main')
+                is_main = image.get("is_main")
                 models.Image.objects.create(
                     announcement=announcement,
                     image=img,

@@ -28,13 +28,19 @@ export const createAnnouncement = createAsyncThunk(
   async (data) => {
     console.log("axios data: ", data);
     try {
-      await axiosInstance.post("api/announcements/", data, {
-        headers: { 
-          "Content-Type": "multipart/form-data",
-          "Content-Type": "application/json",
-
-        },
-      });
+      await axiosInstance.post(
+        "api/announcements/",
+        data
+        // , {
+        // headers: {
+        // "Content-Type": "multipart/form-data",
+        // "Content-Type": "application/json",
+        // "Accept": 'image/jpeg',
+        // 'Accept': 'image/png',
+        // 'Accept': 'application/json',
+        // },
+        // }
+      );
     } catch (err) {
       console.log("Sent announcement error: ", err.message);
     }
