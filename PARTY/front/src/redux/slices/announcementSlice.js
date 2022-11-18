@@ -6,29 +6,18 @@ export const fetchAnnouncements = createAsyncThunk(
     "announcements/fetchAnnouncements",
     async (data) => {
         try {
-            // console.log('dejta', data)
             if (data.main_page){
                 const response = await axiosInstance.get(`/api/announcements/?main_page=${data.main_page}`)
                 return response.data
             }
-            // if(data.amount && data.category){
-            //     const response = await axiosInstance.get("/api/announcements/?category="+ data.category + "&amount=" + data.amount)
-            //     return response.data;
-            // }else if (data.amount){
-            //     const response = await axiosInstance.get("/api/announcements/?amount=" + data.amount)
-            //     return response.data;
-            // }
             else if (data.category) {
-
                 const response = await axiosInstance.get("/api/announcements/?category=" + data.category)
                 return response.data
             }
-            // }else{
-            //     const response = await axiosInstance.get("/api/announcements/");
-            //     return response.data;
             }
          catch (err) {
             console.log("Fetch announcements error: ", err.message);
+            return err
         }
     }
 );
@@ -37,9 +26,11 @@ export const createAnnouncement = createAsyncThunk(
     "announcements/createAnnouncement",
     async (data) => {
         try {
-            await axiosInstance.post("api/announcements/", data);
+            const response = await axiosInstance.post("api/announcements/", data);
+            return response
         } catch (err) {
             console.log("Sent announcement error: ", err.message);
+            return err
         }
     }
 );
@@ -48,18 +39,36 @@ export const deleteAnnouncement = createAsyncThunk(
     "announcements/deleteAnnouncement",
     async(data) => {
         try {
-            await axiosInstance.delete("api/announcements/" + data.slug)
+            const response = await axiosInstance.delete("api/announcements/" + data.slug)
+            return response
         } catch (err) {
             console.log("Delete announcement error:", err.message);
+            return err
         }
     }
 );
+
+export const searchAnnouncement = createAsyncThunk(
+    "announcements/searchAnnouncement",
+    async(data)=>{
+        try{
+            const response = await axiosInstance.get(
+                "/api/announcements/?search=" + data.search + '&submit=' + data.submit + "&category="+ data.category
+            )
+            return response.data
+        }catch (err){
+            console.log("Search announcements error: ", err.message);
+            return err
+        }
+    }
+)
 
 const announcementSlice = createSlice({
     name: "announcements",
     initialState: {
         loading: true,
         entities: [],
+        announcementsFound: [],
         error: null,
     },
     reducers: {},
@@ -99,6 +108,18 @@ const announcementSlice = createSlice({
             .addCase(deleteAnnouncement.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
+            })
+            .addCase(searchAnnouncement.pending, (state)=> {
+                state.loading = true
+            })
+            .addCase(searchAnnouncement.fulfilled, (state, action)=> {
+                state.loading = false
+                console.log('action', action.payload)
+                state.announcementsFound = action.payload
+            })
+            .addCase(searchAnnouncement.rejected, (state, action)=> {
+                state.loading = false
+                state.error = action.payload
             });
     },
 });

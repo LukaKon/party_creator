@@ -23,6 +23,7 @@ import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from '../../Settings'
 import {loged} from "../utils/loged";
 import { v4 as uuidv4 } from 'uuid';
+import {SearchBar} from "./Search";
 
 const useStyles = makeStyles((theme) => ({
     test: {
@@ -200,8 +201,12 @@ export const Header = () => {
                     </Button>
                     <Box sx={{flexGrow: 1, display: "flex"}}>{menuIcon}</Box>
 
+                    <Box sx={{flexGrow: 1, display: "flex"}}><SearchBar/></Box>
+
                     <Box sx={{flexGrow: 0}}>
                         {profile_menu}
+
+
                         <Menu
                             sx={{mt: "45px"}}
                             id="menu-appbar"

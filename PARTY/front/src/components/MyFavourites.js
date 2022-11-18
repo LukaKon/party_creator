@@ -18,7 +18,7 @@ export const MyFavourites = () =>{
         entities.map(favourite=>{
             xyz.push(...favourite.announcement)
         })
-        content = <AnnouncementList key={entities.id} loading={loading} entities={xyz} error={error}/>
+        content = <AnnouncementList loading={loading} entities={xyz} error={error}/>
     }
 
 

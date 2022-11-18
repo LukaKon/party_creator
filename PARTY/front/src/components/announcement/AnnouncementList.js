@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
+import React from "react";
 import { AnnouncementItem } from "./AnnouncementItem";
 import { Box, Grid, Typography } from "@mui/material";
 import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
