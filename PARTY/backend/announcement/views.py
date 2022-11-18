@@ -124,16 +124,14 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         categories = self.request.query_params.get('category')
         search = self.request.query_params.get('search')
         submit = self.request.query_params.get('submit')
-        # amount = self.request.query_params.get('amount')
         queryset = self.queryset
 
         if main_page:
             return models.Announcement.objects.main_page_ann()
-        if categories:
+        if categories and categories != 'false':
             categories_uuid = self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
-        # if amount:
-            # queryset = queryset[:int(amount)]
+
         if search:
             queryset = queryset.filter(
                 Q(description__icontains=search) | Q(title__icontains=search)

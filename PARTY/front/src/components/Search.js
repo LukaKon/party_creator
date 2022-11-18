@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Grid} from "@mui/material";
+import {Box, Button, Grid, MenuItem, Select} from "@mui/material";
 import {TextField} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import {searchAnnouncement} from "../redux/slices/announcementSlice";
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 import { styled, alpha } from '@mui/material/styles';
+import {fetchCategories} from "../redux/slices/categorySlice";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -29,22 +30,34 @@ export const SearchBar = () => {
     const dispatch = useDispatch()
     const [searchValue, setSearchValue] = useState('')
     const [searchOptions, setSearchOptions] = useState([])
+    const [category, setCategory] = useState(false)
 
     useEffect(()=>{
-        dispatch(searchAnnouncement({search: searchValue, submit: false}))
+        dispatch(searchAnnouncement({search: searchValue, submit: false, category: category}))
+        dispatch(fetchCategories())
     },[])
 
+    const announcements = useSelector(state => state.announcements);
+    const categories = useSelector((state)=> state.categories)
+
     useEffect(()=>{
-        if(!loading && searchValue.length > 2){
+        if(!announcements.loading && searchValue.length > 2){
             setSearchOptions([])
-            dispatch(searchAnnouncement({search: searchValue, submit: false}))
-            announcementsFound.map(announcement=>setSearchOptions(oldState=>[...oldState, announcement.title]))
+            dispatch(searchAnnouncement({search: searchValue, submit: false, category: category}))
+            announcements.announcementsFound.map(announcement=>setSearchOptions(oldState=>[...oldState, announcement.title]))
         }else{
             setSearchOptions([])
         }
         },[searchValue])
 
-    const {loading, announcementsFound, error} = useSelector(state => state.announcements);
+    let menuCategories
+
+    if (!categories.loading){
+        menuCategories=(
+            categories.entities.map(category=>{
+                return <MenuItem key={category.uuid} value={category.uuid}>{category.get_name}</MenuItem>
+            })
+        )}
 
     const setValue = (event, value) => {
         if(value) {
@@ -54,10 +67,15 @@ export const SearchBar = () => {
         }
     }
 
+    const changeCategory = (event) => {
+        setCategory(event.target.value)
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault()
+        console.log(event)
         if(searchValue.length > 2){
-            dispatch(searchAnnouncement({search: searchValue, submit: true}))
+            dispatch(searchAnnouncement({search: searchValue, submit: true, category: category}))
             navigate('/search')
         }else{
             console.log('Fraza Wyszukiwania musi mieć więcej niz 3 znaki')
@@ -67,38 +85,55 @@ export const SearchBar = () => {
 
     return (
         <Grid>
-            <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            >
-                <Grid sx={{width:900}} container direction="column" item>
+                <Grid sx={{width:450}}
+                      container
+                      direction="row"
+                      justifyContent={"flex-start"}
+                >
 
-                <Grid item xs={6}>
+                    <Grid item xs={6}>
+                         <Box
+                            component="form"
+                            onSubmit={handleSubmit}
+                            noValidate
+                            >
+                                <Autocomplete
+                                  sx={{width:200}}
+                                  freeSolo
+                                  options={searchOptions}
+                                  renderInput={(params) => (
+                                       <Search>
+                                          <TextField {...params} placeholder={"Search"}/>
+                                       </Search>
+                                  )}
+                                  size={"small"}
+                                  value={searchValue}
+                                  onInputChange={(event, value)=> setValue(event, value)}
+                                  onChange={(event, value) => setValue(event, value)}
+                                />
+                         </Box>
+                    </Grid>
 
-                    <Autocomplete
-                  sx={{width:200}}
-                  freeSolo
-                  options={searchOptions}
-                  renderInput={(params) => (
-                       <Search>
-                          <TextField {...params} placeholder={"Search"}/>
-                       </Search>
-                  )}
-                  size={"small"}
-                  value={searchValue}
-                  onInputChange={(event, value)=> setValue(event, value)}
-                  onChange={(event, value) => setValue(event, value)}
-                />
+                    <Grid item xs={5}>
+                          <Select
+                              sx={{width:150, height:40}}
+                              id="category"
+                              defaultValue={'allCategories'}
+                              onChange={changeCategory}
+                          >
+                              <MenuItem value={"allCategories"}>All categories</MenuItem>
+                              {menuCategories}
+
+                          </Select>
+                    </Grid>
+
+                    <Grid item xs={1}>
+                        <Button sx={{width:50, height:40}} variant="contained" onClick={handleSubmit}>
+                          Search
+                        </Button>
+                    </Grid>
 
                 </Grid>
-
-                <Grid item xs={6}>
-                    TEST
-                </Grid>
-
-                </Grid>
-            </Box>
         </Grid>)
 
 }

@@ -53,7 +53,7 @@ export const searchAnnouncement = createAsyncThunk(
     async(data)=>{
         try{
             const response = await axiosInstance.get(
-                "/api/announcements/?search=" + data.search + '&submit=' + data.submit
+                "/api/announcements/?search=" + data.search + '&submit=' + data.submit + "&category="+ data.category
             )
             return response.data
         }catch (err){

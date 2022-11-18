@@ -10,7 +10,9 @@ export const Categories = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCategories())
+    if (entities.entities.length === 0){
+      dispatch(fetchCategories())
+    }
   }, [])
 
   const entities = useSelector((state) => state.categories);
@@ -22,7 +24,7 @@ export const Categories = () => {
   } else {
     categoriesView = (
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        {entities.categories.map(category => {
+        {entities.entities.map(category => {
           return (
             <Link key={category.uuid} to={category.get_name} state={{ categoryUuid: category.uuid }} >
               <ListItem>
