@@ -139,17 +139,19 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """Create a new announcement."""
         print("request: ", self.request.data)
         user = get_user_model().objects .get(email=self.request.user)
-        categories_uuid = self.request.data.get('category')
+        categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
-        images = self.request.data.get('images')
-        # images = self.request.data.getlist('images[0]')
+        images = self.request.data.getlist('images')
+        # # images = self.request.data.getlist('images[0]')
 
-        # print('cat uuid: ', categories_uuid)
-        # print('@@@ images:', images)
-        print('list of images: ', images)
+        # print('typ cat: ', type(categories_uuid))
+        #
+        # # print('cat uuid: ', categories_uuid)
+        # print('@@@ images:', self.request.FILES)
+        # print('list of images: ', self.request.FILES.getlist('images'))
         categories = []
         if categories_uuid:
-            for uuid in categories_uuid:
+            for uuid in categories_uuid[0].split(','):
                 cat = models.Category.objects.get(uuid=uuid)
                 categories.append(cat)
 
@@ -164,13 +166,14 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if images:
             for image in images:
-                img = image.get('image')
-                is_main = image.get("is_main")
-                models.Image.objects.create(
-                    announcement=announcement,
-                    image=img,
-                    is_main=is_main,
-                )
+                print('IMAGE: ', image)
+                # img = image.get('image')
+                # is_main = image.get("is_main")
+                # models.Image.objects.create(
+                #     announcement=announcement,
+                #     image=img,
+                #     is_main=is_main,
+                # )
 
         return Response(status=status.HTTP_201_CREATED)
 

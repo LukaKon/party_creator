@@ -150,7 +150,15 @@ export const AddAnnouncement = () => {
       movies: enteredMovieUrl,
     };
     console.log("data to sent: ", announcement_data);
-    dispatch(createAnnouncement(announcement_data));
+    const formData = new FormData()
+    // formData.append('announcement', announcement_data)
+    formData.append('title', enteredTitle)
+    formData.append('description', enteredDescription)
+    formData.append('category', selectedCategory)
+    formData.append('images', listOfImages)
+
+    dispatch(createAnnouncement(formData));
+    // dispatch(createAnnouncement(announcement_data));
 
     resetTitleInput();
     resetDescriptionInput();
