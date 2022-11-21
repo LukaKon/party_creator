@@ -113,22 +113,6 @@ export const AddAnnouncement = () => {
     enteredDescriptionValid &&
     selectedCategoryIsValid
   ) {
-    console.log(
-      "title: ",
-      enteredTitleIsValid,
-      enteredTitle,
-      "desc: ",
-      enteredDescriptionValid,
-      enteredDescription,
-      "cat: ",
-      selectedCategoryIsValid,
-      selectedCategory,
-      "images: ",
-      listOfImages,
-      "movies: ",
-      enteredMovieUrlValid,
-      enteredMovieUrl
-    );
     formIsValid = true;
   }
 
@@ -149,16 +133,29 @@ export const AddAnnouncement = () => {
       images: listOfImages,
       movies: enteredMovieUrl,
     };
-    console.log("data to sent: ", announcement_data);
-    const formData = new FormData()
-    // formData.append('announcement', announcement_data)
-    formData.append('title', enteredTitle)
-    formData.append('description', enteredDescription)
-    formData.append('category', selectedCategory)
-    formData.append('images', listOfImages)
+    console.log("collected data: ", announcement_data);
+
+    const formData = new FormData();
+    // necessary data
+    formData.append("title", enteredTitle);
+    formData.append("description", enteredDescription);
+    formData.append("category", selectedCategory);
+
+    // additional data
+
+    if (listOfImages) {
+      listOfImages.map((img, index) => {
+        formData.append(`images[${index}]['image']`, img.image);
+        formData.append(`images[${index}]['is_main']`, img.is_main);
+      });
+    }
+
+    if (enteredMovieUrl) {
+      formData.append("movies", enteredMovieUrl);
+    }
+    console.log("FORM DATA: ", formData);
 
     dispatch(createAnnouncement(formData));
-    // dispatch(createAnnouncement(announcement_data));
 
     resetTitleInput();
     resetDescriptionInput();

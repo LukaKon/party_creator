@@ -141,8 +141,16 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         user = get_user_model().objects .get(email=self.request.user)
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
-        images = self.request.data.getlist('images')
+        # images = self.request.data.getlist('images')
         # # images = self.request.data.getlist('images[0]')
+        images = []
+
+        for img in self.request.data:
+            print('###$$$###: ', img)
+            if 'images' in img:
+                images.append(img)
+
+        print('images: ', images)
 
         # print('typ cat: ', type(categories_uuid))
         #
@@ -166,7 +174,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if images:
             for image in images:
-                print('IMAGE: ', image)
+                print('IMAGE: ', type(image))
                 # img = image.get('image')
                 # is_main = image.get("is_main")
                 # models.Image.objects.create(
