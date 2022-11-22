@@ -17,6 +17,8 @@ import {fetchProfile, updateProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from "../../Settings";
 import {useNavigate} from "react-router-dom";
 
+import {ChangeEmail} from "./ChangeEmail";
+
 export const ProfileSettings = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
@@ -56,13 +58,12 @@ export const ProfileSettings = () => {
         if(image["imageToUpload"]) {
             const data = new FormData()
             data.append('image', image["imageToUpload"])
-            console.log('img', image["imageToUpload"])
             dispatch(updateProfile(data))
                 .then(response => {
                     dispatch(fetchProfile());
                 })
         }else{
-            console.log('Brak zdjęcia')
+            console.log('No photo')
         }
     }
 
@@ -70,7 +71,7 @@ export const ProfileSettings = () => {
         <Grid container padding={1}>
             <Grid item xs={12}>
                 <Typography variant="h7" component="div">
-                    Twój aktualny avatar, naciśnij aby zmienić:
+                    Your current avatar, press to change it
                 </Typography>
             </Grid>
 
@@ -80,14 +81,17 @@ export const ProfileSettings = () => {
                     <img width={100} height={100} src={image["imageToShow"]}/>
                     <Input onInput={(event) => upload(event)} accept="image/*" id="avatar" multiple type="file"/>
                 </label>
-                <Button variant="contained" onClick={() => handleInput()}>Zmień avatar</Button>
+                <Button disableRipple variant="contained" onClick={() => handleInput()}>Change Avatar</Button>
             </Grid>
 
             <Grid item xs={2}>
              <Typography>
-                <Button variant="contained" onClick={()=>handleButton('/changepassword')}>Zmień hasło</Button>
+                <Button variant="contained" onClick={()=>handleButton('/changepassword')}>Change password</Button>
             </Typography>
             </Grid>
+
+            <ChangeEmail/>
+
         </Grid>
     )
 }

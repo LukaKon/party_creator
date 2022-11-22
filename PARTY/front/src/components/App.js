@@ -18,6 +18,7 @@ import {ChangePassword} from "./ChangePassword";
 import {MyAnnouncements} from "./MyAnnouncements";
 import {MyFavourites} from "./MyFavourites";
 import {SearchAnnouncement} from "./SearchAnnouncement";
+import {ActivateAccount} from "./ActivateAccount";
 
 export const App = () => {
     const isAuthenticated = sessionStorage.getItem('access_token')
@@ -48,6 +49,7 @@ export const App = () => {
                     <Route path="categories/:categoryName" element={<AnnouncementsByCategory />} />
                     <Route path="resetpassword" element={<ResetPassword />} />
                     <Route path="resetpassword/:token" element={<ResetPasswordConfirm />} />
+                    <Route path="activate/:uid/:token" element={<ActivateAccount />} />
                     <Route path="search" element={<SearchAnnouncement />} />
 
                     {/*/!*Views only for logged users*!/*/}

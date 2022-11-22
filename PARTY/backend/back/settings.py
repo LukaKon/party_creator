@@ -11,12 +11,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-DEBUG = config("DEBUG", default=False, cast=bool)
-
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
-
 ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
+# ALLOWED_HOSTS = [
+#     "*"
+# ]
 
 # Application definition
 
@@ -197,3 +195,19 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
+
+# Emailing settings
+
+DEBUG = config("DEBUG", default=False, cast=bool)
+
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = os.getenv("EMAIL_ADDRESS")
+EMAIL_HOST_USER = os.getenv("EMAIL_ADDRESS")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 14400

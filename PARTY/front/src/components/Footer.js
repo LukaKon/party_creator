@@ -16,17 +16,17 @@ export const Footer = () => {
                         <Grid item xs={12} sm={6}>
                             <Box borderBottom={1}>
                                 <Typography variant="subtitle2">
-                                    Klienci
+                                    Customer
                                 </Typography>
                             </Box>
                             <Box>
                                 <Link color="inherit" href="/">
-                                    Jak to działa?
+                                    How it works?
                                 </Link>
                             </Box>
                             <Box>
                                 <Link color="inherit" href="/">
-                                    Kontakt
+                                    Contact
                                 </Link>
                             </Box>
                         </Grid>
@@ -34,17 +34,17 @@ export const Footer = () => {
                         <Grid item xs={12} sm={6}>
                             <Box borderBottom={1}>
                                 <Typography variant="subtitle2">
-                                    Partnerzy
+                                    Partners
                                 </Typography>
                             </Box>
                             <Box>
-                                <Link color="inherit" href="/">
-                                    Dodaj swoje ogłoszenie
+                                <Link color="inherit" href="/addannouncement">
+                                    Add your announcement
                                 </Link>
                             </Box>
                             <Box>
                                 <Link color="inherit" href="/">
-                                    Zostań naszym partnerem
+                                    Become our partner
                                 </Link>
                             </Box>
                         </Grid>

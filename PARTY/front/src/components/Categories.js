@@ -35,7 +35,7 @@ export const Categories = () => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={category.get_name}
-                  secondary={`Znajdź coś dla siebie w kategorii ${category.get_name}`} />
+                  secondary={`Find something for yourself in ${category.get_name}`} />
               </ListItem>
             </Link>
           )

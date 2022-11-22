@@ -10,10 +10,8 @@ import {
     TextField
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {axiosInstance} from "../axios";
 
-const theme = createTheme();
 
 export const ChangePassword = () => {
     const [status, setStatus] = useState(null)
@@ -32,7 +30,7 @@ export const ChangePassword = () => {
                 .put("account/changepassword/", data)
                 .then((response) => {
                     setStatus(
-                        <Alert severity="success">Hasło zostało pomyślnie zmienione.</Alert>
+                        <Alert severity="success">Password is changed!</Alert>
                     )
                     console.log(response)
                 })
@@ -49,75 +47,72 @@ export const ChangePassword = () => {
                         )
                     }
                 })
-            // window.location.replace('/signin');
         }else{
-            setStatus(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
+            setStatus(<Alert severity="warning">Passwords must be the same</Alert>)
         }
     }
 
     return(
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline/>
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+                >
+                <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
+                    <LockOutlinedIcon/>
+                </Avatar>
+                <Typography variant="h5">
+                    Change password
+                </Typography>
+                {status}
                 <Box
-                    sx={{
-                        marginTop: 8,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
+                    component="form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    sx={{mt: 1}}
+                >
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="old_password"
+                        label="Enter your old password"
+                        type="password"
+                        id="old_password"
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="new_password"
+                        label="Enter your new password"
+                        type="password"
+                        id="new_password"
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="new_password2"
+                        label="Confirm your password"
+                        type="password"
+                        id="new_password2"
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2}}
                     >
-                    <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
-                    <Typography variant="h5">
-                        Zmień hasło
-                    </Typography>
-                    {status}
-                    <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        noValidate
-                        sx={{mt: 1}}
-                    >
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="old_password"
-                            label="Tutaj wpisz stare hasło"
-                            type="password"
-                            id="old_password"
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="new_password"
-                            label="Tutaj wpisz nowe hasło"
-                            type="password"
-                            id="new_password"
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="new_password2"
-                            label="Tutaj powtórz nowe hasło"
-                            type="password"
-                            id="new_password2"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                        >
-                            Ustaw nowe hasło
-                        </Button>
-                    </Box>
+                        Set new password
+                    </Button>
                 </Box>
-            </Container>
-        </ThemeProvider>
+            </Box>
+        </Container>
     )
 }

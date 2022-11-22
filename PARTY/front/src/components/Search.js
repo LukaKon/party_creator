@@ -118,10 +118,10 @@ export const SearchBar = () => {
                           <Select
                               sx={{width:150, height:40}}
                               id="category"
-                              defaultValue={'allCategories'}
+                              defaultValue={false}
                               onChange={changeCategory}
                           >
-                              <MenuItem value={"allCategories"}>All categories</MenuItem>
+                              <MenuItem value={false}>All categories</MenuItem>
                               {menuCategories}
 
                           </Select>
