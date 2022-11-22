@@ -39,11 +39,11 @@ class Category(models.Model):
     ANIMATOR = 'AN'
 
     CATEGORY_NAME = (
-        (MUSIC, _("muzyka")),
-        (CATTERING, _("cattering")),
-        (PHOTOGRAPH, _("fotograf")),
-        (LOCAL, _("lokal")),
-        (ANIMATOR, _("animator")),
+        (MUSIC, _("Music")),
+        (CATTERING, _("Cattering")),
+        (PHOTOGRAPH, _("Photographer")),
+        (LOCAL, _("Place")),
+        (ANIMATOR, _("Animator")),
     )
 
     name = models.CharField(

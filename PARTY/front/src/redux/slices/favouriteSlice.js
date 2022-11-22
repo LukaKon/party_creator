@@ -9,6 +9,7 @@ export const addFavourite = createAsyncThunk(
             return response.data;
         } catch (error) {
             console.log("Adding favourite error: ", error.message);
+            throw error
         }
     });
 
@@ -20,6 +21,7 @@ export const getMyFavourites = createAsyncThunk(
             return response.data;
         } catch (error) {
             console.log("Getting favourite error: ", error.message);
+            throw error
         }
     });
 
@@ -31,6 +33,7 @@ export const deleteFavourite = createAsyncThunk(
             return response.data
         } catch(error){
             console.log("Deleting favourite error: ", error.message);
+            throw error
         }
     });
 

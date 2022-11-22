@@ -7,8 +7,9 @@ export const fetchCategories = createAsyncThunk(
         try {
             const response = await axiosInstance.get("/api/categories");
             return response.data;
-        } catch (err) {
-            console.log("Fetch categories error: ", err.message);
+        } catch (error) {
+            console.log("Fetch categories error: ", error.message);
+            throw error
         }
     }
 );

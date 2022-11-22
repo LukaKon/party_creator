@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {useParams} from "react-router-dom";
 import {
     Avatar,
     Button,
@@ -9,12 +10,11 @@ import {
     Container, Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
 
 import {axiosInstance} from "../axios";
-import {useParams} from "react-router-dom";
 
-const theme = createTheme();
+
+
 
 export const ResetPasswordConfirm = () => {
     const { token } = useParams();
@@ -33,8 +33,7 @@ export const ResetPasswordConfirm = () => {
                 .post("account/password_reset/confirm/", data)
                 .then((response) => {
                     setStatus(
-                        <Alert severity="success">Hasło zostało pomyślnie zmienione.</Alert>
-                        // window.location.replace('/signin');
+                        <Alert severity="success">Password is changed</Alert>
                     )
                 })
                 .catch((error) => {
@@ -51,64 +50,62 @@ export const ResetPasswordConfirm = () => {
                     }
                 })
         }else{
-            setStatus(<Alert severity="warning">Hasła muszą być takie same!</Alert>)
+            setStatus(<Alert severity="warning">Password must be the same!</Alert>)
         }
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline/>
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
+                    <LockOutlinedIcon/>
+                </Avatar>
+                <Typography variant="h5">
+                    Reset your password
+                </Typography>
+                {status}
                 <Box
-                    sx={{
-                        marginTop: 8,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
+                    component="form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    sx={{mt: 1}}
                 >
-                    <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
-                    <Typography variant="h5">
-                        Zresetuj hasło
-                    </Typography>
-                    {status}
-                    <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        noValidate
-                        sx={{mt: 1}}
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Enter new password"
+                        type="password"
+                        id="password"
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password2"
+                        label="Confirm the password"
+                        type="password"
+                        id="password2"
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2}}
                     >
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Podaj nowe hasło"
-                            type="password"
-                            id="password"
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password2"
-                            label="Potwierdź hasło"
-                            type="password"
-                            id="password2"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                        >
-                            Zresetuj hasło
-                        </Button>
-                    </Box>
+                        Reset your password
+                    </Button>
                 </Box>
-            </Container>
-        </ThemeProvider>
+            </Box>
+        </Container>
     );
 };

@@ -14,25 +14,30 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
-
-import {axiosInstance} from "../axios";
+import {useDispatch, useSelector} from "react-redux";
+import {createProfile} from "../redux/slices/profileSlice";
+import {Alert} from "@mui/material";
 
 const theme = createTheme();
 
 export const SignUp = () => {
     let navigate = useNavigate()
+    const dispatch = useDispatch()
+    let alert
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        axiosInstance.post(
-            'account/register/',
-            data
-        ).then((response) =>{
-            console.log(response.data)
-            navigate('/signin')
-        })
+        dispatch(createProfile(data))
     };
+
+    const {loading, created, error} = useSelector(state => state.profile)
+
+    if (!loading && created) {
+        alert = <Alert severity="success">Account created, you have to activate your account. Check your email.</Alert>
+    }else if(error){
+        alert = <Alert severity="warning">Something went wrong!</Alert>
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -52,6 +57,7 @@ export const SignUp = () => {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
+                    {alert}
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>

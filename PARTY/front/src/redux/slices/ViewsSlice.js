@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {axiosInstance} from "../../axios";
-import {favouriteReducer} from "./favouriteSlice";
 
 export const addView = createAsyncThunk(
     "views/add",
@@ -10,6 +9,7 @@ export const addView = createAsyncThunk(
             return response.data;
         } catch(error){
             console.log("Adding view error: ", error.message);
+            throw error
         }
     });
 

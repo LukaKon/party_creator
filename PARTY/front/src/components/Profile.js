@@ -18,12 +18,12 @@ export const Profile = () => {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography component="div" variant="h4">
-                        Twoje dane:
+                        Your data:
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography component="div" variant="p">
-                        Twój email : {entities.email}
+                        Your email : {entities.email}
                     </Typography>
                 </Grid>
             </Grid>

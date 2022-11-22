@@ -15,9 +15,9 @@ export const fetchAnnouncements = createAsyncThunk(
                 return response.data
             }
             }
-         catch (err) {
-            console.log("Fetch announcements error: ", err.message);
-            return err
+         catch (error) {
+            console.log("Fetch announcements error: ", error.message);
+            throw error
         }
     }
 );
@@ -28,9 +28,9 @@ export const createAnnouncement = createAsyncThunk(
         try {
             const response = await axiosInstance.post("api/announcements/", data);
             return response
-        } catch (err) {
-            console.log("Sent announcement error: ", err.message);
-            return err
+        } catch (error) {
+            console.log("Sent announcement error: ", error.message);
+            throw error
         }
     }
 );
@@ -41,9 +41,9 @@ export const deleteAnnouncement = createAsyncThunk(
         try {
             const response = await axiosInstance.delete("api/announcements/" + data.slug)
             return response
-        } catch (err) {
-            console.log("Delete announcement error:", err.message);
-            return err
+        } catch (error) {
+            console.log("Delete announcement error:", error.message);
+            throw error
         }
     }
 );
@@ -56,9 +56,9 @@ export const searchAnnouncement = createAsyncThunk(
                 "/api/announcements/?search=" + data.search + '&submit=' + data.submit + "&category="+ data.category
             )
             return response.data
-        }catch (err){
-            console.log("Search announcements error: ", err.message);
-            return err
+        }catch (error){
+            console.log("Search announcements error: ", error.message);
+            throw error
         }
     }
 )

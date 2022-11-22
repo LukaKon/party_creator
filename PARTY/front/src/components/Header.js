@@ -62,8 +62,8 @@ export const Header = () => {
         // "Button Name" : "URL"
         // "Test Button" : "/testSite"
 
-        "strona główna": '/',
-        'Kategorie' : '/categories'
+        "Main Page": '/',
+        'Categories' : '/categories'
     }
 
     const settings = {
@@ -77,16 +77,16 @@ export const Header = () => {
         showAvatar()
 
         // Set settings/options
-        pages["Dodaj ogłoszenie"] = "/addannouncement"
-        settings["Profil"] = "/profile"
-        settings["Moje ogłoszenia"] = "/myannouncements"
-        settings["Moje ulubione"] = "/myfavourites"
-        settings["Ustawienia konta"] = "/settings"
-        settings['Wyloguj sie'] = "signout"
+        pages["Add announcement"] = "/addannouncement"
+        settings["Profile"] = "/profile"
+        settings["My announcements"] = "/myannouncements"
+        settings["My favourites"] = "/myfavourites"
+        settings["Settings"] = "/settings"
+        settings['Log out'] = "signout"
 
         // Set profile menu
         profile_menu = (
-            <Tooltip title="Ustawienia">
+            <Tooltip title="Settings">
                 <IconButton
                     onClick={(e) => handleOpenUserMenu(e)}
                     sx={{p: 0}}
@@ -97,8 +97,8 @@ export const Header = () => {
         )
     } else {
         // Set settings/options
-        pages["Zarejestruj"] = "/signup"
-        pages["Zaloguj"] = "/signin"
+        pages["Sing up"] = "/signup"
+        pages["Sing in"] = "/signin"
     }
 
     let navigate = useNavigate();

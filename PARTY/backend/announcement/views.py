@@ -10,7 +10,7 @@ from drf_spectacular.utils import (
 )
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status, viewsets
@@ -133,9 +133,18 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category__uuid__in=categories_uuid)
 
         if search:
-            queryset = queryset.filter(
-                Q(description__icontains=search) | Q(title__icontains=search)
-            )
+            search_vector = SearchVector('title', weight='A') +\
+                            SearchVector('description', weight='B')
+            search_query = SearchQuery(search)
+
+            queryset = queryset.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query)
+            ).filter(search=search_query).order_by('-rank')
+
+            # queryset = queryset.filter(
+            #     Q(description__icontains=search) | Q(title__icontains=search)
+            # )
             if submit == 'false':
                 queryset = queryset[:3]
 
