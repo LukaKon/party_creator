@@ -28,7 +28,6 @@ import { loged } from "../../utils/loged";
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
-  console.log("props in image details: ", props);
   const style_is_main = { padding: 1, border: 3, borderColor: "lightgreen" };
   const style_default = { padding: 1, border: 3, borderColor: "lightgrey" };
 

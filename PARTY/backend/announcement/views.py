@@ -119,7 +119,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """ Define custom queryset. """
         main_page = self.request.query_params.get('main_page')
         categories = self.request.query_params.get('category')
-        # amount = self.request.query_params.get('amount')
         queryset = self.queryset
 
         if main_page:
@@ -141,22 +140,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         user = get_user_model().objects .get(email=self.request.user)
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
-        # images = self.request.data.getlist('images')
-        # # images = self.request.data.getlist('images[0]')
-        images = []
+        images = self.request.data.getlist('images')
 
-        for img in self.request.data:
-            print('###$$$###: ', img)
-            if 'images' in img:
-                images.append(img)
-
-        print('images: ', images)
-
-        # print('typ cat: ', type(categories_uuid))
-        #
-        # # print('cat uuid: ', categories_uuid)
-        # print('@@@ images:', self.request.FILES)
-        # print('list of images: ', self.request.FILES.getlist('images'))
         categories = []
         if categories_uuid:
             for uuid in categories_uuid[0].split(','):
@@ -165,23 +150,24 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         announcement = serializer.save(user=user, category=categories)
 
+        if images:
+            for image in images:
+                get_is_main = self.request.data.get(image.name)
+                is_main = False
+                if get_is_main == 'true':
+                    is_main = True
+
+                models.Image.objects.create(
+                    announcement=announcement,
+                    image=image,
+                    is_main=is_main,
+                )
+
         if movies_url:
-            # for movie_url in movies_url:
             models.Movie.objects.create(
               movie_url=movies_url,
               announcement=announcement,
             )
-
-        if images:
-            for image in images:
-                print('IMAGE: ', type(image))
-                # img = image.get('image')
-                # is_main = image.get("is_main")
-                # models.Image.objects.create(
-                #     announcement=announcement,
-                #     image=img,
-                #     is_main=is_main,
-                # )
 
         return Response(status=status.HTTP_201_CREATED)
 

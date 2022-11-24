@@ -145,8 +145,10 @@ export const AddAnnouncement = () => {
 
     if (listOfImages) {
       listOfImages.map((img, index) => {
-        formData.append(`images[${index}]['image']`, img.image);
-        formData.append(`images[${index}]['is_main']`, img.is_main);
+        // formData.append(`images[${index}]['image']`, img.image);
+        // formData.append(`images[${index}]['is_main']`, img.is_main);
+        formData.append('images',img.image)
+        formData.append(img.image.name,img.is_main)
       });
     }
 

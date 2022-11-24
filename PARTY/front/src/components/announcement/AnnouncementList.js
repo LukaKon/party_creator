@@ -12,7 +12,7 @@ export const AnnouncementList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAnnouncements({ main_page: true }))
+    dispatch(fetchAnnouncements({ main_page: true }));
   }, []);
 
   let content;
@@ -21,9 +21,7 @@ export const AnnouncementList = () => {
   } else {
     if (!entities) {
       content = (
-        <Typography variant="h3">
-          No announcement in data base.
-        </Typography>
+        <Typography variant="h3">No announcement in data base.</Typography>
       );
     } else {
       content = (
