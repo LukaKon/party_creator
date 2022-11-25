@@ -24,8 +24,8 @@ from rest_framework_simplejwt.token_blacklist.models import (
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 import back.settings as settings
-from .tokens import account_activation_token
-from back.utils.account import activate_email
+from .tokens import token_manage
+from back.utils.account import activate_account_send_email, change_email_send_email
 
 
 class LoginView(TokenObtainPairView):
@@ -46,7 +46,7 @@ class RegisterView(CreateAPIView):
         serializer.save(is_active=False)
         email = self.request.data.get("email")
         user = self.queryset.get(email=email)
-        activate_email(self.request, user, email)
+        activate_account_send_email(self.request, user, email)
 
 
 class LogoutAllView(APIView):
@@ -86,18 +86,35 @@ class UpdateUserAPI(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
+    def check_free_email(self, email):
+        if self.model.objects.filter(email=email).exists():
+            return False
+        else:
+            return True
+
+    def detect_type_of_change(self):
+        return self.request.data.get('change')
+
     def get_queryset(self):
         queryset = self.model.objects.get(email=self.request.user.email)
         return queryset
 
     def patch(self, request, *args, **kwargs):
+        change = self.detect_type_of_change()
         user = self.get_queryset()
-        password = request.data.get('password')
-        if user.check_password(password):
-            print(user.check_password(password))
-        else:
-            print(False)
 
+        if change == "email":
+            password = request.data.get('password')
+            new_email = request.data.get('newEmail')
+
+            if user.check_password(password) and self.check_free_email(new_email):
+                change_email_send_email(self.request, user, new_email)
+                # activate_email(self.request, user, email) # TODO adjust message + email + user etc
+                # user.email = new_email
+                # user.save()
+                return Response(self.serializer_class(user).data, status=status.HTTP_200_OK)
+
+            return Response(self.serializer_class(user).data, status=status.HTTP_304_NOT_MODIFIED)
 
         # user.image = request.data.get('image')
         # user.save()
@@ -153,10 +170,19 @@ class ChangePasswordView(UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ActivateAccount(APIView):
+class HandleEmailView(APIView):
     permission_classes = [AllowAny, ]
 
+    def user_activation(self, user):
+        user.is_active = True
+        user.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+
     def post(self, request):
+        change_or_activation = self.request.data.get("change_or_activation")
+        if change_or_activation == 'change_email':
+            new_email = request.data.get('new_email')
+
         uid = request.data.get('uid')
         token = request.data.get('token')
         try:
@@ -165,9 +191,13 @@ class ActivateAccount(APIView):
         except:
             user = None
 
-        if user is not None and account_activation_token.check_token(user, token):
-            user.is_active = True
-            user.save()
-            return Response(status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response({"message": "Invalid activation link"}, status=status.HTTP_401_UNAUTHORIZED)
+        if change_or_activation == 'change_email':
+            pass
+        elif change_or_activation == 'activation':
+            pass
+        # if user is not None and token_manage.check_token(user, token):
+        #     user.is_active = True
+        #     user.save()
+        #     return Response(status=status.HTTP_202_ACCEPTED)
+        # else:
+        #     return Response({"message": "Invalid activation link"}, status=status.HTTP_401_UNAUTHORIZED)

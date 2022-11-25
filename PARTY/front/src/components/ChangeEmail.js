@@ -9,6 +9,7 @@ export const ChangeEmail = () => {
     const handleForm = (event) => {
         event.preventDefault()
         let data = new FormData(event.target)
+        data.append("change", "email")
         dispatch(updateProfile(data))
         console.log(data)
         console.log(data.get("currentEmail"))

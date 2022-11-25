@@ -19,6 +19,7 @@ import {MyAnnouncements} from "./MyAnnouncements";
 import {MyFavourites} from "./MyFavourites";
 import {SearchAnnouncement} from "./SearchAnnouncement";
 import {ActivateAccount} from "./ActivateAccount";
+import {ActivateNewEmail} from "./ActivateNewEmail";
 
 export const App = () => {
     const isAuthenticated = sessionStorage.getItem('access_token')
@@ -41,15 +42,16 @@ export const App = () => {
                     <Route path="/" element={<HomePage/>}/>
                     <Route
                         path="announcement/:slug"
-                        element={<AnnouncementDetails />}
+                        element={<AnnouncementDetails/>}
                     />
 
-                    <Route path='*' element={ <NotFound /> }/>
+                    <Route path='*' element={ <NotFound/> }/>
                     <Route path="categories" element={<Categories/>}/>
-                    <Route path="categories/:categoryName" element={<AnnouncementsByCategory />} />
+                    <Route path="categories/:categoryName" element={<AnnouncementsByCategory/>} />
                     <Route path="resetpassword" element={<ResetPassword />} />
-                    <Route path="resetpassword/:token" element={<ResetPasswordConfirm />} />
-                    <Route path="activate/:uid/:token" element={<ActivateAccount />} />
+                    <Route path="resetpassword/:token" element={<ResetPasswordConfirm/>} />
+                    <Route path="activate/:uid/:token" element={<ActivateAccount />}/>
+                    <Route path="activate/:uid/:newEmail/:token" element={<ActivateNewEmail/>} />
                     <Route path="search" element={<SearchAnnouncement />} />
 
                     {/*/!*Views only for logged users*!/*/}

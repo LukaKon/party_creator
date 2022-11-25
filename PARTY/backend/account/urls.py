@@ -16,5 +16,5 @@ urlpatterns = [
     path("getprofile/", views.GetUserAPI.as_view(), name="get_user"),
     path("updateprofile/", views.UpdateUserAPI.as_view(), name="update_user"),
     path("changepassword/", views.ChangePasswordView.as_view(), name="change_password"),
-    path("activate/", views.ActivateAccount.as_view(), name="change_password"),
+    path("handleemail/", views.HandleEmailView.as_view(), name="handle_email"),
 ]

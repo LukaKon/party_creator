@@ -1,7 +1,6 @@
 import React from 'react'
 import {Alert, Button, Grid, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
-import {axiosInstance} from "../axios";
 import {useDispatch, useSelector} from "react-redux";
 import {activateProfile} from "../redux/slices/profileSlice";
 
