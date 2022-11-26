@@ -67,14 +67,14 @@ const profileSlice = createSlice({
         },
         reducers: {},
         extraReducers:{
-            [fetchProfile.pending && updateProfile.pending]: (state) =>{
+            [fetchProfile.pending || updateProfile.pending]: (state) =>{
                 state.loading = true
             },
-            [fetchProfile.fulfilled && updateProfile.fulfilled]: (state, action)=>{
+            [fetchProfile.fulfilled || updateProfile.fulfilled]: (state, action)=>{
                 state.loading = false
                 state.entities = action.payload
             },
-            [fetchProfile.rejected && updateProfile.rejected]: (state, action)=> {
+            [fetchProfile.rejected || updateProfile.rejected]: (state, action)=> {
                 state.error = action.payload
                 state.loading = false
             },

@@ -91,9 +91,7 @@ export const AddAnnouncement = () => {
 
   const theme = useTheme();
 
-  const { loading, categories, error } = useSelector(
-    (state) => state.categories
-  );
+  const { loading, entities, error } = useSelector((state) => state.categories);
 
   const dispatch = useDispatch();
 
@@ -133,9 +131,8 @@ export const AddAnnouncement = () => {
     formData.append("category", selectedCategory);
 
     // additional data
-
     if (listOfImages) {
-      listOfImages.map((img, index) => {
+      listOfImages.map((img) => {
         formData.append("images", img.image);
         formData.append(img.image.name, img.is_main);
       });
@@ -159,7 +156,7 @@ export const AddAnnouncement = () => {
     dispatch(fetchCategories());
   }, []);
 
-  let listOfSelectedImages = <Grid>Dodaj zdjęcia do ogłoszenia.</Grid>;
+  let listOfSelectedImages = <Grid>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {
     listOfSelectedImages = (
       <Grid>
@@ -180,7 +177,7 @@ export const AddAnnouncement = () => {
         <Grid container spacing={2}>
           <Grid item>
             <Typography component="h1" variant="h5">
-              Dodaj ogłoszenie:
+              Add announcement:
             </Typography>
           </Grid>
 
@@ -239,7 +236,7 @@ export const AddAnnouncement = () => {
                 input={<OutlinedInput label="Cat" />}
                 MenuProps={MenuProps}
               >
-                {categories.map((category) => (
+                {entities.map((category) => (
                   <MenuItem
                     key={category.uuid}
                     value={category.uuid}
