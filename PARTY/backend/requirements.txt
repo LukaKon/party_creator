@@ -1,3 +1,4 @@
+autopep8
 black==22.3.0
 blessings==1.7
 bpython==0.22.1

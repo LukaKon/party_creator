@@ -13,9 +13,7 @@ export const AnnouncementList = (props) => {
   } else {
     if (!entities) {
       content = (
-        <Typography variant="h3">
-          No announcement in data base.
-        </Typography>
+        <Typography variant="h3">No announcement in data base.</Typography>
       );
     } else {
       content = (

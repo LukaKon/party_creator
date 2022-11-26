@@ -1,7 +1,6 @@
 """
 Views for announcements APIs.
 """
-from django.db.models import Q
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -12,7 +11,6 @@ from drf_spectacular.utils import (
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.shortcuts import get_object_or_404
-
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -23,11 +21,12 @@ from rest_framework.parsers import (
 )
 from rest_framework.permissions import (
     AllowAny,
-
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
+
 from django.db.utils import IntegrityError
+
 
 from announcement import (
     models,
@@ -82,11 +81,6 @@ class MovieViewSet(viewsets.ModelViewSet):
                 OpenApiTypes.STR,
                 description='Comma separated list of categories uuid to filter'
             ),
-            # OpenApiParameter(
-                # 'amount',
-                # OpenApiTypes.INT,
-                # description='Amount of announcements'
-            # )
         ]
     )
 )
@@ -133,7 +127,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category__uuid__in=categories_uuid)
 
         if search:
-            search_vector = SearchVector('title', weight='A') +\
+            search_vector = SearchVector('title', weight='A') + \
                             SearchVector('description', weight='B')
             search_query = SearchQuery(search)
 
@@ -154,40 +148,43 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new announcement."""
-        user = get_user_model().objects .get(email=self.request.user) # TODO <-- o co chodzi z tą kropką
-        categories_uuid = self.request.data.getlist('category')
-        movies_url = self.request.data.getlist('movies')
-        images = self.request.data.getlist('images[0]')
 
-        # print("request: ", self.request.data)
-        print('@@@ images:', images)
+        user = get_user_model().objects .get(email=self.request.user) # TODO <-- o co chodzi z tą kropką
+
+        categories_uuid = self.request.data.getlist('category')
+        movies_url = self.request.data.get('movies')
+        images = self.request.data.getlist('images')
+
         categories = []
         if categories_uuid:
-            for uuid in categories_uuid:
+            for uuid in categories_uuid[0].split(','):
                 cat = models.Category.objects.get(uuid=uuid)
                 categories.append(cat)
 
         announcement = serializer.save(user=user, category=categories)
 
-        if movies_url:
-            for movie_url in movies_url:
-                models.Movie.objects.create(
-                  movie_url=movie_url,
-                  announcement=announcement,
+        if images:
+            for image in images:
+                get_is_main = self.request.data.get(image.name)
+                is_main = False
+                if get_is_main == 'true':
+                    is_main = True
+
+                models.Image.objects.create(
+                    announcement=announcement,
+                    image=image,
+                    is_main=is_main,
                 )
 
-        # if images:
-        #     for image in images:
+        if movies_url:
+            models.Movie.objects.create(
+              movie_url=movies_url,
+              announcement=announcement,
+            )
 
-                # img = image.get('image')
-                # is_main = image.get('is_main')
-                # models.Image.objects.create(
-                #     announcement=announcement,
-                #     image=img,
-                #     is_main=is_main,
-                # )
-        
-        
+        return Response(status=status.HTTP_201_CREATED)
+
+
 class FavouriteViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.FavouriteSerializer
     permission_classes = [IsAuthenticated, ]
@@ -224,4 +221,3 @@ class ViewsViewSet(viewsets.ModelViewSet):
             serializer.save(uuid_or_email=uuid_or_email)
         except IntegrityError:
             pass
-

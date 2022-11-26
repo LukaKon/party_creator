@@ -3,10 +3,7 @@ URLs mapping for announcement app.
 """
 
 from announcement import views
-from django.conf import settings
-from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from django.views.decorators.http import require_http_methods
 
 
 app_name = "announcement"
