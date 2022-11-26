@@ -142,9 +142,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
                 rank=SearchRank(search_vector, search_query)
             ).filter(search=search_query).order_by('-rank')
 
-            # queryset = queryset.filter(
-            #     Q(description__icontains=search) | Q(title__icontains=search)
-            # )
             if submit == 'false':
                 queryset = queryset[:3]
 

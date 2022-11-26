@@ -51,7 +51,7 @@ export const App = () => {
                     <Route path="resetpassword" element={<ResetPassword />} />
                     <Route path="resetpassword/:token" element={<ResetPasswordConfirm/>} />
                     <Route path="activate/:uid/:token" element={<ActivateAccount />}/>
-                    <Route path="activate/:uid/:newEmail/:token" element={<ActivateNewEmail/>} />
+                    <Route path="changeemail/:uid/:newEmail/:token" element={<ActivateNewEmail/>} />
                     <Route path="search" element={<SearchAnnouncement />} />
 
                     {/*/!*Views only for logged users*!/*/}

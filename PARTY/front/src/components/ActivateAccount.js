@@ -2,7 +2,7 @@ import React from 'react'
 import {Alert, Button, Grid, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {activateProfile} from "../redux/slices/profileSlice";
+import {handleEmail} from "../redux/slices/profileSlice";
 
 
 export const ActivateAccount = () => {
@@ -14,7 +14,8 @@ export const ActivateAccount = () => {
         const data = new FormData
         data.append("uid", uid)
         data.append("token", token)
-        dispatch(activateProfile(data))
+        data.append('change_or_activation', 'activation')
+        dispatch(handleEmail(data))
     }
 
     const {loading, active, error} = useSelector(state=> state.profile)

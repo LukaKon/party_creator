@@ -109,16 +109,11 @@ class UpdateUserAPI(UpdateAPIView):
 
             if user.check_password(password) and self.check_free_email(new_email):
                 change_email_send_email(self.request, user, new_email)
-                # activate_email(self.request, user, email) # TODO adjust message + email + user etc
-                # user.email = new_email
-                # user.save()
                 return Response(self.serializer_class(user).data, status=status.HTTP_200_OK)
 
-            return Response(self.serializer_class(user).data, status=status.HTTP_304_NOT_MODIFIED)
+            return Response(self.serializer_class(user).data, status=status.HTTP_401_UNAUTHORIZED)
 
-        # user.image = request.data.get('image')
-        # user.save()
-        return Response({})  # to make something with it
+        return Response(self.serializer_class(user).data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangePasswordView(UpdateAPIView):
@@ -173,16 +168,22 @@ class ChangePasswordView(UpdateAPIView):
 class HandleEmailView(APIView):
     permission_classes = [AllowAny, ]
 
+    def check_user_and_token(self, user, token):
+        if user is not None and token_manage.check_token(user, token):
+            return True
+        else:
+            return False
+
     def user_activation(self, user):
         user.is_active = True
         user.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
+
+    def change_email(self, user, new_email):
+        user.email = new_email
+        user.save()
 
     def post(self, request):
         change_or_activation = self.request.data.get("change_or_activation")
-        if change_or_activation == 'change_email':
-            new_email = request.data.get('new_email')
-
         uid = request.data.get('uid')
         token = request.data.get('token')
         try:
@@ -192,12 +193,18 @@ class HandleEmailView(APIView):
             user = None
 
         if change_or_activation == 'change_email':
-            pass
+            new_email_before_decode = request.data.get('new_email')
+            new_email = force_str(urlsafe_base64_decode(new_email_before_decode))
+            if self.check_user_and_token(user, token):
+                self.change_email(user, new_email)
+                return Response(status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         elif change_or_activation == 'activation':
-            pass
-        # if user is not None and token_manage.check_token(user, token):
-        #     user.is_active = True
-        #     user.save()
-        #     return Response(status=status.HTTP_202_ACCEPTED)
-        # else:
-        #     return Response({"message": "Invalid activation link"}, status=status.HTTP_401_UNAUTHORIZED)
+            if self.check_user_and_token(user, token):
+                self.user_activation(user)
+                return Response(status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+
