@@ -1,0 +1,7 @@
+{% autoescape off %}
+    Hi {{ user.username }},
+
+    Please click on the link below to change your email:
+
+    {{ domain }}/changeemail/{{ uid }}/{{ new_email }}/{{ token }}
+{% endautoescape %}

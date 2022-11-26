@@ -44,11 +44,11 @@ export const createProfile = createAsyncThunk(
     }
 )
 
-export const activateProfile = createAsyncThunk(
+export const handleEmail = createAsyncThunk(
     "profile/activate",
     async(data) => {
         try{
-            const response = await axiosInstance.post('account/activate/', data);
+            const response = await axiosInstance.post('account/handleemail/', data);
             return response.data;
         } catch (error){
             console.log("Activation problem: ", error.message);
@@ -78,15 +78,15 @@ const profileSlice = createSlice({
                 state.error = action.payload
                 state.loading = false
             },
-            [activateProfile.pending]: (state) => {
+            [handleEmail.pending]: (state) => {
                 state.loading = true
                 state.active = false
             },
-            [activateProfile.fulfilled]: (state) =>{
+            [handleEmail.fulfilled]: (state) =>{
                 state.loading = false
                 state.active = true
             },
-            [activateProfile.rejected]: (state, action) => {
+            [handleEmail.rejected]: (state, action) => {
                 state.loading = false
                 state.active = false
                 state.error = action.payload

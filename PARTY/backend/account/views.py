@@ -27,8 +27,8 @@ from rest_framework_simplejwt.token_blacklist.models import (
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 import back.settings as settings
-from .tokens import account_activation_token
-from back.utils.account import activate_email
+from .tokens import token_manage
+from back.utils.account import activate_account_send_email, change_email_send_email
 
 
 import back.settings as settings
@@ -58,7 +58,7 @@ class RegisterView(CreateAPIView):
         serializer.save(is_active=False)
         email = self.request.data.get("email")
         user = self.queryset.get(email=email)
-        activate_email(self.request, user, email)
+        activate_account_send_email(self.request, user, email)
 
 
 class LogoutAllView(APIView):
@@ -98,22 +98,34 @@ class UpdateUserAPI(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
+    def check_free_email(self, email):
+        if self.model.objects.filter(email=email).exists():
+            return False
+        else:
+            return True
+
+    def detect_type_of_change(self):
+        return self.request.data.get('change')
+
     def get_queryset(self):
         queryset = self.model.objects.get(email=self.request.user.email)
         return queryset
 
     def patch(self, request, *args, **kwargs):
+        change = self.detect_type_of_change()
         user = self.get_queryset()
-        password = request.data.get('password')
-        if user.check_password(password):
-            print(user.check_password(password))
-        else:
-            print(False)
 
+        if change == "email":
+            password = request.data.get('password')
+            new_email = request.data.get('newEmail')
 
-        # user.image = request.data.get('image')
-        # user.save()
-        return Response({})  # to make something with it
+            if user.check_password(password) and self.check_free_email(new_email):
+                change_email_send_email(self.request, user, new_email)
+                return Response(self.serializer_class(user).data, status=status.HTTP_200_OK)
+
+            return Response(self.serializer_class(user).data, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response(self.serializer_class(user).data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangePasswordView(UpdateAPIView):
@@ -165,10 +177,25 @@ class ChangePasswordView(UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ActivateAccount(APIView):
+class HandleEmailView(APIView):
     permission_classes = [AllowAny, ]
 
+    def check_user_and_token(self, user, token):
+        if user is not None and token_manage.check_token(user, token):
+            return True
+        else:
+            return False
+
+    def user_activation(self, user):
+        user.is_active = True
+        user.save()
+
+    def change_email(self, user, new_email):
+        user.email = new_email
+        user.save()
+
     def post(self, request):
+        change_or_activation = self.request.data.get("change_or_activation")
         uid = request.data.get('uid')
         token = request.data.get('token')
         try:
@@ -177,9 +204,19 @@ class ActivateAccount(APIView):
         except:
             user = None
 
-        if user is not None and account_activation_token.check_token(user, token):
-            user.is_active = True
-            user.save()
-            return Response(status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response({"message": "Invalid activation link"}, status=status.HTTP_401_UNAUTHORIZED)
+        if change_or_activation == 'change_email':
+            new_email_before_decode = request.data.get('new_email')
+            new_email = force_str(urlsafe_base64_decode(new_email_before_decode))
+            if self.check_user_and_token(user, token):
+                self.change_email(user, new_email)
+                return Response(status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        elif change_or_activation == 'activation':
+            if self.check_user_and_token(user, token):
+                self.user_activation(user)
+                return Response(status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+

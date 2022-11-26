@@ -1,19 +1,53 @@
-import React from "react"
-import {Box, Button, TextField, Grid} from "@mui/material";
+import React, {useState} from "react"
+import {Box, Button, TextField, Grid, Alert} from "@mui/material";
 import {updateProfile} from "../redux/slices/profileSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export const ChangeEmail = () => {
     const dispatch = useDispatch()
+    const [alert, setAlert] = useState()
+
+    const email = useSelector(state=>state.profile.entities.email)
+    let textfieldCurrentEmail
+
+    if(email){
+        textfieldCurrentEmail =(<TextField
+                        required
+                        disabled
+                        name="currentEmail"
+                        label="Your current email"
+                        defaultValue={email}
+                    />)
+    }
+
+    const checkEmail = (newEmail, newEmail2) => {
+        return newEmail === newEmail2;
+    }
 
     const handleForm = (event) => {
         event.preventDefault()
         let data = new FormData(event.target)
-        dispatch(updateProfile(data))
-        console.log(data)
-        console.log(data.get("currentEmail"))
-        console.log(data.get("newEmail"))
-        console.log(data.get("newEmail2"))
+        data.append("change", "email")
+
+        const newEmail = data.get("newEmail")
+        const newEmail2 = data.get("newEmail2")
+        console.log(checkEmail(newEmail, newEmail2))
+        if(checkEmail(newEmail, newEmail2)){
+            dispatch(updateProfile(data))
+
+            //     .then(response => {
+            //         setAlert(<Alert severity="success">Check your new email, you have to confirm the email</Alert>)
+            //         console.log('success', response)
+            // })
+            //     .catch(error => {
+            //         setAlert(<Alert severity="warning">Something went wrong, check fields.</Alert>)
+            //         console.log('error', error)
+            //
+            // })
+        }else{
+            setAlert(<Alert severity="warning">Something went wrong, check fields.</Alert>)
+        }
+
     }
 
     return (
@@ -25,12 +59,10 @@ export const ChangeEmail = () => {
         >
             <Grid container spacing={1}>
                 <Grid item xs={12}>
-                    <TextField
-                        required
-                        name="currentEmail"
-                        label="Your current email"
-                        defaultValue='bartek@gmail.com'
-                    />
+                    {alert}
+                </Grid>
+                <Grid item xs={12}>
+                    {textfieldCurrentEmail}
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
