@@ -2,11 +2,18 @@
 Views for the user API.
 """
 
+from django.shortcuts import get_object_or_404
+from account.serializers import (
+    MyTokenObtainPairSerializer,
+    RegisterSerializer,
+    UserSerializer,
+    ChangePasswordSerializer,
+)
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password, get_password_validators
 from django.core.exceptions import ValidationError
-from django.shortcuts import get_object_or_404
-
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 from rest_framework import status, exceptions
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -16,7 +23,13 @@ from rest_framework_simplejwt.token_blacklist.models import (
     BlacklistedToken,
     OutstandingToken,
 )
-from rest_framework_simplejwt.views import TokenObtainPairView, api_settings, TokenViewBase
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+import back.settings as settings
+from .tokens import account_activation_token
+from back.utils.account import activate_email
+
 
 import back.settings as settings
 
@@ -40,6 +53,12 @@ class RegisterView(CreateAPIView):
     queryset = get_user_model().objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(is_active=False)
+        email = self.request.data.get("email")
+        user = self.queryset.get(email=email)
+        activate_email(self.request, user, email)
 
 
 class LogoutAllView(APIView):
@@ -85,10 +104,16 @@ class UpdateUserAPI(UpdateAPIView):
 
     def patch(self, request, *args, **kwargs):
         user = self.get_queryset()
-        print(request.data.get('image'))
-        user.image = request.data.get('image')
-        user.save()
-        return Response({})
+        password = request.data.get('password')
+        if user.check_password(password):
+            print(user.check_password(password))
+        else:
+            print(False)
+
+
+        # user.image = request.data.get('image')
+        # user.save()
+        return Response({})  # to make something with it
 
 
 class ChangePasswordView(UpdateAPIView):
@@ -139,3 +164,22 @@ class ChangePasswordView(UpdateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ActivateAccount(APIView):
+    permission_classes = [AllowAny, ]
+
+    def post(self, request):
+        uid = request.data.get('uid')
+        token = request.data.get('token')
+        try:
+            user_id = force_str(urlsafe_base64_decode(uid))
+            user = get_user_model().objects.get(id=user_id)
+        except:
+            user = None
+
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response({"message": "Invalid activation link"}, status=status.HTTP_401_UNAUTHORIZED)

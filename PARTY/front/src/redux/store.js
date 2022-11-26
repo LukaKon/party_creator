@@ -4,7 +4,8 @@ import { announcementReducer } from "./slices/announcementSlice";
 import { announcementDetailsReducer } from "./slices/announcementDetailSlice";
 import { categoryReducer } from "./slices/categorySlice";
 import { profileReducer } from "./slices/profileSlice";
-import {favouriteReducer} from "./slices/favouriteSlice";
+import { favouriteReducer } from "./slices/favouriteSlice";
+import { viewsReducer } from "./slices/ViewsSlice";
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
         categories: categoryReducer,
         profile: profileReducer,
         favourite: favouriteReducer,
+        views: viewsReducer,
         // event:eventReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

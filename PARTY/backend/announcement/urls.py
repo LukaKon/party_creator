@@ -39,5 +39,10 @@ router.register(
     viewset=views.MovieViewSet,
     basename='movie_url',
 )
+router.register(
+    prefix="views",
+    viewset=views.ViewsViewSet,
+    basename='views',
+)
 
 urlpatterns = router.urls

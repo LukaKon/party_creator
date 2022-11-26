@@ -22,7 +22,7 @@ export const AnnouncementsByCategory = () => {
     viewAnnouncements = (<AnnouncementSkeleton />)
   } else if (announcements.entities.length > 0 && announcements.loading === false) {
     viewAnnouncements = (
-      <Grid margin={1}>
+      <Grid marginTop={1}>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}

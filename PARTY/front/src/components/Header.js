@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {
     AppBar,
@@ -21,9 +21,9 @@ import {removeToken} from "../utils";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile} from "../redux/slices/profileSlice";
 import {BACKEND_LOCALHOST} from '../../Settings'
-import {fetchCategories} from "../redux/slices/categorySlice";
 import {loged} from "../utils/loged";
-
+import { v4 as uuidv4 } from 'uuid';
+import {SearchBar} from "./Search";
 
 const useStyles = makeStyles((theme) => ({
     test: {
@@ -36,10 +36,14 @@ export const Header = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (loged){
-            dispatch(fetchProfile())
-        }
+        dispatch(fetchProfile())
     }, [image]);
+
+    useEffect(()=> {
+        if (!sessionStorage.getItem("uuid")){
+            sessionStorage.setItem('uuid', uuidv4())
+        }
+    })
 
     let image
     let menuIcon;
@@ -58,8 +62,8 @@ export const Header = () => {
         // "Button Name" : "URL"
         // "Test Button" : "/testSite"
 
-        "strona główna": '/',
-        'Kategorie' : '/categories'
+        "Main Page": '/',
+        'Categories' : '/categories'
     }
 
     const settings = {
@@ -73,15 +77,16 @@ export const Header = () => {
         showAvatar()
 
         // Set settings/options
-        pages["Dodaj ogłoszenie"] = "/addannouncement"
-        settings["Profil"] = "/profile"
-        settings["Moje ogłoszenia"] = "/myannouncements"
-        settings["Ustawienia konta"] = "/settings"
-        settings['Wyloguj sie'] = "signout"
+        pages["Add announcement"] = "/addannouncement"
+        settings["Profile"] = "/profile"
+        settings["My announcements"] = "/myannouncements"
+        settings["My favourites"] = "/myfavourites"
+        settings["Settings"] = "/settings"
+        settings['Log out'] = "signout"
 
         // Set profile menu
         profile_menu = (
-            <Tooltip title="Ustawienia">
+            <Tooltip title="Settings">
                 <IconButton
                     onClick={(e) => handleOpenUserMenu(e)}
                     sx={{p: 0}}
@@ -92,8 +97,8 @@ export const Header = () => {
         )
     } else {
         // Set settings/options
-        pages["Zarejestruj"] = "/signup"
-        pages["Zaloguj"] = "/signin"
+        pages["Sing up"] = "/signup"
+        pages["Sing in"] = "/signin"
     }
 
     let navigate = useNavigate();
@@ -196,8 +201,12 @@ export const Header = () => {
                     </Button>
                     <Box sx={{flexGrow: 1, display: "flex"}}>{menuIcon}</Box>
 
+                    <Box sx={{flexGrow: 1, display: "flex"}}><SearchBar/></Box>
+
                     <Box sx={{flexGrow: 0}}>
                         {profile_menu}
+
+
                         <Menu
                             sx={{mt: "45px"}}
                             id="menu-appbar"

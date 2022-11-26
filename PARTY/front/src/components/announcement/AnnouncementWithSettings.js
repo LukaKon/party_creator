@@ -16,6 +16,7 @@ import { BACKEND_LOCALHOST } from "../../../Settings";
 import { deleteAnnouncement } from "../../redux/slices/announcementSlice";
 
 export const AnnouncementWithSettings = (props) => {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleClick = () => {
@@ -77,7 +78,7 @@ export const AnnouncementWithSettings = (props) => {
                                     Osoby które dodały do ulubionych: {props.announcement_favourites.length}
                                 </Grid>
                                 <Grid item xs={6}>
-                                    Osoby które wyświetliło ogłoszenie: {props.displayed}
+                                    Osoby które wyświetliło ogłoszenie: {props.views.length}
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -8,5 +8,5 @@ class UserAccessMixin(UserPassesTestMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if not self.get_test_func()():
-            return HttpResponse("CZEGO TU SZUKASZ XDD")
+            return HttpResponse("Test")
         return super().dispatch(request, *args, **kwargs)

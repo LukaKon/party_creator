@@ -42,10 +42,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         trim_whitespace=False,
         style={"input_type": "password"},
     )
+    # is_active = serializers.BooleanField(
+    #     write_only=True,
+    #     required=True,
+    # )
 
     class Meta:
         model = get_user_model()
-        fields = ("email", "password", "password2")
+        fields = ("email", "password", "password2", "is_active")
         # password 'write_only' - security reason
         # extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
 
@@ -68,7 +72,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             validated_data["email"],
             validated_data["password"],
         )
-
+        user.is_active = validated_data['is_active']
+        user.save()
         return user
 
 

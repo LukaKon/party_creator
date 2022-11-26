@@ -1,26 +1,58 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, isRejectedWithValue} from "@reduxjs/toolkit";
 import {axiosInstance} from "../../axios";
+import {loged} from "../../utils/loged";
 
 export const fetchProfile = createAsyncThunk(
     "profile/getProfile",
     async (data) => {
-        try {
+        if(loged){
+            try {
             const response = await axiosInstance.post("account/getprofile/", data);
             return response.data;
-        } catch (err) {
-            console.log("Fetch profile error: ", err.message);
+            } catch (error) {
+                console.log("Fetch profile error: ", error.message);
+                throw error
+            }
         }
     }
 );
 
 export const updateProfile = createAsyncThunk(
-    "profile/updateProfile/",
+    "profile/updateProfile",
     async (data) => {
         try {
             const response = await axiosInstance.patch("account/updateprofile/", data);
             return response.data;
-        } catch (err) {
-            console.log("Fetch profile error: ", err.message);
+        } catch (error) {
+            console.log("Fetch profile error: ", error.message);
+            throw error
+        }
+    }
+);
+
+
+export const createProfile = createAsyncThunk(
+    "profile/create",
+    async(data) => {
+        try {
+            const response = await axiosInstance.post('account/register/', data);
+            return response.data;
+        }catch (error) {
+            console.log("Creating account error: ", error)
+            throw error
+        }
+    }
+)
+
+export const activateProfile = createAsyncThunk(
+    "profile/activate",
+    async(data) => {
+        try{
+            const response = await axiosInstance.post('account/activate/', data);
+            return response.data;
+        } catch (error){
+            console.log("Activation problem: ", error.message);
+            throw error
         }
     }
 );
@@ -35,28 +67,41 @@ const profileSlice = createSlice({
         },
         reducers: {},
         extraReducers:{
-            [fetchProfile.pending]: (state) =>{
+            [fetchProfile.pending && updateProfile.pending]: (state) =>{
                 state.loading = true
             },
-            [fetchProfile.fulfilled]: (state, action)=>{
+            [fetchProfile.fulfilled && updateProfile.fulfilled]: (state, action)=>{
                 state.loading = false
                 state.entities = action.payload
             },
-            [fetchProfile.rejected]: (state, action)=> {
+            [fetchProfile.rejected && updateProfile.rejected]: (state, action)=> {
                 state.error = action.payload
                 state.loading = false
             },
-            [updateProfile.pending]: (state) =>{
+            [activateProfile.pending]: (state) => {
+                state.loading = true
+                state.active = false
+            },
+            [activateProfile.fulfilled]: (state) =>{
+                state.loading = false
+                state.active = true
+            },
+            [activateProfile.rejected]: (state, action) => {
+                state.loading = false
+                state.active = false
+                state.error = action.payload
+            },
+            [createProfile.pending]: (state) => {
                 state.loading = true
             },
-            [updateProfile.fulfilled]: (state, action)=>{
+            [createProfile.fulfilled]: (state) => {
                 state.loading = false
-                state.entities = action.payload
+                state.created = true
             },
-            [updateProfile.rejected]: (state, action)=> {
-                state.error = action.payload
+            [createProfile.rejected]: (state, action) => {
                 state.loading = false
-            },
+                state.error = true
+            }
         }
     }
 )

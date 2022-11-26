@@ -2,7 +2,7 @@
 URL mapping for the user API.
 """
 from account import views
-from django.urls import path, include
+from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path("getprofile/", views.GetUserAPI.as_view(), name="get_user"),
     path("updateprofile/", views.UpdateUserAPI.as_view(), name="update_user"),
     path("changepassword/", views.ChangePasswordView.as_view(), name="change_password"),
+    path("activate/", views.ActivateAccount.as_view(), name="change_password"),
 ]

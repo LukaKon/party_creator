@@ -7,8 +7,9 @@ export const fetchCategories = createAsyncThunk(
         try {
             const response = await axiosInstance.get("/api/categories");
             return response.data;
-        } catch (err) {
-            console.log("Fetch categories error: ", err.message);
+        } catch (error) {
+            console.log("Fetch categories error: ", error.message);
+            throw error
         }
     }
 );
@@ -17,7 +18,7 @@ const categorySlice = createSlice({
     name: "categories",
     initialState: {
         loading: true,
-        categories: [],
+        entities: [],
         error: null,
     },
     reducers: {},
@@ -27,8 +28,8 @@ const categorySlice = createSlice({
                 state.loading = true;
             })
             .addCase(fetchCategories.fulfilled, (state, action) => {
+                state.entities = action.payload;
                 state.loading = false;
-                state.categories = action.payload;
             })
             .addCase(fetchCategories.rejected, (state, action) => {
                 state.loading = false;

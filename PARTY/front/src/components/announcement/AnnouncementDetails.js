@@ -8,23 +8,22 @@ import {
 } from "../../redux/slices/favouriteSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
 import { CreateUpdateDate } from "./CreateUpdateDate";
+
 import {
   Box,
-  Checkbox,
   Grid,
   Typography,
   ImageList,
   ImageListItem,
-  List,
-  ListItem,
-  ListItemText,
+  Link,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import Favorite from "@mui/icons-material/Favorite";
+import { AnnouncementDetailsSkeleton } from "../skeletons/AnnouncementSkeletons"
+import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
+import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
 import { fetchProfile } from "../../redux/slices/profileSlice";
+import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
 import { loged } from "../../utils/loged";
-
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
@@ -61,78 +60,34 @@ const CategoryItem = (props) => {
   );
 };
 
-const FavouriteButton = (props) => {
-  const [checkInput, setCheckInput] = useState(() => {
-    props.favourites.map((favouriteAnn) => {
-      if (favouriteAnn.user[0] === userID) {
-        return true;
-      }
-    });
-    return false;
-  });
+export const AnnouncementDetails = () => {
+  const { slug } = useParams();
+  const dispatch = useDispatch();
+  const { loading, entities, error } = useSelector(
+      (state) => state.announcementDetails
+    );
 
   useEffect(() => {
+    dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
   }, []);
 
-  const userID = useSelector((state) => {
-    if (loged) {
-      return state.profile.entities["id"];
+  useEffect(()=> {
+    if(entities){
+      addViewFunction({"announcementID": entities.id, "dispatch": dispatch})
+    }
+  },[entities])
+
+  const userID = useSelector((state) =>
+  {
+    if (loged){
+      return state.profile.entities['id']
     }
     return null;
   });
 
-  const dispatch = useDispatch();
-
-  const addOrRemoveFavourite = (checkInput) => {
-    if (checkInput) {
-      dispatch(deleteFavourite({ announcement: props.announcementID }));
-
-      setCheckInput(false);
-    } else {
-      dispatch(
-        addFavourite({ user: [userID], announcement: [props.announcementID] })
-      );
-      setCheckInput(true);
-    }
-  };
-
   let content;
-  if (loged) {
-    content = (
-      <Checkbox
-        icon={<FavoriteBorder />}
-        checkedIcon={<Favorite />}
-        defaultChecked={checkInput}
-        onClick={() => {
-          addOrRemoveFavourite(checkInput);
-        }}
-      />
-    );
-  }
-
-  return (
-    <Grid item xs={12}>
-      {content}
-    </Grid>
-  );
-};
-
-export const AnnouncementDetails = () => {
-  const { slug } = useParams();
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAnnouncementDetails(slug));
-  }, []);
-
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcementDetails
-  );
-
-  let content;
-
-  if (loading) {
+   if (loading) {
     content = <AnnouncementDetailsSkeleton />;
   } else {
     if (!entities) {
@@ -152,7 +107,7 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <CreateUpdateDate entities={entities} />
+                <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
               </Grid>
 
               <Grid item>
@@ -165,9 +120,15 @@ export const AnnouncementDetails = () => {
                   }}
                 >
                   {entities.category.map((cat) => (
-                    <CategoryItem key={cat.uuid} {...cat} />
+                     <CategoryItem key={cat.uuid} {...cat} />
                   ))}
-                </List>
+                  </List>                
+              </Grid>
+
+              <Grid item>
+              <Typography variant='caption'>
+                  Created by: {entities.user.email}
+                </Typography>
               </Grid>
 
               <Grid item>
@@ -204,7 +165,6 @@ export const AnnouncementDetails = () => {
                     <li key={mov.uuid}>
                       <a href={mov.movie_url} underline="hover">
                         {mov.movie_url}
-                      </a>
                     </li>
                   ))}
                 </ul>
@@ -216,14 +176,20 @@ export const AnnouncementDetails = () => {
             </Grid>
 
             <FavouriteButton
-              announcementID={entities.id}
-              favourites={entities.announcement_favourites}
+                userID={userID}
+                announcementID={entities.id}
+                favourite={entities.announcement_favourites}
             />
+
           </Grid>
         </Box>
       );
     }
   }
 
-  return <Grid container>{content}</Grid>;
+  return (
+    <Grid item xs={12}>
+      {content}
+    </Grid>
+  );
 };

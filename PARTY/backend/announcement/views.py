@@ -1,23 +1,19 @@
 """
 Views for announcements APIs.
 """
-from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
-
+from django.db.models import Q
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
     OpenApiParameter,
     OpenApiTypes,
 )
-# from drf_spectacular.types import OpenApiTypes
-
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
+from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from rest_framework.parsers import (
@@ -25,11 +21,14 @@ from rest_framework.parsers import (
     MultiPartParser,
 )
 from rest_framework.permissions import (
-    AllowAny,
+    AllowAny, 
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
 from rest_framework.response import Response
+
+from django.db.utils import IntegrityError
+
 
 from announcement import (
     models,
@@ -119,13 +118,27 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         """ Define custom queryset. """
         main_page = self.request.query_params.get('main_page')
         categories = self.request.query_params.get('category')
+        search = self.request.query_params.get('search')
+        submit = self.request.query_params.get('submit')
         queryset = self.queryset
 
         if main_page:
             return models.Announcement.objects.main_page_ann()
-        if categories:
+        if categories and categories != 'false':
             categories_uuid = self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
+
+        if search:
+            search_vector = SearchVector('title', weight='A') +\
+                            SearchVector('description', weight='B')
+            search_query = SearchQuery(search)
+
+            queryset = queryset.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query)
+            ).filter(search=search_query).order_by('-rank')
+            if submit == 'false':
+                queryset = queryset[:3]
 
         return queryset
 
@@ -136,8 +149,9 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new announcement."""
-        print("request: ", self.request.data)
-        user = get_user_model().objects .get(email=self.request.user)
+
+        user = get_user_model().objects .get(email=self.request.user) # TODO <-- o co chodzi z tą kropką
+
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
         images = self.request.data.getlist('images')
@@ -187,3 +201,24 @@ class FavouriteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = models.Favourite.objects.filter(user=self.request.user)
         return queryset
+
+    def perform_create(self, serializer):
+        announcement_id = self.request.data.get("announcement")[0]
+        announcement = models.Announcement.objects.get(id=announcement_id)
+        serializer.save(announcement=[announcement, ])
+
+
+class ViewsViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ViewsSerializer
+    permission_classes = [AllowAny, ]
+
+    def perform_create(self, serializer):
+        uuid_or_email = None
+        if self.request.user.is_anonymous:
+            uuid_or_email = self.request.data.get("uuid")
+        else:
+            uuid_or_email = str(self.request.user.email)
+        try:
+            serializer.save(uuid_or_email=uuid_or_email)
+        except IntegrityError:
+            pass
