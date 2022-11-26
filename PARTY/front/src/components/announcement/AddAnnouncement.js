@@ -73,15 +73,6 @@ export const AddAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput((value) => value.length > 0, []);
 
-  // const {
-  //   value: selectedImages,
-  //   isValid: selectedImagesIsValid,
-  //   hasError: selectedImagesHasError,
-  //   valueChangeHandler: selectedImagesChangeHandler,
-  //   inputBlurHandler: selectedImagesBlurHandler,
-  //   reset: resetSelectedImages,
-  // } = useInput((value) => value.includes(value=>value, ""));
-
   const {
     value: enteredMovieUrl,
     isValid: enteredMovieUrlValid,
@@ -145,10 +136,8 @@ export const AddAnnouncement = () => {
 
     if (listOfImages) {
       listOfImages.map((img, index) => {
-        // formData.append(`images[${index}]['image']`, img.image);
-        // formData.append(`images[${index}]['is_main']`, img.is_main);
-        formData.append('images',img.image)
-        formData.append(img.image.name,img.is_main)
+        formData.append("images", img.image);
+        formData.append(img.image.name, img.is_main);
       });
     }
 
@@ -170,7 +159,7 @@ export const AddAnnouncement = () => {
     dispatch(fetchCategories());
   }, []);
 
-  let listOfSelectedImages = <p>Dodaj zdjęcia do ogłoszenia.</p>;
+  let listOfSelectedImages = <Grid>Dodaj zdjęcia do ogłoszenia.</Grid>;
   if (listOfImages.length > 0) {
     listOfSelectedImages = (
       <Grid>
@@ -353,9 +342,20 @@ const UploadedImagesList = (props) => {
     updateListOfImages(filteredImages);
   };
 
+  const toggleIsMainImage = (image) => {
+    const updatedListOfImages = listOfSelectedImages.map((img) => {
+      if (img.toShow === image.toShow) {
+        return { ...img, is_main: true };
+      } else {
+        return { ...img, is_main: false };
+      }
+    });
+    updateListOfImages(updatedListOfImages);
+  };
+
   return (
     <Grid container spacing={3}>
-      <ImageList sx={{ width: 500, height: 150 }} cols={3} rowHeight={100}>
+      <ImageList sx={{ width: 800, height: 250 }} cols={3} rowHeight={100}>
         {listOfSelectedImages.map((image, index) => (
           <Grid container item direction="row" key={index}>
             <Grid item xs={8}>
@@ -364,7 +364,6 @@ const UploadedImagesList = (props) => {
               >
                 <img
                   src={image.toShow}
-                  // srcSet={}
                   name={image.toShow}
                   alt={image.toShow}
                   is_main={image.is_main.toString()}
@@ -374,9 +373,15 @@ const UploadedImagesList = (props) => {
             </Grid>
             <Grid item xs={4}>
               {image.is_main.toString() === "false" ? (
-                <Button startIcon={<Checkbox />}></Button>
+                <Button
+                  startIcon={<Checkbox />}
+                  onClick={() => toggleIsMainImage(image)}
+                ></Button>
               ) : (
-                <Button startIcon={<CheckBoxIcon defaultChecked />}></Button>
+                <Button
+                  startIcon={<CheckBoxIcon defaultChecked />}
+                  onClick={() => toggleIsMainImage(image)}
+                ></Button>
               )}
               <Button
                 startIcon={<DeleteForeverIcon />}

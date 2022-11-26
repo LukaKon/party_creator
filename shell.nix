@@ -9,6 +9,7 @@ let
     # ps.pyjwt
     # ps.django-filter
 
+    ps.flake8
     ps.bpython
     ps.autopep8
     # ps.black
@@ -18,7 +19,7 @@ in
 mkShell {
   buildInputs = [
     # pythonEnv
-    python310
+    python311
 
     bmake
     # http-prompt
