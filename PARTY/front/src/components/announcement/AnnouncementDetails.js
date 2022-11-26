@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
+// import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
 import {
   addFavourite,
   deleteFavourite,
@@ -15,10 +15,10 @@ import {
   Typography,
   ImageList,
   ImageListItem,
-  Link,
+  // Link,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { AnnouncementDetailsSkeleton } from "../skeletons/AnnouncementSkeletons"
+// import { AnnouncementDetailsSkeleton } from "../skeletons/AnnouncementSkeletons"
 import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
 import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
 import { fetchProfile } from "../../redux/slices/profileSlice";
@@ -107,7 +107,7 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <Typography variant='caption'>Date: {entities.created.slice(0, 10)}</Typography>
+                <CreateUpdateDate entities={entities} />
               </Grid>
 
               <Grid item>
@@ -165,6 +165,7 @@ export const AnnouncementDetails = () => {
                     <li key={mov.uuid}>
                       <a href={mov.movie_url} underline="hover">
                         {mov.movie_url}
+                        </a>
                     </li>
                   ))}
                 </ul>

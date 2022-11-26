@@ -47,14 +47,14 @@ const favouriteSlice = createSlice({
     },
     reducers: {},
     extraReducers:{
-        [addFavourite.pending && deleteFavourite.pending && getMyFavourites.pending]: (state) => {
+        [addFavourite.pending || deleteFavourite.pending || getMyFavourites.pending]: (state) => {
             state.loading = true
         },
-        [addFavourite.fulfilled && deleteFavourite.fulfilled && getMyFavourites.fulfilled]: (state, action) => {
+        [addFavourite.fulfilled || deleteFavourite.fulfilled || getMyFavourites.fulfilled]: (state, action) => {
             state.loading = false
             state.entities = action.payload
         },
-        [addFavourite.rejected && deleteFavourite.rejected && getMyFavourites.rejected]: (state, action) => {
+        [addFavourite.rejected || deleteFavourite.rejected || getMyFavourites.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },

@@ -1,7 +1,6 @@
 """
 Views for announcements APIs.
 """
-from django.db.models import Q
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -21,11 +20,10 @@ from rest_framework.parsers import (
     MultiPartParser,
 )
 from rest_framework.permissions import (
-    AllowAny, 
+    AllowAny,
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
-from rest_framework.response import Response
 
 from django.db.utils import IntegrityError
 
@@ -129,7 +127,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category__uuid__in=categories_uuid)
 
         if search:
-            search_vector = SearchVector('title', weight='A') +\
+            search_vector = SearchVector('title', weight='A') + \
                             SearchVector('description', weight='B')
             search_query = SearchQuery(search)
 
