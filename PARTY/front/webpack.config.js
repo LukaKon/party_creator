@@ -26,17 +26,8 @@ const config = {
                 exclude: /node_modules/,
             },
             {
-                //TODO: not working, don't copy image to dist folder
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: "asset/resource",
-                // use: [
-                // {
-                // loader: "url-loader",
-                // options: {
-                // mimetype: "image/png",
-                // },
-                // },
-                // ],
             },
         ],
     },

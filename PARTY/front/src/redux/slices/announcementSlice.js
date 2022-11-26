@@ -20,19 +20,28 @@ export const fetchAnnouncements = createAsyncThunk(
             throw error
         }
     }
+  }
 );
 
 export const createAnnouncement = createAsyncThunk(
     "announcements/createAnnouncement",
     async (data) => {
         try {
-            const response = await axiosInstance.post("api/announcements/", data);
+            const response = await axiosInstance.post("api/announcements/", data,
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
+                Accept: "image/jpeg",
+                Accept: "image/png",
+              },
+            );
             return response
         } catch (error) {
             console.log("Sent announcement error: ", error.message);
             throw error
         }
     }
+  }
 );
 
 export const deleteAnnouncement = createAsyncThunk(
@@ -46,6 +55,7 @@ export const deleteAnnouncement = createAsyncThunk(
             throw error
         }
     }
+  }
 );
 
 export const searchAnnouncement = createAsyncThunk(
@@ -124,10 +134,5 @@ const announcementSlice = createSlice({
     },
 });
 
-export const {
-    addAnnouncement,
-    // announcementFetching,
-    // announcementFetched,
-    // announcementError,
-} = announcementSlice.actions;
+export const { addAnnouncement } = announcementSlice.actions;
 export const announcementReducer = announcementSlice.reducer;

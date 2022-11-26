@@ -5,7 +5,7 @@
         - [x] attach ~~hook~~ validation to category field
         - [ ] how to save images for announcement???
         - [ ] send data from form to backand and save it in the database
-        - [ ] nice add image field with preview
+        - [-] nice add image field with preview
     - work on 'announcement details':
         - [ ] make it nicer ;)
         - [ ] list other owner announcements or something similar
@@ -23,5 +23,5 @@
         
 TODO:
 - [x] DJANGO: problem to recive details of announcement: 404 - Not found
-- [ ] Handle wrong slug on front site
+- [x] Handle wrong slug on front site
 - [ ] Check how to update profile avatar correctly

@@ -1,9 +1,14 @@
-import React, {useEffect} from "react";
-import {
-  useDispatch,
-  useSelector,
-} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
+import {
+  addFavourite,
+  deleteFavourite,
+} from "../../redux/slices/favouriteSlice";
+import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
+import { CreateUpdateDate } from "./CreateUpdateDate";
+
 import {
   Box,
   Grid,
@@ -12,7 +17,7 @@ import {
   ImageListItem,
   Link,
 } from "@mui/material";
-
+import { Link } from "react-router-dom";
 import { AnnouncementDetailsSkeleton } from "../skeletons/AnnouncementSkeletons"
 import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
 import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
@@ -22,28 +27,38 @@ import { loged } from "../../utils/loged";
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
+  const style_is_main = { padding: 1, border: 3, borderColor: "lightgreen" };
+  const style_default = { padding: 1, border: 3, borderColor: "lightgrey" };
 
   return (
-    <Link href={props.image} underline="none">
-      <ImageListItem key={props.uuid} >
+    <Link to={props.image} underline="none">
+      <ImageListItem
+        key={props.uuid}
+        sx={props.is_main === true ? style_is_main : style_default}
+      >
         <img
           src={props.image}
-          // srcSet={}
           alt="description - make it dynamic"
           loading="lazy"
         />
       </ImageListItem>
     </Link>
-  )
-}
-
+  );
+};
 
 const CategoryItem = (props) => {
   return (
-    // TODO: category as link to filtering by category
-    <h6>{props.get_name}</h6>
-  )
-}
+    <Link
+      key={props.uuid}
+      to={"/categories/" + props.get_name}
+      state={{ categoryUuid: props.uuid }}
+    >
+      <ListItem>
+        <ListItemText primary={props.get_name} />
+      </ListItem>
+    </Link>
+  );
+};
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
@@ -68,32 +83,27 @@ export const AnnouncementDetails = () => {
     if (loged){
       return state.profile.entities['id']
     }
-    return null
-  })
+    return null;
+  });
 
-  let content
-
-
-  if (loading) {
-    content = <AnnouncementDetailsSkeleton />
+  let content;
+   if (loading) {
+    content = <AnnouncementDetailsSkeleton />;
   } else {
     if (!entities) {
-      content = (<Typography variant="h3">No details!</Typography>)
+      content = <Typography variant="h3">No details!</Typography>;
     } else {
       content = (
         <Box sx={{ flexGrow: 1 }}>
-          <Grid
-            container
-            direction="column"
-            spacing={5}
-          >
+          <Grid container direction="column" spacing={5}>
             <Grid
-              item xs={6}
+              item
+              xs={6}
               rowSpacing={9}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item>
-                <Typography variant='h6'>Title: {entities.title}</Typography>
+                <Typography variant="h6">Title: {entities.title}</Typography>
               </Grid>
 
               <Grid item>
@@ -101,19 +111,30 @@ export const AnnouncementDetails = () => {
               </Grid>
 
               <Grid item>
-                <Typography variant='caption'>
+                category/ies:
+                <List
+                  sx={{
+                    width: "100%",
+                    maxWidth: 360,
+                    bgcolor: "background.paper",
+                  }}
+                >
+                  {entities.category.map((cat) => (
+                     <CategoryItem key={cat.uuid} {...cat} />
+                  ))}
+                  </List>                
+              </Grid>
+
+              <Grid item>
+              <Typography variant='caption'>
                   Created by: {entities.user.email}
                 </Typography>
               </Grid>
 
               <Grid item>
-                  category/ies: {entities.category.map(cat => (
-                    <CategoryItem key={cat.uuid} {...cat} />
-                  ))}
-              </Grid>
-
-              <Grid item>
-                <Typography variant="body1">Description: {entities.description}</Typography>
+                <Typography variant="body1">
+                  Description: {entities.description}
+                </Typography>
               </Grid>
             </Grid>
 
@@ -124,15 +145,35 @@ export const AnnouncementDetails = () => {
                 cols={3}
                 rowHeight={120}
               >
-                {entities.images.length > 0
-                  ? entities.images.map(img => (
+                {entities.images.length > 0 ? (
+                  entities.images.map((img) => (
                     <ImageItem key={img.uuid} {...img} />
                   ))
-                  : <Typography variant="body2" color="red">No images.</Typography>
-                }
+                ) : (
+                  <Typography variant="body2" color="red">
+                    No images.
+                  </Typography>
+                )}
               </ImageList>
             </Grid>
 
+            <Grid item xs={6}>
+              Movies:
+              {entities.movies.length > 0 ? (
+                <ul>
+                  {entities.movies.map((mov) => (
+                    <li key={mov.uuid}>
+                      <a href={mov.movie_url} underline="hover">
+                        {mov.movie_url}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Typography variant="body2" color="red">
+                  No movies.
+                </Typography>
+              )}
+            </Grid>
 
             <FavouriteButton
                 userID={userID}
@@ -140,31 +181,15 @@ export const AnnouncementDetails = () => {
                 favourite={entities.announcement_favourites}
             />
 
-            <Grid item xs={6}>
-              Movies:
-              {entities.movies.length > 0
-                ? <ul>
-                  {entities.movies.map(mov => (
-                    <li key={mov.uuid}>
-                      <Link underline="hover" to={mov.movie_url}>
-                        {mov.movie_url}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                : <Typography variant="body2" color="red">No movies.</Typography>
-              }
-            </Grid>
-            
           </Grid>
         </Box>
-      )
+      );
     }
   }
 
   return (
-    <Grid container>
+    <Grid item xs={12}>
       {content}
     </Grid>
   );
-}
+};

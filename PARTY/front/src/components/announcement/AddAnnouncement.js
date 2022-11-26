@@ -3,33 +3,49 @@ import { useSelector } from "react-redux";
 import {
   Button,
   Container,
+  FormControl,
   Grid,
   ImageList,
   ImageListItem,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import Checkbox from "@mui/material/Checkbox";
+import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "../../redux/slices/categorySlice";
 
-import { useInput } from "./hooks/useInput"
+import { useInput } from "./hooks/useInput";
 import { createAnnouncement } from "../../redux/slices/announcementSlice";
 
-// import { TitleInput } from './TitleInput'
-import { SelectCategory } from './SelectCategory'
-import { SelectImages } from './SelectImages'
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
 
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const getStyle = (category, selectedCategory, theme) => {
+  return {
+    fontWeight:
+      selectedCategory.indexOf(category) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+};
 
 export const AddAnnouncement = () => {
-
-  const [dataToSend, setDataToSend] = useState({
-    title: '',
-    description: '',
-    category: [],
-    movies: [],
-    images: [],
-  })
-
   const {
     value: enteredTitle,
     isValid: enteredTitleIsValid,
@@ -37,7 +53,7 @@ export const AddAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput(value => value.trim() !== '', '')
+  } = useInput((value) => value.trim() !== "", "");
 
   const {
     value: enteredDescription,
@@ -46,7 +62,34 @@ export const AddAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput(value => value.trim() !== '', '')
+  } = useInput((value) => value.trim() !== "", "");
+
+  const {
+    value: selectedCategory,
+    isValid: selectedCategoryIsValid,
+    hasError: selectedCategoryHasError,
+    valueChangeHandler: selectedCategoryChangedHandler,
+    inputBlurHandler: selectedCategoryBlurHandler,
+    reset: resetSelectedCategory,
+  } = useInput((value) => value.length > 0, []);
+
+  const {
+    value: enteredMovieUrl,
+    isValid: enteredMovieUrlValid,
+    hasError: movieUrlHasError,
+    valueChangeHandler: movieUrlChangeHandler,
+    inputBlurHandler: movieUrlBlurHandler,
+    reset: resetMovieUrl,
+  } = useInput((value) => value.includes("https://www"), "");
+
+  const [listOfImages, setListOfImages] = useState([
+    {
+      image: "",
+      is_main: false,
+    },
+  ]);
+
+  const theme = useTheme();
 
   const { loading, categories, error } = useSelector(
     (state) => state.categories
@@ -54,98 +97,87 @@ export const AddAnnouncement = () => {
 
   const dispatch = useDispatch();
 
-  const [category, setCategory] = useState('')
-  const [categoryValid, setCategoryValid] = useState(false)
+  let formIsValid = false;
 
-  const [movies, setMovies] = useState([])
-  const [selectedImages, setSelectedImages] = useState()
-
-  // const [resetForm, setResetForm] = useState(false)
-  
-  const movieChangeHandler = () => {
-    setMovies()
-  }
-  
-
-  let formIsValid = false
-
-  if (enteredTitleIsValid && enteredDescriptionValid && categoryValid) {
-    console.log(
-      'title: ', enteredTitleIsValid,
-      'desc: ', enteredDescriptionValid,
-      'cat: ', categoryValid,
-      'images: ', 'not yet',
-      'movies: ', movies,
-    )
-    formIsValid = true
+  if (
+    enteredTitleIsValid &&
+    enteredDescriptionValid &&
+    selectedCategoryIsValid
+  ) {
+    formIsValid = true;
   }
 
-  // console.log('form is valid: ', formIsValid)
+  const formSubmissionHandler = (e) => {
+    e.preventDefault();
 
-  const formSubmissionHandler = e => {
-    e.preventDefault()
-
-    if (!enteredTitleIsValid && !enteredDescriptionValid && !categoryValid) {
-      return
+    if (
+      !enteredTitleIsValid &&
+      !enteredDescriptionValid &&
+      !selectedCategoryIsValid
+    ) {
+      return;
     }
     const announcement_data = {
       title: enteredTitle,
       description: enteredDescription,
-      category: category,
-      images: selectedImages,
-      movies: movies,
+      category: selectedCategory,
+      images: listOfImages,
+      movies: enteredMovieUrl,
+    };
+    console.log("collected data: ", announcement_data);
+
+    const formData = new FormData();
+    // necessary data
+    formData.append("title", enteredTitle);
+    formData.append("description", enteredDescription);
+    formData.append("category", selectedCategory);
+
+    // additional data
+
+    if (listOfImages) {
+      listOfImages.map((img, index) => {
+        formData.append("images", img.image);
+        formData.append(img.image.name, img.is_main);
+      });
     }
-    console.log('data to sent: ', announcement_data)
-    dispatch(createAnnouncement(announcement_data))
 
-    resetTitleInput()
-    resetDescriptionInput()
-    // setResetForm(true)
-    // setResetForm(false)
-  }
+    if (enteredMovieUrl) {
+      formData.append("movies", enteredMovieUrl);
+    }
+    console.log("FORM DATA: ", formData);
 
-  const categorySelectHandle = (category) => {
-    // console.log('selected cat in children:', category)
-    setCategory(category)
-  }
+    dispatch(createAnnouncement(formData));
 
-  const isCategoryValid = (validCategory) => {
-    setCategoryValid(validCategory)
-  }
-
-  // const imageHandleChange = (e) => {
-  //   // console.log('images: ', e.target.files)
-  //   if (e.target.files) {
-  //     const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file))
-  //     // console.log('urls: ', fileArray)
-
-  //     // setSelectedImages(prevImages => prevImages.concat(fileArray))
-  //     setSelectedImages(fileArray)
-  //   }
-  // }
+    resetTitleInput();
+    resetDescriptionInput();
+    resetSelectedCategory();
+    resetMovieUrl();
+    setListOfImages("");
+  };
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
 
-
-  // console.log('selected category: ', category)
-
-  // let images
-  // if (selectedImages) {
-  //   // images = renderPhoto(selectedImages)
-  //   images = <UploadedImageList images={selectedImages} />
-  // } else {
-  //   images = <p>Add some images :)</p>
-  // }
+  let listOfSelectedImages = <Grid>Dodaj zdjęcia do ogłoszenia.</Grid>;
+  if (listOfImages.length > 0) {
+    listOfSelectedImages = (
+      <Grid>
+        <UploadedImagesList
+          listOfSelectedImages={listOfImages}
+          updateListOfImages={setListOfImages}
+        />
+      </Grid>
+    );
+  }
 
   let content;
   if (loading) {
-    content = (<p>Loading...</p>);
+    content = <p>Loading...</p>;
   } else {
     content = (
       <Container component="main" maxWidth="xs">
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item>
             <Typography component="h1" variant="h5">
               Dodaj ogłoszenie:
@@ -154,31 +186,23 @@ export const AddAnnouncement = () => {
 
           <Grid item>
             <TextField
-              // margin="normal"
               required
               id="title"
               label="Title"
               name="title"
               // autoFocus
-              defaultValue='Tytuł'
               onChange={titleChangedHandler}
               onBlur={titleBlurHandler}
               value={enteredTitle}
               error={titleInputHasError}
             />
-            {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
+            {titleInputHasError && (
+              <p style={{ color: "red" }}>Title must not be empty.</p>
+            )}
           </Grid>
 
-        {/*}
-          <Grid item>
-            <TitleInput
-              reset={resetForm}
-            />
-          </Grid>
-        */}
           <Grid item>
             <TextField
-              // margin="normal"
               required
               id="description"
               label="Description"
@@ -195,52 +219,65 @@ export const AddAnnouncement = () => {
               value={enteredDescription}
               error={descriptionInputHasError}
             />
-            {descriptionInputHasError && (<p style={{ color: 'red' }}>Description must not be empty.</p>)}
+            {descriptionInputHasError && (
+              <p style={{ color: "red" }}>Description must not be empty.</p>
+            )}
           </Grid>
 
           <Grid item>
-            <SelectCategory
-              categories={categories}
-              selectedCategory={categorySelectHandle}
-              categoryIsValid={isCategoryValid}
-              // reset={resetForm}
+            <FormControl sx={{ width: 300 }}>
+              <InputLabel id="category-label">Category</InputLabel>
+              <Select
+                labelId="category-label"
+                id="category"
+                required
+                multiple
+                value={selectedCategory}
+                onChange={selectedCategoryChangedHandler}
+                onBlur={selectedCategoryBlurHandler}
+                error={selectedCategoryHasError}
+                input={<OutlinedInput label="Cat" />}
+                MenuProps={MenuProps}
+              >
+                {categories.map((category) => (
+                  <MenuItem
+                    key={category.uuid}
+                    value={category.uuid}
+                    style={getStyle(category.get_name, selectedCategory, theme)}
+                  >
+                    {category.get_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {selectedCategoryHasError && (
+              <p style={{ color: "red" }}>Category must be selected.</p>
+            )}
+          </Grid>
+
+          <Grid item>
+            <SelectImages
+              value={listOfImages}
+              addImagesToList={setListOfImages}
             />
-            {error && (<p style={{ color: 'red' }}>Error: {error}</p>)}
           </Grid>
 
-          {/*
-          <Grid item>
-            <input type="file" multiple id='file' onChange={imageHandleChange} />
-            <div>
-              <label htmlFor="file">
-                <i className="material-icons">add photos</i>
-              </label>
-            </div>
-            {images}
-          </Grid>
-    */}
+          <Grid item>{listOfSelectedImages}</Grid>
 
-          <Grid item>
-            <span style={{ color: 'red' }}>TEST</span>
-            <SelectImages />
-          </Grid>
-    
-    
           <Grid item>
             <TextField
               margin="normal"
-              // required
               id="movies"
               label="Movies"
               name="movies"
-              // autoFocus
-              defaultValue='Link do filmu'
-              onChange={movieChangeHandler}
-              // onBlur={titleBlurHandler}
-              // value={enteredTitle}
-              // error={titleInputHasError}
+              onChange={movieUrlChangeHandler}
+              onBlur={movieUrlBlurHandler}
+              value={enteredMovieUrl}
+              error={movieUrlHasError}
             />
-            {titleInputHasError && (<p style={{ color: "red" }}>Title must not be empty.</p>)}
+            {movieUrlHasError && (
+              <p style={{ color: "red" }}>Url is incorrect.</p>
+            )}
           </Grid>
 
           <Grid item>
@@ -254,15 +291,6 @@ export const AddAnnouncement = () => {
               Save
             </Button>
           </Grid>
-
-          <Grid item>
-            TODO:
-            <ul>
-              <li>"add images/multimedia"</li>
-              <li>"event type: list with checkboxes"</li>
-            </ul>
-          </Grid>
-
         </Grid>
       </Container>
     );
@@ -270,21 +298,99 @@ export const AddAnnouncement = () => {
   return <Grid>{content}</Grid>;
 };
 
+const SelectImages = (props) => {
+  const { addImagesToList } = props;
+  const [selectedImages, setSelectedImages] = useState([]);
 
-const UploadedImageList = ({ images }) => {
-  // console.log('props', images)
+  const imageHandler = (e) => {
+    if (typeof addImagesToList === "function") {
+      if (e.target.files[0]) {
+        const fileArray = Array.from(e.target.files).map((file) => ({
+          toShow: URL.createObjectURL(file),
+          image: file,
+          is_main: false,
+        }));
+        setSelectedImages(fileArray);
+      }
+    }
+  };
+
+  useEffect(() => {
+    addImagesToList(selectedImages);
+  }, [selectedImages]);
+
   return (
-    <ImageList sx={{ width: 400, height: 350 }} cols={3} rowHeight={164}>
-      {images.map((image, index) => (
-        <ImageListItem key={index}>
-          <img
-            src={image}
-            // srcSet={}
-            alt={image}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  )
-}
+    <Grid>
+      <input
+        type="file"
+        multiple
+        id="file"
+        accept="image/jpeg,image/png"
+        onChange={imageHandler}
+      />
+    </Grid>
+  );
+};
+
+const UploadedImagesList = (props) => {
+  const { listOfSelectedImages, updateListOfImages } = props;
+
+  const deleteImage = (image) => {
+    const filteredImages = listOfSelectedImages.filter((img) => {
+      return image.toShow !== img.toShow;
+    });
+    updateListOfImages(filteredImages);
+  };
+
+  const toggleIsMainImage = (image) => {
+    const updatedListOfImages = listOfSelectedImages.map((img) => {
+      if (img.toShow === image.toShow) {
+        return { ...img, is_main: true };
+      } else {
+        return { ...img, is_main: false };
+      }
+    });
+    updateListOfImages(updatedListOfImages);
+  };
+
+  return (
+    <Grid container spacing={3}>
+      <ImageList sx={{ width: 800, height: 250 }} cols={3} rowHeight={100}>
+        {listOfSelectedImages.map((image, index) => (
+          <Grid container item direction="row" key={index}>
+            <Grid item xs={8}>
+              <ImageListItem
+                sx={{ width: 100, height: 100, objectFit: "contain" }}
+              >
+                <img
+                  src={image.toShow}
+                  name={image.toShow}
+                  alt={image.toShow}
+                  is_main={image.is_main.toString()}
+                  loading="lazy"
+                />
+              </ImageListItem>
+            </Grid>
+            <Grid item xs={4}>
+              {image.is_main.toString() === "false" ? (
+                <Button
+                  startIcon={<Checkbox />}
+                  onClick={() => toggleIsMainImage(image)}
+                ></Button>
+              ) : (
+                <Button
+                  startIcon={<CheckBoxIcon defaultChecked />}
+                  onClick={() => toggleIsMainImage(image)}
+                ></Button>
+              )}
+              <Button
+                startIcon={<DeleteForeverIcon />}
+                onClick={() => deleteImage(image)}
+              ></Button>
+            </Grid>
+          </Grid>
+        ))}
+      </ImageList>
+    </Grid>
+  );
+};
