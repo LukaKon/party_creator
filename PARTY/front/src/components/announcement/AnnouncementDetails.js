@@ -28,8 +28,20 @@ import { loged } from "../../utils/loged";
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
-  const style_is_main = { padding: 1, border: 3, borderColor: "lightgreen" };
-  const style_default = { padding: 1, border: 3, borderColor: "lightgrey" };
+  const style_is_main = {
+    padding: 1,
+    border: 3,
+    borderColor: "lightgreen",
+    width: 300,
+    height: 300,
+  };
+  const style_default = {
+    padding: 1,
+    border: 3,
+    borderColor: "lightgrey",
+    width: 300,
+    height: 300,
+  };
 
   return (
     <Link to={props.image} underline="none">
@@ -76,9 +88,12 @@ export const AnnouncementDetails = () => {
     (state) => state.announcementDetails
   );
 
+  const [galleryCoefficient, setGalleryCoefficient] = useState(300);
+
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
+    // setGalleryCoefficient(Math.round(entities.images.length / 3));
   }, []);
 
   useEffect(() => {
@@ -147,12 +162,16 @@ export const AnnouncementDetails = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               Images:
               <ImageList
-                sx={{ width: 200, height: 150 }}
-                cols={3}
-                rowHeight={120}
+                sx={{
+                  width: 1200,
+                  height: galleryCoefficient * 300,
+                  height: 300,
+                }}
+                cols={galleryCoefficient}
+                rowHeight={300}
               >
                 {entities.images.length > 0 ? (
                   entities.images.map((img) => (
@@ -166,7 +185,7 @@ export const AnnouncementDetails = () => {
               </ImageList>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               Movies:
               {entities.movies.length > 0 ? (
                 <ul>

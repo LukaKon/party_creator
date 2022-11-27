@@ -179,7 +179,6 @@ export const AddAnnouncement = () => {
               id="title"
               label="Title"
               name="title"
-              // autoFocus
               onChange={titleChangedHandler}
               onBlur={titleBlurHandler}
               value={enteredTitle}
