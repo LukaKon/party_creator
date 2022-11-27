@@ -115,16 +115,9 @@ export const AddAnnouncement = () => {
     ) {
       return;
     }
-    const announcement_data = {
-      title: enteredTitle,
-      description: enteredDescription,
-      category: selectedCategory,
-      images: listOfImages,
-      movies: enteredMovieUrl,
-    };
-    console.log("collected data: ", announcement_data);
 
     const formData = new FormData();
+
     // necessary data
     formData.append("title", enteredTitle);
     formData.append("description", enteredDescription);
@@ -141,7 +134,6 @@ export const AddAnnouncement = () => {
     if (enteredMovieUrl) {
       formData.append("movies", enteredMovieUrl);
     }
-    console.log("FORM DATA: ", formData);
 
     dispatch(createAnnouncement(formData));
 
@@ -204,7 +196,6 @@ export const AddAnnouncement = () => {
               id="description"
               label="Description"
               name="description"
-              // autoFocus
               multiline
               minRows={5}
               maxRows={10}

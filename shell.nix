@@ -19,7 +19,7 @@ in
 mkShell {
   buildInputs = [
     # pythonEnv
-    python311
+    python310
 
     bmake
     # http-prompt

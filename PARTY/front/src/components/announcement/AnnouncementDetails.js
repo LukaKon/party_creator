@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-// import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
-import {
-  addFavourite,
-  deleteFavourite,
-} from "../../redux/slices/favouriteSlice";
+// import {
+//   addFavourite,
+//   deleteFavourite,
+// } from "../../redux/slices/favouriteSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
 import { CreateUpdateDate } from "./CreateUpdateDate";
 
 import {
   Box,
+  Button,
   Grid,
-  Typography,
   ImageList,
   ImageListItem,
-  // Link,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-// import { AnnouncementDetailsSkeleton } from "../skeletons/AnnouncementSkeletons"
 import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
 import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
 import { fetchProfile } from "../../redux/slices/profileSlice";
@@ -60,34 +61,46 @@ const CategoryItem = (props) => {
   );
 };
 
+const EditButton = () => {
+  return (
+    <Grid>
+      <Button variant="contained">Edit</Button>
+    </Grid>
+  );
+};
+
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
   const { loading, entities, error } = useSelector(
-      (state) => state.announcementDetails
-    );
+    (state) => state.announcementDetails
+  );
 
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
   }, []);
 
-  useEffect(()=> {
-    if(entities){
-      addViewFunction({"announcementID": entities.id, "dispatch": dispatch})
+  useEffect(() => {
+    if (entities) {
+      addViewFunction({ announcementID: entities.id, dispatch: dispatch });
     }
-  },[entities])
+  }, [entities]);
 
-  const userID = useSelector((state) =>
-  {
-    if (loged){
-      return state.profile.entities['id']
+  const userID = useSelector((state) => {
+    if (loged) {
+      return state.profile.entities["id"];
     }
     return null;
   });
 
+  let editButton = null;
+  if (loged) {
+    editButton = <EditButton />;
+  }
+
   let content;
-   if (loading) {
+  if (loading) {
     content = <AnnouncementDetailsSkeleton />;
   } else {
     if (!entities) {
@@ -106,6 +119,8 @@ export const AnnouncementDetails = () => {
                 <Typography variant="h6">Title: {entities.title}</Typography>
               </Grid>
 
+              <Grid item>{editButton}</Grid>
+
               <Grid item>
                 <CreateUpdateDate entities={entities} />
               </Grid>
@@ -120,15 +135,9 @@ export const AnnouncementDetails = () => {
                   }}
                 >
                   {entities.category.map((cat) => (
-                     <CategoryItem key={cat.uuid} {...cat} />
+                    <CategoryItem key={cat.uuid} {...cat} />
                   ))}
-                  </List>                
-              </Grid>
-
-              <Grid item>
-              <Typography variant='caption'>
-                  Created by: {entities.user.email}
-                </Typography>
+                </List>
               </Grid>
 
               <Grid item>
@@ -165,7 +174,7 @@ export const AnnouncementDetails = () => {
                     <li key={mov.uuid}>
                       <a href={mov.movie_url} underline="hover">
                         {mov.movie_url}
-                        </a>
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -177,11 +186,10 @@ export const AnnouncementDetails = () => {
             </Grid>
 
             <FavouriteButton
-                userID={userID}
-                announcementID={entities.id}
-                favourite={entities.announcement_favourites}
+              userID={userID}
+              announcementID={entities.id}
+              favourite={entities.announcement_favourites}
             />
-
           </Grid>
         </Box>
       );
