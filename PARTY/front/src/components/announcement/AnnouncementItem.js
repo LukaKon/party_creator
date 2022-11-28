@@ -25,7 +25,7 @@ export const AnnouncementItem = (props) => {
     const link = main_image[0].image;
     render_image = link;
   } else {
-    render_image = BACKEND_LOCALHOST + "media/announcement/default.jpg";
+    render_image = BACKEND_LOCALHOST + "media/announcement/defaultAnnouncement.jpg";
   }
 
   return (

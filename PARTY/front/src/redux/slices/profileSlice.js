@@ -19,13 +19,12 @@ export const fetchProfile = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
     "profile/updateProfile",
-    async (data) => {
+    async (data, {rejectWithValue}) => {
         try {
             const response = await axiosInstance.patch("account/updateprofile/", data);
             return response.data;
         } catch (error) {
-            console.log("Fetch profile error: ", error.message);
-            throw error
+            return rejectWithValue(error)
         }
     }
 );
@@ -46,13 +45,15 @@ export const createProfile = createAsyncThunk(
 
 export const handleEmail = createAsyncThunk(
     "profile/activate",
-    async(data) => {
+    async(data, {rejectWithValue}) => {
+        const response = await axiosInstance.post('account/handleemail/', data);
+        return response.data;
         try{
             const response = await axiosInstance.post('account/handleemail/', data);
             return response.data;
         } catch (error){
             console.log("Activation problem: ", error.message);
-            throw error
+            rejectWithValue(error)
         }
     }
 );
@@ -67,14 +68,14 @@ const profileSlice = createSlice({
         },
         reducers: {},
         extraReducers:{
-            [fetchProfile.pending || updateProfile.pending]: (state) =>{
+            [fetchProfile.pending || updateProfile.pending || handleEmail.pending]: (state) =>{
                 state.loading = true
             },
-            [fetchProfile.fulfilled || updateProfile.fulfilled]: (state, action)=>{
+            [fetchProfile.fulfilled || updateProfile.fulfilled || handleEmail.fulfilled]: (state, action)=>{
                 state.loading = false
                 state.entities = action.payload
             },
-            [fetchProfile.rejected || updateProfile.rejected]: (state, action)=> {
+            [fetchProfile.rejected || updateProfile.rejected || handleEmail.rejected]: (state, action)=> {
                 state.error = action.payload
                 state.loading = false
             },

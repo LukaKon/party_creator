@@ -196,7 +196,7 @@ export const Header = () => {
                 <Toolbar disableGutters>
                     <Button onClick={()=>handleMenu('/')}>
                         <Typography noWrap component="div" sx={{mr: 1}}>
-                            <img src={require('../media/logo.png')} alt="logo"/>
+                            <img src={BACKEND_LOCALHOST + 'media/logo.png'} alt="logo"/>
                         </Typography>
                     </Button>
                     <Box sx={{flexGrow: 1, display: "flex"}}>{menuIcon}</Box>
