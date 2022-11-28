@@ -1,11 +1,12 @@
-import React, {useEffect} from "react"
-import { Grid } from "@mui/material";
+import React, {useEffect, useState} from "react"
+import { Alert, Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {handleEmail} from "../redux/slices/profileSlice";
 
 
 export const ActivateNewEmail = () => {
+    const [alert, setAlert] = useState()
     const {uid, newEmail, token} = useParams()
     const dispatch = useDispatch()
     const data = new FormData
@@ -17,7 +18,17 @@ export const ActivateNewEmail = () => {
         dispatch(handleEmail(data))
     },[])
 
+    const {loading, active} = useSelector(state=>state.profile)
+
+    if(!loading && active){
+        setAlert(<Alert severity="success">Your email is changed</Alert>)
+    }else if(!loading && !active){
+        setAlert(<Alert severity="warning">Your email is changed</Alert>)
+    }
+
     return(
-        <Grid></Grid>
+        <Grid>
+            {alert}
+        </Grid>
     )
 }

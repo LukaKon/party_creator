@@ -33,17 +33,14 @@ export const ChangeEmail = () => {
         const newEmail2 = data.get("newEmail2")
         console.log(checkEmail(newEmail, newEmail2))
         if(checkEmail(newEmail, newEmail2)){
-            dispatch(updateProfile(data))
-
-            //     .then(response => {
-            //         setAlert(<Alert severity="success">Check your new email, you have to confirm the email</Alert>)
-            //         console.log('success', response)
-            // })
-            //     .catch(error => {
-            //         setAlert(<Alert severity="warning">Something went wrong, check fields.</Alert>)
-            //         console.log('error', error)
-            //
-            // })
+            dispatch(updateProfile(data)).unwrap()
+                .then(response => {
+                    setAlert(<Alert severity="success">Check your new email, you have to confirm the email</Alert>)
+                    console.log('success', response)
+            })
+                .catch(error => {
+                    setAlert(<Alert severity="warning">Something went wrong, check fields.</Alert>)
+            })
         }else{
             setAlert(<Alert severity="warning">Something went wrong, check fields.</Alert>)
         }
