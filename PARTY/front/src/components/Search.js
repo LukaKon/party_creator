@@ -33,7 +33,6 @@ export const SearchBar = () => {
     const [category, setCategory] = useState(false)
 
     useEffect(()=>{
-        dispatch(searchAnnouncement({search: searchValue, submit: false, category: category}))
         dispatch(fetchCategories())
     },[])
 

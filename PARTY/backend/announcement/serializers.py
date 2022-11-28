@@ -3,14 +3,7 @@ Serializers for announcements API.
 """
 from rest_framework import serializers
 
-from .models import (
-    Announcement,
-    Category,
-    Favourite,
-    Image,
-    Movie,
-    Views,
-)
+from .models import Announcement, Category, Favourite, Image, Movie, Views
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -70,14 +63,15 @@ class MovieSerializer(serializers.ModelSerializer):
             'uuid',
             'created',
             'updated',
-            )
+        )
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     """Announcement serializer."""
 
     category = CategorySerializer(many=True, read_only=True)
-    announcement_favourites = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    announcement_favourites = serializers.PrimaryKeyRelatedField(
+        many=True, read_only=True)
 
     class Meta:
 

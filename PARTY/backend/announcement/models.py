@@ -1,16 +1,14 @@
+import uuid as uuid_lib
+
+import stdimage
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
 from dynamic_filenames import FilePattern
 
-import stdimage
-import uuid as uuid_lib
-
 from .utils.announcement import unique_slug_generator
-
 
 upload_to_pattern = FilePattern(
     filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}"
@@ -145,8 +143,6 @@ class Image(Multimedia):
     """Pictures attached to announcement."""
 
     image = stdimage.StdImageField(
-        # null=True,
-        # blank=True,
         upload_to=upload_to_pattern,
         variations={
             "large": (800, 600),
@@ -162,6 +158,7 @@ class Image(Multimedia):
 
     def __str__(self):
         return str(self.image)
+
 
 class Movie(Multimedia):
     """Movie attached to announcement."""
@@ -191,6 +188,7 @@ class Views(models.Model):
 
 class Favourite(models.Model):
 
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_favourites')
-    announcement = models.ManyToManyField(Announcement, related_name='announcement_favourites')
-
+    user = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='user_favourites')
+    announcement = models.ManyToManyField(
+        Announcement, related_name='announcement_favourites')
