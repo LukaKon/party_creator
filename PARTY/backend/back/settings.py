@@ -12,9 +12,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
-# ALLOWED_HOSTS = [
-#     "*"
-# ]
 
 # Application definition
 

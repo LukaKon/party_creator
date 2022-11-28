@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-// import {
-//   addFavourite,
-//   deleteFavourite,
-// } from "../../redux/slices/favouriteSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
 import { CreateUpdateDate } from "./CreateUpdateDate";
-
 import {
   Box,
   Button,
@@ -32,15 +27,15 @@ const ImageItem = (props) => {
     padding: 1,
     border: 3,
     borderColor: "lightgreen",
-    width: 300,
-    height: 300,
+    width: 100,
+    height: 100,
   };
   const style_default = {
     padding: 1,
     border: 3,
-    borderColor: "lightgrey",
-    width: 300,
-    height: 300,
+    borderColor: "lightred",
+    width: 120,
+    height: 120,
   };
 
   return (
@@ -50,7 +45,8 @@ const ImageItem = (props) => {
         sx={props.is_main === true ? style_is_main : style_default}
       >
         <img
-          src={props.image}
+          src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
+          srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
           alt="description - make it dynamic"
           loading="lazy"
         />
@@ -88,8 +84,6 @@ export const AnnouncementDetails = () => {
     (state) => state.announcementDetails
   );
 
-  const [galleryCoefficient, setGalleryCoefficient] = useState(300);
-
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
@@ -112,6 +106,10 @@ export const AnnouncementDetails = () => {
   let editButton = null;
   if (loged) {
     editButton = <EditButton />;
+  }
+
+  const galleryCoefficient = () => {
+    return Math.round(entities.images.length / 3)
   }
 
   let content;
@@ -166,12 +164,11 @@ export const AnnouncementDetails = () => {
               Images:
               <ImageList
                 sx={{
-                  width: 1200,
-                  height: galleryCoefficient * 300,
-                  height: 300,
+                  width: 500,
+                  height: 450,
                 }}
-                cols={galleryCoefficient}
-                rowHeight={300}
+                cols={3}
+                rowHeight={164}
               >
                 {entities.images.length > 0 ? (
                   entities.images.map((img) => (
