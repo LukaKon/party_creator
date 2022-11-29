@@ -192,11 +192,12 @@ export const Header = () => {
           </Button>
           <Box sx={{ flexGrow: 1, display: "flex" }}>{menuIcon}</Box>
 
-          <Box sx={{ flexGrow: 1, display: "flex" }}><SearchBar /></Box>
+          <Box sx={{ flexGrow: 1, display: "flex" }}>
+            <SearchBar />
+          </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             {profile_menu}
-
 
             <Menu
               sx={{ mt: "45px" }}
