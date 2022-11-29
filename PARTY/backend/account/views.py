@@ -1,14 +1,6 @@
 """
 Views for the user API.
 """
-
-from django.shortcuts import get_object_or_404
-from account.serializers import (
-    MyTokenObtainPairSerializer,
-    RegisterSerializer,
-    UserSerializer,
-    ChangePasswordSerializer,
-)
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password, get_password_validators
 from django.core.exceptions import ValidationError
@@ -26,20 +18,17 @@ from rest_framework_simplejwt.token_blacklist.models import (
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-import back.settings as settings
 from .tokens import token_manage
 from back.utils.account import activate_account_send_email, change_email_send_email
-
-
 import back.settings as settings
-
-from account.models import User
 from account.serializers import (
     MyTokenObtainPairSerializer,
     RegisterSerializer,
     UserSerializer,
     ChangePasswordSerializer,
 )
+
+
 class LoginView(TokenObtainPairView):
     """Create a new auth token for user."""
 
@@ -98,8 +87,9 @@ class UpdateUserAPI(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
-    def check_free_email(self, email):
-        if self.model.objects.filter(email=email).exists():
+    @staticmethod
+    def check_free_email(email):
+        if get_user_model().objects.filter(email=email).exists():
             return False
         else:
             return True
@@ -146,7 +136,7 @@ class ChangePasswordView(UpdateAPIView):
         if serializer.is_valid():
             # Check old password
             if not self.object.check_password(serializer.data.get("old_password")):
-                return Response({"password": ["Podane hasło jest nieprawidłowe"]}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"password": ["The password is wrong"]}, status=status.HTTP_400_BAD_REQUEST)
             # set_password also hashes the password that the user will get
 
             try:
@@ -207,7 +197,7 @@ class HandleEmailView(APIView):
         if change_or_activation == 'change_email':
             new_email_before_decode = request.data.get('new_email')
             new_email = force_str(urlsafe_base64_decode(new_email_before_decode))
-            if self.check_user_and_token(user, token):
+            if self.check_user_and_token(user, token) and UpdateUserAPI.check_free_email(new_email):
                 self.change_email(user, new_email)
                 return Response(status=status.HTTP_202_ACCEPTED)
             else:
@@ -219,4 +209,3 @@ class HandleEmailView(APIView):
                 return Response(status=status.HTTP_202_ACCEPTED)
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
-

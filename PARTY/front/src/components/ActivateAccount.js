@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Alert, Button, Grid, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,7 +8,7 @@ import {handleEmail} from "../redux/slices/profileSlice";
 export const ActivateAccount = () => {
     const {uid, token} = useParams()
     const dispatch = useDispatch()
-    let alert
+    const [alert, setAlert] = useState()
 
     const handleActivate = () => {
         const data = new FormData
@@ -18,12 +18,15 @@ export const ActivateAccount = () => {
         dispatch(handleEmail(data))
     }
 
-    const {loading, active, error} = useSelector(state=> state.profile)
-    if(!loading && active){
-        alert = <Alert severity="success">Your account has been activated. You can to sign in</Alert>
-    }else if(!loading && !active){
-        alert = <Alert severity="warning">Something went wrong!</Alert>
-    }
+    const {loading, active} = useSelector(state=> state.profile)
+
+    useEffect(()=>{
+        console.log('useeff')
+        if(!loading && active===true){
+            setAlert(<Alert severity="success">Your email is changed</Alert>)}
+        else if(!loading && active!==true){
+            setAlert(<Alert severity="warning">Something went wrong!</Alert>)
+    }},[active])
 
     return(
         <Grid>
