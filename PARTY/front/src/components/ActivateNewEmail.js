@@ -10,6 +10,7 @@ export const ActivateNewEmail = () => {
     const {uid, newEmail, token} = useParams()
     const dispatch = useDispatch()
     const data = new FormData
+
     useEffect(()=> {
         data.append('uid', uid)
         data.append('new_email', newEmail)
@@ -20,11 +21,13 @@ export const ActivateNewEmail = () => {
 
     const {loading, active} = useSelector(state=>state.profile)
 
-    if(!loading && active){
-        setAlert(<Alert severity="success">Your email is changed</Alert>)
-    }else if(!loading && !active){
-        setAlert(<Alert severity="warning">Your email is changed</Alert>)
-    }
+    useEffect(()=>{
+        console.log('useeff')
+        if(!loading && active===true){
+            setAlert(<Alert severity="success">Your email is changed</Alert>)}
+        else if(!loading && active!==true){
+            setAlert(<Alert severity="warning">Something went wrong!</Alert>)
+    }},[active])
 
     return(
         <Grid>

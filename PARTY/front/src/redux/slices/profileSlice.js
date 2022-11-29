@@ -24,7 +24,8 @@ export const updateProfile = createAsyncThunk(
             const response = await axiosInstance.patch("account/updateprofile/", data);
             return response.data;
         } catch (error) {
-            return rejectWithValue(error)
+            console.log("Update problem: ", error.message);
+            return rejectWithValue(error.response.data)
         }
     }
 );
@@ -38,22 +39,21 @@ export const createProfile = createAsyncThunk(
             return response.data;
         }catch (error) {
             console.log("Creating account error: ", error)
-            throw error
+            throw error;
         }
     }
-)
+);
+
 
 export const handleEmail = createAsyncThunk(
-    "profile/activate",
-    async(data, {rejectWithValue}) => {
-        const response = await axiosInstance.post('account/handleemail/', data);
-        return response.data;
-        try{
-            const response = await axiosInstance.post('account/handleemail/', data);
+    "profile/handleEmail",
+    async (data, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.post("account/handleemail/", data);
             return response.data;
-        } catch (error){
+        } catch (error) {
             console.log("Activation problem: ", error.message);
-            rejectWithValue(error)
+            return rejectWithValue(error.response.data);
         }
     }
 );
@@ -68,15 +68,15 @@ const profileSlice = createSlice({
         },
         reducers: {},
         extraReducers:{
-            [fetchProfile.pending || updateProfile.pending || handleEmail.pending]: (state) =>{
+            [fetchProfile.pending || updateProfile.pending]: (state) =>{
                 state.loading = true
             },
-            [fetchProfile.fulfilled || updateProfile.fulfilled || handleEmail.fulfilled]: (state, action)=>{
+            [fetchProfile.fulfilled || updateProfile.fulfilled]: (state, action)=>{
                 state.loading = false
                 state.entities = action.payload
             },
-            [fetchProfile.rejected || updateProfile.rejected || handleEmail.rejected]: (state, action)=> {
-                state.error = action.payload
+            [fetchProfile.rejected || updateProfile.rejected]: (state, action)=> {
+                state.error = action
                 state.loading = false
             },
             [handleEmail.pending]: (state) => {
@@ -89,7 +89,7 @@ const profileSlice = createSlice({
             },
             [handleEmail.rejected]: (state, action) => {
                 state.loading = false
-                state.active = false
+                state.active = 'rejected'
                 state.error = action.payload
             },
             [createProfile.pending]: (state) => {
@@ -105,6 +105,6 @@ const profileSlice = createSlice({
             }
         }
     }
-)
+);
 
-export const profileReducer = profileSlice.reducer
+export const profileReducer = profileSlice.reducer;
