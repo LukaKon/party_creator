@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-// import {
-//   addFavourite,
-//   deleteFavourite,
-// } from "../../redux/slices/favouriteSlice";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
 import { CreateUpdateDate } from "./CreateUpdateDate";
-
 import {
   Box,
   Button,
@@ -28,8 +23,20 @@ import { loged } from "../../utils/loged";
 // https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
-  const style_is_main = { padding: 1, border: 3, borderColor: "lightgreen" };
-  const style_default = { padding: 1, border: 3, borderColor: "lightgrey" };
+  const style_is_main = {
+    padding: 1,
+    border: 3,
+    borderColor: "lightgreen",
+    width: 100,
+    height: 100,
+  };
+  const style_default = {
+    padding: 1,
+    border: 3,
+    borderColor: "lightred",
+    width: 120,
+    height: 120,
+  };
 
   return (
     <Link to={props.image} underline="none">
@@ -38,7 +45,8 @@ const ImageItem = (props) => {
         sx={props.is_main === true ? style_is_main : style_default}
       >
         <img
-          src={props.image}
+          src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
+          srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
           alt="description - make it dynamic"
           loading="lazy"
         />
@@ -79,6 +87,7 @@ export const AnnouncementDetails = () => {
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
+    // setGalleryCoefficient(Math.round(entities.images.length / 3));
   }, []);
 
   useEffect(() => {
@@ -97,6 +106,10 @@ export const AnnouncementDetails = () => {
   let editButton = null;
   if (loged) {
     editButton = <EditButton />;
+  }
+
+  const galleryCoefficient = () => {
+    return Math.round(entities.images.length / 3)
   }
 
   let content;
@@ -147,12 +160,15 @@ export const AnnouncementDetails = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               Images:
               <ImageList
-                sx={{ width: 200, height: 150 }}
+                sx={{
+                  width: 500,
+                  height: 450,
+                }}
                 cols={3}
-                rowHeight={120}
+                rowHeight={164}
               >
                 {entities.images.length > 0 ? (
                   entities.images.map((img) => (
@@ -166,7 +182,7 @@ export const AnnouncementDetails = () => {
               </ImageList>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               Movies:
               {entities.movies.length > 0 ? (
                 <ul>
