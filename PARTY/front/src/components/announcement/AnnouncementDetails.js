@@ -88,7 +88,6 @@ export const AnnouncementDetails = () => {
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
-    // setGalleryCoefficient(Math.round(entities.images.length / 3));
   }, []);
 
   useEffect(() => {
