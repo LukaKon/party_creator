@@ -21,6 +21,7 @@ ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
 PROJECT_APPS = [
     "account.apps.AccountConfig",
     "announcement.apps.AnnouncementConfig",
+    "chat.apps.ChatConfig",
 ]
 
 ADDITIONAL_APPS = [
@@ -42,7 +43,12 @@ STANDARD_APPS = [
     "django.contrib.staticfiles",
 ]
 
-INSTALLED_APPS = STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
+FIRST_APPS = [
+    "channels",
+    'daphne',
+]
+
+INSTALLED_APPS = FIRST_APPS + STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -66,6 +72,16 @@ CSRF_TRUSTED_ORIGINS = [
 # CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "back.urls"
+ASGI_APPLICATION = "back.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        }
+    }
+}
 
 TEMPLATES = [
     {

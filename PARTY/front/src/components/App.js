@@ -20,6 +20,7 @@ import {MyFavourites} from "./MyFavourites";
 import {SearchAnnouncement} from "./SearchAnnouncement";
 import {ActivateAccount} from "./ActivateAccount";
 import {ActivateNewEmail} from "./ActivateNewEmail";
+import {Chat} from "./chat/Chat";
 
 export const App = () => {
     const isAuthenticated = sessionStorage.getItem('access_token')
@@ -53,6 +54,9 @@ export const App = () => {
                     <Route path="activate/:uid/:token" element={<ActivateAccount />}/>
                     <Route path="changeemail/:uid/:newEmail/:token" element={<ActivateNewEmail/>} />
                     <Route path="search" element={<SearchAnnouncement />} />
+
+                    {/* in working */}
+                    <Route path="chat" element={<Chat />} />
 
                     {/*/!*Views only for logged users*!/*/}
                     
