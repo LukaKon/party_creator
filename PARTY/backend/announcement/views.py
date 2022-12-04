@@ -184,6 +184,11 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         return Response(status=status.HTTP_201_CREATED)
 
+    def perform_destroy(self, instance):
+        '''Delete selected announcement.'''
+        print('instance in delete func: ', instance)
+        instance.delete()
+
 
 class FavouriteViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.FavouriteSerializer

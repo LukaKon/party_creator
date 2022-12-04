@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   IconButton,
+  ImageListItem,
   Menu,
   MenuItem,
   Toolbar,
@@ -187,7 +188,9 @@ export const Header = () => {
         <Toolbar disableGutters>
           <Button onClick={() => handleMenu('/')}>
             <Typography noWrap component="div" sx={{ mr: 1 }}>
-              <img src={BACKEND_LOCALHOST + 'media/logo.png'} alt="logo" />
+              <ImageListItem sx={{width: 50, height:50,objectFit:'contain'}}>
+              <img src={BACKEND_LOCALHOST + 'media/logo.png'} alt="logo"/>
+              </ImageListItem>
             </Typography>
           </Button>
           <Box sx={{ flexGrow: 1, display: "flex" }}>{menuIcon}</Box>

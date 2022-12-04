@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
 import { CreateUpdateDate } from "./CreateUpdateDate";
 import {
@@ -15,12 +15,17 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
 import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
 import { fetchProfile } from "../../redux/slices/profileSlice";
-import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
+import {
+  deleteAnnouncement,
+  editAnnouncement,
+  fetchAnnouncementDetails,
+} from "../../redux/slices/announcementDetailSlice";
 import { loged } from "../../utils/loged";
-// https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
   const style_is_main = {
@@ -69,20 +74,13 @@ const CategoryItem = (props) => {
   );
 };
 
-const EditButton = () => {
-  return (
-    <Grid>
-      <Button variant="contained">Edit</Button>
-    </Grid>
-  );
-};
-
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
   const { loading, entities, error } = useSelector(
     (state) => state.announcementDetails
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
@@ -102,13 +100,46 @@ export const AnnouncementDetails = () => {
     return null;
   });
 
-  let editButton = null;
-  if (loged) {
-    editButton = <EditButton />;
-  }
+  const handleEditButton = (entities) => {
+    console.log("#####in edit: ", entities);
+    // TODO: link to edit form
+    navigate("/announcement/");
+  };
 
-  const galleryCoefficient = () => {
-    return Math.round(entities.images.length / 3)
+  const hadnleDeleteButton = (entities) => {
+    console.log("######in delete: ", entities.slug);
+    dispatch(deleteAnnouncement(entities));
+    navigate("profile");
+  };
+
+  let buttons = null;
+  if (loged) {
+    buttons = (
+      <Grid container>
+        <Grid item>
+          <Button
+            onClick={() => handleEditButton(entities)}
+            variant="outlined"
+            size="small"
+            color="primary"
+            startIcon={<EditIcon />}
+          >
+            Edit
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            onClick={() => hadnleDeleteButton(entities)}
+            variant="outlined"
+            size="small"
+            color="error"
+            startIcon={<DeleteIcon />}
+          >
+            Delete
+          </Button>
+        </Grid>
+      </Grid>
+    );
   }
 
   let content;
@@ -131,7 +162,7 @@ export const AnnouncementDetails = () => {
                 <Typography variant="h6">Title: {entities.title}</Typography>
               </Grid>
 
-              <Grid item>{editButton}</Grid>
+              <Grid item>{buttons}</Grid>
 
               <Grid item>
                 <CreateUpdateDate entities={entities} />
