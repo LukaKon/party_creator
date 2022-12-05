@@ -292,30 +292,23 @@ const SelectImages = (props) => {
   const imageHandler = (e) => {
     if (typeof addImagesToList === "function") {
       if (e.target.files[0]) {
-        const fileArray = Array.from(e.target.files);
-
-        fileArray.map((file, index) => {
+        const fileArray = Array.from(e.target.files).map((file, index) => {
           if (index === 0) {
             const firstImage = {
               toShow: URL.createObjectURL(file),
               image: file,
               is_main: true,
             };
-            console.log("1st: ", firstImage);
             return firstImage;
-            // return '1st'
           }
           const otherImage = {
             toShow: URL.createObjectURL(file),
             image: file,
             is_main: false,
           };
-          console.log("other: ", otherImage);
-          // return otherImage;
-          return 'other'
+          return otherImage;
         });
 
-        console.log("fileArray: ", fileArray);
         setSelectedImages(fileArray);
       }
     }
@@ -340,7 +333,7 @@ const SelectImages = (props) => {
 
 const UploadedImagesList = (props) => {
   const { listOfSelectedImages, updateListOfImages } = props;
-  console.log("list of images: ", listOfSelectedImages);
+
   const deleteImage = (image) => {
     const filteredImages = listOfSelectedImages.filter((img) => {
       return image.toShow !== img.toShow;
