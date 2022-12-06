@@ -19,10 +19,10 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { fetchCategories } from "../../redux/slices/categorySlice";
+import { fetchCategories } from "../../../redux/slices/categorySlice";
 
 import { useInput } from "./hooks/useInput";
-import { createAnnouncement } from "../../redux/slices/announcementDetailSlice";
+import {createAnnouncement} from '../../../redux/slices/announcementDetailSlice'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
