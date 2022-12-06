@@ -21,7 +21,6 @@ import {Alert} from "@mui/material";
 const theme = createTheme();
 
 export const SignUp = () => {
-    let navigate = useNavigate()
     const dispatch = useDispatch()
     let alert
 

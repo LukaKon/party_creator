@@ -5,20 +5,31 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import {useLocation, useParams} from "react-router-dom";
 
-const token = sessionStorage.getItem('access_token')
-console.log(token)
-const client = new W3CWebSocket('ws://127.0.0.1:8000/ws/chat/?token=' + token)
-// const client = new W3CWebSocket('ws://127.0.0.1:8000/ws/chat/')
 
-export const Chat = () => {
+export const Chat = (props) => {
+    const location = useLocation();
+    console.log('user id', location.state.to_user)
     const [messages, setMessages] = useState([])
+    const [client, setClient] = useState({})
+    
+    const to_user = location.state.to_user
+    useEffect(()=> {
+        const token = localStorage.getItem('access_token')
+        const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${to_user}/?token=` + token)
+        setClient(client)
+    },[])
 
-    client.onmessage = (message) => {
-        const newMessage = JSON.parse(message.data)
-        console.log(newMessage.message)
-        setMessages((prevState) => [...prevState, newMessage.message]
-        )
+    client.onmessage = (event) => {
+        const data = JSON.parse(event.data)
+        const fullMessage = {
+            "message": data.message,
+            "datetime": data.datetime,
+            "user": data.user
+        }
+
+        setMessages((prevState) => [...prevState, fullMessage])
     }
 
     let corpusMessages
@@ -26,8 +37,26 @@ export const Chat = () => {
     if(messages.length > 0){
         corpusMessages = (
             <Grid>
-                {messages.map((oneMessage)=>{
-                    return (<Typography component="h5">{oneMessage}</Typography>)
+                {messages.map((fullMessage)=>{
+                    return (
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Typography variant="caption">
+                                    {fullMessage.user}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="caption">
+                                    {fullMessage.datetime}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="h5">
+                                    {fullMessage.message}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    )
                 })}
             </Grid>)
     }

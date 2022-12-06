@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 // import {
 //   addFavourite,
 //   deleteFavourite,
@@ -72,6 +72,7 @@ const EditButton = () => {
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, entities, error } = useSelector(
     (state) => state.announcementDetails
   );
@@ -93,6 +94,10 @@ export const AnnouncementDetails = () => {
     }
     return null;
   });
+
+  const openChat = () => {
+    navigate('/chat/', {state: {to_user: entities.user.id}})
+  }
 
   let editButton = null;
   if (loged) {
@@ -184,12 +189,16 @@ export const AnnouncementDetails = () => {
                 </Typography>
               )}
             </Grid>
-
-            <FavouriteButton
-              userID={userID}
-              announcementID={entities.id}
-              favourite={entities.announcement_favourites}
-            />
+            <Grid item>
+               <FavouriteButton
+                userID={userID}
+                announcementID={entities.id}
+                favourite={entities.announcement_favourites}
+              />
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={() => openChat()}>Send Message</Button>
+            </Grid>
           </Grid>
         </Box>
       );

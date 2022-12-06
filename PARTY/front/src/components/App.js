@@ -21,12 +21,12 @@ import {SearchAnnouncement} from "./SearchAnnouncement";
 import {ActivateAccount} from "./ActivateAccount";
 import {ActivateNewEmail} from "./ActivateNewEmail";
 import {Chat} from "./chat/Chat";
+import {loged} from "../utils/loged";
 
 export const App = () => {
-    const isAuthenticated = sessionStorage.getItem('access_token')
 
     const isAuthenticatedFunction = (path, component) => {
-        if (isAuthenticated) {
+        if (loged) {
             return <Route path={path} element={component}/>
         } else {
             return <Route path={path} element={<SignIn/>}/>
