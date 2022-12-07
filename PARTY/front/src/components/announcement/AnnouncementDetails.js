@@ -110,9 +110,7 @@ export const AnnouncementDetails = () => {
   };
 
   const handleEditButton = (entities) => {
-    console.log("#####in edit: ", entities);
-    // TODO: link to edit form
-    navigate(`/editannouncement/${entities.slug}`, {state:{name:'test',id:1}});
+    navigate(`/editannouncement/${entities.slug}`);
   };
 
   const handleDeleteButton = (entities) => {

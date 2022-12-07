@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
   Container,
@@ -17,12 +17,11 @@ import {
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Checkbox from "@mui/material/Checkbox";
-import { useTheme } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
-import { fetchCategories } from "../../../redux/slices/categorySlice";
 
+import { useTheme } from "@mui/material/styles";
+import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
-import {createAnnouncement} from '../../../redux/slices/announcementDetailSlice'
+import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
