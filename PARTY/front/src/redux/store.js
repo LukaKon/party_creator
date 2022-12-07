@@ -6,6 +6,7 @@ import { categoryReducer } from "./slices/categorySlice";
 import { profileReducer } from "./slices/profileSlice";
 import { favouriteReducer } from "./slices/favouriteSlice";
 import { viewsReducer } from "./slices/ViewsSlice";
+import {messageReducer} from "./slices/messageSlice";
 
 export const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
         profile: profileReducer,
         favourite: favouriteReducer,
         views: viewsReducer,
+        message: messageReducer,
         // event:eventReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

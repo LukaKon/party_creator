@@ -5,21 +5,50 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchMessage} from "../../redux/slices/messageSlice";
 
 
-export const Chat = (props) => {
+export const Chat = () => {
     const location = useLocation();
-    console.log('user id', location.state.to_user)
     const [messages, setMessages] = useState([])
     const [client, setClient] = useState({})
-    
-    const to_user = location.state.to_user
+    const dispatch = useDispatch()
+    const recipient = location.state.to_user
+
     useEffect(()=> {
+        dispatch(fetchMessage({recipient: recipient}))
         const token = localStorage.getItem('access_token')
         const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${to_user}/?token=` + token)
         setClient(client)
     },[])
+
+    const {loading, entities, error} = useSelector(state => state.message)
+
+    let historyMessages
+    if(!loading){
+        console.log('entities', entities)
+        historyMessages = (
+             <Grid container>
+                <Grid item xs={12}>
+                    <Typography variant="caption">
+                        {fullMessage.user}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="caption">
+                        {fullMessage.datetime}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="h5">
+                        {fullMessage.message}
+                    </Typography>
+                </Grid>
+             </Grid>
+        )
+    }
 
     client.onmessage = (event) => {
         const data = JSON.parse(event.data)

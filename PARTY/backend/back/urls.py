@@ -1,7 +1,6 @@
 """
 URLs mapping for backend.
 """
-from announcement import urls as announcement_url
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -14,6 +13,8 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from announcement import urls as announcement_url
+from chat import urls as chat_url
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -33,6 +34,7 @@ urlpatterns = [
         include('django_rest_passwordreset.urls', namespace='password_reset'),
     ),
     path("api/", include(announcement_url, "announcement")),
+    path("chatapi/", include(chat_url, "chat")),
 ]
 
 if settings.DEBUG:
