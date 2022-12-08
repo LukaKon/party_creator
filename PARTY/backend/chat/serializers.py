@@ -4,7 +4,9 @@ from .models import Message
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    sender = serializers.StringRelatedField()
+    recipient = serializers.StringRelatedField()
 
     class Meta:
         model = Message
-        fields = ("sender", "recipient", "created")
+        fields = ("sender", "recipient", "created", "message")

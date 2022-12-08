@@ -37,6 +37,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "axios": "^0.26.1",
     "buffer": "^6.0.3",
