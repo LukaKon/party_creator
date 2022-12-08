@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Buffer } from "buffer";
+import {getCookie} from "./utils/functionalComponents/getCookie";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 
@@ -7,8 +8,9 @@ export const axiosInstance = axios.create({
     baseURL: LOCALHOST,
     timeout: 5000,
     headers: {
-        Authorization: sessionStorage.getItem("access_token")
-            ? "JWT " + sessionStorage.getItem("access_token")
+        "X-CSRFToken": getCookie('csrftoken'),
+        Authorization: localStorage.getItem("access_token")
+            ? "JWT " + localStorage.getItem("access_token")
             : null,
         "Content-Type": "application/json",
         accept: "application/json",
@@ -51,7 +53,7 @@ axiosInstance.interceptors.response.use(
             error.response.status === 401 &&
             error.response.statusText === "Unauthorized"
         ) {
-            const refreshToken = sessionStorage.getItem("refresh_token");
+            const refreshToken = localStorage.getItem("refresh_token");
 
             if (refreshToken) {
                 const tokenParts = decodedToken(refreshToken);
@@ -62,7 +64,6 @@ axiosInstance.interceptors.response.use(
 
                 // exp date in token is expressed in seconds, while now() returns milliseconds:
                 const now = Math.ceil(Date.now() / 1000);
-                // console.log(tokenParts.exp);
 
                 if (tokenParts.exp > now) {
                     return axiosInstance
@@ -70,17 +71,11 @@ axiosInstance.interceptors.response.use(
                             refresh: refreshToken,
                         })
                         .then((response) => {
-
-                            // console.log('stary refresh', refreshToken)
-                            // console.log('nowy refresh', response.data.refresh)
-                            // console.log('stary access', sessionStorage.getItem('access_token'))
-                            // console.log('nowy access', response.data.access)
-
-                            sessionStorage.setItem(
+                            localStorage.setItem(
                                 "access_token",
                                 response.data.access
                             );
-                            sessionStorage.setItem(
+                            localStorage.setItem(
                                 "refresh_token",
                                 response.data.refresh
                             );

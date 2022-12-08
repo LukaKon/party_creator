@@ -2,7 +2,6 @@ import React from 'react'
 import {Grid, Typography} from "@mui/material";
 import {useSelector} from "react-redux";
 import {AnnouncementSkeleton} from "./skeletons/AnnouncementSkeletons";
-import {AnnouncementItem} from "./announcement/AnnouncementItem";
 
 
 export const Profile = () => {

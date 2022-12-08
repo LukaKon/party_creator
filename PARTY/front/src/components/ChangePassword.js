@@ -14,9 +14,9 @@ import {axiosInstance} from "../axios";
 
 
 export const ChangePassword = () => {
-    const [status, setStatus] = useState(null)
+    const [alert, setAlert] = useState(null)
     const handleSubmit = (event) =>{
-        setStatus(null)
+        setAlert(null)
         event.preventDefault()
         let data = new FormData(event.currentTarget);
 
@@ -29,14 +29,14 @@ export const ChangePassword = () => {
             axiosInstance
                 .put("account/changepassword/", data)
                 .then((response) => {
-                    setStatus(
+                    setAlert(
                         <Alert severity="success">Password is changed!</Alert>
                     )
                     console.log(response)
                 })
                 .catch((error) => {
                     if(error.response.data.password){
-                        setStatus(
+                        setAlert(
                             <Typography variant="div">
                                 {error.response.data.password.map(error=>{
                                     return(
@@ -48,7 +48,7 @@ export const ChangePassword = () => {
                     }
                 })
         }else{
-            setStatus(<Alert severity="warning">Passwords must be the same</Alert>)
+            setAlert(<Alert severity="warning">Passwords must be the same</Alert>)
         }
     }
 
@@ -69,7 +69,7 @@ export const ChangePassword = () => {
                 <Typography variant="h5">
                     Change password
                 </Typography>
-                {status}
+                {alert}
                 <Box
                     component="form"
                     onSubmit={handleSubmit}

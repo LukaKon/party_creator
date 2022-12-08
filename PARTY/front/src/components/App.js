@@ -20,12 +20,13 @@ import {MyFavourites} from "./MyFavourites";
 import {SearchAnnouncement} from "./SearchAnnouncement";
 import {ActivateAccount} from "./ActivateAccount";
 import {ActivateNewEmail} from "./ActivateNewEmail";
+import {Chat} from "./chat/Chat";
+import {loged} from "../utils/loged";
 
 export const App = () => {
-    const isAuthenticated = sessionStorage.getItem('access_token')
 
     const isAuthenticatedFunction = (path, component) => {
-        if (isAuthenticated) {
+        if (loged) {
             return <Route path={path} element={component}/>
         } else {
             return <Route path={path} element={<SignIn/>}/>
@@ -53,6 +54,9 @@ export const App = () => {
                     <Route path="activate/:uid/:token" element={<ActivateAccount />}/>
                     <Route path="changeemail/:uid/:newEmail/:token" element={<ActivateNewEmail/>} />
                     <Route path="search" element={<SearchAnnouncement />} />
+
+                    {/* in working */}
+                    <Route path="chat" element={<Chat />} />
 
                     {/*/!*Views only for logged users*!/*/}
                     

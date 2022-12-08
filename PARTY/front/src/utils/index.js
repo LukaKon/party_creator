@@ -2,8 +2,8 @@ import {axiosInstance} from "../axios";
 
 
 export const removeToken = () => {
-    sessionStorage.removeItem('access_token')
-    sessionStorage.removeItem('refresh_token')
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
     axiosInstance.post('account/logout/')
         .then(response => console.log(response))
     window.location.reload();
