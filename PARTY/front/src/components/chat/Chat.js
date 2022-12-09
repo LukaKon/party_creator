@@ -56,18 +56,18 @@ export const Chat = () => {
                 return(
                     <Paper className={style}>
                          <Grid container>
-                            <Grid item xs={6}>
-                                <Typography variant="caption">
+                            <Grid item>
+                                <Typography variant="caption" className={classes.emailMessage}>
                                     {message.sender}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="caption">
+                            <Grid item className={classes.dateMessage} xs={12}>
+                                <Typography variant="caption" align="right">
                                     {datetime}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography variant="h6">
+                                <Typography variant="h6" className={classes.textMessage}>
                                     {message.message}
                                 </Typography>
                             </Grid>

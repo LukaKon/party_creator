@@ -170,6 +170,7 @@ class Movie(Multimedia):
 
 
 class Views(models.Model):
+    # View to count people visiting announcements
 
     uuid_or_email = models.CharField(
         max_length=240,

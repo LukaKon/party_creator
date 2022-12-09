@@ -58,6 +58,7 @@ export const ProfileSettings = () => {
         if(image["imageToUpload"]) {
             const data = new FormData()
             data.append('image', image["imageToUpload"])
+            data.append("change", "image")
             dispatch(updateProfile(data))
                 .then(response => {
                     dispatch(fetchProfile());

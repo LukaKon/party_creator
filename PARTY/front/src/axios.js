@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Buffer } from "buffer";
-import {getCookie} from "./utils/functionalComponents/getCookie";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 
@@ -8,7 +7,6 @@ export const axiosInstance = axios.create({
     baseURL: LOCALHOST,
     timeout: 5000,
     headers: {
-        "X-CSRFToken": getCookie('csrftoken'),
         Authorization: localStorage.getItem("access_token")
             ? "JWT " + localStorage.getItem("access_token")
             : null,

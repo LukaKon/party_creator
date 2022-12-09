@@ -114,6 +114,10 @@ class UpdateUserAPI(UpdateAPIView):
                 return Response(self.serializer_class(user).data, status=status.HTTP_200_OK)
 
             return Response(self.serializer_class(user).data, status=status.HTTP_401_UNAUTHORIZED)
+        if change == "image":
+            user.image = self.request.data.get('image')
+            user.save()
+            return Response(self.serializer_class(user).data, status=status.HTTP_200_OK)
 
         return Response(self.serializer_class(user).data, status=status.HTTP_400_BAD_REQUEST)
 
