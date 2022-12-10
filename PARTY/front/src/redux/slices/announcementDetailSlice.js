@@ -3,20 +3,20 @@ import { axiosInstance } from "../../axios";
 
 export const fetchAnnouncementDetails = createAsyncThunk(
   "announcement/getDetails",
-  async (slug) => {
+  async (slug, { rejectWithValue }) => {
     try {
       const response = await axiosInstance(`api/announcements/${slug}`); //, slug);
       return response.data;
     } catch (error) {
       console.log("Fetch announcement details error: ", error);
-      throw error.data;
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const createAnnouncement = createAsyncThunk(
   "announcements/createAnnouncement",
-  async (data) => {
+  async (data, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("api/announcements/", data, {
         headers: {
@@ -26,17 +26,17 @@ export const createAnnouncement = createAsyncThunk(
           Accept: "image/png",
         },
       });
-      return response;
+      return response.data;
     } catch (error) {
       console.log("Sent announcement error: ", error.message);
-      throw error;
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const editAnnouncement = createAsyncThunk(
   "announcements/editAnnouncement",
-  async (data) => {
+  async (data, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.patch("api/announcements", data, {
         headers: {
@@ -46,17 +46,17 @@ export const editAnnouncement = createAsyncThunk(
           Accept: "image/png",
         },
       });
-      return response;
+      return response.data;
     } catch (error) {
       console.log("Edit announcement errror: ", error.message);
-      throw error;
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const deleteAnnouncement = createAsyncThunk(
   "announcements/deleteAnnouncement",
-  async (data) => {
+  async (data, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.delete(
         `api/announcements/${data.slug}`
@@ -64,7 +64,7 @@ export const deleteAnnouncement = createAsyncThunk(
       return response;
     } catch (error) {
       console.log("Delete announcement error:", error.message);
-      throw error;
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -72,8 +72,8 @@ export const deleteAnnouncement = createAsyncThunk(
 const announcementDetailsSlice = createSlice({
   name: "announcementDetails",
   initialState: {
-    loading: false,
-    entities: null,
+    loading: true,
+    entities: [],
     error: null,
   },
   reducers: {},

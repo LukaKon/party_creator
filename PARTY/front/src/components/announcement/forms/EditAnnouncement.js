@@ -9,6 +9,7 @@ import {
 } from "../../../redux/slices/announcementDetailSlice";
 import { useInput } from "./hooks/useInput";
 import { loged } from "../../../utils/loged";
+// import { } './formUtils'
 
 export const EditAnnouncement = () => {
   const { slug } = useParams();
@@ -20,10 +21,12 @@ export const EditAnnouncement = () => {
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
   }, []);
-  console.log('entities: ', entities);
+
+  const []=useState(entities)
 
   const {
-    value: enteredTitle=entities.title,
+    value: enteredTitle,
+    setValue: setEnteredValue,
     isValid: enteredTitleIsValid,
     hasError: titleInputHasError,
     valueChangeHandler: titleChangedHandler,
@@ -31,18 +34,21 @@ export const EditAnnouncement = () => {
     reset: resetTitleInput,
   } = useInput((value) => value.trim() !== "", "");
 
+  let formIsValid = false
+
   let content = <Grid>Loading...</Grid>;
-  
+
   if (!loading) {
-  console.log(entities.title)
+    console.log('title: ', enteredTitle)
     content = (
       <Grid item>
         <TextField
           id="title"
-          label={enteredTitle}
+          label='Title'
           name="title"
           placeholder={enteredTitle}
-          value={enteredTitle}
+          defaultValue={entities.title}
+          onChange={(e) => setEnteredValue(e.target.value)}
         />
       </Grid>
     );
@@ -50,7 +56,7 @@ export const EditAnnouncement = () => {
 
   return (
     <Grid container>
-      Edit annoucnement form
+      <Grid>Edit annoucnement form</Grid>
       {content}
     </Grid>
   );

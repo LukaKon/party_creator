@@ -3,16 +3,16 @@ import { AnnouncementItem } from "./AnnouncementItem";
 import { Box, Grid, Typography } from "@mui/material";
 import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
 
-
 export const AnnouncementList = (props) => {
-    const { loading, entities, error } = props
+  const { loading, entities, error } = props;
 
   // console.log('AnnouncementList loading: ',loading)
   let content;
-  // if (loading) {
-  //   content = <AnnouncementSkeleton />;
-  // } else {
+  if (loading) {
+    content = <AnnouncementSkeleton />;
+  } else {
     if (!entities) {
+      // if (!loading) {
       content = (
         <Typography variant="h3">No announcement in data base.</Typography>
       );
@@ -35,6 +35,6 @@ export const AnnouncementList = (props) => {
         </Box>
       );
     }
-  // }
+  }
   return <Grid>{content}</Grid>;
 };
