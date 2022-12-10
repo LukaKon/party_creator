@@ -21,6 +21,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
 import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
+// import {formSubmissionHandler} from './formUtils'
 import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
 
 const ITEM_HEIGHT = 48;
@@ -94,6 +95,8 @@ export const AddAnnouncement = () => {
 
   const dispatch = useDispatch();
 
+  // const [formIsValid, setFormIsValid]=useState(false)
+
   let formIsValid = false;
 
   if (
@@ -102,12 +105,14 @@ export const AddAnnouncement = () => {
     selectedCategoryIsValid
   ) {
     formIsValid = true;
+    // setFormIsValid(true)
   }
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
 
     if (
+      // !formIsValid
       !enteredTitleIsValid &&
       !enteredDescriptionValid &&
       !selectedCategoryIsValid
@@ -142,6 +147,14 @@ export const AddAnnouncement = () => {
     resetMovieUrl();
     setListOfImages("");
   };
+
+  // const submissionHandler=(e)=>{
+  //   if (typeof(formSubmissionHandler) ==='function'){
+  //     const announcementData={}
+  //     formSubmissionHandler(announcementData)
+  //   }
+  //
+  // }
 
   useEffect(() => {
     dispatch(fetchCategories());
