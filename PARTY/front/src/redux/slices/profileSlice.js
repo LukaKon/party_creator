@@ -43,6 +43,19 @@ export const updateProfile = createAsyncThunk(
     }
 );
 
+export const changePassword = createAsyncThunk(
+    'profile/changePassword',
+    async (data, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.put('account/changepassword/', data)
+            return response.data;
+        }catch (error){
+            console.log("Change password problem: ", error.message);
+            return rejectWithValue(error.response.data)
+        }
+    }
+);
+
 
 export const createProfile = createAsyncThunk(
     "profile/create",

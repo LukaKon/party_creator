@@ -193,9 +193,11 @@ class FavouriteViewSet(viewsets.ModelViewSet):
     def delete(self, request, *args, **kwargs):
         user = self.request.user
         announcement = self.request.data.get("announcement")
-        instance = models.Favourite.objects.filter(user=user, announcement=announcement)
+        instance = models.Favourite.objects.get(user=user, announcement=announcement)
+        serializer = self.get_serializer(instance)
+        data_to_send = serializer.data
         self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(data=data_to_send, status=status.HTTP_200_OK)
 
     def get_queryset(self):
         queryset = models.Favourite.objects.filter(user=self.request.user)
