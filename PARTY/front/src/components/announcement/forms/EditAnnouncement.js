@@ -22,11 +22,10 @@ export const EditAnnouncement = () => {
     dispatch(fetchAnnouncementDetails(slug));
   }, []);
 
-  const []=useState(entities)
+  const [] = useState(entities);
 
   const {
     value: enteredTitle,
-    setValue: setEnteredValue,
     isValid: enteredTitleIsValid,
     hasError: titleInputHasError,
     valueChangeHandler: titleChangedHandler,
@@ -34,24 +33,29 @@ export const EditAnnouncement = () => {
     reset: resetTitleInput,
   } = useInput((value) => value.trim() !== "", "");
 
-  let formIsValid = false
+  let formIsValid = false;
 
   let content = <Grid>Loading...</Grid>;
 
   if (!loading) {
-    console.log('title: ', enteredTitle)
+    console.log("title: ", enteredTitle);
     content = (
       <Grid item>
         <TextField
           id="title"
-          label='Title'
+          label="Title"
           name="title"
           placeholder={enteredTitle}
           defaultValue={entities.title}
-          onChange={(e) => setEnteredValue(e.target.value)}
+          onChange={titleChangedHandler}
+          onBlur={titleBlurHandler}
         />
+        {titleInputHasError && (
+          <p style={{ color: "red" }}>Title must not be empty.</p>
+        )}
       </Grid>
     );
+    console.log("title: ", enteredTitle);
   }
 
   return (
