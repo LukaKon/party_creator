@@ -73,6 +73,62 @@ const CategoryItem = (props) => {
   );
 };
 
+const VideoItem = (props) => {
+  const { video_url } = props;
+  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(
+    -11
+  )}`;
+
+  return (
+    <Grid container>
+      <Grid item>
+        <iframe
+          width="560"
+          height="315"
+          src={embeddedVideoURL}
+          title="YouTube Video Playre"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+        <Typography variant='body2'>
+        <a href={video_url} underline="hover">
+          {video_url}
+        </a>
+
+        </Typography>
+      </Grid>
+      <Grid item>
+      </Grid>
+    </Grid>
+  );
+};
+
+const VideoList = (props) => {
+  let content = (
+    <Typography variant="body2" color="red">
+      No movies.
+    </Typography>
+  );
+  if (props.listOfVideos.length > 0) {
+    content = (
+      <Grid container>
+        {props.listOfVideos.map((video) => (
+          <Grid item>
+            <VideoItem key={video.uuid} video_url={video.movie_url} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+  return (
+    <>
+      <Typography variant="body1">Movies:</Typography>
+      <Grid>{content}</Grid>
+    </>
+  );
+};
+
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
@@ -226,22 +282,7 @@ export const AnnouncementDetails = () => {
             </Grid>
 
             <Grid item xs={8}>
-              Movies:
-              {entities.movies.length > 0 ? (
-                <ul>
-                  {entities.movies.map((mov) => (
-                    <li key={mov.uuid}>
-                      <a href={mov.movie_url} underline="hover">
-                        {mov.movie_url}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <Typography variant="body2" color="red">
-                  No movies.
-                </Typography>
-              )}
+              <VideoList listOfVideos={entities.movies} />
             </Grid>
             <Grid item>
               <FavouriteButton

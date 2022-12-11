@@ -11,7 +11,7 @@ export const useInput = (validateValue, initState) => {
     setEnteredValue(e.target.value);
   };
 
-  const inputBlurHandler = (e) => {
+  const inputBlurHandler = () => {
     setIsTouched(true);
   };
 
@@ -22,7 +22,6 @@ export const useInput = (validateValue, initState) => {
 
   return {
     value: enteredValue,
-    setValue: setEnteredValue,
     isValid: valueIsValid,
     hasError,
     valueChangeHandler,

@@ -80,7 +80,7 @@ export const AddAnnouncement = () => {
     valueChangeHandler: movieUrlChangeHandler,
     inputBlurHandler: movieUrlBlurHandler,
     reset: resetMovieUrl,
-  } = useInput((value) => value.includes("https://www"), "");
+  } = useInput((value) => value.includes("https://www.youtube.com/"), "");
 
   const [listOfImages, setListOfImages] = useState([
     {
@@ -275,7 +275,7 @@ export const AddAnnouncement = () => {
               error={movieUrlHasError}
             />
             {movieUrlHasError && (
-              <p style={{ color: "red" }}>Url is incorrect.</p>
+              <p style={{ color: "red" }}>Url is is not from YouTube.</p>
             )}
           </Grid>
 
