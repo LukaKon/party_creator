@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+import uuid as uuid_lib
+
 from announcement.models import Announcement
 
 
@@ -15,7 +17,4 @@ class Message(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="message")
-
-
-
-
+    uuid = models.UUIDField(default=uuid_lib.uuid4)

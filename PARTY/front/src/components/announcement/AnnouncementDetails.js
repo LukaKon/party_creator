@@ -105,16 +105,18 @@ export const AnnouncementDetails = () => {
   });
 
   const openChat = () => {
-    navigate('/chat/', {state: {to_user: entities.user.id}})
+    navigate('/chat/', {state: {recipient_id: entities.user.id, announcement_id: entities.id, sender_id: userID}})
   }
 
-  let editButton = null;
+  let editButton;
+  let messageButton;
   if (loged) {
     editButton = <EditButton />;
+    messageButton =  <Button variant="contained" onClick={() => openChat()}>Send Message</Button>;
   }
 
   const galleryCoefficient = () => {
-    return Math.round(entities.images.length / 3)
+    return Math.round(entities.images.length / 3);
   }
 
   let content;
@@ -213,7 +215,7 @@ export const AnnouncementDetails = () => {
               />
             </Grid>
             <Grid item>
-              <Button variant="contained" onClick={() => openChat()}>Send Message</Button>
+              {messageButton}
             </Grid>
           </Grid>
         </Box>

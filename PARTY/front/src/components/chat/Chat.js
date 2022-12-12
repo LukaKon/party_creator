@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
-import {fetchMessage} from "../../redux/slices/messageSlice";
+import {fetchConversation} from "../../redux/slices/messageSlice";
 import {customStyle} from "../../styles/customStyle";
 import {fetchProfile} from "../../redux/slices/profileSlice";
 
@@ -19,7 +19,9 @@ export const Chat = () => {
     const [messages, setMessages] = useState([])
     const [client, setClient] = useState({})
     const dispatch = useDispatch()
-    const recipient = location.state.to_user
+    const recipient_id = location.state.recipient_id
+    const sender_id = location.state.sender_id
+    const announcement_id = location.state.announcement_id
     const classes = customStyle();
     const {loading: loadingProfile, entities: entitiesProfile, error: errorProfile} = useSelector(state => state.profile)
 
@@ -28,16 +30,17 @@ export const Chat = () => {
         if(!loadingProfile && entitiesProfile === "initial"){
             dispatch(fetchProfile())
         }
-        dispatch(fetchMessage({recipient: recipient}))
+        dispatch(fetchConversation({announcement: announcement_id, sender: sender_id}))
         const token = localStorage.getItem('access_token')
-        const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${recipient}/?token=` + token)
+        const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${recipient_id}/${announcement_id}/?token=` + token)
         setClient(client)
     },[])
 
-    const {loading, entities, error} = useSelector(state => state.message)
+    const {loading: loadingConversation,
+        entities: entitiesConversation,
+        error: errorConversation} = useSelector(state => state.message)
 
-    const handleMessage = (senderEmail) => {
-        let style
+    const checkStyleUser = (senderEmail) => {
         if (senderEmail === entitiesProfile.email){
             return classes.messageRight
         }else{
@@ -45,101 +48,81 @@ export const Chat = () => {
         }
     }
 
-    let historyMessages
-    if(!loading && !loadingProfile && entities.length > 0){
-        // Fetched messages (chat history)
-        historyMessages = (
-            entities.map((message)=>{
-                const datetime = new Date(message.created).toLocaleString()
-                const style = handleMessage(message.sender)
-
-                return(
-                    <Paper className={style}>
-                         <Grid container>
-                            <Grid item>
-                                <Typography variant="caption" className={classes.emailMessage}>
-                                    {message.sender}
-                                </Typography>
-                            </Grid>
-                            <Grid item className={classes.dateMessage} xs={12}>
-                                <Typography variant="caption" align="right">
-                                    {datetime}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Typography variant="h6" className={classes.textMessage}>
-                                    {message.message}
-                                </Typography>
-                            </Grid>
-                         </Grid>
-                    </Paper>
-                )
-                })
-        )
+    const sendMessage = (event) => {
+        event.preventDefault()
+        let dataForm = new FormData(event.currentTarget)
+        const messageFromForm = dataForm.get('message')
+        const data = JSON.stringify({message:messageFromForm})
+        client.send(data)
     }
 
-    client.onmessage = (event) => {
+     client.onmessage = (event) => {
         const data = JSON.parse(event.data)
         const fullMessage = {
             "message": data.message,
             "datetime": data.datetime,
-            "user": data.user
+            "user": data.user,
+            "uuid": data.uuid
         }
 
         setMessages((prevState) => [...prevState, fullMessage])
     }
 
-    let corpusMessages
+    const paperMessage = (user, datetime, message, uuid) => {
+        const datetime_string = new Date(datetime).toLocaleString()
+        const style = checkStyleUser(user)
+
+        return(
+            <Paper className={style} key={uuid}>
+                 <Grid container>
+                    <Grid item>
+                        <Typography variant="caption" className={classes.emailMessage}>
+                            {user}
+                        </Typography>
+                    </Grid>
+                    <Grid item className={classes.dateMessage} xs={12}>
+                        <Typography variant="caption" align="right">
+                            {datetime_string}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" className={classes.textMessage}>
+                            {message}
+                        </Typography>
+                    </Grid>
+                 </Grid>
+            </Paper>
+        )
+    }
+
+    let historyMessages
+
+    if(!loadingConversation && !loadingProfile && entitiesConversation !== "initial"){
+        // Fetched messages (chat history)
+        historyMessages = (
+            entitiesConversation.message.map((message)=>{
+                return paperMessage(message.sender, message.created, message.message, message.uuid)
+                })
+        )
+    }
+
+    let sessionMessages
 
     if(messages.length > 0){
         // Messages sent in this session
          if(!loadingProfile) {
-             corpusMessages = (
+             sessionMessages = (
                  messages.map((message) => {
-                     const datetime = new Date(message.datetime).toLocaleString()
-                     const style = handleMessage(message.user)
-
-                     return (
-                         <Paper className={style}>
-                             <Grid container>
-                                 <Grid item xs={12}>
-                                     <Typography variant="caption">
-                                         {message.user}
-                                     </Typography>
-                                 </Grid>
-                                 <Grid item xs={12}>
-                                     <Typography variant="caption">
-                                         {datetime}
-                                     </Typography>
-                                 </Grid>
-                                 <Grid item xs={12}>
-                                     <Typography variant="h6">
-                                         {message.message}
-                                     </Typography>
-                                 </Grid>
-                             </Grid>
-                         </Paper>
-                     )
+                     return paperMessage(message.user, message.datetime, message.message, message.uuid)
                  })
-
              )
          }
     }
 
-    const sendMessage = (event) => {
-        event.preventDefault()
-        let dataForm = new FormData(event.currentTarget)
-        const messageFromForm = dataForm.get('message')
-        console.log(messageFromForm)
-        const data = JSON.stringify({message:messageFromForm})
-        client.send(data)
-    }
-
-
     return(
         <Grid>
             {historyMessages}
-            {corpusMessages}
+            {sessionMessages}
             <Box
             component='form'
             onSubmit={sendMessage}
@@ -147,7 +130,6 @@ export const Chat = () => {
                 <TextField
                     name="message"
                 >
-
                 </TextField>
                 <Button variant={"outlined"} type={"submit"}>Send</Button>
             </Box>
