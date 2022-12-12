@@ -10,7 +10,7 @@ export const AnnouncementsByCategory = () => {
   const location = useLocation()
   const { categoryUuid } = location.state
   const dispatch = useDispatch();
-  let viewAnnouncements
+  let content
   const announcements = useSelector(state => state.announcements);
 
   useEffect(() => {
@@ -19,9 +19,9 @@ export const AnnouncementsByCategory = () => {
 
 
   if (announcements.loading) {
-    viewAnnouncements = (<AnnouncementSkeleton />)
+    content = (<AnnouncementSkeleton />)
   } else if (announcements.entities.length > 0 && announcements.loading === false) {
-    viewAnnouncements = (
+    content = (
       <Grid marginTop={1}>
         <Grid
           container
@@ -39,12 +39,12 @@ export const AnnouncementsByCategory = () => {
       </Grid>
     );
   } else {
-    viewAnnouncements = (<Typography variant="h3">No announcement in this category.</Typography>)
+    content = (<Typography variant="h3">No announcement in this category.</Typography>)
   }
 
   return (
     <Box spacing={{ xs: 2, md: 3 }}>
-      {viewAnnouncements}
+      {content}
     </Box>
   )
 }

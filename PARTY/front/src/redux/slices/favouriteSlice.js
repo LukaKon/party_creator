@@ -42,22 +42,47 @@ const favouriteSlice = createSlice({
     name:  "favourite",
     initialState: {
         loading: true,
-        entities: "initial",
+        entities: [],
         error: null,
     },
     reducers: {},
     extraReducers:{
-        [addFavourite.pending || deleteFavourite.pending || getMyFavourites.pending]: (state) => {
+        [addFavourite.pending]: (state) => {
             state.loading = true
         },
-        [addFavourite.fulfilled || deleteFavourite.fulfilled || getMyFavourites.fulfilled]: (state, action) => {
+        [addFavourite.fulfilled]: (state, action) => {
             state.loading = false
-            state.entities = action.payload
+            state.entities = [...state.entities, action.payload]
         },
-        [addFavourite.rejected || deleteFavourite.rejected || getMyFavourites.rejected]: (state, action) => {
+        [addFavourite.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
+        [deleteFavourite.pending]: (state) => {
+            state.loading = true
+        },
+        [deleteFavourite.fulfilled]: (state, action) => {
+            state.loading = false
+            state.entities = state.entities.filter(favourite => {
+                return favourite.id !== action.payload.id
+            })
+        },
+        [deleteFavourite.rejected]: (state, action) => {
+            state.loading = true
+            state.error = action.payload
+        },
+        [getMyFavourites.pending]: (state) => {
+            state.loading = true
+        },
+        [getMyFavourites.fulfilled]: (state, action) => {
+            state.loading = false
+            state.entities = action.payload
+        },
+        [getMyFavourites.rejected]: (state, action) => {
+            state.loading = true
+            state.error = action.payload
+        },
+
     }
 })
 

@@ -17,6 +17,21 @@ export const fetchMessage = createAsyncThunk(
     }
 );
 
+export const fetchConversation = createAsyncThunk(
+    "chat/getConversation",
+    async(data, {rejectWithValue}) => {
+        if(loged){
+            try {
+                const response = await axiosInstance.post("/chatapi/getconversation/", data)
+                return response.data
+            }catch (error){
+                console.log("Getting conversation problem: ", error.message)
+                return rejectWithValue(error.response.data)
+            }
+        }
+    }
+);
+
 const messageSlice = createSlice({
     name: "message",
     initialState: {
@@ -36,7 +51,19 @@ const messageSlice = createSlice({
         [fetchMessage.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
-        }
+        },
+        [fetchConversation.pending]: (state) => {
+            state.loading = true
+        },
+        [fetchConversation.fulfilled]: (state, action) => {
+            state.loading = false
+            state.entities = action.payload
+        },
+        [fetchConversation.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
+            state.entities = "initial"
+        },
     }
 });
 

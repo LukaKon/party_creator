@@ -10,11 +10,13 @@ import {
     TextField
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {axiosInstance} from "../axios";
+import {useDispatch} from "react-redux";
+import {changePassword} from "../redux/slices/profileSlice";
 
 
 export const ChangePassword = () => {
     const [alert, setAlert] = useState(null)
+    const dispatch = useDispatch()
     const handleSubmit = (event) =>{
         setAlert(null)
         event.preventDefault()
@@ -26,8 +28,7 @@ export const ChangePassword = () => {
             new_password: data.get("new_password"),
             };
 
-            axiosInstance
-                .put("account/changepassword/", data)
+            dispatch(changePassword(data)).unwrap()
                 .then((response) => {
                     setAlert(
                         <Alert severity="success">Password is changed!</Alert>

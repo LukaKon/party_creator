@@ -9,7 +9,6 @@ import Favorite from "@mui/icons-material/Favorite";
 export const FavouriteButton = (props) => {
   const dispatch = useDispatch();
   const [checkInput, setCheckInput] = useState(false)
-  console.log("props.favourite", props.favourite[0])
 
   useEffect(()=>{
     if(loged){
@@ -25,7 +24,8 @@ export const FavouriteButton = (props) => {
       if(userFavouriteAnnouncement.id === props.favourite[0]){
         setCheckInput(true)
       }
-    })}
+    })
+    }
   },[entities])
 
 

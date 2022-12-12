@@ -17,6 +17,19 @@ export const fetchProfile = createAsyncThunk(
     }
 );
 
+export const logoutProfile = createAsyncThunk(
+    "profile/logout",
+    async (data, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.post("account/logout/");
+            return response.data
+        } catch(error){
+            console.log("Problem with logout: ", error.message)
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
 export const updateProfile = createAsyncThunk(
     "profile/updateProfile",
     async (data, {rejectWithValue}) => {
@@ -30,6 +43,19 @@ export const updateProfile = createAsyncThunk(
     }
 );
 
+export const changePassword = createAsyncThunk(
+    'profile/changePassword',
+    async (data, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.put('account/changepassword/', data)
+            return response.data;
+        }catch (error){
+            console.log("Change password problem: ", error.message);
+            return rejectWithValue(error.response.data)
+        }
+    }
+);
+
 
 export const createProfile = createAsyncThunk(
     "profile/create",
@@ -38,7 +64,7 @@ export const createProfile = createAsyncThunk(
             const response = await axiosInstance.post('account/register/', data);
             return response.data;
         }catch (error) {
-            console.log("Creating account error: ", error)
+            console.log("Creating account error: ", error.message)
             throw error;
         }
     }
@@ -78,6 +104,17 @@ const profileSlice = createSlice({
             [fetchProfile.rejected || updateProfile.rejected]: (state, action)=> {
                 state.error = action
                 state.loading = false
+            },
+            [logoutProfile.pending]: (state) => {
+                state.loading = true
+            },
+            [logoutProfile.fulfilled]: (state, action) => {
+                state.loading = false
+                state.entities = 'initial'
+            },
+            [logoutProfile.rejected]: (state, action) => {
+                state.loading = false
+                state.error = action.payload
             },
             [handleEmail.pending]: (state) => {
                 state.loading = true

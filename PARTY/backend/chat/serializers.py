@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Message
+from .models import Message, Conversation
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -9,4 +9,12 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ("sender", "recipient", "created", "message")
+        fields = ("sender", "recipient", "created", "message", "uuid")
+
+
+class ConversationSerializer(serializers.ModelSerializer):
+    message = MessageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Conversation
+        fields = ("message", )

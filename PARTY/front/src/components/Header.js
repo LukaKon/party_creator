@@ -17,13 +17,14 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { makeStyles } from "@mui/styles";
-import { removeToken } from "../utils";
+// import { logout } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/slices/profileSlice";
 import { BACKEND_LOCALHOST } from "../../Settings";
 import { loged } from "../utils/loged";
 import { v4 as uuidv4 } from "uuid";
 import { SearchBar } from "./Search";
+import {Logout} from "./Logout";
 
 const useStyles = makeStyles((theme) => ({
   test: {
@@ -100,13 +101,12 @@ export const Header = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleMenu = (pageURL) => {
-    if (pageURL === "signout") {
-      removeToken();
-      window.location.replace("/");
-    } else {
+    // if (pageURL === "signout") {
+    //   navigate()
+    // } else {
       navigate(pageURL);
       setAnchorElUser(null);
-    }
+    // }
   };
 
   const handleOpenNavMenu = (event) => {

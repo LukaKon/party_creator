@@ -22,6 +22,7 @@ import {ActivateAccount} from "./ActivateAccount";
 import {ActivateNewEmail} from "./ActivateNewEmail";
 import {Chat} from "./chat/Chat";
 import {loged} from "../utils/loged";
+import {Logout} from "./Logout";
 
 export const App = () => {
 
@@ -66,6 +67,7 @@ export const App = () => {
                     {isAuthenticatedFunction('changepassword', <ChangePassword/>)}
                     {isAuthenticatedFunction('myannouncements', <MyAnnouncements/>)}
                     {isAuthenticatedFunction('myfavourites', <MyFavourites/>)}
+                    {isAuthenticatedFunction('signout', <Logout/>)}
                 </Routes>
                 <Footer/>
             </BrowserRouter>
