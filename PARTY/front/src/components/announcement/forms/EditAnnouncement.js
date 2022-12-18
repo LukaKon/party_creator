@@ -18,12 +18,6 @@ export const EditAnnouncement = () => {
     (state) => state.announcementDetails
   );
 
-  useEffect(() => {
-    dispatch(fetchAnnouncementDetails(slug));
-  }, []);
-
-  const [] = useState(entities);
-
   const {
     value: enteredTitle,
     isValid: enteredTitleIsValid,
@@ -32,6 +26,18 @@ export const EditAnnouncement = () => {
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
   } = useInput((value) => value.trim() !== "", "");
+
+  useEffect(() => {
+    dispatch(fetchAnnouncementDetails(slug));
+  }, []);
+
+  useEffect(() => {
+    console.log("entities: ", entities);
+    if (entities.length !== 0) {
+      console.log("tutaj :", entities);
+      titleChangedHandler(entities.title);
+    }
+  }, [entities]);
 
   let formIsValid = false;
 
@@ -46,7 +52,7 @@ export const EditAnnouncement = () => {
           label="Title"
           name="title"
           placeholder={enteredTitle}
-          defaultValue={entities.title}
+          value={enteredTitle}
           onChange={titleChangedHandler}
           onBlur={titleBlurHandler}
         />
