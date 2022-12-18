@@ -136,6 +136,7 @@ export const AnnouncementDetails = () => {
   const { loading, entities, error } = useSelector(
     (state) => state.announcementDetails
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
@@ -155,6 +156,7 @@ export const AnnouncementDetails = () => {
     return null;
   });
 
+<<<<<<< HEAD
   const openChat = () => {
     navigate("/chat/", {
       state: {
@@ -170,11 +172,19 @@ export const AnnouncementDetails = () => {
   };
 
   const handleDeleteButton = (entities) => {
+=======
+  const handleEditButton = (entities) => {
+    navigate(`/editannouncement/${entities.slug}`);
+  };
+
+  const hadnleDeleteButton = (entities) => {
+>>>>>>> f3afdbb644778912ee109919f54b01eb51af35d7
     console.log("######in delete: ", entities.slug);
     dispatch(deleteAnnouncement(entities));
     navigate("profile");
   };
 
+<<<<<<< HEAD
   let buttons;
   let messageButton;
   if (loged) {
@@ -183,6 +193,10 @@ export const AnnouncementDetails = () => {
         Send Message
       </Button>
     );
+=======
+  let buttons = null;
+  if (loged) {
+>>>>>>> f3afdbb644778912ee109919f54b01eb51af35d7
     buttons = (
       <Grid container>
         <Grid item>
@@ -198,7 +212,11 @@ export const AnnouncementDetails = () => {
         </Grid>
         <Grid item>
           <Button
+<<<<<<< HEAD
             onClick={() => handleDeleteButton(entities)}
+=======
+            onClick={() => hadnleDeleteButton(entities)}
+>>>>>>> f3afdbb644778912ee109919f54b01eb51af35d7
             variant="outlined"
             size="small"
             color="error"

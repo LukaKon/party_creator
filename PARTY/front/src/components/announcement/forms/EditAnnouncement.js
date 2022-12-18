@@ -18,6 +18,12 @@ export const EditAnnouncement = () => {
     (state) => state.announcementDetails
   );
 
+  useEffect(() => {
+    dispatch(fetchAnnouncementDetails(slug));
+  }, []);
+
+  const [] = useState(entities);
+
   const {
     value: enteredTitle,
     isValid: enteredTitleIsValid,
@@ -26,10 +32,6 @@ export const EditAnnouncement = () => {
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
   } = useInput((value) => value.trim() !== "", "");
-
-  useEffect(() => {
-    dispatch(fetchAnnouncementDetails(slug));
-  }, []);
 
   useEffect(() => {
     console.log("entities: ", entities);
@@ -53,6 +55,7 @@ export const EditAnnouncement = () => {
           name="title"
           placeholder={enteredTitle}
           value={enteredTitle}
+          defaultValue={entities.title}
           onChange={titleChangedHandler}
           onBlur={titleBlurHandler}
         />
