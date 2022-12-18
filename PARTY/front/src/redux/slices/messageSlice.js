@@ -32,6 +32,19 @@ export const fetchConversation = createAsyncThunk(
     }
 );
 
+export const createVoiceMessage = createAsyncThunk(
+    "chat/createVoiceMessage",
+    async(data, {rejectWithValue}) => {
+        try{
+            const response = await axiosInstance.post("/chatapi/createvoicemessage/", data)
+            return response.data
+        }catch (error){
+            console.log("Creating voice message problem: ", error.message)
+            return rejectWithValue(error.message)
+        }
+    }
+);
+
 const messageSlice = createSlice({
     name: "message",
     initialState: {
@@ -63,6 +76,17 @@ const messageSlice = createSlice({
             state.loading = false
             state.error = action.payload
             state.entities = "initial"
+        },
+        [createVoiceMessage.pending]: (state) => {
+            state.loading = true
+        },
+        [createVoiceMessage.fulfilled]: (state, action) => {
+            state.loading = false
+            state.entities = action.payload
+        },
+        [createVoiceMessage.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
         },
     }
 });

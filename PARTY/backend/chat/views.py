@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -25,6 +24,17 @@ class GetMessageView(APIView):
         data = self.get_queryset()
         serialized_data = self.serializer_class(data, many=True)
         return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+
+class CreateVoiceMessage(APIView):
+    model = Message
+    permission_classes = (IsAuthenticated, )
+    serializer_class = MessageSerializer
+
+    def post(self, request):
+        self.model.objects.create(
+
+        )
 
 
 class GetConversationView(APIView):
