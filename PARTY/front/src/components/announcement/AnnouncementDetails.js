@@ -22,7 +22,6 @@ import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
 import { fetchProfile } from "../../redux/slices/profileSlice";
 import {
   deleteAnnouncement,
-  editAnnouncement,
   fetchAnnouncementDetails,
 } from "../../redux/slices/announcementDetailSlice";
 import { loged } from "../../utils/loged";
@@ -113,10 +112,10 @@ export const AnnouncementDetails = () => {
   const handleEditButton = (entities) => {
     console.log("#####in edit: ", entities);
     // TODO: link to edit form
-    navigate("/announcement/");
+    navigate(`/editannouncement/${entities.slug}`, {state:{name:'test',id:1}});
   };
 
-  const hadnleDeleteButton = (entities) => {
+  const handleDeleteButton = (entities) => {
     console.log("######in delete: ", entities.slug);
     dispatch(deleteAnnouncement(entities));
     navigate("profile");
@@ -145,7 +144,7 @@ export const AnnouncementDetails = () => {
         </Grid>
         <Grid item>
           <Button
-            onClick={() => hadnleDeleteButton(entities)}
+            onClick={() => handleDeleteButton(entities)}
             variant="outlined"
             size="small"
             color="error"
