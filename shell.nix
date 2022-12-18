@@ -1,7 +1,7 @@
 with import <nixpkgs> { };
 let
   name = "Party Wizard";
-  pythonEnv = python3.withPackages (ps: [
+  pythonEnv = python311.withPackages (ps: [
     # ps.django_4
     # ps.djangorestframework
     # ps.django-cors-headers
@@ -19,7 +19,7 @@ in
 mkShell {
   buildInputs = [
     # pythonEnv
-    python310
+    python311
 
     bmake
     # http-prompt

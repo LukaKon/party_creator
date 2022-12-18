@@ -13,7 +13,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { BACKEND_LOCALHOST } from "../../../Settings";
-import { deleteAnnouncement } from "../../redux/slices/announcementSlice";
+import { deleteAnnouncement } from "../../redux/slices/announcementDetailSlice";
 
 export const AnnouncementWithSettings = (props) => {
 
@@ -75,10 +75,10 @@ export const AnnouncementWithSettings = (props) => {
 
                             <Grid container item xs={2}>
                                 <Grid item xs={6}>
-                                    Osoby które dodały do ulubionych: {props.announcement_favourites.length}
+                                    Ilość polubień: {props.announcement_favourites.length}
                                 </Grid>
                                 <Grid item xs={6}>
-                                    Osoby które wyświetliło ogłoszenie: {props.views.length}
+                                    Ilość wyświetleń: {props.views.length}
                                 </Grid>
                             </Grid>
                         </Grid>

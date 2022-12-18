@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
 import { CreateUpdateDate } from "./CreateUpdateDate";
 import {
@@ -15,12 +15,16 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
 import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
 import { fetchProfile } from "../../redux/slices/profileSlice";
-import { fetchAnnouncementDetails } from "../../redux/slices/announcementDetailSlice";
+import {
+  deleteAnnouncement,
+  fetchAnnouncementDetails,
+} from "../../redux/slices/announcementDetailSlice";
 import { loged } from "../../utils/loged";
-// https://youtu.be/dCbfOZurCQk
 
 const ImageItem = (props) => {
   const style_is_main = {
@@ -69,11 +73,59 @@ const CategoryItem = (props) => {
   );
 };
 
-const EditButton = () => {
+const VideoItem = (props) => {
+  const { video_url } = props;
+  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(
+    -11
+  )}`;
+
   return (
-    <Grid>
-      <Button variant="contained">Edit</Button>
+    <Grid container>
+      <Grid item>
+        <iframe
+          width="560"
+          height="315"
+          src={embeddedVideoURL}
+          title="YouTube Video Playre"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+        <Typography variant='body2'>
+        <a href={video_url} underline="hover">
+          {video_url}
+        </a>
+
+        </Typography>
+      </Grid>
+      <Grid item>
+      </Grid>
     </Grid>
+  );
+};
+
+const VideoList = (props) => {
+  let content = (
+    <Typography variant="body2" color="red">
+      No movies.
+    </Typography>
+  );
+  if (props.listOfVideos.length > 0) {
+    content = (
+      <Grid container>
+        {props.listOfVideos.map((video) => (
+          <Grid item>
+            <VideoItem key={video.uuid} video_url={video.movie_url} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+  return (
+    <>
+      <Typography variant="body1">Movies:</Typography>
+      <Grid>{content}</Grid>
+    </>
   );
 };
 
@@ -84,11 +136,11 @@ export const AnnouncementDetails = () => {
   const { loading, entities, error } = useSelector(
     (state) => state.announcementDetails
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
-    // setGalleryCoefficient(Math.round(entities.images.length / 3));
   }, []);
 
   useEffect(() => {
@@ -104,19 +156,77 @@ export const AnnouncementDetails = () => {
     return null;
   });
 
+<<<<<<< HEAD
   const openChat = () => {
-    navigate('/chat/', {state: {recipient_id: entities.user.id, announcement_id: entities.id, sender_id: userID}})
-  }
+    navigate("/chat/", {
+      state: {
+        recipient_id: entities.user.id,
+        announcement_id: entities.id,
+        sender_id: userID,
+      },
+    });
+  };
 
-  let editButton;
+  const handleEditButton = (entities) => {
+    navigate(`/editannouncement/${entities.slug}`);
+  };
+
+  const handleDeleteButton = (entities) => {
+=======
+  const handleEditButton = (entities) => {
+    navigate(`/editannouncement/${entities.slug}`);
+  };
+
+  const hadnleDeleteButton = (entities) => {
+>>>>>>> f3afdbb644778912ee109919f54b01eb51af35d7
+    console.log("######in delete: ", entities.slug);
+    dispatch(deleteAnnouncement(entities));
+    navigate("profile");
+  };
+
+<<<<<<< HEAD
+  let buttons;
   let messageButton;
   if (loged) {
-    editButton = <EditButton />;
-    messageButton =  <Button variant="contained" onClick={() => openChat()}>Send Message</Button>;
-  }
-
-  const galleryCoefficient = () => {
-    return Math.round(entities.images.length / 3);
+    messageButton = (
+      <Button variant="contained" onClick={() => openChat()}>
+        Send Message
+      </Button>
+    );
+=======
+  let buttons = null;
+  if (loged) {
+>>>>>>> f3afdbb644778912ee109919f54b01eb51af35d7
+    buttons = (
+      <Grid container>
+        <Grid item>
+          <Button
+            onClick={() => handleEditButton(entities)}
+            variant="outlined"
+            size="small"
+            color="primary"
+            startIcon={<EditIcon />}
+          >
+            Edit
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+<<<<<<< HEAD
+            onClick={() => handleDeleteButton(entities)}
+=======
+            onClick={() => hadnleDeleteButton(entities)}
+>>>>>>> f3afdbb644778912ee109919f54b01eb51af35d7
+            variant="outlined"
+            size="small"
+            color="error"
+            startIcon={<DeleteIcon />}
+          >
+            Delete
+          </Button>
+        </Grid>
+      </Grid>
+    );
   }
 
   let content;
@@ -139,7 +249,7 @@ export const AnnouncementDetails = () => {
                 <Typography variant="h6">Title: {entities.title}</Typography>
               </Grid>
 
-              <Grid item>{editButton}</Grid>
+              <Grid item>{buttons}</Grid>
 
               <Grid item>
                 <CreateUpdateDate entities={entities} />
@@ -190,33 +300,16 @@ export const AnnouncementDetails = () => {
             </Grid>
 
             <Grid item xs={8}>
-              Movies:
-              {entities.movies.length > 0 ? (
-                <ul>
-                  {entities.movies.map((mov) => (
-                    <li key={mov.uuid}>
-                      <a href={mov.movie_url} underline="hover">
-                        {mov.movie_url}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <Typography variant="body2" color="red">
-                  No movies.
-                </Typography>
-              )}
+              <VideoList listOfVideos={entities.movies} />
             </Grid>
             <Grid item>
-               <FavouriteButton
+              <FavouriteButton
                 userID={userID}
                 announcementID={entities.id}
                 favourite={entities.announcement_favourites}
               />
             </Grid>
-            <Grid item>
-              {messageButton}
-            </Grid>
+            <Grid item>{messageButton}</Grid>
           </Grid>
         </Box>
       );
