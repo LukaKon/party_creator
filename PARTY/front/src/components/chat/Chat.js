@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
+import {AudioMessage} from "./AudioMessage";
 import {fetchConversation} from "../../redux/slices/messageSlice";
 import {customStyle} from "../../styles/customStyle";
 import {fetchProfile} from "../../redux/slices/profileSlice";
@@ -132,6 +133,7 @@ export const Chat = () => {
                 >
                 </TextField>
                 <Button variant={"outlined"} type={"submit"}>Send</Button>
+                <AudioMessage client={client}/>
             </Box>
         </Grid>
     )

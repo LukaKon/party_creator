@@ -28,6 +28,10 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data=None, bytes_data=None):
+        print('textdata', text_data)
+        print('bytesdata', bytes_data)
+        print(text_data.get('message'))
+
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         now = timezone.now()
