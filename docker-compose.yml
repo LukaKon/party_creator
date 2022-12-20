@@ -33,6 +33,7 @@ services:
       - party_network
     depends_on:
       - db
+      - cache
 
   db:
     image: postgres:15-alpine3.16
@@ -48,6 +49,17 @@ services:
       - 5433:5432
     networks:
       - party_network
+
+  cache:
+    image: redis:7.0-alpine
+    container_name: redis_cache
+    # command: redis-server --requirepass sOmE_sEcUrE_pAsS
+    command: redis-server 
+    environment: 
+      - ALLOW_EMPTY_PASSWORD=yes
+    restart: always
+    ports:
+      - 6379:6379
 
   frontend:
     container_name: react_front
@@ -70,6 +82,7 @@ services:
       - db
     networks:
       - party_network
+
 
   # to update content on nginx server it is necessary to npm run build react app at every change
   # nginx:
