@@ -28,6 +28,9 @@ mkShell {
   shellHook = ''
     echo "Enter to '${name}' env..."
     source env/bin/activate
+    echo "Upgrade pip and install packages..."
+    pip install -r PARTY/backend/requirements.txt
+    pip install --upgrade pip
     which python
     echo "Env activated"
   '';

@@ -51,15 +51,24 @@ services:
       - party_network
 
   cache:
-    image: redis:7.0-alpine
+    # image: redis:7.0-alpine
+    image: bitnami/redis:7.0.7
     container_name: redis_cache
     # command: redis-server --requirepass sOmE_sEcUrE_pAsS
-    command: redis-server 
+    # command: redis-server 
+    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
     environment: 
       - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_IO_THREADS=2
+      - REDIS_IO_THREADS_DO_READS=yes
+      - REDIS_AOF_ENABLE=no
+      - REDIS_PORT_NUMBER=6379 
+      # - REDIS_PASSWORD=sOmE_sEcUrE_pAsS
     restart: always
     ports:
       - 6379:6379
+    networks:
+      - party_network
 
   frontend:
     container_name: react_front
