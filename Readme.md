@@ -13,4 +13,6 @@ Technologies used in project:
 -   Django 4.0.7 (Python 3.11) - backend api
 -   React 17.2 (Javascript) - frontend
 -   Postgresql 15 - database
+-   Redis - cashing data
 -   Docker - contenerization
+-   MUI

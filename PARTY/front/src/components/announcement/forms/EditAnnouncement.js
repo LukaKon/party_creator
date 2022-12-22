@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, TextField } from "@mui/material";
 
@@ -14,6 +14,9 @@ import { loged } from "../../../utils/loged";
 export const EditAnnouncement = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
+  // maybe location (I hope it gets data passed by ling in EditButton) will solve problem with setting initial data
+  const location = useLocation()
+  console.log('LOCATION in edit: ', location)
   const { loading, entities, error } = useSelector(
     (state) => state.announcementDetails
   );

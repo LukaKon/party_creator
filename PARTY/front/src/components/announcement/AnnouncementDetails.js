@@ -91,15 +91,13 @@ const VideoItem = (props) => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />
-        <Typography variant='body2'>
-        <a href={video_url} underline="hover">
-          {video_url}
-        </a>
-
+        <Typography variant="body2">
+          <a href={video_url} underline="hover">
+            {video_url}
+          </a>
         </Typography>
       </Grid>
-      <Grid item>
-      </Grid>
+      <Grid item></Grid>
     </Grid>
   );
 };
@@ -166,7 +164,7 @@ export const AnnouncementDetails = () => {
   };
 
   const handleEditButton = (entities) => {
-    navigate(`/editannouncement/${entities.slug}`);
+    navigate(`/editannouncement/${entities.slug}`, (state = { entities }));
   };
 
   const handleDeleteButton = (entities) => {
