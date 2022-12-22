@@ -20,6 +20,7 @@
    - [ ] user should have additional field: nick/name - email is not the best
 
 3. Docker:
+
    - [x] implement Redis for casching data
    - [ ] CI/CD ??
 
