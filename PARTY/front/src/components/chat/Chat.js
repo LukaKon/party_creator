@@ -15,6 +15,8 @@ import {customStyle} from "../../styles/customStyle";
 import {fetchProfile} from "../../redux/slices/profileSlice";
 
 
+//testuje neadsadas
+
 export const Chat = () => {
     const location = useLocation();
     const [messages, setMessages] = useState([])
