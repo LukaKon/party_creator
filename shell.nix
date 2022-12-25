@@ -21,7 +21,7 @@ mkShell {
     # pythonEnv
     python311
 
-    bmake
+    # bmake
     # http-prompt
   ];
 
