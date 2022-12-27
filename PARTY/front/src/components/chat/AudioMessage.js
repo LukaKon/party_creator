@@ -1,9 +1,12 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import {Button, Grid, IconButton} from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
+import {useDispatch} from "react-redux";
+import {createVoiceMessage} from "../../redux/slices/messageSlice";
 
 export const AudioMessage = (props) => {
     const {client} = props
+    const dispatch = useDispatch()
     const [mp3Settings, setMp3Settings] = useState(
         {
             blobURL: '',
@@ -29,9 +32,13 @@ export const AudioMessage = (props) => {
 
     const sendMessage = (message) => {
         const data = new FormData()
-        data.append("voiceMessage", message)
-        client.send(message)
-    }
+        data.append("voice_message", message)
+        dispatch(createVoiceMessage(data)).unwrap()
+            .then((response) =>{
+                console.log('response sent to consumer', response.voice_message)
+                client.send(JSON.stringify({voice:response.voice_message}))
+            }
+    )}
 
     const handleRecording = async (start_or_stop) => {
         if(start_or_stop === start){
