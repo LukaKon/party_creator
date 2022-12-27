@@ -77,17 +77,17 @@ const messageSlice = createSlice({
             state.error = action.payload
             state.entities = "initial"
         },
-        [createVoiceMessage.pending]: (state) => {
-            state.loading = true
-        },
-        [createVoiceMessage.fulfilled]: (state, action) => {
-            state.loading = false
-            state.entities = action.payload
-        },
-        [createVoiceMessage.rejected]: (state, action) => {
-            state.loading = false
-            state.error = action.payload
-        },
+        // [createVoiceMessage.pending]: (state) => {
+        //     state.loading = true
+        // },
+        // [createVoiceMessage.fulfilled]: (state, action) => {
+        //     state.loading = false
+        //     state.entities = action.payload
+        // },
+        // [createVoiceMessage.rejected]: (state, action) => {
+        //     state.loading = false
+        //     state.error = action.payload
+        // },
     }
 });
 

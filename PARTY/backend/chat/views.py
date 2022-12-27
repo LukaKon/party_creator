@@ -3,8 +3,11 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Message, Conversation
-from .serializers import MessageSerializer, ConversationSerializer
+from rest_framework.generics import CreateAPIView
+from .models import Message, Conversation, VoiceMessage
+from .serializers import MessageSerializer, \
+    ConversationSerializer, \
+    VoiceMessageSerializer
 
 
 class GetMessageView(APIView):
@@ -26,15 +29,16 @@ class GetMessageView(APIView):
         return Response(serialized_data.data, status=status.HTTP_200_OK)
 
 
-class CreateVoiceMessage(APIView):
-    model = Message
+class CreateVoiceMessageView(CreateAPIView):
+    model = VoiceMessage
     permission_classes = (IsAuthenticated, )
-    serializer_class = MessageSerializer
+    serializer_class = VoiceMessageSerializer
 
-    def post(self, request):
-        self.model.objects.create(
-
-        )
+    # def perform_create(self, serializer):
+    #     super().perform_create(serializer)
+    #     return serializer.id
+    # def post(self, request, *args, **kwargs):
+    #     return super().post(self, request, *args, **kwargs)
 
 
 class GetConversationView(APIView):
@@ -45,8 +49,6 @@ class GetConversationView(APIView):
     def get_queryset(self):
         announcement_id = self.request.data.get('announcement')
         sender_id = self.request.data.get('sender')
-        print("announcement_id", announcement_id)
-        print("sender_id", sender_id)
         try:
             queryset = self.model.objects.get(announcement_id=announcement_id, sender_id=sender_id)
         except:

@@ -16,8 +16,6 @@ import {fetchProfile} from "../../redux/slices/profileSlice";
 import {number} from "prop-types";
 
 
-//testuje neadsadas
-
 export const Chat = () => {
     const location = useLocation();
     const [messages, setMessages] = useState([])
