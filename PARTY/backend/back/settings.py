@@ -11,8 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
-# ALLOWED_HOST = ['*']
+ALLOWED_HOST = (config("ALLOWED_HOST", "localhost"),)
+ALLOWED_HOSTS = (config("ALLOWED_HOSTS"),)
 
 # Application definition
 
@@ -62,6 +62,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
+    'http://192.168.122.220:8000',
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://localhost:3000",
@@ -80,7 +81,10 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(config('REDIS_HOST', '127.0.0.1'), config('REDIS_PORT', 6379))]
+            "hosts": [(
+                        config('REDIS_HOST', '127.0.0.1'),
+                        config('REDIS_PORT', 6379)
+                    )]
             # "hosts": [("127.0.0.1", 6379)],
         }
     }
@@ -139,13 +143,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
+# LANGUAGE_CODE = 'en-us'
+
 LANGUAGE_CODE = "pl"
 LANGUAGES = (
     ("pl", "polski"),
     ("en", "angielski"),
 )
-
-# LANGUAGE_CODE = 'en-us'
 
 # TIME_ZONE = 'UTC'
 TIME_ZONE = "Europe/Warsaw"  # 'UTC'
@@ -164,8 +168,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-STATICFILES_DIRS = [
-]
+STATICFILES_DIRS = []
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
