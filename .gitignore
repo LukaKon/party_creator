@@ -6,7 +6,6 @@ __pycache__/
 
 # database backup file
 database
-dump.sql
 
 # media files
 **/media

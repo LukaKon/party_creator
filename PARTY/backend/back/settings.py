@@ -11,8 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOST = (config("ALLOWED_HOST", "localhost"),)   # probably we don't need that line because it is standard...
-ALLOWED_HOSTS = (config("ALLOWED_HOSTS"),)
+ALLOWED_HOSTS = (config("ALLOWED_HOSTS", 'localhost'),)
 
 # Application definition
 
@@ -62,15 +61,12 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
-    'http://192.168.122.220:8000',
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://localhost:3000",
     "http://localhost:3000",
     'https://127.0.0.1:3000',
     'http://127.0.0.1:3000',
-    'http://192.168.122.220:3000',
-    'http://192.168.122.220:8000',
 ]
 # CORS_ALLOW_CREDENTIALS = True
 
