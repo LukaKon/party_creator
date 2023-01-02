@@ -48,7 +48,6 @@ FIRST_APPS = [
 INSTALLED_APPS = FIRST_APPS + STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
-    # "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
