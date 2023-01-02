@@ -48,6 +48,7 @@ FIRST_APPS = [
 INSTALLED_APPS = FIRST_APPS + STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
+    # "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -68,8 +69,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     'https://127.0.0.1:3000',
     'http://127.0.0.1:3000',
-    'https://192.168.122.220:3000',
-    'http://192.168.122.220:3000',
+    # 'https://192.168.122.220:3000',
+    # 'http://192.168.122.220:3000',
 ]
 # CORS_ALLOW_CREDENTIALS = True
 
