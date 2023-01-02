@@ -9,10 +9,6 @@ services:
       args:
         - DEV=true
     container_name: django_back
-    # command: >
-    #   sh -c "python manage.py wait_for_db &&
-    #           python manage.py migrate &&
-    #          gunicorn back.wsgi --bind 0.0.0.0:8000"
     command: >
       sh -c  "python manage.py wait_for_db &&
               python manage.py migrate &&
@@ -55,14 +51,14 @@ services:
     image: bitnami/redis:7.0.7
     container_name: redis_cache
     # command: redis-server --requirepass sOmE_sEcUrE_pAsS
-    # command: redis-server 
+    # command: redis-server
     command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
-    environment: 
+    environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_IO_THREADS=2
       - REDIS_IO_THREADS_DO_READS=yes
       - REDIS_AOF_ENABLE=no
-      - REDIS_PORT_NUMBER=6379 
+      - REDIS_PORT_NUMBER=6379
       # - REDIS_PASSWORD=sOmE_sEcUrE_pAsS
     restart: always
     ports:
