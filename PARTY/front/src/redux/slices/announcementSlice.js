@@ -3,7 +3,7 @@ import { axiosInstance } from "../../axios";
 
 export const fetchAnnouncements = createAsyncThunk(
   "announcements/fetchAnnouncements",
-  async (data) => {
+  async (data, { rejectWithValue }) => {
     try {
       if (data.main_page) {
         const response = await axiosInstance.get(
@@ -18,7 +18,7 @@ export const fetchAnnouncements = createAsyncThunk(
       }
     } catch (error) {
       console.log("Fetch announcements error: ", error.message);
-      throw error;
+      return rejectWithValue(error.response.data);
     }
   }
 );

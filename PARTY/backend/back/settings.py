@@ -5,13 +5,19 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from decouple import config
+from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOSTS = (config("ALLOWED_HOSTS", 'localhost'),)
+# ALLOWED_HOSTS = (config("ALLOWED_HOSTS", default='localhost', cast=Csv()),)
+# ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=Csv(post_process=tuple))
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
+
+# ALLOWED_HOSTS = ["127.0.0.1"]
+
+print('ALLOWED_HOSTS: ', ALLOWED_HOSTS)
 
 # Application definition
 
@@ -59,7 +65,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -67,7 +73,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
     'http://192.168.122.220:3000',
-    'http://192.168.122.220:8000',
+    # 'http://192.168.122.220:8000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [

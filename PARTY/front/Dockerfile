@@ -1,5 +1,4 @@
-# stage 1 - build react app
-FROM node:18-alpine3.16 as builder
+FROM node:18-alpine3.16
 
 WORKDIR /app
 
@@ -19,23 +18,3 @@ COPY . .
 RUN npm run build
 
 # USER react-user
-
-
-# stage 2 - copy react build app to nginx
-# FROM nginx:alpine
-
-# WORKDIR /usr/share/nginx/html
-
-# # remove default nginx static assets
-# RUN rm -rf ./*
-
-# # COPY ./nginx.conf /etc/nginx/conf.d/default.conf:ro
-# # # COPY ./../../nginx/gzip.conf /etc/nginx/conf.d/gzip.conf:ro
-
-# # RUN rm -rf /usr/share/nginx/html/*
-
-# COPY --from=builder /app/dist .
-# #/usr/share/nginx/html
-# ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
-
-# EXPOSE 3000 80
