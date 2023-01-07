@@ -11,13 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-# ALLOWED_HOSTS = (config("ALLOWED_HOSTS", default='localhost', cast=Csv()),)
-# ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=Csv(post_process=tuple))
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
-
-# ALLOWED_HOSTS = ["127.0.0.1"]
-
-print('ALLOWED_HOSTS: ', ALLOWED_HOSTS)
 
 # Application definition
 

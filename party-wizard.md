@@ -5,7 +5,7 @@
         - [x] attach ~~hook~~ validation to category field
         - [x] how to save images for announcement???
         - [x] send data from form to backand and save it in the database
-        - [-] nice add image field with preview
+        - [x] nice add image field with preview
     - work on 'announcement details':
         - [ ] make it nicer ;)
         - [ ] list other owner announcements or something similar
