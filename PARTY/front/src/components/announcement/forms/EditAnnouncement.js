@@ -1,31 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useLocation } from "react-router-dom";
+// import { useDispatch,  } from "react-redux";
 import { Grid, TextField } from "@mui/material";
-
-import {
-  editAnnouncement,
-  fetchAnnouncementDetails,
-} from "../../../redux/slices/announcementDetailSlice";
+// import {
+//   editAnnouncement,
+//   fetchAnnouncementDetails,
+// } from "../../../redux/slices/announcementDetailSlice";
 import { useInput } from "./hooks/useInput";
 import { loged } from "../../../utils/loged";
 // import { } './formUtils'
 
 export const EditAnnouncement = () => {
-  const { slug } = useParams();
-  const dispatch = useDispatch();
-  // maybe location (I hope it gets data passed by ling in EditButton) will solve problem with setting initial data
-  const location = useLocation()
-  console.log('LOCATION in edit: ', location)
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcementDetails
-  );
-
-  useEffect(() => {
-    dispatch(fetchAnnouncementDetails(slug));
-  }, []);
-
-  const [] = useState(entities);
+  const location = useLocation();
 
   const {
     value: enteredTitle,
@@ -34,23 +20,33 @@ export const EditAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput((value) => value.trim() !== "", "");
+  } = useInput((value) => value.trim() !== "", location.state.entities.title);
 
-  useEffect(() => {
-    console.log("entities: ", entities);
-    if (entities.length !== 0) {
-      console.log("tutaj :", entities);
-      titleChangedHandler(entities.title);
-    }
-  }, [entities]);
+  const {
+    value: enteredDescription,
+    isValid: enteredDescriptionIsValid,
+    hasError: descriptionInputHasError,
+    valueChangeHandler: descriptionChangedHandler,
+    inputBlurHandler: descriptionBlurHandler,
+    reset: resetDescriptionInput,
+  } = useInput(
+    (value) => value.trim() !== "",
+    location.state.entities.description
+  );
 
   let formIsValid = false;
+  if (enteredTitleIsValid && enteredDescriptionIsValid) {
+    formIsValid = true;
+  }
+
+  if (formIsValid) {
+    // TODO: save announcement
+  }
 
   let content = <Grid>Loading...</Grid>;
 
-  if (!loading) {
-    console.log("title: ", enteredTitle);
-    content = (
+  content = (
+    <Grid container>
       <Grid item>
         <TextField
           id="title"
@@ -58,7 +54,6 @@ export const EditAnnouncement = () => {
           name="title"
           placeholder={enteredTitle}
           value={enteredTitle}
-          defaultValue={entities.title}
           onChange={titleChangedHandler}
           onBlur={titleBlurHandler}
         />
@@ -66,9 +61,23 @@ export const EditAnnouncement = () => {
           <p style={{ color: "red" }}>Title must not be empty.</p>
         )}
       </Grid>
-    );
-    console.log("title: ", enteredTitle);
-  }
+
+      <Grid item>
+        <TextField
+          id="description"
+          label="Description"
+          name="description"
+          placeholder={enteredDescription}
+          value={enteredDescription}
+          onChange={descriptionChangedHandler}
+          onBlur={descriptionBlurHandler}
+        />
+        {descriptionInputHasError && (
+          <p style={{ color: "red" }}>Description must not be empty.</p>
+        )}
+      </Grid>
+    </Grid>
+  );
 
   return (
     <Grid container>

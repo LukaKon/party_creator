@@ -44,7 +44,10 @@ const ImageItem = (props) => {
 
   return (
     <Link to={props.image} underline="none">
-      <ImageListItem key={props.uuid} sx={props.is_main === true ? styleIsMain : styleDefault}>
+      <ImageListItem
+        key={props.uuid}
+        sx={props.is_main === true ? styleIsMain : styleDefault}
+      >
         <img
           src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
           srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
