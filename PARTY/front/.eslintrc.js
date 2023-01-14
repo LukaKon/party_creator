@@ -12,10 +12,7 @@ module.exports = {
   plugins: ["react"],
   rules: {
     // "import/prefer-default-export": "off",
-    "react/function-component-definition": {
-      namedComponents: "arrow-function",
-      unnamedComponents: "arrow-function",
-    },
+    "react/function-component-definition": "warn",
     "no-unused-vars": "warn",
     "no-use-before-define": "warn",
     quotes: "off",
