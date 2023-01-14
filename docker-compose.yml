@@ -1,7 +1,6 @@
-version: '3.9'
+version: "3.9"
 
 services:
-
   backend:
     build:
       context: ./PARTY/backend
@@ -32,7 +31,7 @@ services:
       - cache
 
   db:
-    image: postgres:15-alpine3.16
+    image: postgres:15-alpine3.17
     container_name: postgres_db
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
@@ -87,7 +86,6 @@ services:
       - db
     networks:
       - party_network
-
 
 networks:
   party_network:

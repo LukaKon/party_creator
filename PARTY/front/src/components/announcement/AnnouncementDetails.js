@@ -27,14 +27,14 @@ import {
 import { loged } from "../../utils/loged";
 
 const ImageItem = (props) => {
-  const style_is_main = {
+  const styleIsMain = {
     padding: 1,
     border: 3,
     borderColor: "lightgreen",
     width: 100,
     height: 100,
   };
-  const style_default = {
+  const styleDefault = {
     padding: 1,
     border: 3,
     borderColor: "lightred",
@@ -46,7 +46,7 @@ const ImageItem = (props) => {
     <Link to={props.image} underline="none">
       <ImageListItem
         key={props.uuid}
-        sx={props.is_main === true ? style_is_main : style_default}
+        sx={props.is_main === true ? styleIsMain : styleDefault}
       >
         <img
           src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
@@ -97,7 +97,6 @@ const VideoItem = (props) => {
           </a>
         </Typography>
       </Grid>
-      <Grid item></Grid>
     </Grid>
   );
 };
@@ -163,13 +162,13 @@ export const AnnouncementDetails = () => {
     });
   };
 
-  const handleEditButton = (entities) => {
-    navigate(`/editannouncement/${entities.slug}`, (state = { entities }));
+  const handleEditButton = (data) => {
+    navigate(`/editannouncement/${data.slug}`, { state: { entities } });
   };
 
-  const handleDeleteButton = (entities) => {
-    console.log("######in delete: ", entities.slug);
-    dispatch(deleteAnnouncement(entities));
+  const handleDeleteButton = (data) => {
+    // console.log("######in delete: ", data.slug);
+    dispatch(deleteAnnouncement(data));
     navigate("profile");
   };
 
@@ -251,7 +250,8 @@ export const AnnouncementDetails = () => {
 
               <Grid item>
                 <Typography variant="body1">
-                  Description: {entities.description}
+                  Description:
+                  {entities.description}
                 </Typography>
               </Grid>
             </Grid>
