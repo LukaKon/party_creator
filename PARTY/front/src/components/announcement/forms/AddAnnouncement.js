@@ -120,6 +120,7 @@ export const AddAnnouncement = () => {
       return;
     }
 
+    console.log("CAT in ADD: ", selectedCategory);
     const formData = new FormData();
 
     // necessary data
@@ -143,18 +144,10 @@ export const AddAnnouncement = () => {
 
     resetTitleInput();
     resetDescriptionInput();
-    resetSelectedCategory();
+    resetSelectedCategory([]);
     resetMovieUrl();
     setListOfImages("");
   };
-
-  // const submissionHandler=(e)=>{
-  //   if (typeof(formSubmissionHandler) ==='function'){
-  //     const announcementData={}
-  //     formSubmissionHandler(announcementData)
-  //   }
-  //
-  // }
 
   useEffect(() => {
     dispatch(fetchCategories());

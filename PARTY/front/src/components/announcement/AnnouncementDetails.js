@@ -141,7 +141,7 @@ export const AnnouncementDetails = () => {
 
   useEffect(() => {
     if (entities) {
-      addViewFunction({ announcementID: entities.id, dispatch: dispatch });
+      addViewFunction({ announcementID: entities.id, dispatch });
     }
   }, [entities]);
 
@@ -167,6 +167,7 @@ export const AnnouncementDetails = () => {
   };
 
   const handleDeleteButton = (data) => {
+    // TODO: finish delete functionality
     // console.log("######in delete: ", data.slug);
     dispatch(deleteAnnouncement(data));
     navigate("profile");
