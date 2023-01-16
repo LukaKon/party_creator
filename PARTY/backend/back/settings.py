@@ -5,7 +5,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from decouple import config, Csv
+from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,7 +48,6 @@ FIRST_APPS = [
 INSTALLED_APPS = FIRST_APPS + STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
-    # "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -59,13 +58,14 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
     'http://192.168.122.220:3000',
     # 'http://192.168.122.220:8000',
 ]
@@ -119,11 +119,11 @@ WSGI_APPLICATION = "back.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DATABASE_NAME", "dev2"),
-        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-        "USER": os.getenv("DATABASE_USER", "postgres"),
-        "PASSWORD": os.getenv("DATABASE_PASSWORD", "coderslab"),
-        "PORT": os.getenv("DB_PORT", "5432"),
+        "NAME": config("DATABASE_NAME", "dev2"),
+        "HOST": config("DB_HOST", "127.0.0.1"),
+        "USER": config("DATABASE_USER", "postgres"),
+        "PASSWORD": config("DATABASE_PASSWORD", "coderslab"),
+        "PORT": config("DB_PORT", "5432"),
     }
 }
 
@@ -231,6 +231,7 @@ if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
 EMAIL_HOST = 'smtp.gmail.com'
+# FIX: where is EMAIL or where should be? add to .env file and remove this file from github
 EMAIL_FROM = os.getenv("EMAIL_ADDRESS")
 EMAIL_HOST_USER = os.getenv("EMAIL_ADDRESS")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")

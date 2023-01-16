@@ -72,7 +72,11 @@ export const EditAnnouncement = () => {
     valueChangeHandler: selectedCategoryChangedHandler,
     inputBlurHandler: selectedCategoryBlurHandler,
     reset: resetSelectedCategory,
-  } = useInput((value) => value.length > 0, passedData.category);
+  } = useInput(
+    (value) => value.length > 0,
+    // passedData.category.map((cat) => cat.uuid)
+    passedData.category.map((cat) => cat)
+  );
 
   const theme = useTheme();
 
@@ -178,7 +182,10 @@ export const EditAnnouncement = () => {
               id="category"
               required
               multiple
-              value={selectedCategory.map((cat) => cat.uuid)}
+              value={selectedCategory}
+              renderValue={(selected) =>
+                selected.map((cat) => cat.get_name).join(", ")
+              }
               onChange={selectedCategoryChangedHandler}
               onBlur={selectedCategoryBlurHandler}
               error={selectedCategoryHasError}
@@ -188,7 +195,7 @@ export const EditAnnouncement = () => {
               {entities.map((category) => (
                 <MenuItem
                   key={category.uuid}
-                  value={category.uuid}
+                  value={category}
                   style={getStyle(category.get_name, selectedCategory, theme)}
                 >
                   {category.get_name}
