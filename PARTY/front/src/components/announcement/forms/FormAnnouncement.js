@@ -48,7 +48,11 @@ const getStyle = (category, selectedCategory, theme) => {
 
 export const FormAnnouncement = () => {
   const location = useLocation();
-  const passedData = location.state.entities;
+  // console.log("loctaion: ", location);
+  let passedData = null;
+  if (location.state) {
+    passedData = location.state.entities;
+  }
   console.log("DATA: ", passedData);
 
   const {
@@ -58,7 +62,10 @@ export const FormAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput((value) => value.trim() !== "", passedData.title);
+  } = useInput(
+    (value) => value.trim() !== "",
+    passedData ? passedData.title : ""
+  );
 
   const {
     value: enteredDescription,
@@ -67,7 +74,10 @@ export const FormAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput((value) => value.trim() !== "", passedData.description);
+  } = useInput(
+    (value) => value.trim() !== "",
+    passedData ? passedData.description : ""
+  );
 
   const {
     value: selectedCategory,
@@ -78,7 +88,7 @@ export const FormAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput(
     (value) => value.length > 0,
-    passedData.category.map((cat) => cat)
+    passedData ? passedData.category.map((cat) => cat) : []
   );
 
   const {
@@ -168,6 +178,11 @@ export const FormAnnouncement = () => {
     );
   }
 
+  let titleOfForm = "Add announcement:";
+  if (passedData) {
+    titleOfForm = "Edit announcement:";
+  }
+
   let content;
   if (loading) {
     content = <p>Loading...</p>;
@@ -177,7 +192,7 @@ export const FormAnnouncement = () => {
         <Grid container spacing={2}>
           <Grid item>
             <Typography component="h1" variant="h5">
-              Add announcement:
+              {titleOfForm}
             </Typography>
           </Grid>
 
