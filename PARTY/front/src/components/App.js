@@ -1,8 +1,8 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { NotFound } from "./NotFound";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./HomePage";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
@@ -10,6 +10,7 @@ import { ProfileSettings } from "./ProfileSettings";
 import { Profile } from "./Profile";
 import { AddAnnouncement } from "./announcement/forms/AddAnnouncement";
 import { EditAnnouncement } from "./announcement/forms/EditAnnouncement";
+import { FormAnnouncement } from "./announcement/forms/FormAnnouncement";
 import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
 import { Categories } from "./Categories";
 import { AnnouncementsByCategory } from "./AnnouncementsByCategory";
@@ -69,11 +70,17 @@ export const App = () => {
 
           {isAuthenticatedFunction("profile", <Profile />)}
           {isAuthenticatedFunction("settings", <ProfileSettings />)}
-          {isAuthenticatedFunction("addannouncement", <AddAnnouncement />)}
+          {isAuthenticatedFunction("addannouncement", <FormAnnouncement />)}
+          {isAuthenticatedFunction(
+            "editannouncement/:slug",
+            <FormAnnouncement />
+          )}
+
+          {/* {isAuthenticatedFunction("addannouncement", <AddAnnouncement />)}
           {isAuthenticatedFunction(
             "editannouncement/:slug",
             <EditAnnouncement />
-          )}
+          )} */}
           {isAuthenticatedFunction("changepassword", <ChangePassword />)}
           {isAuthenticatedFunction("myannouncements", <MyAnnouncements />)}
           {isAuthenticatedFunction("myfavourites", <MyFavourites />)}
