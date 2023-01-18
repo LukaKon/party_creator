@@ -98,7 +98,11 @@ export const FormAnnouncement = () => {
     valueChangeHandler: movieUrlChangeHandler,
     inputBlurHandler: movieUrlBlurHandler,
     reset: resetMovieUrl,
-  } = useInput((value) => value.includes("https://www.youtube.com/"), "");
+  } = useInput(
+    (value) => value.includes("https://www.youtube.com/"),
+    // passedData ? passedData.movies.map((mov) => mov) : []
+    passedData ? passedData.movies[0].movie_url : ""
+  );
 
   const [listOfImages, setListOfImages] = useState([
     {
@@ -165,6 +169,11 @@ export const FormAnnouncement = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
+
+  console.log("Title before sent: ", enteredTitle);
+  console.log("Description before sent: ", enteredDescription);
+  console.log("CAT before sent: ", selectedCategory);
+  console.log("MOV before sent: ", enteredMovieUrl);
 
   let listOfSelectedImages = <Grid>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {
@@ -284,9 +293,10 @@ export const FormAnnouncement = () => {
               id="movies"
               label="Movies"
               name="movies"
+              placeholder={enteredMovieUrl}
+              value={enteredMovieUrl}
               onChange={movieUrlChangeHandler}
               onBlur={movieUrlBlurHandler}
-              value={enteredMovieUrl}
               error={movieUrlHasError}
             />
             {movieUrlHasError && (

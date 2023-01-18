@@ -5,7 +5,7 @@ export const fetchAnnouncementDetails = createAsyncThunk(
   "announcement/getDetails",
   async (slug, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance(`api/announcements/${slug}`); //, slug);
+      const response = await axiosInstance(`api/announcements/${slug}`);
       return response.data;
     } catch (error) {
       console.log("Fetch announcement details error: ", error);
