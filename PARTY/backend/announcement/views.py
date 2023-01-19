@@ -135,7 +135,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         # TODO <-- o co chodzi z tą kropką
         user = get_user_model().objects .get(email=self.request.user)
 
-        categories = self.request.data.getlist('category') # FIX: here should be list of ojects
+        # categories = self.request.data.getlist('category') # FIX: here should be list of ojects
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
         images = self.request.data.getlist('images')

@@ -62,10 +62,7 @@ export const FormAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput(
-    (value) => value.trim() !== "",
-    passedData ? passedData.title : ""
-  );
+  } = useInput((value) => value.trim() !== "", passedData ? passedData.title : "");
 
   const {
     value: enteredDescription,
@@ -74,10 +71,7 @@ export const FormAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput(
-    (value) => value.trim() !== "",
-    passedData ? passedData.description : ""
-  );
+  } = useInput((value) => value.trim() !== "", passedData ? passedData.description : "");
 
   const {
     value: selectedCategory,
@@ -88,7 +82,7 @@ export const FormAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput(
     (value) => value.length > 0,
-    passedData ? passedData.category.map((cat) => cat) : []
+    passedData ? passedData.category.map((cat) => cat) : [],
   );
 
   const {
@@ -101,15 +95,19 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.includes("https://www.youtube.com/"),
     // passedData ? passedData.movies.map((mov) => mov) : []
-    passedData ? passedData.movies[0].movie_url : ""
+    passedData ? passedData.movies[0].movie_url : "",
   );
 
-  const [listOfImages, setListOfImages] = useState([
-    {
-      image: "",
-      is_main: false,
-    },
-  ]);
+  const [listOfImages, setListOfImages] = useState(
+    passedData
+      ? passedData.images
+      : [
+          {
+            image: "",
+            is_main: false,
+          },
+        ],
+  );
 
   const theme = useTheme();
 
@@ -119,22 +117,14 @@ export const FormAnnouncement = () => {
 
   let formIsValid = false;
 
-  if (
-    enteredTitleIsValid &&
-    enteredDescriptionValid &&
-    selectedCategoryIsValid
-  ) {
+  if (enteredTitleIsValid && enteredDescriptionValid && selectedCategoryIsValid) {
     formIsValid = true;
   }
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
 
-    if (
-      !enteredTitleIsValid &&
-      !enteredDescriptionValid &&
-      !selectedCategoryIsValid
-    ) {
+    if (!enteredTitleIsValid && !enteredDescriptionValid && !selectedCategoryIsValid) {
       return;
     }
 
@@ -173,6 +163,7 @@ export const FormAnnouncement = () => {
   console.log("Title before sent: ", enteredTitle);
   console.log("Description before sent: ", enteredDescription);
   console.log("CAT before sent: ", selectedCategory);
+  console.log("IMG before sent: ", listOfImages);
   console.log("MOV before sent: ", enteredMovieUrl);
 
   let listOfSelectedImages = <Grid>Add images to announcement :)</Grid>;
@@ -217,9 +208,7 @@ export const FormAnnouncement = () => {
               onBlur={titleBlurHandler}
               error={titleInputHasError}
             />
-            {titleInputHasError && (
-              <p style={{ color: "red" }}>Title must not be empty.</p>
-            )}
+            {titleInputHasError && <p style={{ color: "red" }}>Title must not be empty.</p>}
           </Grid>
 
           <Grid item>
@@ -253,9 +242,7 @@ export const FormAnnouncement = () => {
                 required
                 multiple
                 value={selectedCategory}
-                renderValue={(selected) =>
-                  selected.map((cat) => cat.get_name).join(", ")
-                }
+                renderValue={(selected) => selected.map((cat) => cat.get_name).join(", ")}
                 onChange={selectedCategoryChangedHandler}
                 onBlur={selectedCategoryBlurHandler}
                 error={selectedCategoryHasError}
@@ -273,16 +260,11 @@ export const FormAnnouncement = () => {
                 ))}
               </Select>
             </FormControl>
-            {selectedCategoryHasError && (
-              <p style={{ color: "red" }}>Category must be selected.</p>
-            )}
+            {selectedCategoryHasError && <p style={{ color: "red" }}>Category must be selected.</p>}
           </Grid>
 
           <Grid item>
-            <SelectImages
-              value={listOfImages}
-              addImagesToList={setListOfImages}
-            />
+            <SelectImages value={listOfImages} addImagesToList={setListOfImages} />
           </Grid>
 
           <Grid item>{listOfSelectedImages}</Grid>
@@ -299,9 +281,7 @@ export const FormAnnouncement = () => {
               onBlur={movieUrlBlurHandler}
               error={movieUrlHasError}
             />
-            {movieUrlHasError && (
-              <p style={{ color: "red" }}>Url is is not from YouTube.</p>
-            )}
+            {movieUrlHasError && <p style={{ color: "red" }}>Url is is not from YouTube.</p>}
           </Grid>
 
           <Grid item>
@@ -357,13 +337,7 @@ const SelectImages = (props) => {
 
   return (
     <Grid>
-      <input
-        type="file"
-        multiple
-        id="file"
-        accept="image/jpeg,image/png"
-        onChange={imageHandler}
-      />
+      <input type="file" multiple id="file" accept="image/jpeg,image/png" onChange={imageHandler} />
     </Grid>
   );
 };
@@ -395,9 +369,7 @@ const UploadedImagesList = (props) => {
         {listOfSelectedImages.map((image, index) => (
           <Grid container item direction="row" key={index}>
             <Grid item xs={8}>
-              <ImageListItem
-                sx={{ width: 100, height: 100, objectFit: "contain" }}
-              >
+              <ImageListItem sx={{ width: 100, height: 100, objectFit: "contain" }}>
                 <img
                   src={image.toShow}
                   name={image.toShow}
@@ -409,20 +381,14 @@ const UploadedImagesList = (props) => {
             </Grid>
             <Grid item xs={4}>
               {image.is_main.toString() === "false" ? (
-                <Button
-                  startIcon={<Checkbox />}
-                  onClick={() => toggleIsMainImage(image)}
-                ></Button>
+                <Button startIcon={<Checkbox />} onClick={() => toggleIsMainImage(image)}></Button>
               ) : (
                 <Button
                   startIcon={<CheckBoxIcon defaultChecked />}
                   onClick={() => toggleIsMainImage(image)}
                 ></Button>
               )}
-              <Button
-                startIcon={<DeleteForeverIcon />}
-                onClick={() => deleteImage(image)}
-              ></Button>
+              <Button startIcon={<DeleteForeverIcon />} onClick={() => deleteImage(image)}></Button>
             </Grid>
           </Grid>
         ))}
