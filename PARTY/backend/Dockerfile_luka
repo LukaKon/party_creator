@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-FROM python:3.11-alpine3.17
+FROM python:3.11-alpine3.16
 
 LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Backend"
-=======
-FROM python:3.9.16-alpine3.17
->>>>>>> b9f2b577 (docker in process)
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -13,21 +9,15 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements.doc.txt /tmp/requirements.doc.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY . /app
-
 WORKDIR /app
+EXPOSE 8000
 
+ARG DEV=false
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     # installing necessary packages to install psycopg2 from source
-<<<<<<< HEAD
     # because this version is more robust/efficient than psycopg2-binary
-    # added gcc, musl-dev ... - is it necessary
-    # apk add gcc musl-dev python3-dev libffi-dev openssl-dev && \
-=======
-    # because this version is more robust/efficient than psycopg2-binary \
-    apk add gcc musl-dev python3-dev libffi-dev openssl-dev && \
->>>>>>> b9f2b577 (docker in process)
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-build-deps \
     build-base postgresql-dev musl-dev && \

@@ -67,7 +67,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
     'http://192.168.122.252:3000',
-    # 'http://192.168.122.220:8000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -80,6 +79,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 ROOT_URLCONF = "back.urls"
+
 ASGI_APPLICATION = "back.asgi.application"
 
 CHANNEL_LAYERS = {
@@ -90,7 +90,6 @@ CHANNEL_LAYERS = {
                         config('REDIS_HOST', '127.0.0.1'),
                         config('REDIS_PORT', 6379)
                     )]
-            # "hosts": [("127.0.0.1", 6379)],
         }
     }
 }
@@ -119,10 +118,10 @@ WSGI_APPLICATION = "back.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DATABASE_NAME", "dev2"),
+        "NAME": config("DATABASE_NAME", "postgres"),
         "HOST": config("DB_HOST", "127.0.0.1"),
         "USER": config("DATABASE_USER", "postgres"),
-        "PASSWORD": config("DATABASE_PASSWORD", "coderslab"),
+        "PASSWORD": config("DATABASE_PASSWORD", "postgres"),
         "PORT": config("DB_PORT", "5432"),
     }
 }
