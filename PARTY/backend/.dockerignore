@@ -8,7 +8,6 @@ Dockerfile*
 .docker
 
 # Python
-.env
 # **/.project
 # /.vscode
 venv/

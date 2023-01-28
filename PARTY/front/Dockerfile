@@ -1,41 +1,16 @@
-# stage 1 - build react app
-FROM node:18-alpine3.16 as builder
+FROM node:18.12-alpine3.17
 
+# Create app directory
 WORKDIR /app
 
-ENV PATH="./node_modules/.bin:$PATH"
+COPY package.json ./
 
-LABEL maintainer="PartyTeam"
-LABEL description="PartyWizard Frontend"
+RUN apk add --no-cache --virtual .gyp \
+    python3 \
+    make \
+    g++ \
+    && npm install \
+    && apk del .gyp
 
-COPY package.json .
-
-RUN npm install
-
-# RUN adduser --disabled-password --no-create-home react-user
-
+# Copy application
 COPY . .
-
-RUN npm run build
-
-# USER react-user
-
-
-# stage 2 - copy react build app to nginx
-# FROM nginx:alpine
-
-# WORKDIR /usr/share/nginx/html
-
-# # remove default nginx static assets
-# RUN rm -rf ./*
-
-# # COPY ./nginx.conf /etc/nginx/conf.d/default.conf:ro
-# # # COPY ./../../nginx/gzip.conf /etc/nginx/conf.d/gzip.conf:ro
-
-# # RUN rm -rf /usr/share/nginx/html/*
-
-# COPY --from=builder /app/dist .
-# #/usr/share/nginx/html
-# ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
-
-# EXPOSE 3000 80

@@ -67,7 +67,6 @@ export const Chat = () => {
             "user": data.user,
             "uuid": data.uuid
         }
-
         setMessages((prevState) => [...prevState, fullMessage])
     }
 

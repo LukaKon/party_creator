@@ -11,7 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOST = config("ALLOWED_HOST", "localhost")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
+print(ALLOWED_HOSTS)
 
 # Application definition
 
@@ -71,6 +72,7 @@ CSRF_TRUSTED_ORIGINS = [
 # CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "back.urls"
+
 ASGI_APPLICATION = "back.asgi.application"
 
 CHANNEL_LAYERS = {
@@ -106,11 +108,11 @@ WSGI_APPLICATION = "back.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DATABASE_NAME", "dev2"),
-        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-        "USER": os.getenv("DATABASE_USER", "postgres"),
-        "PASSWORD": os.getenv("DATABASE_PASSWORD", "coderslab"),
-        "PORT": os.getenv("DB_PORT", "5432"),
+        "NAME": config("DATABASE_NAME", "postgres"),
+        "HOST": config("DB_HOST", "127.0.0.1"),
+        "USER": config("DATABASE_USER", "postgres"),
+        "PASSWORD": config("DATABASE_PASSWORD", "postgres"),
+        "PORT": config("DB_PORT", "5432"),
     }
 }
 
