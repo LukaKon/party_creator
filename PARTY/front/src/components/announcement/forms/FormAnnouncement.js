@@ -6,8 +6,8 @@ import {
   Container,
   FormControl,
   Grid,
-  ImageList,
-  ImageListItem,
+  // ImageList,
+  // ImageListItem,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -15,15 +15,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import Checkbox from "@mui/material/Checkbox";
+// import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+// import CheckBoxIcon from "@mui/icons-material/CheckBox";
+// import Checkbox from "@mui/material/Checkbox";
 
 import { useTheme } from "@mui/material/styles";
 import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
 // import {formSubmissionHandler} from './formUtils'
 import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
+import { SelectImages } from "./SelectImages";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -302,97 +303,97 @@ export const FormAnnouncement = () => {
   return <Grid>{content}</Grid>;
 };
 
-const SelectImages = (props) => {
-  const { addImagesToList } = props;
-  const [selectedImages, setSelectedImages] = useState([]);
+// const SelectImages = (props) => {
+//   const { addImagesToList } = props;
+//   const [selectedImages, setSelectedImages] = useState([]);
+//
+//   const imageHandler = (e) => {
+//     if (typeof addImagesToList === "function") {
+//       if (e.target.files[0]) {
+//         const fileArray = Array.from(e.target.files).map((file, index) => {
+//           if (index === 0) {
+//             const firstImage = {
+//               toShow: URL.createObjectURL(file),
+//               image: file,
+//               is_main: true,
+//             };
+//             return firstImage;
+//           }
+//           const otherImage = {
+//             toShow: URL.createObjectURL(file),
+//             image: file,
+//             is_main: false,
+//           };
+//           return otherImage;
+//         });
+//
+//         setSelectedImages(fileArray);
+//       }
+//     }
+//   };
+//
+//   useEffect(() => {
+//     addImagesToList(selectedImages);
+//   }, [selectedImages]);
+//
+//   return (
+//     <Grid>
+//       <input type="file" multiple id="file" accept="image/jpeg,image/png" onChange={imageHandler} />
+//     </Grid>
+//   );
+// };
 
-  const imageHandler = (e) => {
-    if (typeof addImagesToList === "function") {
-      if (e.target.files[0]) {
-        const fileArray = Array.from(e.target.files).map((file, index) => {
-          if (index === 0) {
-            const firstImage = {
-              toShow: URL.createObjectURL(file),
-              image: file,
-              is_main: true,
-            };
-            return firstImage;
-          }
-          const otherImage = {
-            toShow: URL.createObjectURL(file),
-            image: file,
-            is_main: false,
-          };
-          return otherImage;
-        });
-
-        setSelectedImages(fileArray);
-      }
-    }
-  };
-
-  useEffect(() => {
-    addImagesToList(selectedImages);
-  }, [selectedImages]);
-
-  return (
-    <Grid>
-      <input type="file" multiple id="file" accept="image/jpeg,image/png" onChange={imageHandler} />
-    </Grid>
-  );
-};
-
-const UploadedImagesList = (props) => {
-  const { listOfSelectedImages, updateListOfImages } = props;
-
-  const deleteImage = (image) => {
-    const filteredImages = listOfSelectedImages.filter((img) => {
-      return image.toShow !== img.toShow;
-    });
-    updateListOfImages(filteredImages);
-  };
-
-  const toggleIsMainImage = (image) => {
-    const updatedListOfImages = listOfSelectedImages.map((img) => {
-      if (img.toShow === image.toShow) {
-        return { ...img, is_main: true };
-      } else {
-        return { ...img, is_main: false };
-      }
-    });
-    updateListOfImages(updatedListOfImages);
-  };
-
-  return (
-    <Grid container spacing={3}>
-      <ImageList sx={{ width: 800, height: 250 }} cols={3} rowHeight={100}>
-        {listOfSelectedImages.map((image, index) => (
-          <Grid container item direction="row" key={index}>
-            <Grid item xs={8}>
-              <ImageListItem sx={{ width: 100, height: 100, objectFit: "contain" }}>
-                <img
-                  src={image.toShow}
-                  name={image.toShow}
-                  alt={image.toShow}
-                  is_main={image.is_main.toString()}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            </Grid>
-            <Grid item xs={4}>
-              {image.is_main.toString() === "false" ? (
-                <Button startIcon={<Checkbox />} onClick={() => toggleIsMainImage(image)}></Button>
-              ) : (
-                <Button
-                  startIcon={<CheckBoxIcon defaultChecked />}
-                  onClick={() => toggleIsMainImage(image)}
-                ></Button>
-              )}
-              <Button startIcon={<DeleteForeverIcon />} onClick={() => deleteImage(image)}></Button>
-            </Grid>
-          </Grid>
-        ))}
-      </ImageList>
-    </Grid>
-  );
-};
+// const UploadedImagesList = (props) => {
+//   const { listOfSelectedImages, updateListOfImages } = props;
+//
+//   const deleteImage = (image) => {
+//     const filteredImages = listOfSelectedImages.filter((img) => {
+//       return image.toShow !== img.toShow;
+//     });
+//     updateListOfImages(filteredImages);
+//   };
+//
+//   const toggleIsMainImage = (image) => {
+//     const updatedListOfImages = listOfSelectedImages.map((img) => {
+//       if (img.toShow === image.toShow) {
+//         return { ...img, is_main: true };
+//       } else {
+//         return { ...img, is_main: false };
+//       }
+//     });
+//     updateListOfImages(updatedListOfImages);
+//   };
+//
+//   return (
+//     <Grid container spacing={3}>
+//       <ImageList sx={{ width: 800, height: 250 }} cols={3} rowHeight={100}>
+//         {listOfSelectedImages.map((image, index) => (
+//           <Grid container item direction="row" key={index}>
+//             <Grid item xs={8}>
+//               <ImageListItem sx={{ width: 100, height: 100, objectFit: "contain" }}>
+//                 <img
+//                   src={image.toShow}
+//                   name={image.toShow}
+//                   alt={image.toShow}
+//                   is_main={image.is_main.toString()}
+//                   loading="lazy"
+//                 />
+//               </ImageListItem>
+//             </Grid>
+//             <Grid item xs={4}>
+//               {image.is_main.toString() === "false" ? (
+//                 <Button startIcon={<Checkbox />} onClick={() => toggleIsMainImage(image)}></Button>
+//               ) : (
+//                 <Button
+//                   startIcon={<CheckBoxIcon defaultChecked />}
+//                   onClick={() => toggleIsMainImage(image)}
+//                 ></Button>
+//               )}
+//               <Button startIcon={<DeleteForeverIcon />} onClick={() => deleteImage(image)}></Button>
+//             </Grid>
+//           </Grid>
+//         ))}
+//       </ImageList>
+//     </Grid>
+//   );
+// };

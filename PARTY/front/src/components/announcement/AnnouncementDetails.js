@@ -44,10 +44,7 @@ const ImageItem = (props) => {
 
   return (
     <Link to={props.image} underline="none">
-      <ImageListItem
-        key={props.uuid}
-        sx={props.is_main === true ? styleIsMain : styleDefault}
-      >
+      <ImageListItem key={props.uuid} sx={props.is_main === true ? styleIsMain : styleDefault}>
         <img
           src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
           srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -75,9 +72,7 @@ const CategoryItem = (props) => {
 
 const VideoItem = (props) => {
   const { video_url } = props;
-  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(
-    -11
-  )}`;
+  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(-11)}`;
 
   return (
     <Grid container>
@@ -130,9 +125,7 @@ export const AnnouncementDetails = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcementDetails
-  );
+  const { loading, entities, error } = useSelector((state) => state.announcementDetails);
 
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
@@ -168,6 +161,7 @@ export const AnnouncementDetails = () => {
 
   const handleDeleteButton = (data) => {
     // TODO: finish delete functionality
+    // TODO: change status to inactive - don't delete from DB
     // console.log("######in delete: ", data.slug);
     dispatch(deleteAnnouncement(data));
     navigate("profile");
@@ -218,12 +212,7 @@ export const AnnouncementDetails = () => {
       content = (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container direction="column" spacing={5}>
-            <Grid
-              item
-              xs={6}
-              rowSpacing={9}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
+            <Grid item xs={6} rowSpacing={9} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
               <Grid item>
                 <Typography variant="h6">Title: {entities.title}</Typography>
               </Grid>
@@ -268,9 +257,7 @@ export const AnnouncementDetails = () => {
                 rowHeight={164}
               >
                 {entities.images.length > 0 ? (
-                  entities.images.map((img) => (
-                    <ImageItem key={img.uuid} {...img} />
-                  ))
+                  entities.images.map((img) => <ImageItem key={img.uuid} {...img} />)
                 ) : (
                   <Typography variant="body2" color="red">
                     No images.
