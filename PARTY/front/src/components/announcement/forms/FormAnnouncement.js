@@ -25,6 +25,7 @@ import { useInput } from "./hooks/useInput";
 // import {formSubmissionHandler} from './formUtils'
 import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
 import { SelectImages } from "./SelectImages";
+import { UploadedImagesList } from "./UploadedImagesList";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
