@@ -14,11 +14,6 @@ services:
               python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
-    # environment:
-    #   - DB_HOST=db
-    #   - DB_NAME=${DATABASE_NAME}
-    #   - DB_USER=${DATABASE_USER}
-    #   - DB_PASS=${DATABASE_PASSWORD}
     restart: on-failure
     volumes:
       - ./PARTY/backend:/app
@@ -46,11 +41,8 @@ services:
       - party_network
 
   cache:
-    # image: redis:7.0-alpine
     image: bitnami/redis:7.0.7
     container_name: redis_cache
-    # command: redis-server --requirepass sOmE_sEcUrE_pAsS
-    # command: redis-server
     command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
@@ -58,7 +50,6 @@ services:
       - REDIS_IO_THREADS_DO_READS=yes
       - REDIS_AOF_ENABLE=no
       - REDIS_PORT_NUMBER=6379
-      # - REDIS_PASSWORD=sOmE_sEcUrE_pAsS
     restart: always
     ports:
       - 6379:6379
@@ -71,8 +62,6 @@ services:
       context: ./PARTY/front
       dockerfile: Dockerfile
     command: npm start
-    # environment:
-    #   CHOKIDAR_USEPOLLING: "true"
     env_file:
       - .env
     restart: always

@@ -21,6 +21,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
-
 # USER react-user
+
+RUN npm run build
