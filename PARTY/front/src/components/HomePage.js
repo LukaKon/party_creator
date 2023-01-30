@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
 import { AnnouncementList } from "./announcement/AnnouncementList";
-import { BACKEND_LOCALHOST } from "../../Settings";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchAnnouncements } from "../redux/slices/announcementSlice";
 import { AnnouncementSkeleton } from "../components/skeletons/AnnouncementSkeletons.js";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const HomePage = () => {
   const { loading, entities, error } = useSelector(
@@ -27,7 +28,7 @@ export const HomePage = () => {
   return (
     <Grid>
       <Grid>
-        <img alt="logo" src={BACKEND_LOCALHOST + "media/main.png"} />
+        <img alt="logo" src={LOCALHOST + "media/main.png"} />
       </Grid>
       {content}
       {/*<AnnouncementList loading={loading} entities={entities} error={error}/>*/}

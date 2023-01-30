@@ -4,14 +4,15 @@ import {loged} from "../../utils/loged";
 
 export const fetchProfile = createAsyncThunk(
     "profile/getProfile",
-    async (data) => {
+    async (data, {rejectWithValue}) => {
         if(loged){
             try {
             const response = await axiosInstance.post("account/getprofile/", data);
             return response.data;
             } catch (error) {
                 console.log("Fetch profile error: ", error.message);
-                throw error
+                // throw error
+                return rejectWithValue(error.response.data)
             }
         }
     }

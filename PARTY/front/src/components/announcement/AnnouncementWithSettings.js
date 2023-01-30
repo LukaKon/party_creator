@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { BACKEND_LOCALHOST } from "../../../Settings";
 import { deleteAnnouncement } from "../../redux/slices/announcementDetailSlice";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const AnnouncementWithSettings = (props) => {
 
@@ -35,13 +36,13 @@ export const AnnouncementWithSettings = (props) => {
         event.target.parentElement.parentElement.parentElement.parentElement.remove()
     }
 
-    if (main_image.length && main_image[0].image.includes(BACKEND_LOCALHOST)) {
+    if (main_image.length && main_image[0].image.includes(LOCALHOST)) {
         render_image = main_image[0].image;
     }else if(main_image.length){
         console.log(main_image)
-        render_image = BACKEND_LOCALHOST + main_image[0].image
+        render_image = LOCALHOST + main_image[0].image
     }else {
-        render_image = BACKEND_LOCALHOST + "media/announcement/default.jpg";
+        render_image = LOCALHOST + "media/announcement/default.jpg";
     }
 
     return (

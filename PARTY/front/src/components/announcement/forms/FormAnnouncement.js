@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import {
   Button,
   Container,
   FormControl,
   Grid,
-  ImageList,
-  ImageListItem,
+  // ImageList,
+  // ImageListItem,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -14,15 +15,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import Checkbox from "@mui/material/Checkbox";
+// import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+// import CheckBoxIcon from "@mui/icons-material/CheckBox";
+// import Checkbox from "@mui/material/Checkbox";
 
 import { useTheme } from "@mui/material/styles";
 import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
 // import {formSubmissionHandler} from './formUtils'
 import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
+import { SelectImages } from "./SelectImages";
+import { UploadedImagesList } from "./UploadedImagesList";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -45,7 +48,15 @@ const getStyle = (category, selectedCategory, theme) => {
   };
 };
 
-export const AddAnnouncement = () => {
+export const FormAnnouncement = () => {
+  const location = useLocation();
+  // console.log("loctaion: ", location);
+  let passedData = null;
+  if (location.state) {
+    passedData = location.state.entities;
+  }
+  console.log("DATA: ", passedData);
+
   const {
     value: enteredTitle,
     isValid: enteredTitleIsValid,
@@ -53,7 +64,7 @@ export const AddAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput((value) => value.trim() !== "", "");
+  } = useInput((value) => value.trim() !== "", passedData ? passedData.title : "");
 
   const {
     value: enteredDescription,
@@ -62,7 +73,7 @@ export const AddAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput((value) => value.trim() !== "", "");
+  } = useInput((value) => value.trim() !== "", passedData ? passedData.description : "");
 
   const {
     value: selectedCategory,
@@ -71,7 +82,10 @@ export const AddAnnouncement = () => {
     valueChangeHandler: selectedCategoryChangedHandler,
     inputBlurHandler: selectedCategoryBlurHandler,
     reset: resetSelectedCategory,
-  } = useInput((value) => value.length > 0, []);
+  } = useInput(
+    (value) => value.length > 0,
+    passedData ? passedData.category.map((cat) => cat) : [],
+  );
 
   const {
     value: enteredMovieUrl,
@@ -80,14 +94,22 @@ export const AddAnnouncement = () => {
     valueChangeHandler: movieUrlChangeHandler,
     inputBlurHandler: movieUrlBlurHandler,
     reset: resetMovieUrl,
-  } = useInput((value) => value.includes("https://www.youtube.com/"), "");
+  } = useInput(
+    (value) => value.includes("https://www.youtube.com/"),
+    // passedData ? passedData.movies.map((mov) => mov) : []
+    passedData ? passedData.movies[0].movie_url : "",
+  );
 
-  const [listOfImages, setListOfImages] = useState([
-    {
-      image: "",
-      is_main: false,
-    },
-  ]);
+  const [listOfImages, setListOfImages] = useState(
+    passedData
+      ? passedData.images
+      : [
+          {
+            image: "",
+            is_main: false,
+          },
+        ],
+  );
 
   const theme = useTheme();
 
@@ -95,28 +117,16 @@ export const AddAnnouncement = () => {
 
   const dispatch = useDispatch();
 
-  // const [formIsValid, setFormIsValid]=useState(false)
-
   let formIsValid = false;
 
-  if (
-    enteredTitleIsValid &&
-    enteredDescriptionValid &&
-    selectedCategoryIsValid
-  ) {
+  if (enteredTitleIsValid && enteredDescriptionValid && selectedCategoryIsValid) {
     formIsValid = true;
-    // setFormIsValid(true)
   }
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
 
-    if (
-      // !formIsValid
-      !enteredTitleIsValid &&
-      !enteredDescriptionValid &&
-      !selectedCategoryIsValid
-    ) {
+    if (!enteredTitleIsValid && !enteredDescriptionValid && !selectedCategoryIsValid) {
       return;
     }
 
@@ -143,22 +153,20 @@ export const AddAnnouncement = () => {
 
     resetTitleInput();
     resetDescriptionInput();
-    resetSelectedCategory();
+    resetSelectedCategory([]);
     resetMovieUrl();
     setListOfImages("");
   };
 
-  // const submissionHandler=(e)=>{
-  //   if (typeof(formSubmissionHandler) ==='function'){
-  //     const announcementData={}
-  //     formSubmissionHandler(announcementData)
-  //   }
-  //
-  // }
-
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
+
+  console.log("Title before sent: ", enteredTitle);
+  console.log("Description before sent: ", enteredDescription);
+  console.log("CAT before sent: ", selectedCategory);
+  console.log("IMG before sent: ", listOfImages);
+  console.log("MOV before sent: ", enteredMovieUrl);
 
   let listOfSelectedImages = <Grid>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {
@@ -172,6 +180,11 @@ export const AddAnnouncement = () => {
     );
   }
 
+  let titleOfForm = "Add announcement:";
+  if (passedData) {
+    titleOfForm = "Edit announcement:";
+  }
+
   let content;
   if (loading) {
     content = <p>Loading...</p>;
@@ -181,7 +194,7 @@ export const AddAnnouncement = () => {
         <Grid container spacing={2}>
           <Grid item>
             <Typography component="h1" variant="h5">
-              Add announcement:
+              {titleOfForm}
             </Typography>
           </Grid>
 
@@ -191,14 +204,13 @@ export const AddAnnouncement = () => {
               id="title"
               label="Title"
               name="title"
+              placeholder={enteredTitle}
+              value={enteredTitle}
               onChange={titleChangedHandler}
               onBlur={titleBlurHandler}
-              value={enteredTitle}
               error={titleInputHasError}
             />
-            {titleInputHasError && (
-              <p style={{ color: "red" }}>Title must not be empty.</p>
-            )}
+            {titleInputHasError && <p style={{ color: "red" }}>Title must not be empty.</p>}
           </Grid>
 
           <Grid item>
@@ -211,11 +223,11 @@ export const AddAnnouncement = () => {
               minRows={5}
               maxRows={10}
               maxLength={1000}
-              placeholder="Description..."
               style={{ width: 500 }}
+              placeholder={enteredDescription}
+              value={enteredDescription}
               onChange={descriptionChangedHandler}
               onBlur={descriptionBlurHandler}
-              value={enteredDescription}
               error={descriptionInputHasError}
             />
             {descriptionInputHasError && (
@@ -232,6 +244,7 @@ export const AddAnnouncement = () => {
                 required
                 multiple
                 value={selectedCategory}
+                renderValue={(selected) => selected.map((cat) => cat.get_name).join(", ")}
                 onChange={selectedCategoryChangedHandler}
                 onBlur={selectedCategoryBlurHandler}
                 error={selectedCategoryHasError}
@@ -241,7 +254,7 @@ export const AddAnnouncement = () => {
                 {entities.map((category) => (
                   <MenuItem
                     key={category.uuid}
-                    value={category.uuid}
+                    value={category}
                     style={getStyle(category.get_name, selectedCategory, theme)}
                   >
                     {category.get_name}
@@ -249,16 +262,11 @@ export const AddAnnouncement = () => {
                 ))}
               </Select>
             </FormControl>
-            {selectedCategoryHasError && (
-              <p style={{ color: "red" }}>Category must be selected.</p>
-            )}
+            {selectedCategoryHasError && <p style={{ color: "red" }}>Category must be selected.</p>}
           </Grid>
 
           <Grid item>
-            <SelectImages
-              value={listOfImages}
-              addImagesToList={setListOfImages}
-            />
+            <SelectImages value={listOfImages} addImagesToList={setListOfImages} />
           </Grid>
 
           <Grid item>{listOfSelectedImages}</Grid>
@@ -269,14 +277,13 @@ export const AddAnnouncement = () => {
               id="movies"
               label="Movies"
               name="movies"
+              placeholder={enteredMovieUrl}
+              value={enteredMovieUrl}
               onChange={movieUrlChangeHandler}
               onBlur={movieUrlBlurHandler}
-              value={enteredMovieUrl}
               error={movieUrlHasError}
             />
-            {movieUrlHasError && (
-              <p style={{ color: "red" }}>Url is is not from YouTube.</p>
-            )}
+            {movieUrlHasError && <p style={{ color: "red" }}>Url is is not from YouTube.</p>}
           </Grid>
 
           <Grid item>
@@ -297,111 +304,97 @@ export const AddAnnouncement = () => {
   return <Grid>{content}</Grid>;
 };
 
-const SelectImages = (props) => {
-  const { addImagesToList } = props;
-  const [selectedImages, setSelectedImages] = useState([]);
+// const SelectImages = (props) => {
+//   const { addImagesToList } = props;
+//   const [selectedImages, setSelectedImages] = useState([]);
+//
+//   const imageHandler = (e) => {
+//     if (typeof addImagesToList === "function") {
+//       if (e.target.files[0]) {
+//         const fileArray = Array.from(e.target.files).map((file, index) => {
+//           if (index === 0) {
+//             const firstImage = {
+//               toShow: URL.createObjectURL(file),
+//               image: file,
+//               is_main: true,
+//             };
+//             return firstImage;
+//           }
+//           const otherImage = {
+//             toShow: URL.createObjectURL(file),
+//             image: file,
+//             is_main: false,
+//           };
+//           return otherImage;
+//         });
+//
+//         setSelectedImages(fileArray);
+//       }
+//     }
+//   };
+//
+//   useEffect(() => {
+//     addImagesToList(selectedImages);
+//   }, [selectedImages]);
+//
+//   return (
+//     <Grid>
+//       <input type="file" multiple id="file" accept="image/jpeg,image/png" onChange={imageHandler} />
+//     </Grid>
+//   );
+// };
 
-  const imageHandler = (e) => {
-    if (typeof addImagesToList === "function") {
-      if (e.target.files[0]) {
-        const fileArray = Array.from(e.target.files).map((file, index) => {
-          if (index === 0) {
-            const firstImage = {
-              toShow: URL.createObjectURL(file),
-              image: file,
-              is_main: true,
-            };
-            return firstImage;
-          }
-          const otherImage = {
-            toShow: URL.createObjectURL(file),
-            image: file,
-            is_main: false,
-          };
-          return otherImage;
-        });
-
-        setSelectedImages(fileArray);
-      }
-    }
-  };
-
-  useEffect(() => {
-    addImagesToList(selectedImages);
-  }, [selectedImages]);
-
-  return (
-    <Grid>
-      <input
-        type="file"
-        multiple
-        id="file"
-        accept="image/jpeg,image/png"
-        onChange={imageHandler}
-      />
-    </Grid>
-  );
-};
-
-const UploadedImagesList = (props) => {
-  const { listOfSelectedImages, updateListOfImages } = props;
-
-  const deleteImage = (image) => {
-    const filteredImages = listOfSelectedImages.filter((img) => {
-      return image.toShow !== img.toShow;
-    });
-    updateListOfImages(filteredImages);
-  };
-
-  const toggleIsMainImage = (image) => {
-    const updatedListOfImages = listOfSelectedImages.map((img) => {
-      if (img.toShow === image.toShow) {
-        return { ...img, is_main: true };
-      } else {
-        return { ...img, is_main: false };
-      }
-    });
-    updateListOfImages(updatedListOfImages);
-  };
-
-  return (
-    <Grid container spacing={3}>
-      <ImageList sx={{ width: 800, height: 250 }} cols={3} rowHeight={100}>
-        {listOfSelectedImages.map((image, index) => (
-          <Grid container item direction="row" key={index}>
-            <Grid item xs={8}>
-              <ImageListItem
-                sx={{ width: 100, height: 100, objectFit: "contain" }}
-              >
-                <img
-                  src={image.toShow}
-                  name={image.toShow}
-                  alt={image.toShow}
-                  is_main={image.is_main.toString()}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            </Grid>
-            <Grid item xs={4}>
-              {image.is_main.toString() === "false" ? (
-                <Button
-                  startIcon={<Checkbox />}
-                  onClick={() => toggleIsMainImage(image)}
-                ></Button>
-              ) : (
-                <Button
-                  startIcon={<CheckBoxIcon defaultChecked />}
-                  onClick={() => toggleIsMainImage(image)}
-                ></Button>
-              )}
-              <Button
-                startIcon={<DeleteForeverIcon />}
-                onClick={() => deleteImage(image)}
-              ></Button>
-            </Grid>
-          </Grid>
-        ))}
-      </ImageList>
-    </Grid>
-  );
-};
+// const UploadedImagesList = (props) => {
+//   const { listOfSelectedImages, updateListOfImages } = props;
+//
+//   const deleteImage = (image) => {
+//     const filteredImages = listOfSelectedImages.filter((img) => {
+//       return image.toShow !== img.toShow;
+//     });
+//     updateListOfImages(filteredImages);
+//   };
+//
+//   const toggleIsMainImage = (image) => {
+//     const updatedListOfImages = listOfSelectedImages.map((img) => {
+//       if (img.toShow === image.toShow) {
+//         return { ...img, is_main: true };
+//       } else {
+//         return { ...img, is_main: false };
+//       }
+//     });
+//     updateListOfImages(updatedListOfImages);
+//   };
+//
+//   return (
+//     <Grid container spacing={3}>
+//       <ImageList sx={{ width: 800, height: 250 }} cols={3} rowHeight={100}>
+//         {listOfSelectedImages.map((image, index) => (
+//           <Grid container item direction="row" key={index}>
+//             <Grid item xs={8}>
+//               <ImageListItem sx={{ width: 100, height: 100, objectFit: "contain" }}>
+//                 <img
+//                   src={image.toShow}
+//                   name={image.toShow}
+//                   alt={image.toShow}
+//                   is_main={image.is_main.toString()}
+//                   loading="lazy"
+//                 />
+//               </ImageListItem>
+//             </Grid>
+//             <Grid item xs={4}>
+//               {image.is_main.toString() === "false" ? (
+//                 <Button startIcon={<Checkbox />} onClick={() => toggleIsMainImage(image)}></Button>
+//               ) : (
+//                 <Button
+//                   startIcon={<CheckBoxIcon defaultChecked />}
+//                   onClick={() => toggleIsMainImage(image)}
+//                 ></Button>
+//               )}
+//               <Button startIcon={<DeleteForeverIcon />} onClick={() => deleteImage(image)}></Button>
+//             </Grid>
+//           </Grid>
+//         ))}
+//       </ImageList>
+//     </Grid>
+//   );
+// };

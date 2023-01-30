@@ -8,12 +8,7 @@ export const useInput = (validateValue, initState) => {
   const hasError = !valueIsValid && isTouched;
 
   const valueChangeHandler = (event) => {
-    console.log("event: ", typeof event);
-    try {
-      setEnteredValue(event.target.value);
-    } catch {
-      setEnteredValue(event);
-    }
+    setEnteredValue(event.target.value);
   };
 
   const inputBlurHandler = () => {

@@ -5,14 +5,13 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from decouple import config
+from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
-print(ALLOWED_HOSTS)
 
 # Application definition
 
@@ -67,15 +66,18 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
+    'http://192.168.122.252:3000',
 ]
+
 CSRF_TRUSTED_ORIGINS = [
     "https://localhost:3000",
     "http://localhost:3000",
     'https://127.0.0.1:3000',
     'https://127.0.0.1:8000',
     'http://127.0.0.1:3000',
+    'https://192.168.122.252:3000',
+    'http://192.168.122.252:3000',
 ]
-
 
 ROOT_URLCONF = "back.urls"
 
@@ -85,7 +87,10 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [(
+                        config('REDIS_HOST', '127.0.0.1'),
+                        config('REDIS_PORT', 6379)
+                    )]
         }
     }
 }
@@ -143,13 +148,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
+# LANGUAGE_CODE = 'en-us'
+
 LANGUAGE_CODE = "pl"
 LANGUAGES = (
     ("pl", "polski"),
     ("en", "angielski"),
 )
-
-# LANGUAGE_CODE = 'en-us'
 
 # TIME_ZONE = 'UTC'
 TIME_ZONE = "Europe/Warsaw"  # 'UTC'
@@ -168,8 +173,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-STATICFILES_DIRS = [
-]
+STATICFILES_DIRS = []
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -227,6 +231,7 @@ if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
 EMAIL_HOST = 'smtp.gmail.com'
+# FIX: where is EMAIL or where should be? add to .env file and remove this file from github
 EMAIL_FROM = os.getenv("EMAIL_ADDRESS")
 EMAIL_HOST_USER = os.getenv("EMAIL_ADDRESS")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")

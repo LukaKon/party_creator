@@ -31,14 +31,14 @@ class Category(models.Model):
     """Category(type) of announcement. e.g. local, photograph etc."""
 
     MUSIC = 'MU'
-    CATTERING = 'CA'
+    CATERING = 'CA'
     PHOTOGRAPH = 'PH'
     LOCAL = 'LO'
     ANIMATOR = 'AN'
 
     CATEGORY_NAME = (
         (MUSIC, _("Music")),
-        (CATTERING, _("Cattering")),
+        (CATERING, _("Catering")),
         (PHOTOGRAPH, _("Photographer")),
         (LOCAL, _("Place")),
         (ANIMATOR, _("Animator")),

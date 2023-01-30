@@ -21,11 +21,12 @@ import { makeStyles } from "@mui/styles";
 // import { logout } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/slices/profileSlice";
-import { BACKEND_LOCALHOST } from "../../Settings";
 import { loged } from "../utils/loged";
 import { v4 as uuidv4 } from "uuid";
 import { SearchBar } from "./Search";
-import {Logout} from "./Logout";
+// import {Logout} from "./Logout";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
 
 const useStyles = makeStyles((theme) => ({
   test: {
@@ -53,7 +54,7 @@ export const Header = () => {
   const { entities } = useSelector((state) => state.profile);
 
   const showAvatar = () => {
-    image = BACKEND_LOCALHOST.slice(0, -1) + entities.image;
+    image = LOCALHOST.slice(0, -1) + entities.image;
   };
 
   const pages = {
@@ -189,7 +190,7 @@ export const Header = () => {
           <Button onClick={() => handleMenu('/')}>
             <Typography noWrap component="div" sx={{ mr: 1 }}>
               <ImageListItem sx={{width: 50, height:50,objectFit:'contain'}}>
-              <img src={BACKEND_LOCALHOST + 'media/logo.png'} alt="logo"/>
+              <img src={LOCALHOST + 'media/logo.png'} alt="logo"/>
               </ImageListItem>
             </Typography>
           </Button>

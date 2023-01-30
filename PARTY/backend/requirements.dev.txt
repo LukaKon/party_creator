@@ -2,5 +2,5 @@ blessings>=1.7
 django-shell-plus>=1.1.7
 isort
 flake8>=4.0.1,<4.1
-bpython==0.22.1
-Markdown==3.4.1
+bpython>=0.22.1
+Markdown>=3.4.1
