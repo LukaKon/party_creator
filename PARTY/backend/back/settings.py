@@ -66,17 +66,25 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
+<<<<<<< HEAD
     'http://192.168.122.252:3000',
+=======
+>>>>>>> fafba0d4 (docker marge)
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://localhost:3000",
     "http://localhost:3000",
     'https://127.0.0.1:3000',
+    'https://127.0.0.1:8000',
     'http://127.0.0.1:3000',
     'https://192.168.122.252:3000',
     'http://192.168.122.252:3000',
 ]
+<<<<<<< HEAD
+=======
+
+>>>>>>> fafba0d4 (docker marge)
 
 ROOT_URLCONF = "back.urls"
 
