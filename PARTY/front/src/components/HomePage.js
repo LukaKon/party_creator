@@ -1,31 +1,37 @@
-import React, {useEffect} from "react";
-import {Grid} from '@mui/material'
-import {AnnouncementList} from "./announcement/AnnouncementList";
-import {BACKEND_LOCALHOST} from '../../Settings'
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect } from "react";
+import { Grid } from "@mui/material";
+import { AnnouncementList } from "./announcement/AnnouncementList";
+import { BACKEND_LOCALHOST } from "../../Settings";
+import { useDispatch, useSelector } from "react-redux";
 
-import {fetchAnnouncements} from "../redux/slices/announcementSlice";
+import { fetchAnnouncements } from "../redux/slices/announcementSlice";
+import { AnnouncementSkeleton } from "../components/skeletons/AnnouncementSkeletons.js";
 
 export const HomePage = () => {
+  const { loading, entities, error } = useSelector(
+    (state) => state.announcements
+  );
+  const dispatch = useDispatch();
 
-    const { loading, entities, error } = useSelector(
-        (state) => state.announcements
+  useEffect(() => {
+    dispatch(fetchAnnouncements({ main_page: true }));
+  }, []);
+
+  let content = <AnnouncementSkeleton />;
+  if (!loading) {
+    content = (
+      <AnnouncementList loading={loading} entities={entities} error={error} />
     );
-    const dispatch = useDispatch();
+  }
 
-    useEffect(() => {
-        dispatch(fetchAnnouncements({main_page: true}))
-    }, []);
-
-    return (
-        <Grid>
-            <Grid>
-                <img alt='logo' src={BACKEND_LOCALHOST + "media/main.png"}/>
-            </Grid>
-            <AnnouncementList loading={loading} entities={entities} error={error}/>
-            {sessionStorage.getItem("access_token")
-                ? "Zalogowany"
-                : "Niezalogowany"}
-        </Grid>
-    );
+  return (
+    <Grid>
+      <Grid>
+        <img alt="logo" src={BACKEND_LOCALHOST + "media/main.png"} />
+      </Grid>
+      {content}
+      {/*<AnnouncementList loading={loading} entities={entities} error={error}/>*/}
+      {sessionStorage.getItem("access_token") ? "Zalogowany" : "Niezalogowany"}
+    </Grid>
+  );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
   Container,
@@ -17,12 +17,12 @@ import {
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Checkbox from "@mui/material/Checkbox";
-import { useTheme } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
-import { fetchCategories } from "../../redux/slices/categorySlice";
 
+import { useTheme } from "@mui/material/styles";
+import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
-import { createAnnouncement } from "../../redux/slices/announcementSlice";
+// import {formSubmissionHandler} from './formUtils'
+import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -80,7 +80,7 @@ export const AddAnnouncement = () => {
     valueChangeHandler: movieUrlChangeHandler,
     inputBlurHandler: movieUrlBlurHandler,
     reset: resetMovieUrl,
-  } = useInput((value) => value.includes("https://www"), "");
+  } = useInput((value) => value.includes("https://www.youtube.com/"), "");
 
   const [listOfImages, setListOfImages] = useState([
     {
@@ -95,6 +95,8 @@ export const AddAnnouncement = () => {
 
   const dispatch = useDispatch();
 
+  // const [formIsValid, setFormIsValid]=useState(false)
+
   let formIsValid = false;
 
   if (
@@ -103,12 +105,14 @@ export const AddAnnouncement = () => {
     selectedCategoryIsValid
   ) {
     formIsValid = true;
+    // setFormIsValid(true)
   }
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
 
     if (
+      // !formIsValid
       !enteredTitleIsValid &&
       !enteredDescriptionValid &&
       !selectedCategoryIsValid
@@ -143,6 +147,14 @@ export const AddAnnouncement = () => {
     resetMovieUrl();
     setListOfImages("");
   };
+
+  // const submissionHandler=(e)=>{
+  //   if (typeof(formSubmissionHandler) ==='function'){
+  //     const announcementData={}
+  //     formSubmissionHandler(announcementData)
+  //   }
+  //
+  // }
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -263,7 +275,7 @@ export const AddAnnouncement = () => {
               error={movieUrlHasError}
             />
             {movieUrlHasError && (
-              <p style={{ color: "red" }}>Url is incorrect.</p>
+              <p style={{ color: "red" }}>Url is is not from YouTube.</p>
             )}
           </Grid>
 
@@ -292,11 +304,23 @@ const SelectImages = (props) => {
   const imageHandler = (e) => {
     if (typeof addImagesToList === "function") {
       if (e.target.files[0]) {
-        const fileArray = Array.from(e.target.files).map((file) => ({
-          toShow: URL.createObjectURL(file),
-          image: file,
-          is_main: false,
-        }));
+        const fileArray = Array.from(e.target.files).map((file, index) => {
+          if (index === 0) {
+            const firstImage = {
+              toShow: URL.createObjectURL(file),
+              image: file,
+              is_main: true,
+            };
+            return firstImage;
+          }
+          const otherImage = {
+            toShow: URL.createObjectURL(file),
+            image: file,
+            is_main: false,
+          };
+          return otherImage;
+        });
+
         setSelectedImages(fileArray);
       }
     }
