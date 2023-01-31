@@ -6,8 +6,6 @@ import {
   Container,
   FormControl,
   Grid,
-  // ImageList,
-  // ImageListItem,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -15,9 +13,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-// import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-// import CheckBoxIcon from "@mui/icons-material/CheckBox";
-// import Checkbox from "@mui/material/Checkbox";
 
 import { useTheme } from "@mui/material/styles";
 import { fetchCategories } from "../../../redux/slices/categorySlice";
@@ -168,7 +163,7 @@ export const FormAnnouncement = () => {
   console.log("IMG before sent: ", listOfImages);
   console.log("MOV before sent: ", enteredMovieUrl);
 
-  let listOfSelectedImages = <Grid>Add images to announcement :)</Grid>;
+  let listOfSelectedImages = <Grid item>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {
     listOfSelectedImages = (
       <Grid>
@@ -180,6 +175,7 @@ export const FormAnnouncement = () => {
     );
   }
 
+  // dynamic title depend on type of form: add or edit
   let titleOfForm = "Add announcement:";
   if (passedData) {
     titleOfForm = "Edit announcement:";
