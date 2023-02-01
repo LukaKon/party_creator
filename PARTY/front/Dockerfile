@@ -17,10 +17,12 @@ RUN npm install
 #     && npm install \
 #     && apk del .gyp
 
-# RUN adduser --disabled-password --no-create-home react-user
-
 COPY . .
 
+# RUN npm run build \
+#     adduser \
+#     --disabled-password \
+#     --no-create-home \
+#     react-user
+#
 # USER react-user
-
-RUN npm run build
