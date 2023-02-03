@@ -1,7 +1,4 @@
 import { Grid, Typography } from "@mui/material";
-const VideoItem = (props) => {
-  const { video_url } = props;
-  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(-11)}`;
 
 const VideoItem = (props) => {
   const { video_url } = props;
@@ -29,7 +26,7 @@ const VideoItem = (props) => {
   );
 };
 
-export const VideoList = (props) => {
+const VideoList = (props) => {
   let content = (
     <Typography variant="body2" color="red">
       No movies.
