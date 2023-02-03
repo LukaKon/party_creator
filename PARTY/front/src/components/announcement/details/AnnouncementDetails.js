@@ -25,36 +25,37 @@ import {
   fetchAnnouncementDetails,
 } from "../../redux/slices/announcementDetailSlice";
 import { loged } from "../../utils/loged";
+import { VideoList } from "./VideoList.js";
 
-const ImageItem = (props) => {
-  const styleIsMain = {
-    padding: 1,
-    border: 3,
-    borderColor: "lightgreen",
-    width: 100,
-    height: 100,
-  };
-  const styleDefault = {
-    padding: 1,
-    border: 3,
-    borderColor: "lightred",
-    width: 120,
-    height: 120,
-  };
-
-  return (
-    <Link to={props.image} underline="none">
-      <ImageListItem key={props.uuid} sx={props.is_main === true ? styleIsMain : styleDefault}>
-        <img
-          src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
-          srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-          alt="description - make it dynamic"
-          loading="lazy"
-        />
-      </ImageListItem>
-    </Link>
-  );
-};
+// const ImageItem = (props) => {
+//   const styleIsMain = {
+//     padding: 1,
+//     border: 3,
+//     borderColor: "lightgreen",
+//     width: 100,
+//     height: 100,
+//   };
+//   const styleDefault = {
+//     padding: 1,
+//     border: 3,
+//     borderColor: "lightred",
+//     width: 120,
+//     height: 120,
+//   };
+//
+//   return (
+//     <Link to={props.image} underline="none">
+//       <ImageListItem key={props.uuid} sx={props.is_main === true ? styleIsMain : styleDefault}>
+//         <img
+//           src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
+//           srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+//           alt="description - make it dynamic"
+//           loading="lazy"
+//         />
+//       </ImageListItem>
+//     </Link>
+//   );
+// };
 
 const CategoryItem = (props) => {
   return (
@@ -70,56 +71,57 @@ const CategoryItem = (props) => {
   );
 };
 
-const VideoItem = (props) => {
-  const { video_url } = props;
-  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(-11)}`;
+// const VideoItem = (props) => {
+//   const { video_url } = props;
+//   const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(-11)}`;
+//
+//   return (
+//     <Grid container>
+//       <Grid item>
+//         <iframe
+//           width="560"
+//           height="315"
+//           src={embeddedVideoURL}
+//           title="YouTube Video Player"
+//           frameBorder="0"
+//           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+//           allowFullScreen
+//         />
+//         <Typography variant="body2">
+//           <a href={video_url} underline="hover">
+//             {video_url}
+//           </a>
+//         </Typography>
+//       </Grid>
+//     </Grid>
+//   );
+// };
+//
+// const VideoList = (props) => {
+//   let content = (
+//     <Typography variant="body2" color="red">
+//       No movies.
+//     </Typography>
+//   );
+//   if (props.listOfVideos.length > 0) {
+//     content = (
+//       <Grid container>
+//         {props.listOfVideos.map((video) => (
+//           <Grid item>
+//             <VideoItem key={video.uuid} video_url={video.movie_url} />
+//           </Grid>
+//         ))}
+//       </Grid>
+//     );
+//   }
 
-  return (
-    <Grid container>
-      <Grid item>
-        <iframe
-          width="560"
-          height="315"
-          src={embeddedVideoURL}
-          title="YouTube Video Playre"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-        <Typography variant="body2">
-          <a href={video_url} underline="hover">
-            {video_url}
-          </a>
-        </Typography>
-      </Grid>
-    </Grid>
-  );
-};
-
-const VideoList = (props) => {
-  let content = (
-    <Typography variant="body2" color="red">
-      No movies.
-    </Typography>
-  );
-  if (props.listOfVideos.length > 0) {
-    content = (
-      <Grid container>
-        {props.listOfVideos.map((video) => (
-          <Grid item>
-            <VideoItem key={video.uuid} video_url={video.movie_url} />
-          </Grid>
-        ))}
-      </Grid>
-    );
-  }
-  return (
-    <>
-      <Typography variant="body1">Movies:</Typography>
-      <Grid>{content}</Grid>
-    </>
-  );
-};
+// return (
+//   <>
+//     <Typography variant="body1">Movies:</Typography>
+//     <Grid>{content}</Grid>
+//   </>
+// );
+// };
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();

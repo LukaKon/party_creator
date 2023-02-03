@@ -56,7 +56,6 @@ restore:
 
 redtest:
 	docker compose run --rm cache sh -c 'redis-cli ping'
-	# docker compose run --rm cache sh -c 'redis-cli'
 
 redis:
 	docker exec -it redis_cache redis-cli
