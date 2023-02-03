@@ -1,12 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
-import { BACKEND_LOCALHOST } from "../../../Settings";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const AnnouncementItem = (props) => {
   const navigate = useNavigate();
@@ -21,11 +17,11 @@ export const AnnouncementItem = (props) => {
 
   let render_image;
 
-  if (main_image.length && main_image[0].image.includes(BACKEND_LOCALHOST)) {
+  if (main_image.length && main_image[0].image.includes(LOCALHOST)) {
     const link = main_image[0].image;
     render_image = link;
   } else {
-    render_image = BACKEND_LOCALHOST + "media/announcement/defaultAnnouncement.jpg";
+    render_image = LOCALHOST + "media/announcement/defaultAnnouncement.jpg";
   }
 
   return (

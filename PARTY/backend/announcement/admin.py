@@ -18,7 +18,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
         "created",
         'updated',
     )
-    list_filter = ('category','user',)
+    list_filter = ('category', 'user',)
     prepopulated_fields = {
         # "slug": ("title",),
     }
@@ -195,6 +195,7 @@ class FavouriteAdmin(admin.ModelAdmin):
     # list_display = ('user', 'announcement',)
     list_display = ('id',)
     list_filter = ('user', 'announcement',)
+
 
 admin.site.register(models.Announcement, AnnouncementAdmin)
 admin.site.register(models.Category, CategoryAdmin)

@@ -1,37 +1,20 @@
 """
 Views for announcements APIs.
 """
-from drf_spectacular.utils import (
-    extend_schema_view,
-    extend_schema,
-    OpenApiParameter,
-    OpenApiTypes,
-)
-
+from announcement import models, serializers
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.shortcuts import get_object_or_404
-from rest_framework import status, viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
-
-from rest_framework.parsers import (
-    FormParser,
-    MultiPartParser,
-)
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-)
-
+from django.contrib.postgres.search import (SearchQuery, SearchRank,
+                                            SearchVector)
 from django.db.utils import IntegrityError
-
-
-from announcement import (
-    models,
-    serializers,
-)
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import (OpenApiParameter, OpenApiTypes,
+                                   extend_schema, extend_schema_view)
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
+from rest_framework.response import Response
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -149,8 +132,10 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new announcement."""
 
-        user = get_user_model().objects .get(email=self.request.user) # TODO <-- o co chodzi z tą kropką
+        # TODO <-- o co chodzi z tą kropką
+        user = get_user_model().objects .get(email=self.request.user)
 
+        # categories = self.request.data.getlist('category') # FIX: here should be list of ojects
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
         images = self.request.data.getlist('images')

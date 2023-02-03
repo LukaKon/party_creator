@@ -1,4 +1,4 @@
-FROM python:3.11-alpine3.16
+FROM python:3.11-alpine3.17
 
 LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Backend"
@@ -18,6 +18,8 @@ RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     # installing necessary packages to install psycopg2 from source
     # because this version is more robust/efficient than psycopg2-binary
+    # added gcc, musl-dev ... - is it necessary
+    # apk add gcc musl-dev python3-dev libffi-dev openssl-dev && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-build-deps \
     build-base postgresql-dev musl-dev && \

@@ -21,13 +21,16 @@ mkShell {
     # pythonEnv
     python311
 
-    bmake
+    # bmake
     # http-prompt
   ];
 
   shellHook = ''
     echo "Enter to '${name}' env..."
     source env/bin/activate
+    echo "Upgrade pip and install packages..."
+    pip install --upgrade pip
+    pip install -r PARTY/backend/requirements.txt
     which python
     echo "Env activated"
   '';

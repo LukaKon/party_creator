@@ -27,14 +27,14 @@ import {
 import { loged } from "../../utils/loged";
 
 const ImageItem = (props) => {
-  const style_is_main = {
+  const styleIsMain = {
     padding: 1,
     border: 3,
     borderColor: "lightgreen",
     width: 100,
     height: 100,
   };
-  const style_default = {
+  const styleDefault = {
     padding: 1,
     border: 3,
     borderColor: "lightred",
@@ -44,10 +44,7 @@ const ImageItem = (props) => {
 
   return (
     <Link to={props.image} underline="none">
-      <ImageListItem
-        key={props.uuid}
-        sx={props.is_main === true ? style_is_main : style_default}
-      >
+      <ImageListItem key={props.uuid} sx={props.is_main === true ? styleIsMain : styleDefault}>
         <img
           src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
           srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -75,9 +72,7 @@ const CategoryItem = (props) => {
 
 const VideoItem = (props) => {
   const { video_url } = props;
-  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(
-    -11
-  )}`;
+  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(-11)}`;
 
   return (
     <Grid container>
@@ -91,14 +86,11 @@ const VideoItem = (props) => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />
-        <Typography variant='body2'>
-        <a href={video_url} underline="hover">
-          {video_url}
-        </a>
-
+        <Typography variant="body2">
+          <a href={video_url} underline="hover">
+            {video_url}
+          </a>
         </Typography>
-      </Grid>
-      <Grid item>
       </Grid>
     </Grid>
   );
@@ -133,9 +125,7 @@ export const AnnouncementDetails = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, entities, error } = useSelector(
-    (state) => state.announcementDetails
-  );
+  const { loading, entities, error } = useSelector((state) => state.announcementDetails);
 
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
@@ -144,7 +134,7 @@ export const AnnouncementDetails = () => {
 
   useEffect(() => {
     if (entities) {
-      addViewFunction({ announcementID: entities.id, dispatch: dispatch });
+      addViewFunction({ announcementID: entities.id, dispatch });
     }
   }, [entities]);
 
@@ -165,13 +155,15 @@ export const AnnouncementDetails = () => {
     });
   };
 
-  const handleEditButton = (entities) => {
-    navigate(`/editannouncement/${entities.slug}`);
+  const handleEditButton = (data) => {
+    navigate(`/editannouncement/${data.slug}`, { state: { entities } });
   };
 
-  const handleDeleteButton = (entities) => {
-    console.log("######in delete: ", entities.slug);
-    dispatch(deleteAnnouncement(entities));
+  const handleDeleteButton = (data) => {
+    // TODO: finish delete functionality
+    // TODO: change status to inactive - don't delete from DB
+    // console.log("######in delete: ", data.slug);
+    dispatch(deleteAnnouncement(data));
     navigate("profile");
   };
 
@@ -220,12 +212,7 @@ export const AnnouncementDetails = () => {
       content = (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container direction="column" spacing={5}>
-            <Grid
-              item
-              xs={6}
-              rowSpacing={9}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
+            <Grid item xs={6} rowSpacing={9} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
               <Grid item>
                 <Typography variant="h6">Title: {entities.title}</Typography>
               </Grid>
@@ -253,7 +240,8 @@ export const AnnouncementDetails = () => {
 
               <Grid item>
                 <Typography variant="body1">
-                  Description: {entities.description}
+                  Description:
+                  {entities.description}
                 </Typography>
               </Grid>
             </Grid>
@@ -269,9 +257,7 @@ export const AnnouncementDetails = () => {
                 rowHeight={164}
               >
                 {entities.images.length > 0 ? (
-                  entities.images.map((img) => (
-                    <ImageItem key={img.uuid} {...img} />
-                  ))
+                  entities.images.map((img) => <ImageItem key={img.uuid} {...img} />)
                 ) : (
                   <Typography variant="body2" color="red">
                     No images.

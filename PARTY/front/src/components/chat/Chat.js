@@ -9,9 +9,11 @@ import Paper from "@mui/material/Paper";
 import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
+import {AudioMessage} from "./AudioMessage";
 import {fetchConversation} from "../../redux/slices/messageSlice";
 import {customStyle} from "../../styles/customStyle";
 import {fetchProfile} from "../../redux/slices/profileSlice";
+import {number} from "prop-types";
 
 
 export const Chat = () => {
@@ -57,20 +59,31 @@ export const Chat = () => {
     }
 
      client.onmessage = (event) => {
-        const data = JSON.parse(event.data)
-        const fullMessage = {
+         const data = JSON.parse(event.data)
+         const fullMessage = {
+             "typeMessage": data.type_message,
             "message": data.message,
             "datetime": data.datetime,
             "user": data.user,
             "uuid": data.uuid
         }
-
         setMessages((prevState) => [...prevState, fullMessage])
     }
 
-    const paperMessage = (user, datetime, message, uuid) => {
+    const paperMessage = (user, datetime, message, uuid, typeMessage=undefined) => {
         const datetime_string = new Date(datetime).toLocaleString()
         const style = checkStyleUser(user)
+        let messageToShow
+
+        if(typeMessage === 'voice_message' || typeof typeMessage === "number"){
+            messageToShow = <audio controls src={message}/>
+        }else{
+            messageToShow = (
+                <Typography variant="h6" className={classes.textMessage}>
+                    {message}
+                </Typography>
+            )
+        }
 
         return(
             <Paper className={style} key={uuid}>
@@ -86,9 +99,7 @@ export const Chat = () => {
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h6" className={classes.textMessage}>
-                            {message}
-                        </Typography>
+                        {messageToShow}
                     </Grid>
                  </Grid>
             </Paper>
@@ -101,7 +112,7 @@ export const Chat = () => {
         // Fetched messages (chat history)
         historyMessages = (
             entitiesConversation.message.map((message)=>{
-                return paperMessage(message.sender, message.created, message.message, message.uuid)
+                return paperMessage(message.sender, message.created, message.message, message.uuid, message.voice_message)
                 })
         )
     }
@@ -113,7 +124,7 @@ export const Chat = () => {
          if(!loadingProfile) {
              sessionMessages = (
                  messages.map((message) => {
-                     return paperMessage(message.user, message.datetime, message.message, message.uuid)
+                     return paperMessage(message.user, message.datetime, message.message, message.uuid, message.typeMessage)
                  })
              )
          }
@@ -132,6 +143,7 @@ export const Chat = () => {
                 >
                 </TextField>
                 <Button variant={"outlined"} type={"submit"}>Send</Button>
+                <AudioMessage client={client}/>
             </Box>
         </Grid>
     )

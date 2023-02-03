@@ -14,10 +14,11 @@ import {
 } from "react-redux";
 import {styled} from '@mui/material/styles';
 import {fetchProfile, updateProfile} from "../redux/slices/profileSlice";
-import {BACKEND_LOCALHOST} from "../../Settings";
 import {useNavigate} from "react-router-dom";
 
 import {ChangeEmail} from "./ChangeEmail";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const ProfileSettings = () => {
     let navigate = useNavigate();
@@ -27,7 +28,7 @@ export const ProfileSettings = () => {
     )
 
     useEffect(() => {
-            setImage({...image, imageToShow: BACKEND_LOCALHOST.slice(0, -1) + entities.image})
+            setImage({...image, imageToShow: LOCALHOST.slice(0, -1) + entities.image})
         },
         [entities]
     )
