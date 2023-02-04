@@ -28,3 +28,4 @@ TODO:
 - [x] DJANGO: problem to recive details of announcement: 404 - Not found
 - [x] Handle wrong slug on front site
 - [ ] Check how to update profile avatar correctly
+- [ ] update node packages
