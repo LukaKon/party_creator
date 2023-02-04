@@ -13,6 +13,7 @@ build:
 up:
 	docker compose up -d
 
+
 stop:
 	docker compose stop
 
@@ -59,3 +60,26 @@ redtest:
 
 redis:
 	docker exec -it redis_cache redis-cli
+
+### PODMAN
+pbuild:
+	set -e
+	podman-compose down
+	podman-compose up --build -d
+
+pup:
+	podman-compose up -d
+
+pdown:
+	podman-compose down -v
+
+prest: stop up 
+
+pmigrate:
+	podman exec django_back sh -c 'python manage.py migrate --noinput'
+
+pmakemigrations:
+	podman exec django_back sh -c 'python manage.py makemigrations'
+
+psuperuser:
+	podman exec django_back sh -c 'python manage.py createsuperuser'

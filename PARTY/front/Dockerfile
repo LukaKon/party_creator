@@ -1,12 +1,17 @@
 FROM node:18-alpine3.17
 
-WORKDIR /app
-
-ENV PATH="./node_modules/.bin:$PATH"
+# ENV PATH="./node_modules/.bin:$PATH"
 
 LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Frontend"
 
+WORKDIR /home/react-user/app
+# WORKDIR /home/node/app
+
+# USER react
+
+# RUN chown -R node:node /app
+# COPY --chown=react:react package.json .
 COPY package.json .
 
 RUN npm install
@@ -19,10 +24,10 @@ RUN npm install
 
 COPY . .
 
-# RUN npm run build \
-#     adduser \
-#     --disabled-password \
-#     --no-create-home \
-#     react-user
-#
-# USER react-user
+RUN npm run build
+RUN adduser \
+    --disabled-password \
+    # --no-create-home \
+    react-user 
+
+USER react-user

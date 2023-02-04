@@ -8,9 +8,9 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.doc.txt /tmp/requirements.doc.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
-COPY . /app
-WORKDIR /app
-EXPOSE 8000
+COPY . /home/django-user/app
+WORKDIR /home/django-user/app
+# EXPOSE 8000
 
 ARG DEV=false
 
@@ -32,9 +32,11 @@ RUN python -m venv /py && \
     apk del .tmp-build-deps && \
     adduser \
     --disabled-password \
-    --no-create-home \
+    # --no-create-home \
     django-user
 
 ENV PATH="/py/bin:$PATH"
+
+RUN chown -R django-user:django-user /home/django-user/app
 
 USER django-user
