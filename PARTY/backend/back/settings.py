@@ -11,9 +11,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
+print('debug', config("DEBUG"))
+print('password', config("EMAIL_PASSWORD", 'domyslna'))
+print('email', config("test", 'wartosc'))
+
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
 
 # Application definition
+
 
 PROJECT_APPS = [
     "account.apps.AccountConfig",
@@ -83,12 +88,13 @@ ROOT_URLCONF = "back.urls"
 
 ASGI_APPLICATION = "back.asgi.application"
 
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(
-                        config('REDIS_HOST', '127.0.0.1'),
+                        config('REDIS_HOST', "127.0.0.1"),
                         config('REDIS_PORT', 6379)
                     )]
         }
@@ -232,10 +238,22 @@ if DEBUG:
 
 EMAIL_HOST = 'smtp.gmail.com'
 # FIX: where is EMAIL or where should be? add to .env file and remove this file from github
-EMAIL_FROM = os.getenv("EMAIL_ADDRESS")
-EMAIL_HOST_USER = os.getenv("EMAIL_ADDRESS")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# print(config("EMAIL_ADDRESS", 'testuje'))
+# EMAIL_FROM = config("EMAIL_ADDRESS")
+# EMAIL_HOST_USER = config("EMAIL_ADDRESS")
+# EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient"
+#         },
+#         "KEY_PREFIX": "example"
+#     }
+# }

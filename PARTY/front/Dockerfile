@@ -14,13 +14,12 @@ WORKDIR /home/react-user/app
 # COPY --chown=react:react package.json .
 COPY package.json .
 
-RUN npm install
-# RUN apk add --no-cache --virtual .gyp \
-#     python3 \
-#     make \
-#     g++ \
-#     && npm install \
-#     && apk del .gyp
+RUN apk add --no-cache --virtual .gyp \
+    python3 \
+    make \
+    g++ \
+    && npm install \
+    && apk del .gyp
 
 COPY . .
 
