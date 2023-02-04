@@ -42,7 +42,6 @@ export const App = () => {
           <Route path="signup" element={<SignUp />} />
           <Route path="/" element={<HomePage />} />
           <Route path="announcement/:slug" element={<AnnouncementDetails />} />
-
           <Route path="*" element={<NotFound />} />
           <Route path="categories" element={<Categories />} />
           <Route path="categories/:categoryName" element={<AnnouncementsByCategory />} />
@@ -51,17 +50,13 @@ export const App = () => {
           <Route path="activate/:uid/:token" element={<ActivateAccount />} />
           <Route path="changeemail/:uid/:newEmail/:token" element={<ActivateNewEmail />} />
           <Route path="search" element={<SearchAnnouncement />} />
-
           {/* in working */}
           <Route path="chat" element={<Chat />} />
-
           {/*/!*Views only for logged users*!/*/}
-
           {isAuthenticatedFunction("profile", <Profile />)}
           {isAuthenticatedFunction("settings", <ProfileSettings />)}
           {isAuthenticatedFunction("addannouncement", <FormAnnouncement />)}
           {isAuthenticatedFunction("editannouncement/:slug", <FormAnnouncement />)}
-
           {/* {isAuthenticatedFunction("addannouncement", <AddAnnouncement />)}
           {isAuthenticatedFunction(
             "editannouncement/:slug",
