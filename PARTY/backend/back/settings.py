@@ -11,14 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-print('debug', config("DEBUG"))
-print('password', config("EMAIL_PASSWORD", 'domyslna'))
-print('email', config("test", 'wartosc'))
-
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
 
 # Application definition
-
 
 PROJECT_APPS = [
     "account.apps.AccountConfig",
