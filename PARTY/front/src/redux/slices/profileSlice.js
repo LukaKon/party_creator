@@ -89,7 +89,7 @@ export const handleEmail = createAsyncThunk(
 const profileSlice = createSlice({
         name: "profile",
         initialState: {
-            loading: true,
+            loading: "initial",
             entities: "initial",
             error: null,
         },

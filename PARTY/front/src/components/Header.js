@@ -18,13 +18,11 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { makeStyles } from "@mui/styles";
-// import { logout } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/slices/profileSlice";
 import { loged } from "../utils/loged";
 import { v4 as uuidv4 } from "uuid";
 import { SearchBar } from "./Search";
-// import {Logout} from "./Logout";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 
@@ -37,8 +35,25 @@ const useStyles = makeStyles((theme) => ({
 export const Header = () => {
   const dispatch = useDispatch();
 
+  let image;
+  let menuIcon;
+  let profile_menu;
+
+  const {
+    loading: loadingProfile,
+    entities: entitiesProfile,
+  } = useSelector((state) => state.profile);
+
   useEffect(() => {
-    dispatch(fetchProfile());
+    console.log('tu',
+        loadingProfile, entitiesProfile
+    )
+     if(
+            loadingProfile === 'initial'
+            && entitiesProfile === "initial"
+        ){
+       dispatch(fetchProfile());
+     }
   }, [image]);
 
   useEffect(() => {
@@ -47,14 +62,12 @@ export const Header = () => {
     }
   });
 
-  let image;
-  let menuIcon;
-  let profile_menu;
 
-  const { entities } = useSelector((state) => state.profile);
+
+
 
   const showAvatar = () => {
-    image = LOCALHOST.slice(0, -1) + entities.image;
+    image = LOCALHOST.slice(0, -1) + entitiesProfile.image;
   };
 
   const pages = {

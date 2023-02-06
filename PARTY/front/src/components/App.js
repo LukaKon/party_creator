@@ -23,6 +23,7 @@ import { ActivateNewEmail } from "./ActivateNewEmail";
 import { Chat } from "./chat/Chat";
 import { loged } from "../utils/loged";
 import { Logout } from "./Logout";
+import {MyConversations} from "./chat/MyConversations";
 
 export const App = () => {
   const isAuthenticatedFunction = (path, component) => {
@@ -56,7 +57,7 @@ export const App = () => {
           <Route path="chat" element={<Chat />} />
 
           {/*/!*Views only for logged users*!/*/}
-
+          {isAuthenticatedFunction("myconversations", <MyConversations />)}
           {isAuthenticatedFunction("profile", <Profile />)}
           {isAuthenticatedFunction("settings", <ProfileSettings />)}
           {isAuthenticatedFunction("addannouncement", <FormAnnouncement />)}

@@ -46,16 +46,35 @@ class GetConversationView(APIView):
     permission_classes = (IsAuthenticated, )
     serializer_class = ConversationSerializer
 
-    def get_queryset(self):
-        announcement_id = self.request.data.get('announcement')
-        sender_id = self.request.data.get('sender')
+    def check_data(self):
+        type_fetch = self.request.data.get('single_conversation')
         try:
-            queryset = self.model.objects.get(announcement_id=announcement_id, sender_id=sender_id)
+            announcement_id = self.request.data.get('announcement_id')
         except:
-            Response(status=status.HTTP_400_BAD_REQUEST)
+            announcement_id = None
+        recipient_id = self.request.data.get('recipient_id')
+        sender_id = self.request.data.get('sender_id')
+        return {
+            "type_fetch": type_fetch,
+            "recipient_id": recipient_id,
+            "sender_id": sender_id,
+            "announcement_id": announcement_id
+        }
+
+    def get_queryset(self):
+        data = self.check_data()
+
+        queryset = self.model.objects.filter(
+            sender_id=data['sender_id'],
+            recipient_id=data["recipient_id"]
+        )
+
+        if data["type_fetch"] == 'single_conversation':
+            queryset.get(recipient_id=data['recipient_id'])
+
         return queryset
 
     def post(self, request):
         data = self.get_queryset()
-        serialized_data = self.serializer_class(data)
+        serialized_data = self.serializer_class(data, many=True)
         return Response(serialized_data.data, status=status.HTTP_200_OK)

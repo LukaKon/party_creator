@@ -61,10 +61,10 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def set_exists_conversation(self):
-        if Conversation.objects.filter(announcement_id=self.announcement_id, sender=self.user_id).exists():
+        if Conversation.objects.filter(announcement_id=self.announcement_id, sender_id=self.user_id).exists():
             self.exists_conversation = Conversation.objects.get(
                 announcement_id=self.announcement_id,
-                sender=self.user_id)
+                sender_id=self.user_id)
         else:
             self.exists_conversation = False
 
@@ -86,7 +86,8 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         else:
             conversation = Conversation.objects.create(
                 announcement_id=self.announcement_id,
-                sender_id=self.user_id
+                sender_id=self.user_id,
+                recipient_id=self.recipient_id
             )
 
             message = Message.objects.create(
@@ -94,5 +95,6 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
                 recipient_id=self.recipient_id,
                 message=message,
                 conversation=conversation,
+                voice_message=voice_message_instance
             )
         return message

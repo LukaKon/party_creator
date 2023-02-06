@@ -13,7 +13,6 @@ import {AudioMessage} from "./AudioMessage";
 import {fetchConversation} from "../../redux/slices/messageSlice";
 import {customStyle} from "../../styles/customStyle";
 import {fetchProfile} from "../../redux/slices/profileSlice";
-import {number} from "prop-types";
 
 
 export const Chat = () => {
@@ -26,13 +25,17 @@ export const Chat = () => {
     const announcement_id = location.state.announcement_id
     const classes = customStyle();
     const {loading: loadingProfile, entities: entitiesProfile, error: errorProfile} = useSelector(state => state.profile)
-
     useEffect(()=> {
         // Fetch profile if it isn't already in state because i want it to compare emails.
         if(!loadingProfile && entitiesProfile === "initial"){
             dispatch(fetchProfile())
         }
-        dispatch(fetchConversation({announcement: announcement_id, sender: sender_id}))
+        dispatch(fetchConversation({
+            announcement_id: announcement_id,
+            sender_id: sender_id,
+            recipient_id: recipient_id,
+            type_fetch: 'single_conversation'
+        }))
         const token = localStorage.getItem('access_token')
         const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${recipient_id}/${announcement_id}/?token=` + token)
         setClient(client)
@@ -111,7 +114,7 @@ export const Chat = () => {
     if(!loadingConversation && !loadingProfile && entitiesConversation !== "initial"){
         // Fetched messages (chat history)
         historyMessages = (
-            entitiesConversation.message.map((message)=>{
+            entitiesConversation[0].message.map((message)=>{
                 return paperMessage(message.sender, message.created, message.message, message.uuid, message.voice_message)
                 })
         )
