@@ -12,6 +12,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
+print(ALLOWED_HOSTS)
+
 
 # Application definition
 
@@ -66,7 +68,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
-    'http://192.168.122.252:3000',
+    'http://192.168.122.253:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -75,8 +77,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:3000',
     'https://127.0.0.1:8000',
     'http://127.0.0.1:3000',
-    'https://192.168.122.252:3000',
-    'http://192.168.122.252:3000',
+    'https://192.168.122.253:3000',
+    'http://192.168.122.253:3000',
 ]
 
 ROOT_URLCONF = "back.urls"
