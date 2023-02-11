@@ -9,13 +9,13 @@ LABEL description="PartyWizard Frontend"
 
 COPY package.json .
 
-RUN npm install
-# RUN apk add --no-cache --virtual .gyp \
-#     python3 \
-#     make \
-#     g++ \
-#     && npm install \
-#     && apk del .gyp
+# RUN npm install
+RUN apk add --no-cache --virtual .gyp \
+    python3 \
+    make \
+    g++ \
+    && npm install \
+    && apk del .gyp
 
 # RUN adduser --disabled-password --no-create-home react-user
 

@@ -19,7 +19,7 @@ RUN python -m venv /py && \
     # installing necessary packages to install psycopg2 from source
     # because this version is more robust/efficient than psycopg2-binary
     # added gcc, musl-dev ... - is it necessary
-    # apk add gcc musl-dev python3-dev libffi-dev openssl-dev && \
+    apk add gcc musl-dev python3-dev libffi-dev openssl-dev && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-build-deps \
     build-base postgresql-dev musl-dev && \
