@@ -5,15 +5,17 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from decouple import Csv, config
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
-print(ALLOWED_HOSTS)
-
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default='localhost',
+    cast=lambda v: [s.strip() for s in v.split(' ')]
+)
 
 # Application definition
 
@@ -68,7 +70,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
-    'http://192.168.122.253:3000',
+    'http://192.168.122.50:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -77,8 +79,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:3000',
     'https://127.0.0.1:8000',
     'http://127.0.0.1:3000',
-    'https://192.168.122.253:3000',
-    'http://192.168.122.253:3000',
+    'https://192.168.0.50:3000',
+    'http://192.168.0.50:3000',
 ]
 
 ROOT_URLCONF = "back.urls"
@@ -90,9 +92,9 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(
-                        config('REDIS_HOST', '127.0.0.1'),
-                        config('REDIS_PORT', 6379)
-                    )]
+                config('REDIS_HOST', '127.0.0.1'),
+                config('REDIS_PORT', 6379)
+            )]
         }
     }
 }

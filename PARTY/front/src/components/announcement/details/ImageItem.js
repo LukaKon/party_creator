@@ -3,15 +3,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { ImageListItem } from "@mui/material";
 
-ImageItem.propTypes = {
-  image: PropTypes.object,
-  uuid: PropTypes.string,
-  is_main: PropTypes.bool,
-};
-
 export const ImageItem = (props) => {
-  console.log("props in ImageItem: ", props);
   const { image, uuid, is_main } = props;
+
   const styleIsMain = {
     padding: 1,
     border: 3,
@@ -39,4 +33,10 @@ export const ImageItem = (props) => {
       </ImageListItem>
     </Link>
   );
+};
+
+ImageItem.propTypes = {
+  image: PropTypes.string,
+  uuid: PropTypes.string,
+  is_main: PropTypes.bool,
 };

@@ -1,9 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { ListItem, ListItemText } from "@mui/material";
 
 export const CategoryItem = (props) => {
-  console.log("props in CategoryItem: ", props);
   const { uuid, get_name } = props;
 
   return (
@@ -13,4 +13,10 @@ export const CategoryItem = (props) => {
       </ListItem>
     </Link>
   );
+};
+
+CategoryItem.propTypes = {
+  uuid: PropTypes.string,
+  name: PropTypes.string,
+  get_name: PropTypes.string,
 };

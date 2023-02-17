@@ -1,30 +1,20 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
-import { CreateUpdateDate } from "./CreateUpdateDate";
-import {
-  Box,
-  Button,
-  Grid,
-  ImageList,
-  ImageListItem,
-  List,
-  // ListItem,
-  // ListItemText,
-  Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Button, Grid, ImageList, List, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
-import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
-import { fetchProfile } from "../../redux/slices/profileSlice";
+
+import { addViewFunction } from "../../../utils/functionalComponents/addViewFunction";
+import { FavouriteButton } from "../../../utils/functionalComponents/addFavourite";
+import { fetchProfile } from "../../../redux/slices/profileSlice";
 import {
   deleteAnnouncement,
   fetchAnnouncementDetails,
-} from "../../redux/slices/announcementDetailSlice";
-import { loged } from "../../utils/loged";
+} from "../../../redux/slices/announcementDetailSlice";
+import { loged } from "../../../utils/loged";
+import { AnnouncementDetailsSkeleton } from "../../skeletons/AnnouncementSkeletons";
+import { CreateUpdateDate } from "../CreateUpdateDate";
 import { CategoryItem } from "./CategoryItem";
 import { VideoList } from "./VideoList";
 import { ImageItem } from "./ImageItem";
