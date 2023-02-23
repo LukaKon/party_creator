@@ -26,6 +26,6 @@
       "arrow-body-style": ["warn", "as-needed"],
       "block-scoped-var": ["warn"],
       "dot-notation": ["warn"],
-      "no-console": ["warn", { "allow": ["warn", "error"] }],
+      "no-console": ["warn"],
     }
 }

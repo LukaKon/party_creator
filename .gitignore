@@ -184,9 +184,6 @@ node_modules/
 # testing
 /coverage
 
-# production
-/build
-
 # misc
 .DS_Store
 
@@ -196,14 +193,6 @@ yarn-error.log*
 
 ### Linux ###
 *~
-
-
-.cache/
-coverage/
-dist/*
-!dist/index.html
-node_modules/
-*.log
 
 # OS generated files
 .DS_Store

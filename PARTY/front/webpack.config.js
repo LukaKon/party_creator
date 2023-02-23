@@ -6,16 +6,19 @@ const Dotenv = require("dotenv-webpack");
 const config = {
   mode: "development",
   entry: {
+    // bundle: path.resolve(__dirname, "src/index.ts"),
     bundle: path.resolve(__dirname, "src/index.js"),
   },
 
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name][contenthash].js",
+    // filename: "[name][contenthash].ts",
     clean: true,
     assetModuleFilename: "[name][ext]",
     publicPath: "/",
   },
+
   module: {
     rules: [
       {
@@ -26,18 +29,19 @@ const config = {
         exclude: /node_modules/,
       },
       {
+        test: /\.(ts|tsx)$/,
+        use: {
+          loader: "ts-loader",
+        },
+        exclude: /node_modules/,
+      },
+      {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
       },
-      {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
-      },
     ],
-    // resolve: {
-    // extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
-    // },
   },
+
   devtool: "source-map",
   devServer: {
     static: {
