@@ -59,9 +59,5 @@ dump:
 restore:
 	docker exec -i postgres_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) psql -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" < dump.sql
 
-redtest:
-	docker compose run --rm cache sh -c 'redis-cli ping'
-	# docker compose run --rm cache sh -c 'redis-cli'
-
 redis:
 	docker exec -it redis_cache redis-cli
