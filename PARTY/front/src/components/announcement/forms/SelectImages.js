@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 
 export const SelectImages = (props) => {
-  const { addImagesToList } = props;
-  const [selectedImages, setSelectedImages] = useState([]);
+  const { listOfImages, addImagesToList } = props;
+  const [selectedImages, setSelectedImages] = useState(listOfImages);
 
   const imageHandler = (e) => {
     if (typeof addImagesToList === "function") {
