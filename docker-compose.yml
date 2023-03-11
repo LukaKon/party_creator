@@ -1,30 +1,33 @@
-version: '3.9'
+version: "3.9"
 
 services:
-
-  django:
+  backend:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
-    container_name: party_app
+      context: ./PARTY/backend
+      dockerfile: Dockerfile
+      args:
+        - DEV=true
+    container_name: django_back
     command: >
-      sh -c "python manage.py wait_for_database &&
-             python manage.py runserver_plus 0.0.0.0:8000"
+      sh -c  "python manage.py wait_for_db &&
+              python manage.py migrate &&
+              python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
     restart: on-failure
     volumes:
-      - .:/app
+      - ./PARTY/backend:/app
     ports:
       - 8000:8000
     networks:
       - party_network
     depends_on:
       - db
+      - cache
 
   db:
-    image: kartoza/postgis:14
-    container_name: postgis_db
+    image: postgres:15-alpine3.17
+    container_name: postgres_db
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
@@ -33,7 +36,43 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5433:5432
+    networks:
+      - party_network
+
+  cache:
+    image: redis:7.0-alpine3.17
+    container_name: redis_cache
+#    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+#    environment:
+#      - ALLOW_EMPTY_PASSWORD=yes
+#      - REDIS_IO_THREADS=2
+#      - REDIS_IO_THREADS_DO_READS=yes
+#      - REDIS_AOF_ENABLE=no
+#      - REDIS_PORT_NUMBER=6379
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - party_network
+
+  frontend:
+    container_name: react_front
+    build:
+      context: ./PARTY/front
+      dockerfile: Dockerfile
+    command: npm start
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - ./PARTY/front:/app:ro
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - backend
+      - db
     networks:
       - party_network
 
@@ -43,5 +82,3 @@ networks:
 
 volumes:
   pgdata:
-    # external:
-      # name: pgdata

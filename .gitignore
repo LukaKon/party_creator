@@ -1,10 +1,14 @@
+.history
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
 # database backup file
-dump.sql
+database
+
+# media files
+**/media
 
 # C extensions
 *.so
@@ -60,7 +64,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
@@ -105,7 +108,12 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# TODO: commented to share secrets
+# .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .venv
 env/
 venv/
@@ -157,3 +165,51 @@ dmypy.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+
+# eclipse
+.project
+.pydevproject
+
+# dependencies
+/.pnp
+.pnp.js
+
+# Logs
+logs
+*.log
+npm-debug.log*
+node_modules/
+.sass-cache/
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### Linux ###
+*~
+
+
+.cache/
+coverage/
+dist/*
+!dist/index.html
+node_modules/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
