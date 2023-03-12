@@ -6,8 +6,6 @@ import {
   Container,
   FormControl,
   Grid,
-  // ImageList,
-  // ImageListItem,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -15,14 +13,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-// import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-// import CheckBoxIcon from "@mui/icons-material/CheckBox";
-// import Checkbox from "@mui/material/Checkbox";
 
 import { useTheme } from "@mui/material/styles";
 import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
-// import {formSubmissionHandler} from './formUtils'
 import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
 import { SelectImages } from "./SelectImages";
 import { UploadedImagesList } from "./UploadedImagesList";
@@ -95,8 +89,11 @@ export const FormAnnouncement = () => {
     inputBlurHandler: selectedImagesBlurHandler,
     reset: resetSelectedImages,
   } = useInput(
-    (value) => value.length > 0,
-    passedData ? passedData.images.map((img) => img) : [{ image: "", is_main: false }],
+    (value) => value.length >= 0,
+    passedData
+      ? passedData.images.map((img) => ({ image: img.image, is_main: img.is_main }))
+      : [{ image: "", is_main: false }],
+    // passedData ? passedData.images.map((img) => img) : [{ image: "", is_main: false }],
   );
 
   const {
@@ -112,7 +109,7 @@ export const FormAnnouncement = () => {
     passedData ? passedData.movies[0].movie_url : "",
   );
 
-  console.log("images in useInput: ", selectedImages);
+  // console.log("images in useInput: ", selectedImages);
 
   const [listOfImages, setListOfImages] = useState(
     selectedImages,
@@ -125,7 +122,7 @@ export const FormAnnouncement = () => {
     // ],
   );
 
-  console.log("listOfImages: ", listOfImages);
+  // console.log("listOfImages: ", listOfImages);
 
   const theme = useTheme();
 

@@ -25,7 +25,9 @@ export const SelectImages = (props) => {
           return otherImage;
         });
 
-        setSelectedImages(fileArray);
+        console.log("listOfImages: ", listOfImages, "fileArray: ", fileArray);
+
+        setSelectedImages([...listOfImages, ...fileArray]);
       }
     }
   };
