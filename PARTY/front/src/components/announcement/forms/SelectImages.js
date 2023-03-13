@@ -11,15 +11,15 @@ export const SelectImages = (props) => {
         const fileArray = Array.from(e.target.files).map((file, index) => {
           if (index === 0) {
             const firstImage = {
-              toShow: URL.createObjectURL(file),
-              image: file,
+              link: URL.createObjectURL(file),
+              blob: file,
               is_main: true,
             };
             return firstImage;
           }
           const otherImage = {
-            toShow: URL.createObjectURL(file),
-            image: file,
+            link: URL.createObjectURL(file),
+            blob: file,
             is_main: false,
           };
           return otherImage;

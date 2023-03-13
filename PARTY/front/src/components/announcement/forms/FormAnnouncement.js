@@ -91,7 +91,7 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.length >= 0,
     passedData
-      ? passedData.images.map((img) => ({ image: img.image, is_main: img.is_main }))
+      ? passedData.images.map((img) => ({link: img.image, is_main: img.is_main }))
       : [{ image: "", is_main: false }],
     // passedData ? passedData.images.map((img) => img) : [{ image: "", is_main: false }],
   );
@@ -109,17 +109,17 @@ export const FormAnnouncement = () => {
     passedData ? passedData.movies[0].movie_url : "",
   );
 
+  // console.log('images from passed data: ', passedData.images)
   // console.log("images in useInput: ", selectedImages);
 
   const [listOfImages, setListOfImages] = useState(
-    selectedImages,
-    // ? selectedImages
-    // : [
-    //     {
-    //       image: "",
-    //       is_main: false,
-    //      },
+    // [
+    //   {
+    //     image: "",
+    //     is_main: false,
+    //   },
     // ],
+    []
   );
 
   // console.log("listOfImages: ", listOfImages);
@@ -169,7 +169,7 @@ export const FormAnnouncement = () => {
     resetSelectedCategory();
     resetMovieUrl();
     resetSelectedImages();
-    setListOfImages("");
+    setListOfImages("");  // why ""
   };
 
   useEffect(() => {
@@ -192,6 +192,18 @@ export const FormAnnouncement = () => {
         />
       </Grid>
     );
+  }
+
+  let existingImages = <Grid>No existing images...</Grid>
+  if (selectedImages.length > 0) {
+    existingImages = (
+      <Grid>
+        <UploadedImagesList
+          listOfSelectedImages={selectedImages}
+          updateListOfImages={selectedImagesChangeHandler}
+    />
+    </Grid>
+    )
   }
 
   let titleOfForm = "Add announcement:";
@@ -282,6 +294,12 @@ export const FormAnnouncement = () => {
           <Grid item>
             <SelectImages listOfImages={listOfImages} addImagesToList={setListOfImages} />
           </Grid>
+
+          <Grid item>
+
+            TODO: Existing images 
+    {existingImages}
+    </Grid>
 
           <Grid item>{listOfSelectedImages}</Grid>
 

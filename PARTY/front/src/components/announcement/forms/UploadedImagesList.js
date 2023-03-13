@@ -5,17 +5,18 @@ import Checkbox from "@mui/material/Checkbox";
 
 export const UploadedImagesList = (props) => {
   const { listOfSelectedImages, updateListOfImages } = props;
+  console.log('images list: ', listOfSelectedImages)
 
   const deleteImage = (image) => {
     const filteredImages = listOfSelectedImages.filter((img) => {
-      return image.toShow !== img.toShow;
+      return image.link !== img.link;
     });
     updateListOfImages(filteredImages);
   };
 
   const toggleIsMainImage = (image) => {
     const updatedListOfImages = listOfSelectedImages.map((img) => {
-      if (img.toShow === image.toShow) {
+      if (img.link === image.link) {
         return { ...img, is_main: true };
       } else {
         return { ...img, is_main: false };
@@ -32,9 +33,9 @@ export const UploadedImagesList = (props) => {
             <Grid item xs={8}>
               <ImageListItem sx={{ width: 100, height: 100, objectFit: "contain" }}>
                 <img
-                  src={image.toShow}
-                  name={image.toShow}
-                  alt={image.toShow}
+                  src={image.link}
+                  name={image.link}
+                  alt={image.link}
                   is_main={image.is_main.toString()}
                   loading="lazy"
                 />
