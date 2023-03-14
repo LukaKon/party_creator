@@ -91,9 +91,13 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.length >= 0,
     passedData
-      ? passedData.images.map((img) => ({link: img.image, is_main: img.is_main }))
+      ? passedData.images.map((img) => ({
+          uuid: img.uuid,
+          link: img.image,
+          is_main: img.is_main,
+          to_delete: false,
+        }))
       : [{ image: "", is_main: false }],
-    // passedData ? passedData.images.map((img) => img) : [{ image: "", is_main: false }],
   );
 
   const {
@@ -109,20 +113,7 @@ export const FormAnnouncement = () => {
     passedData ? passedData.movies[0].movie_url : "",
   );
 
-  // console.log('images from passed data: ', passedData.images)
-  // console.log("images in useInput: ", selectedImages);
-
-  const [listOfImages, setListOfImages] = useState(
-    // [
-    //   {
-    //     image: "",
-    //     is_main: false,
-    //   },
-    // ],
-    []
-  );
-
-  // console.log("listOfImages: ", listOfImages);
+  const [listOfImages, setListOfImages] = useState(selectedImages);
 
   const theme = useTheme();
 
@@ -151,8 +142,13 @@ export const FormAnnouncement = () => {
     formData.append("category", selectedCategory);
 
     // additional data
+    // TODO: handle images uploaded and that which already exist
     if (listOfImages) {
-      listOfImages.map((img) => {
+      const listOfImagesToSend = listOfImages.filter((img) => {
+        return img.to_delete === false;
+      });
+      console.log("listOfImagesToSend: ", listOfImagesToSend);
+      listOfImagesToSend.map((img) => {
         formData.append("images", img.image);
         formData.append(img.image.name, img.is_main);
       });
@@ -169,7 +165,7 @@ export const FormAnnouncement = () => {
     resetSelectedCategory();
     resetMovieUrl();
     resetSelectedImages();
-    setListOfImages("");  // why ""
+    setListOfImages(""); // why ""
   };
 
   useEffect(() => {
@@ -182,9 +178,9 @@ export const FormAnnouncement = () => {
   console.log("IMG before sent: ", listOfImages);
   console.log("MOV before sent: ", enteredMovieUrl);
 
-  let listOfSelectedImages = <Grid>Add images to announcement :)</Grid>;
+  let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {
-    listOfSelectedImages = (
+    listOfAllImages = (
       <Grid>
         <UploadedImagesList
           listOfSelectedImages={listOfImages}
@@ -192,18 +188,6 @@ export const FormAnnouncement = () => {
         />
       </Grid>
     );
-  }
-
-  let existingImages = <Grid>No existing images...</Grid>
-  if (selectedImages.length > 0) {
-    existingImages = (
-      <Grid>
-        <UploadedImagesList
-          listOfSelectedImages={selectedImages}
-          updateListOfImages={selectedImagesChangeHandler}
-    />
-    </Grid>
-    )
   }
 
   let titleOfForm = "Add announcement:";
@@ -295,13 +279,7 @@ export const FormAnnouncement = () => {
             <SelectImages listOfImages={listOfImages} addImagesToList={setListOfImages} />
           </Grid>
 
-          <Grid item>
-
-            TODO: Existing images 
-    {existingImages}
-    </Grid>
-
-          <Grid item>{listOfSelectedImages}</Grid>
+          <Grid item>{listOfAllImages}</Grid>
 
           <Grid item>
             <TextField

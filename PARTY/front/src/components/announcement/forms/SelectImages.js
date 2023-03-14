@@ -7,27 +7,40 @@ export const SelectImages = (props) => {
 
   const imageHandler = (e) => {
     if (typeof addImagesToList === "function") {
+      let there_is_already_main_image = listOfImages.some((img) => img.is_main === true);
       if (e.target.files[0]) {
-        const fileArray = Array.from(e.target.files).map((file, index) => {
-          if (index === 0) {
-            const firstImage = {
-              link: URL.createObjectURL(file),
-              blob: file,
-              is_main: true,
-            };
-            return firstImage;
-          }
-          const otherImage = {
+        if (there_is_already_main_image) {
+          const fileArray = Array.from(e.target.files).map((file) => ({
             link: URL.createObjectURL(file),
             blob: file,
             is_main: false,
-          };
-          return otherImage;
-        });
+            to_delete: false,
+          }));
+          setSelectedImages([...listOfImages, ...fileArray]);
+        } else {
+          const fileArray = Array.from(e.target.files).map((file, index) => {
+            if (index === 0) {
+              const firstImage = {
+                link: URL.createObjectURL(file),
+                blob: file,
+                is_main: true,
+                to_delete: false,
+              };
+              return firstImage;
+            }
+            const otherImage = {
+              link: URL.createObjectURL(file),
+              blob: file,
+              is_main: false,
+              to_delete: false,
+            };
+            return otherImage;
+          });
 
-        console.log("listOfImages: ", listOfImages, "fileArray: ", fileArray);
+          // console.log("listOfImages: ", listOfImages, "fileArray: ", fileArray);
 
-        setSelectedImages([...listOfImages, ...fileArray]);
+          setSelectedImages([...listOfImages, ...fileArray]);
+        }
       }
     }
   };
