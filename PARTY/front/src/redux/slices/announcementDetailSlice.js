@@ -11,7 +11,7 @@ export const fetchAnnouncementDetails = createAsyncThunk(
       console.log("Fetch announcement details error: ", error);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const createAnnouncement = createAsyncThunk(
@@ -31,14 +31,14 @@ export const createAnnouncement = createAsyncThunk(
       console.log("Sent announcement error: ", error.message);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const editAnnouncement = createAsyncThunk(
   "announcements/editAnnouncement",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.patch("api/announcements", data, {
+      const response = await axiosInstance.patch("api/announcements/", data, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Content-Type": "application/json",
@@ -51,22 +51,20 @@ export const editAnnouncement = createAsyncThunk(
       console.log("Edit announcement errror: ", error.message);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteAnnouncement = createAsyncThunk(
   "announcements/deleteAnnouncement",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.delete(
-        `api/announcements/${data.slug}`
-      );
+      const response = await axiosInstance.delete(`api/announcements/${data.slug}`);
       return response;
     } catch (error) {
       console.log("Delete announcement error:", error.message);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 const announcementDetailsSlice = createSlice({

@@ -76,7 +76,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
-        return [uuid for uuid in qs.split(',')]
+        # return [uuid for uuid in qs.split(',')]
+        return list(qs.split(','))
 
     def get_permissions(self):
         """
@@ -86,8 +87,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if self.request.method == "GET":
             return [AllowAny()]
-        else:
-            return [IsAuthenticated()]
+        return [IsAuthenticated()]
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -111,7 +111,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if search:
             search_vector = SearchVector('title', weight='A') + \
-                            SearchVector('description', weight='B')
+                SearchVector('description', weight='B')
             search_query = SearchQuery(search)
 
             queryset = queryset.annotate(
@@ -163,11 +163,16 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if movies_url:
             models.Movie.objects.create(
-              movie_url=movies_url,
-              announcement=announcement,
+                movie_url=movies_url,
+                announcement=announcement,
             )
 
         return Response(status=status.HTTP_201_CREATED)
+
+    def perform_update(self):
+        '''Update announcement.'''
+        # TODO: create update function
+        pass
 
     def perform_destroy(self, instance):
         '''Delete selected announcement.'''
@@ -183,7 +188,8 @@ class FavouriteViewSet(viewsets.ModelViewSet):
     def delete(self, request, *args, **kwargs):
         user = self.request.user
         announcement = self.request.data.get("announcement")
-        instance = models.Favourite.objects.get(user=user, announcement=announcement)
+        instance = models.Favourite.objects.get(
+            user=user, announcement=announcement)
         serializer = self.get_serializer(instance)
         data_to_send = serializer.data
         self.perform_destroy(instance)

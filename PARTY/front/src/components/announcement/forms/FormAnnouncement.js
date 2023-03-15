@@ -17,7 +17,10 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
-import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
+import {
+  createAnnouncement,
+  editAnnouncement,
+} from "../../../redux/slices/announcementDetailSlice";
 import { SelectImages } from "./SelectImages";
 import { UploadedImagesList } from "./UploadedImagesList";
 
@@ -49,7 +52,7 @@ export const FormAnnouncement = () => {
   if (location.state) {
     passedData = location.state.entities;
   }
-  console.log("DATA: ", passedData);
+  // console.log("DATA: ", passedData);
 
   const {
     value: enteredTitle,
@@ -144,13 +147,22 @@ export const FormAnnouncement = () => {
     // additional data
     // TODO: handle images uploaded and that which already exist
     if (listOfImages) {
-      const listOfImagesToSend = listOfImages.filter((img) => {
+      // handle uploaded images
+      const uploadedImagesToSend = listOfImages.filter((img) => {
         return img.to_delete === false;
       });
-      console.log("listOfImagesToSend: ", listOfImagesToSend);
-      listOfImagesToSend.map((img) => {
-        formData.append("images", img.image);
-        formData.append(img.image.name, img.is_main);
+      // console.log("listOfImagesToSend: ", uploadedImagesToSend);
+      uploadedImagesToSend.map((img) => {
+        formData.append("images", img.blob);
+        formData.append(img.blob, img.is_main);
+      });
+
+      // handle images from backend
+      const imagesFromBackendToDelete = listOfImages.filter((img) => {
+        return img.to_delete === true && img.hasOwnProperty("uuid");
+      });
+      imagesFromBackendToDelete.map((img) => {
+        formData.append("images", img.uuid);
       });
     }
 
@@ -158,7 +170,11 @@ export const FormAnnouncement = () => {
       formData.append("movies", enteredMovieUrl);
     }
 
-    dispatch(createAnnouncement(formData));
+    if (passedData) {
+      dispatch(editAnnouncement(formData));
+    } else {
+      dispatch(createAnnouncement(formData));
+    }
 
     resetTitleInput();
     resetDescriptionInput();
@@ -172,11 +188,11 @@ export const FormAnnouncement = () => {
     dispatch(fetchCategories());
   }, []);
 
-  console.log("Title before sent: ", enteredTitle);
-  console.log("Description before sent: ", enteredDescription);
-  console.log("CAT before sent: ", selectedCategory);
+  // console.log("Title before sent: ", enteredTitle);
+  // console.log("Description before sent: ", enteredDescription);
+  // console.log("CAT before sent: ", selectedCategory);
   console.log("IMG before sent: ", listOfImages);
-  console.log("MOV before sent: ", enteredMovieUrl);
+  // console.log("MOV before sent: ", enteredMovieUrl);
 
   let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {
