@@ -73,6 +73,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.AnnouncementDetailSerializer
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
+    # http_method_names = ('get', 'post', 'put', 'patch', 'delete',)
 
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
@@ -140,6 +141,11 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         movies_url = self.request.data.get('movies')
         images = self.request.data.getlist('images')
 
+        print('IN CREATE:')
+        print('cat: ', categories_uuid)
+        print('mov: ', movies_url)
+        print('img: ', images)
+
         categories = []
         if categories_uuid:
             for uuid in categories_uuid[0].split(','):
@@ -169,18 +175,21 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         return Response(status=status.HTTP_201_CREATED)
 
-    def perform_update(self):
+    def partial_update(self, request, *args, **kwargs):
         '''Update announcement.'''
-        # TODO: create update function
-        pass
 
-    def perform_destroy(self, instance):
+        print('IN UPDATE:')
+        print('request: ', request)
+
+    def destroy(self, instance):
         '''Delete selected announcement.'''
         print('instance in delete func: ', instance)
         instance.delete()
 
 
 class FavouriteViewSet(viewsets.ModelViewSet):
+    '''Favourite announcements.'''
+
     serializer_class = serializers.FavouriteSerializer
     permission_classes = [IsAuthenticated, ]
 

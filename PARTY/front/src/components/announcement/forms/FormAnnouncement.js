@@ -191,7 +191,7 @@ export const FormAnnouncement = () => {
   // console.log("Title before sent: ", enteredTitle);
   // console.log("Description before sent: ", enteredDescription);
   // console.log("CAT before sent: ", selectedCategory);
-  console.log("IMG before sent: ", listOfImages);
+  // console.log("IMG before sent: ", listOfImages);
   // console.log("MOV before sent: ", enteredMovieUrl);
 
   let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
