@@ -85,7 +85,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             Instantiates and returns the list of permissions
             that this view requires.
         """
-
+        print('METHOD: ', self.request.method, IsAuthenticated())
         if self.request.method == "GET":
             return [AllowAny()]
         return [IsAuthenticated()]
@@ -136,7 +136,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         # TODO <-- o co chodzi z tą kropką
         user = get_user_model().objects .get(email=self.request.user)
 
-        # categories = self.request.data.getlist('category') # FIX: here should be list of ojects
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
         images = self.request.data.getlist('images')
@@ -180,6 +179,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         print('IN UPDATE:')
         print('request: ', request)
+        return Response(status=status.HTTP_200_OK)
 
     def destroy(self, instance):
         '''Delete selected announcement.'''

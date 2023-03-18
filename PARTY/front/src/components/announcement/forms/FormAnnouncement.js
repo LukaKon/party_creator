@@ -47,7 +47,6 @@ const getStyle = (category, selectedCategory, theme) => {
 
 export const FormAnnouncement = () => {
   const location = useLocation();
-  // console.log("loctaion: ", location);
   let passedData = null;
   if (location.state) {
     passedData = location.state.entities;
@@ -145,13 +144,11 @@ export const FormAnnouncement = () => {
     formData.append("category", selectedCategory);
 
     // additional data
-    // TODO: handle images uploaded and that which already exist
     if (listOfImages) {
       // handle uploaded images
       const uploadedImagesToSend = listOfImages.filter((img) => {
         return img.to_delete === false;
       });
-      // console.log("listOfImagesToSend: ", uploadedImagesToSend);
       uploadedImagesToSend.map((img) => {
         formData.append("images", img.blob);
         formData.append(img.blob, img.is_main);
@@ -171,7 +168,7 @@ export const FormAnnouncement = () => {
     }
 
     if (passedData) {
-      dispatch(editAnnouncement(formData));
+      dispatch(editAnnouncement({ slug: passedData.slug, data: formData }));
     } else {
       dispatch(createAnnouncement(formData));
     }
@@ -187,12 +184,6 @@ export const FormAnnouncement = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
-
-  // console.log("Title before sent: ", enteredTitle);
-  // console.log("Description before sent: ", enteredDescription);
-  // console.log("CAT before sent: ", selectedCategory);
-  // console.log("IMG before sent: ", listOfImages);
-  // console.log("MOV before sent: ", enteredMovieUrl);
 
   let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {

@@ -235,7 +235,6 @@ if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
 
 EMAIL_HOST = 'smtp.gmail.com'
-# FIX: where is EMAIL or where should be? add to .env file and remove this file from github
 EMAIL_FROM = os.getenv("EMAIL_ADDRESS")
 EMAIL_HOST_USER = os.getenv("EMAIL_ADDRESS")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
