@@ -3,17 +3,27 @@ Views for announcements APIs.
 """
 from announcement import models, serializers
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.search import (SearchQuery, SearchRank,
-                                            SearchVector)
+from django.contrib.postgres.search import (
+    SearchQuery,
+    SearchRank,
+    SearchVector
+)
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import (OpenApiParameter, OpenApiTypes,
-                                   extend_schema, extend_schema_view)
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiTypes,
+    extend_schema,
+    extend_schema_view
+)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import (AllowAny, IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+)
 from rest_framework.response import Response
 
 
@@ -133,7 +143,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new announcement."""
 
-        # TODO <-- o co chodzi z tą kropką
+        # TODO: <-- o co chodzi z tą kropką
         user = get_user_model().objects .get(email=self.request.user)
 
         categories_uuid = self.request.data.getlist('category')
@@ -174,12 +184,13 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         return Response(status=status.HTTP_201_CREATED)
 
-    def partial_update(self, request, *args, **kwargs):
+    def partial_update(self, request, **kwargs):
         '''Update announcement.'''
 
         print('IN UPDATE:')
-        print('request: ', request)
-        return Response(status=status.HTTP_200_OK)
+        print('request: ', self.request.data)
+        print('kwargs: ', kwargs)
+        return Response(status=status.HTTP_201_CREATED)
 
     def destroy(self, instance):
         '''Delete selected announcement.'''

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
@@ -51,7 +51,9 @@ export const FormAnnouncement = () => {
   if (location.state) {
     passedData = location.state.entities;
   }
-  // console.log("DATA: ", passedData);
+  console.log("DATA: ", passedData);
+
+  const navigate = useNavigate();
 
   const {
     value: enteredTitle,
@@ -60,7 +62,7 @@ export const FormAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput((value) => value.trim() !== "", passedData ? passedData.title : "");
+  } = useInput((value) => value.trim() !== "", passedData.title ? passedData.title : "");
 
   const {
     value: enteredDescription,
@@ -69,7 +71,10 @@ export const FormAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput((value) => value.trim() !== "", passedData ? passedData.description : "");
+  } = useInput(
+    (value) => value.trim() !== "",
+    passedData.description ? passedData.description : "",
+  );
 
   const {
     value: selectedCategory,
@@ -80,7 +85,7 @@ export const FormAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput(
     (value) => value.length > 0,
-    passedData ? passedData.category.map((cat) => cat) : [],
+    passedData.category.length > 0 ? passedData.category.map((cat) => cat) : [],
   );
 
   const {
@@ -92,14 +97,14 @@ export const FormAnnouncement = () => {
     reset: resetSelectedImages,
   } = useInput(
     (value) => value.length >= 0,
-    passedData
+    passedData.images.length > 0
       ? passedData.images.map((img) => ({
           uuid: img.uuid,
           link: img.image,
           is_main: img.is_main,
           to_delete: false,
         }))
-      : [{ image: "", is_main: false }],
+      : [],
   );
 
   const {
@@ -112,7 +117,7 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.includes("https://www.youtube.com/"),
     // passedData ? passedData.movies.map((mov) => mov) : []
-    passedData ? passedData.movies[0].movie_url : "",
+    passedData.movies.length > 0 ? passedData.movies[0].movie_url : "",
   );
 
   const [listOfImages, setListOfImages] = useState(selectedImages);
@@ -129,8 +134,8 @@ export const FormAnnouncement = () => {
     formIsValid = true;
   }
 
-  const formSubmissionHandler = (e) => {
-    e.preventDefault();
+  const formSubmissionHandler = (event) => {
+    event.preventDefault();
 
     if (!enteredTitleIsValid && !enteredDescriptionValid && !selectedCategoryIsValid) {
       return;
@@ -141,7 +146,10 @@ export const FormAnnouncement = () => {
     // necessary data
     formData.append("title", enteredTitle);
     formData.append("description", enteredDescription);
-    formData.append("category", selectedCategory);
+    formData.append(
+      "category",
+      selectedCategory.map((cat) => cat.uuid),
+    );
 
     // additional data
     if (listOfImages) {
@@ -155,12 +163,14 @@ export const FormAnnouncement = () => {
       });
 
       // handle images from backend
-      const imagesFromBackendToDelete = listOfImages.filter((img) => {
-        return img.to_delete === true && img.hasOwnProperty("uuid");
-      });
-      imagesFromBackendToDelete.map((img) => {
-        formData.append("images", img.uuid);
-      });
+      if (passedData) {
+        const imagesFromBackendToDelete = listOfImages.filter((img) => {
+          return img.to_delete === true && img.hasOwnProperty("uuid");
+        });
+        imagesFromBackendToDelete.map((img) => {
+          formData.append("images", img.uuid);
+        });
+      }
     }
 
     if (enteredMovieUrl) {
@@ -168,9 +178,13 @@ export const FormAnnouncement = () => {
     }
 
     if (passedData) {
+      console.log("OOOOOOin edit fetch: ", formData, "slug: ", passedData.slug);
       dispatch(editAnnouncement({ slug: passedData.slug, data: formData }));
+      navigate(`/announcement/${passedData.slug}`);
     } else {
+      console.log("XXXXXXXin post fetch");
       dispatch(createAnnouncement(formData));
+      navigate("/myannouncements");
     }
 
     resetTitleInput();

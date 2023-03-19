@@ -8,7 +8,7 @@ export const AnnouncementItem = (props) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/announcement/" + props.slug);
+    navigate(`/announcement/${props.slug}`);
   };
 
   const main_image = props.images.filter((item) => {
@@ -26,12 +26,7 @@ export const AnnouncementItem = (props) => {
 
   return (
     <Card onClick={handleClick} sx={{ maxWidth: 400 }}>
-      <CardMedia
-        component="img"
-        height="140"
-        image={render_image}
-        alt="some image"
-      />
+      <CardMedia component="img" height="140" image={render_image} alt="some image" />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {props.title}

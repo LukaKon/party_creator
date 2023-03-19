@@ -61,8 +61,8 @@ export const AnnouncementDetails = () => {
     // TODO: finish delete functionality
     // TODO: change status to inactive - don't delete from DB
     // console.log("######in delete: ", data.slug);
-    dispatch(deleteAnnouncement(data));
-    navigate("profile");
+    dispatch(deleteAnnouncement(data.slug));
+    navigate(`/myannouncements`);
   };
 
   let buttons;
