@@ -24,6 +24,8 @@ import {
 import { SelectImages } from "./SelectImages";
 import { UploadedImagesList } from "./UploadedImagesList";
 
+const LOCALHOST = process.env.REACT_LOCALHOST;
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
@@ -100,7 +102,7 @@ export const FormAnnouncement = () => {
     passedData.images.length > 0
       ? passedData.images.map((img) => ({
           uuid: img.uuid,
-          link: img.image,
+          link: img.image.includes(LOCALHOST) ? img.image : `${LOCALHOST}${img.image}`,
           is_main: img.is_main,
           to_delete: false,
         }))
@@ -178,11 +180,9 @@ export const FormAnnouncement = () => {
     }
 
     if (passedData) {
-      console.log("OOOOOOin edit fetch: ", formData, "slug: ", passedData.slug);
       dispatch(editAnnouncement({ slug: passedData.slug, data: formData }));
       navigate(`/announcement/${passedData.slug}`);
     } else {
-      console.log("XXXXXXXin post fetch");
       dispatch(createAnnouncement(formData));
       navigate("/myannouncements");
     }

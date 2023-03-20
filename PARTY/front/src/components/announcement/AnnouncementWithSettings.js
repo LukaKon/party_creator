@@ -16,6 +16,7 @@ export const AnnouncementWithSettings = (props) => {
     navigate(`/announcement/${props.slug}`);
   };
 
+  console.log("props in settings: ", props);
   const handleEdit = () => {
     navigate(`/editannouncement/${props.slug}`, { state: { entities: props } });
   };
@@ -35,11 +36,12 @@ export const AnnouncementWithSettings = (props) => {
   if (main_image.length && main_image[0].image.includes(LOCALHOST)) {
     render_image = main_image[0].image;
   } else if (main_image.length) {
-    console.log(main_image);
     render_image = LOCALHOST + main_image[0].image;
   } else {
     render_image = LOCALHOST + "media/announcement/default.jpg";
   }
+
+  console.log("image path: ", render_image);
 
   return (
     <Card sx={{ display: "flex", marginBottom: 1, border: "ridge" }}>

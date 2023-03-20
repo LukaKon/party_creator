@@ -14,6 +14,7 @@ export const MyAnnouncements = () => {
   }, []);
 
   const { entities, loading } = useSelector((state) => state.profile);
+  // console.log("entities in MyAnnouncements: ", entities);
 
   let content;
 
@@ -46,7 +47,7 @@ export const MyAnnouncements = () => {
   return (
     <Grid container padding={1}>
       <Grid item xs={12} marginBottom={2}>
-        <Typography variant={"h4"}>Moje ogłoszenia</Typography>
+        <Typography variant={"h4"}>My announcements:</Typography>
       </Grid>
       {content}
     </Grid>

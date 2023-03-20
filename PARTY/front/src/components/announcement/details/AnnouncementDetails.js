@@ -25,6 +25,8 @@ export const AnnouncementDetails = () => {
   const navigate = useNavigate();
   const { loading, entities, error } = useSelector((state) => state.announcementDetails);
 
+  console.log("entities in announcementDetails: ", entities);
+
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
