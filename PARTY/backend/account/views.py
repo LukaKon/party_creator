@@ -66,7 +66,8 @@ class LogoutAllView(APIView):
 
 class GetUserAPI(RetrieveAPIView):
     model = get_user_model()
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny, )
     serializer_class = UserSerializer
 
     def get_queryset(self):

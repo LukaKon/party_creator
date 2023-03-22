@@ -45,13 +45,12 @@ export const Header = () => {
   } = useSelector((state) => state.profile);
 
   useEffect(() => {
-    console.log('tu',
-        loadingProfile, entitiesProfile
-    )
      if(
             loadingProfile === 'initial'
             && entitiesProfile === "initial"
         ){
+       console.log('header loadingprofile', loadingProfile)
+       console.log('Headers')
        dispatch(fetchProfile());
      }
   }, [image]);
@@ -61,8 +60,6 @@ export const Header = () => {
       sessionStorage.setItem("uuid", uuidv4());
     }
   });
-
-
 
 
 
@@ -92,6 +89,7 @@ export const Header = () => {
     // Set settings/options
     pages["Add announcement"] = "/addannouncement";
     settings["Profile"] = "/profile";
+    settings["Messages"] = "/myconversations";
     settings["My announcements"] = "/myannouncements";
     settings["My favourites"] = "/myfavourites";
     settings["Settings"] = "/settings";

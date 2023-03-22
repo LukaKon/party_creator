@@ -108,6 +108,23 @@ class AnnouncementDetailSerializer(AnnouncementSerializer):
         fields = AnnouncementSerializer.Meta.fields + ("description",)
 
 
+class AnnouncementForConversationSerializer(serializers.ModelSerializer):
+    images = ImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Announcement
+        fields = ('images', "title", "user", "id")
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        main_image = next((img for img in representation['images'] if img['is_main']), None)
+        if main_image:
+            representation['images'] = [main_image]
+        else:
+            representation['images'] = []
+        return representation
+
+
 class FavouriteSerializer(serializers.ModelSerializer):
 
     announcement = AnnouncementSerializer(many=True, read_only=True)

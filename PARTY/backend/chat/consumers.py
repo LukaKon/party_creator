@@ -12,13 +12,16 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope["user"]
         self.user_id = self.user.id
-        self.recipient_id = self.scope['url_route']['kwargs']['recipient']
+        self.seller_id = self.scope['url_route']['kwargs']['seller']
+        self.customer_id = self.scope['url_route']['kwargs']['customer']
         self.announcement_id = self.scope['url_route']['kwargs']['announcement']
+
         await self.set_exists_conversation()
-        if self.user_id > self.recipient_id:
-            self.room_name = str(self.user_id) + '_' + str(self.recipient_id) + '_' + str(self.announcement_id)
+
+        if self.seller_id > self.customer_id:
+            self.room_name = str(self.seller_id) + '_' + str(self.customer_id) + '_' + str(self.announcement_id)
         else:
-            self.room_name = str(self.recipient_id) + '_' + str(self.user_id) + '_' + str(self.announcement_id)
+            self.room_name = str(self.customer_id) + '_' + str(self.seller_id) + '_' + str(self.announcement_id)
         await self.channel_layer.group_add(self.room_name, self.channel_name)
         await self.accept()
 
@@ -61,10 +64,10 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def set_exists_conversation(self):
-        if Conversation.objects.filter(announcement_id=self.announcement_id, sender_id=self.user_id).exists():
+        if Conversation.objects.filter(announcement_id=self.announcement_id, customer_id=self.customer_id).exists():
             self.exists_conversation = Conversation.objects.get(
                 announcement_id=self.announcement_id,
-                sender_id=self.user_id)
+                customer_id=self.customer_id)
         else:
             self.exists_conversation = False
 
@@ -75,26 +78,24 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         except chat.models.VoiceMessage.DoesNotExist:
             voice_message_instance = None
 
-        if self.exists_conversation:
-            message = Message.objects.create(
-                sender_id=self.user_id,
-                recipient_id=self.recipient_id,
-                message=message,
-                conversation=self.exists_conversation,
-                voice_message=voice_message_instance
-            )
-        else:
-            conversation = Conversation.objects.create(
+        if not self.exists_conversation:
+            self.exists_conversation = Conversation.objects.create(
                 announcement_id=self.announcement_id,
-                sender_id=self.user_id,
-                recipient_id=self.recipient_id
+                seller_id=self.seller_id,
+                customer_id=self.customer_id
             )
 
-            message = Message.objects.create(
-                sender_id=self.user_id,
-                recipient_id=self.recipient_id,
-                message=message,
-                conversation=conversation,
-                voice_message=voice_message_instance
-            )
+        if self.user_id == self.customer_id:
+            recipient_id = self.seller_id
+        else:
+            recipient_id = self.customer_id
+
+        message = Message.objects.create(
+            sender_id=self.user_id,
+            recipient_id=recipient_id,
+            message=message,
+            conversation=self.exists_conversation,
+            voice_message=voice_message_instance
+        )
+
         return message

@@ -19,7 +19,7 @@ from rest_framework.response import Response
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
-
+    # permission_classes = (AllowAny, )
     serializer_class = serializers.CategorySerializer
     lookup_field = "uuid"
 
@@ -98,7 +98,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """ Define custom queryset. """
         main_page = self.request.query_params.get('main_page')
-        categories = self.request.query_params.get('category')
+        announcement_id = self.request.query_params.get('category')
         search = self.request.query_params.get('search')
         submit = self.request.query_params.get('submit')
         queryset = self.queryset
@@ -170,7 +170,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_201_CREATED)
 
     def perform_destroy(self, instance):
-        '''Delete selected announcement.'''
+        ''' Delete selected announcement. '''
         print('instance in delete func: ', instance)
         instance.delete()
 

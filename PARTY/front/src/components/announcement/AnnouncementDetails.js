@@ -148,9 +148,9 @@ export const AnnouncementDetails = () => {
   const openChat = () => {
     navigate("/chat/", {
       state: {
-        recipient_id: entities.user.id,
-        announcement_id: entities.id,
-        sender_id: userID,
+        sellerID: entities.user.id,
+        announcementID: entities.id,
+        customerID: userID,
       },
     });
   };
@@ -162,12 +162,12 @@ export const AnnouncementDetails = () => {
   const handleDeleteButton = (data) => {
     // TODO: finish delete functionality
     // TODO: change status to inactive - don't delete from DB
-    // console.log("######in delete: ", data.slug);
     dispatch(deleteAnnouncement(data));
     navigate("profile");
   };
 
   let buttons;
+  // Adding buttons if user is logged
   if (loged) {
     buttons = (
       <Grid container>

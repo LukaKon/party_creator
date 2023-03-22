@@ -4,7 +4,7 @@ import { AnnouncementList } from "./announcement/AnnouncementList";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchAnnouncements } from "../redux/slices/announcementSlice";
-import { AnnouncementSkeleton } from "../components/skeletons/AnnouncementSkeletons.js";
+import { AnnouncementSkeleton } from "./skeletons/AnnouncementSkeletons";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 
@@ -31,8 +31,6 @@ export const HomePage = () => {
         <img alt="logo" src={LOCALHOST + "media/main.png"} />
       </Grid>
       {content}
-      {/*<AnnouncementList loading={loading} entities={entities} error={error}/>*/}
-      {sessionStorage.getItem("access_token") ? "Zalogowany" : "Niezalogowany"}
     </Grid>
   );
 };

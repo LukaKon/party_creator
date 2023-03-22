@@ -15,6 +15,11 @@ export const fetchAnnouncements = createAsyncThunk(
           `/api/announcements/?category=${data.category}`
         );
         return response.data;
+      } else if (data.id) {
+        const response = await axiosInstance.get(
+            `/api/announcements/?id=${data.id}`
+        )
+        return response.data;
       }
     } catch (error) {
       console.log("Fetch announcements error: ", error.message);

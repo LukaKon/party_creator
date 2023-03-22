@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.files import File
 from dynamic_filenames import FilePattern
 
 import uuid as uuid_lib
@@ -10,8 +9,8 @@ from announcement.models import Announcement
 
 class Conversation(models.Model):
     announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE, related_name="conversation")
-    sender = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="sender")
-    recipient = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="recipient")
+    customer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="sender")
+    seller = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="recipient")
 
 
 class Message(models.Model):

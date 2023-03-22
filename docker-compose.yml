@@ -18,7 +18,7 @@ services:
     volumes:
       - ./PARTY/backend:/app
     ports:
-      - 8000:8000
+      - 127.0.0.1:8000:8000
     networks:
       - party_network
     depends_on:
@@ -36,7 +36,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - 5433:5432
+      - 127.0.0.1:5433:5432
     networks:
       - party_network
 
@@ -52,7 +52,7 @@ services:
 #      - REDIS_PORT_NUMBER=6379
     restart: always
     ports:
-      - 6379:6379
+      - 127.0.0.1:6379:6379
     networks:
       - party_network
 
@@ -68,7 +68,7 @@ services:
     volumes:
       - ./PARTY/front:/app:ro
     ports:
-      - "3000:3000"
+      - 127.0.0.1:3000:3000
     stdin_open: true
     depends_on:
       - backend

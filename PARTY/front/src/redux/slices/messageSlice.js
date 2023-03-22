@@ -46,7 +46,7 @@ export const createVoiceMessage = createAsyncThunk(
 );
 
 const messageSlice = createSlice({
-    name: "message",
+    name: "conversation",
     initialState: {
         loading: true,
         entities: "initial",

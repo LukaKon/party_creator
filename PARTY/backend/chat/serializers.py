@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import Message, Conversation, VoiceMessage
+from announcement.serializers import AnnouncementForConversationSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -15,10 +16,11 @@ class MessageSerializer(serializers.ModelSerializer):
 
 class ConversationSerializer(serializers.ModelSerializer):
     message = MessageSerializer(many=True, read_only=True)
+    announcement = AnnouncementForConversationSerializer(read_only=True)
 
     class Meta:
         model = Conversation
-        fields = ("message", )
+        fields = ("message", "customer", "seller", "announcement", "id")
 
 
 class VoiceMessageSerializer(serializers.ModelSerializer):

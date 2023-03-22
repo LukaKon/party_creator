@@ -21,9 +21,8 @@ export const ActivateAccount = () => {
     const {loading, active} = useSelector(state=> state.profile)
 
     useEffect(()=>{
-        console.log('useeff')
         if(!loading && active===true){
-            setAlert(<Alert severity="success">Your email is changed</Alert>)}
+            setAlert(<Alert severity="success">Your account is activated</Alert>)}
         else if(!loading && active!==true){
             setAlert(<Alert severity="warning">Something went wrong!</Alert>)
     }},[active])

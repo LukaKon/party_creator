@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {Grid} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchConversation} from "../../redux/slices/messageSlice";
-import {fetchProfile} from "../../redux/slices/profileSlice";
+import {ChatConversationPaper} from "./ChatConversationPaper";
 
 
 export const MyConversations = () => {
@@ -10,30 +10,46 @@ export const MyConversations = () => {
     const {
         loading: loadingProfile,
         entities: entitiesProfile,
-        error: errorProfile
     } = useSelector(state => state.profile)
 
+    const {
+        loading: loadingConversation,
+        entities: entitiesConversation,
+    } = useSelector(state => state.message)
+
     useEffect(() => {
-        console.log('tam',
-            loadingProfile, entitiesProfile
-        )
         if(
-            loadingProfile === 'initial'
-            && entitiesProfile === "initial"
+            loadingProfile !== 'initial'
+            && entitiesProfile !== "initial"
         ){
-            dispatch(fetchProfile()).unwrap()
-                .then((response) => {
-                    dispatch(fetchConversation({
-                        sender_id: response.id,
-                        recipient_id: response.id
+            dispatch(fetchConversation({
+                        sender_id: entitiesProfile.id,
                     }))
-                })
         }
-    },[])
+    },[entitiesProfile])
+
+    let content
+
+
+    if (!loadingConversation){
+        content =  (
+            entitiesConversation.map(conversation => {
+            return (<ChatConversationPaper
+                key={conversation.id}
+                conversation={conversation}
+                // announcement={conversation.announcement}
+                // lastMessage={conversation.message[conversation.message.length - 1]}
+                user={entitiesProfile}
+            >
+            </ChatConversationPaper>)
+            })
+        )
+    }
+
 
     return (
         <Grid>
-
+            {content}
         </Grid>
     )
 }
