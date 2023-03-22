@@ -19,10 +19,10 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProfile } from "../redux/slices/profileSlice";
-import { loged } from "../utils/loged";
+import { fetchProfile } from "../../redux/slices/profileSlice";
+import { loged } from "../../utils/loged";
 import { v4 as uuidv4 } from "uuid";
-import { SearchBar } from "./Search";
+import { SearchBar } from "../Search";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 

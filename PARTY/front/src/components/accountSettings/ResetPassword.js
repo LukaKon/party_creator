@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-import {axiosInstance} from "../axios";
+import {axiosInstance} from "../../axios";
 
 export const ResetPassword = () => {
     const handleSubmit = (event) => {

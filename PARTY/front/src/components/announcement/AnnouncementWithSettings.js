@@ -42,7 +42,7 @@ export const AnnouncementWithSettings = (props) => {
         console.log(main_image)
         render_image = LOCALHOST + main_image[0].image
     }else {
-        render_image = LOCALHOST + "media/announcement/default.jpg";
+        render_image = LOCALHOST + "media/announcement/defaultAnnouncement.jpg";
     }
 
     return (

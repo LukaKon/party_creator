@@ -2,9 +2,9 @@ import React, {useEffect} from 'react'
 import {Grid, Typography, Alert, AlertTitle} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import { Link } from 'react-router-dom'
-import {AnnouncementSkeleton} from "./skeletons/AnnouncementSkeletons";
-import {AnnouncementWithSettings} from "./announcement/AnnouncementWithSettings";
-import {fetchProfile} from "../redux/slices/profileSlice";
+import {AnnouncementSkeleton} from "../skeletons/AnnouncementSkeletons";
+import {AnnouncementWithSettings} from "./AnnouncementWithSettings";
+import {fetchProfile} from "../../redux/slices/profileSlice";
 
 
 export const MyAnnouncements = () => {
@@ -50,7 +50,6 @@ export const MyAnnouncements = () => {
 
     return (
         <Grid container padding={1}>
-
             <Grid item xs={12} marginBottom={2}>
                 <Typography variant={"h4"}>
                     Moje ogłoszenia

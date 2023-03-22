@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
-import { AnnouncementList } from "./announcement/AnnouncementList";
+import { AnnouncementList } from "../announcement/AnnouncementList";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchAnnouncements } from "../redux/slices/announcementSlice";
-import { AnnouncementSkeleton } from "./skeletons/AnnouncementSkeletons";
+import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
+import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
 
 const LOCALHOST = process.env.REACT_LOCALHOST;
 

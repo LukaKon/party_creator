@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Alert, Button, Grid, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {handleEmail} from "../redux/slices/profileSlice";
+import {handleEmail} from "../../redux/slices/profileSlice";
 
 
 export const ActivateAccount = () => {

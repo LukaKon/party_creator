@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import {useDispatch, useSelector} from "react-redux";
-import {createProfile} from "../redux/slices/profileSlice";
+import {createProfile} from "../../redux/slices/profileSlice";
 import {Alert} from "@mui/material";
 
 export const SignUp = () => {
@@ -104,7 +104,7 @@ export const SignUp = () => {
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link href="src/components/accountSettings/SignUp#" variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
