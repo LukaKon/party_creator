@@ -152,7 +152,7 @@ class Image(Multimedia):
         # },
         delete_orphans=True,
         verbose_name="images",
-        default="media/default.jpg",
+        default="announcement/defaultAnnouncement.jpg",
     )
     is_main = models.BooleanField(default=False, null=True)
 
