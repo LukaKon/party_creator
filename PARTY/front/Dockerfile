@@ -6,7 +6,7 @@ ENV PATH="./node_modules/.bin:$PATH"
 
 LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Frontend"
-
+mai
 COPY package.json .
 
 RUN apk add --no-cache --virtual .gyp \
