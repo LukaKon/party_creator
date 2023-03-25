@@ -54,6 +54,7 @@ export const FormAnnouncement = () => {
     passedData = location.state.entities;
   }
   console.log("DATA: ", passedData);
+  console.log(typeof passedData)
 
   const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ export const FormAnnouncement = () => {
     valueChangeHandler: titleChangedHandler,
     inputBlurHandler: titleBlurHandler,
     reset: resetTitleInput,
-  } = useInput((value) => value.trim() !== "", passedData.title ? passedData.title : "");
+  } = useInput((value) => value.trim() !== "", passedData ? passedData.title : "");
 
   const {
     value: enteredDescription,
@@ -75,7 +76,7 @@ export const FormAnnouncement = () => {
     reset: resetDescriptionInput,
   } = useInput(
     (value) => value.trim() !== "",
-    passedData.description ? passedData.description : "",
+    passedData ? passedData.description : "",
   );
 
   const {
@@ -87,7 +88,7 @@ export const FormAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput(
     (value) => value.length > 0,
-    passedData.category.length > 0 ? passedData.category.map((cat) => cat) : [],
+    passedData ? passedData.category.length > 0 ? passedData.category.map((cat) => cat) : [] : [],
   );
 
   const {
@@ -99,14 +100,15 @@ export const FormAnnouncement = () => {
     reset: resetSelectedImages,
   } = useInput(
     (value) => value.length >= 0,
-    passedData.images.length > 0
+      passedData ?
+      passedData.images.length > 0
       ? passedData.images.map((img) => ({
           uuid: img.uuid,
           link: img.image.includes(LOCALHOST) ? img.image : `${LOCALHOST}${img.image}`,
           is_main: img.is_main,
           to_delete: false,
         }))
-      : [],
+      : [] : [],
   );
 
   const {
@@ -119,7 +121,7 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.includes("https://www.youtube.com/"),
     // passedData ? passedData.movies.map((mov) => mov) : []
-    passedData.movies.length > 0 ? passedData.movies[0].movie_url : "",
+    passedData ? passedData.movies.length > 0 ? passedData.movies[0].movie_url : "" : "",
   );
 
   const [listOfImages, setListOfImages] = useState(selectedImages);
@@ -205,7 +207,8 @@ export const FormAnnouncement = () => {
   console.log("IMG before sent: ", listOfImages);
   console.log("MOV before sent: ", enteredMovieUrl);
 
-  let listOfSelectedImages = <Grid item>Add images to announcement :)</Grid>;
+  let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
+
   if (listOfImages.length > 0) {
     listOfAllImages = (
       <Grid>

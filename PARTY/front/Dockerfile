@@ -5,7 +5,7 @@ FROM node:18-alpine3.17
 LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Frontend"
 
-WORKDIR /home/react-user/app
+WORKDIR /app
 # WORKDIR /home/node/app
 
 # USER react
@@ -30,6 +30,6 @@ RUN npm run build
 RUN adduser \
     --disabled-password \
     # --no-create-home \
-    react-user 
+    react-user
 
 USER react-user

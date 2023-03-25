@@ -39,7 +39,7 @@ export const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        {/*<Header />*/}
+        <Header />
         <Routes>
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
