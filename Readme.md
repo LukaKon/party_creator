@@ -4,7 +4,33 @@
 # PARTY WIZARD :)
 
 **Service** that help you organize your life event:)
-![image](img.png)
+
+**Homepage**
+lists 9 last announcements
+![image](ss/File 1.png)
+
+**Edit form**  
+![image](ss/File 2.png)
+
+**Search options**
+![image](ss/File 3.png)
+
+**Profile functions**
+![image](ss/File 4.png)
+
+**List of my announcements** including options
+![image](ss/File 5.png)
+
+**Profile settings**
+- avatar change
+- change of login credentials with email confirmation
+![image](ss/File 6.png)
+
+**Chatting**
+with voice message.
+![image](ss/File 7.png)
+
+_and more..._
 
 _Work in progress..._
 
