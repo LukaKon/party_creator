@@ -28,7 +28,7 @@ export const HomePage = () => {
   return (
     <Grid>
       <Grid>
-        <img alt="logo" src={LOCALHOST + "media/main.png"} />
+        <img alt="logo" src={LOCALHOST + "/media/main.png"} />
       </Grid>
       {content}
     </Grid>

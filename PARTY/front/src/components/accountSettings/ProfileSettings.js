@@ -28,7 +28,7 @@ export const ProfileSettings = () => {
     )
 
     useEffect(() => {
-            setImage({...image, imageToShow: LOCALHOST.slice(0, -1) + entities.image})
+            setImage({...image, imageToShow: LOCALHOST + entities.image})
         },
         [entities]
     )

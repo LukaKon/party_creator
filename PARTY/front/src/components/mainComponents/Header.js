@@ -64,7 +64,7 @@ export const Header = () => {
 
 
   const showAvatar = () => {
-    image = LOCALHOST.slice(0, -1) + entitiesProfile.image;
+    image = LOCALHOST + entitiesProfile.image;
   };
 
   const pages = {
@@ -201,7 +201,7 @@ export const Header = () => {
           <Button onClick={() => handleMenu('/')}>
             <Typography noWrap component="div" sx={{ mr: 1 }}>
               <ImageListItem sx={{width: 50, height:50,objectFit:'contain'}}>
-              <img src={LOCALHOST + 'media/logo.png'} alt="logo"/>
+              <img src={LOCALHOST + '/media/logo.png'} alt="logo"/>
               </ImageListItem>
             </Typography>
           </Button>
