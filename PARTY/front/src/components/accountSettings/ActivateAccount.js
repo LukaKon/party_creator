@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Alert, Button, Grid, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {handleEmail} from "../redux/slices/profileSlice";
+import {handleEmail} from "../../redux/slices/profileSlice";
 
 
 export const ActivateAccount = () => {
@@ -21,9 +21,8 @@ export const ActivateAccount = () => {
     const {loading, active} = useSelector(state=> state.profile)
 
     useEffect(()=>{
-        console.log('useeff')
         if(!loading && active===true){
-            setAlert(<Alert severity="success">Your email is changed</Alert>)}
+            setAlert(<Alert severity="success">Your account is activated</Alert>)}
         else if(!loading && active!==true){
             setAlert(<Alert severity="warning">Something went wrong!</Alert>)
     }},[active])

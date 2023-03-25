@@ -4,28 +4,27 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { NotFound } from "./NotFound";
 import { HomePage } from "./HomePage";
-import { SignIn } from "./SignIn";
-import { SignUp } from "./SignUp";
-import { ProfileSettings } from "./ProfileSettings";
-import { Profile } from "./Profile";
-import { FormAnnouncement } from "./announcement/forms/FormAnnouncement";
-// import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
-import { AnnouncementDetails } from "./announcement/details/AnnouncementDetails";
-import { Categories } from "./Categories";
-import { AnnouncementsByCategory } from "./AnnouncementsByCategory";
-import { ResetPassword } from "./ResetPassword";
-import { ResetPasswordConfirm } from "./ResetPasswordConfirm";
-import { ChangePassword } from "./ChangePassword";
-import { MyAnnouncements } from "./MyAnnouncements";
-import { MyFavourites } from "./MyFavourites";
-import { SearchAnnouncement } from "./SearchAnnouncement";
-import { ActivateAccount } from "./ActivateAccount";
-import { ActivateNewEmail } from "./ActivateNewEmail";
-import { Chat } from "./chat/Chat";
-import { loged } from "../utils/loged";
-import { Logout } from "./Logout";
+import { SignIn } from "../accountSettings/SignIn";
+import { SignUp } from "../accountSettings/SignUp";
+import { ProfileSettings } from "../accountSettings/ProfileSettings";
+import { Profile } from "../Profile";
+import { FormAnnouncement } from "../announcement/forms/FormAnnouncement";
+import { AnnouncementDetails } from "../announcement/AnnouncementDetails";
+import { Categories } from "../Categories";
+import { AnnouncementsByCategory } from "../announcement/AnnouncementsByCategory";
+import { ResetPassword } from "../accountSettings/ResetPassword";
+import { ResetPasswordConfirm } from "../accountSettings/ResetPasswordConfirm";
+import { ChangePassword } from "../accountSettings/ChangePassword";
+import { MyAnnouncements } from "../announcement/MyAnnouncements";
+import { MyFavourites } from "../MyFavourites";
+import { SearchAnnouncement } from "../SearchAnnouncement";
+import { ActivateAccount } from "../accountSettings/ActivateAccount";
+import { ActivateNewEmail } from "../accountSettings/ActivateNewEmail";
+import { Chat } from "../chat/Chat";
+import { loged } from "../../utils/loged";
+import { Logout } from "../Logout";
+import {MyConversations} from "../chat/MyConversations";
 
-// import { Demo } from "./Demo";
 
 export const App = () => {
   const isAuthenticatedFunction = (path, component) => {
@@ -43,7 +42,7 @@ export const App = () => {
         <Routes>
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="" element={<HomePage />} />
           <Route path="announcement/:slug" element={<AnnouncementDetails />} />
           <Route path="*" element={<NotFound />} />
           <Route path="categories" element={<Categories />} />
@@ -56,6 +55,7 @@ export const App = () => {
           {/* in working */}
           <Route path="chat" element={<Chat />} />
           {/*/!*Views only for logged users*!/*/}
+          {isAuthenticatedFunction("myconversations", <MyConversations />)}
           {isAuthenticatedFunction("profile", <Profile />)}
           {isAuthenticatedFunction("settings", <ProfileSettings />)}
           {isAuthenticatedFunction("addannouncement", <FormAnnouncement />)}

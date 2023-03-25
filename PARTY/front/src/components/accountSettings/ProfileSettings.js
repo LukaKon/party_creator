@@ -13,7 +13,7 @@ import {
     useSelector,
 } from "react-redux";
 import {styled} from '@mui/material/styles';
-import {fetchProfile, updateProfile} from "../redux/slices/profileSlice";
+import {fetchProfile, updateProfile} from "../../redux/slices/profileSlice";
 import {useNavigate} from "react-router-dom";
 
 import {ChangeEmail} from "./ChangeEmail";
@@ -71,6 +71,8 @@ export const ProfileSettings = () => {
 
     return (
         <Grid container padding={1}>
+
+
             <Grid item xs={12}>
                 <Typography variant="h7" component="div">
                     Your current avatar, press to change it

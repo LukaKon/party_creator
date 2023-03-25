@@ -87,9 +87,6 @@ export const AudioMessage = (props) => {
                     <MicIcon/>
             </IconButton>
             <Button onClick={() => handleRecording(stop)}> STOP </Button>
-            <Grid>
-                <audio controls src={mp3Settings.blobURL}/>
-            </Grid>
         </Grid>
     )
 }

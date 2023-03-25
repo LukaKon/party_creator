@@ -8,9 +8,8 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.doc.txt /tmp/requirements.doc.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
-COPY . /home/django-user/app
-WORKDIR /home/django-user/app
-# EXPOSE 8000
+COPY . /app
+WORKDIR /app
 
 ARG DEV=false
 

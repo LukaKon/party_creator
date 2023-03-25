@@ -61,7 +61,7 @@ services:
     volumes:
       - ./PARTY/front:/app
     ports:
-      - "3000:3000"
+      - 127.0.0.1:3000:3000
     stdin_open: true
     depends_on:
       - backend

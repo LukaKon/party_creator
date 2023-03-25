@@ -27,19 +27,20 @@ export const AnnouncementWithSettings = (props) => {
 
   let render_image;
 
+    if (main_image.length && main_image[0].image.includes(LOCALHOST)) {
+        render_image = main_image[0].image;
+    }else if(main_image.length){
+        console.log(main_image)
+        render_image = LOCALHOST + main_image[0].image
+    }else {
+        render_image = LOCALHOST + "media/announcement/defaultAnnouncement.jpg";
+    }
+
   const removeAnnouncement = (event, announcementSlug) => {
     const data = { slug: announcementSlug };
     dispatch(deleteAnnouncement(data));
     event.target.parentElement.parentElement.parentElement.parentElement.remove();
   };
-
-  if (main_image.length && main_image[0].image.includes(LOCALHOST)) {
-    render_image = main_image[0].image;
-  } else if (main_image.length) {
-    render_image = LOCALHOST + main_image[0].image;
-  } else {
-    render_image = LOCALHOST + "media/announcement/default.jpg";
-  }
 
   console.log("image path: ", render_image);
 

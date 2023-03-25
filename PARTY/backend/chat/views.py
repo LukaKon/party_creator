@@ -34,28 +34,43 @@ class CreateVoiceMessageView(CreateAPIView):
     permission_classes = (IsAuthenticated, )
     serializer_class = VoiceMessageSerializer
 
-    # def perform_create(self, serializer):
-    #     super().perform_create(serializer)
-    #     return serializer.id
-    # def post(self, request, *args, **kwargs):
-    #     return super().post(self, request, *args, **kwargs)
-
 
 class GetConversationView(APIView):
     model = Conversation
     permission_classes = (IsAuthenticated, )
     serializer_class = ConversationSerializer
 
+    def check_data(self):
+        type_fetch = self.request.data.get('type_fetch')
+        announcement_id = self.request.data.get('announcement_id')
+        seller_id = self.request.data.get('seller_id')
+        customer_id = self.request.data.get('customer_id')
+        return {
+            "type_fetch": type_fetch,
+            "seller_id": seller_id,
+            "customer_id": customer_id,
+            "announcement_id": announcement_id
+        }
+
     def get_queryset(self):
-        announcement_id = self.request.data.get('announcement')
-        sender_id = self.request.data.get('sender')
-        try:
-            queryset = self.model.objects.get(announcement_id=announcement_id, sender_id=sender_id)
-        except:
-            Response(status=status.HTTP_400_BAD_REQUEST)
+        data = self.check_data()
+
+        if data["type_fetch"] == 'single_conversation':
+            queryset = self.model.objects.filter(
+                announcement_id=data.get('announcement_id'),
+                customer_id=data.get('customer_id'),
+                seller_id=data.get('seller_id')
+            )
+        else:
+            queryset = self.model.objects.filter(
+                Q(customer_id=self.request.user.id) |
+                Q(seller_id=self.request.user.id)
+            )
+        print(queryset)
+
         return queryset
 
     def post(self, request):
         data = self.get_queryset()
-        serialized_data = self.serializer_class(data)
+        serialized_data = self.serializer_class(data, many=True)
         return Response(serialized_data.data, status=status.HTTP_200_OK)

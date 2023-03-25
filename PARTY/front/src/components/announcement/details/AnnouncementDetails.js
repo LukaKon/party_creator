@@ -46,9 +46,9 @@ export const AnnouncementDetails = () => {
   const openChat = () => {
     navigate("/chat/", {
       state: {
-        recipient_id: entities.user.id,
-        announcement_id: entities.id,
-        sender_id: userID,
+        sellerID: entities.user.id,
+        announcementID: entities.id,
+        customerID: userID,
       },
     });
   };
@@ -66,6 +66,7 @@ export const AnnouncementDetails = () => {
   };
 
   let buttons;
+  // Adding buttons if user is logged
   if (loged) {
     buttons = (
       <Grid container>

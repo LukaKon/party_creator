@@ -20,12 +20,12 @@ export const Footer = () => {
                                 </Typography>
                             </Box>
                             <Box>
-                                <Link color="inherit" href="/">
+                                <Link color="inherit" href="/Users/bartekdrogos/Desktop/party_creator/PARTY/front/public">
                                     How it works?
                                 </Link>
                             </Box>
                             <Box>
-                                <Link color="inherit" href="/">
+                                <Link color="inherit" href="/Users/bartekdrogos/Desktop/party_creator/PARTY/front/public">
                                     Contact
                                 </Link>
                             </Box>
@@ -43,7 +43,7 @@ export const Footer = () => {
                                 </Link>
                             </Box>
                             <Box>
-                                <Link color="inherit" href="/">
+                                <Link color="inherit" href="/Users/bartekdrogos/Desktop/party_creator/PARTY/front/public">
                                     Become our partner
                                 </Link>
                             </Box>

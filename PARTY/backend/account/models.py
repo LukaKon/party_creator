@@ -53,7 +53,7 @@ class User(AbstractUser):
     image = utils.stdimage_save_defaultimg(
         null=True,
         blank=True,
-        default="default.jpg",
+        default="account/defaultUser.jpg",
         upload_to=upload_to_pattern,
         variations={
             "large": (600, 400),

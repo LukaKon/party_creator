@@ -13,7 +13,6 @@ import {AudioMessage} from "./AudioMessage";
 import {fetchConversation} from "../../redux/slices/messageSlice";
 import {customStyle} from "../../styles/customStyle";
 import {fetchProfile} from "../../redux/slices/profileSlice";
-import {number} from "prop-types";
 
 
 export const Chat = () => {
@@ -21,9 +20,9 @@ export const Chat = () => {
     const [messages, setMessages] = useState([])
     const [client, setClient] = useState({})
     const dispatch = useDispatch()
-    const recipient_id = location.state.recipient_id
-    const sender_id = location.state.sender_id
-    const announcement_id = location.state.announcement_id
+    const sellerID = location.state.sellerID
+    const customerID = location.state.customerID
+    const announcementID = location.state.announcementID
     const classes = customStyle();
     const {loading: loadingProfile, entities: entitiesProfile, error: errorProfile} = useSelector(state => state.profile)
 
@@ -32,15 +31,21 @@ export const Chat = () => {
         if(!loadingProfile && entitiesProfile === "initial"){
             dispatch(fetchProfile())
         }
-        dispatch(fetchConversation({announcement: announcement_id, sender: sender_id}))
+        dispatch(fetchConversation({
+            announcement_id: announcementID,
+            seller_id: sellerID,
+            customer_id: customerID,
+            type_fetch: 'single_conversation'
+        }))
         const token = localStorage.getItem('access_token')
-        const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${recipient_id}/${announcement_id}/?token=` + token)
+        const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${sellerID}/${customerID}/${announcementID}/?token=` + token)
         setClient(client)
     },[])
 
-    const {loading: loadingConversation,
-        entities: entitiesConversation,
-        error: errorConversation} = useSelector(state => state.message)
+    const {
+        loading: loadingConversation,
+        entities: entitiesConversation
+    } = useSelector(state => state.message)
 
     const checkStyleUser = (senderEmail) => {
         if (senderEmail === entitiesProfile.email){
@@ -110,11 +115,14 @@ export const Chat = () => {
 
     if(!loadingConversation && !loadingProfile && entitiesConversation !== "initial"){
         // Fetched messages (chat history)
-        historyMessages = (
-            entitiesConversation.message.map((message)=>{
+        if(entitiesConversation.length === 0){
+            historyMessages = ''
+        }else{
+            historyMessages = (
+            entitiesConversation[0].message.map((message)=>{
                 return paperMessage(message.sender, message.created, message.message, message.uuid, message.voice_message)
                 })
-        )
+        )}
     }
 
     let sessionMessages

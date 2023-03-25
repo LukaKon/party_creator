@@ -1,43 +1,44 @@
-import React, {useState} from 'react'
+import React, {useState} from "react";
+import {useParams} from "react-router-dom";
 import {
-    Alert,
     Avatar,
-    Box,
     Button,
-    Container,
     CssBaseline,
+    TextField,
+    Box,
     Typography,
-    TextField
+    Container, Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {useDispatch} from "react-redux";
-import {changePassword} from "../redux/slices/profileSlice";
+
+import {axiosInstance} from "../../axios";
 
 
-export const ChangePassword = () => {
-    const [alert, setAlert] = useState(null)
-    const dispatch = useDispatch()
-    const handleSubmit = (event) =>{
-        setAlert(null)
+
+
+export const ResetPasswordConfirm = () => {
+    const { token } = useParams();
+    const [status, setStatus] = useState(null)
+    const handleSubmit = (event) => {
         event.preventDefault()
         let data = new FormData(event.currentTarget);
 
-        if(data.get("new_password") === data.get("new_password2")){
+        if(data.get("password") === data.get("password2")){
             data = {
-            old_password: data.get("old_password"),
-            new_password: data.get("new_password"),
+            token: token,
+            password: data.get("password"),
             };
 
-            dispatch(changePassword(data)).unwrap()
+            axiosInstance
+                .post("account/password_reset/confirm/", data)
                 .then((response) => {
-                    setAlert(
-                        <Alert severity="success">Password is changed!</Alert>
+                    setStatus(
+                        <Alert severity="success">Password is changed</Alert>
                     )
-                    console.log(response)
                 })
                 .catch((error) => {
-                    if(error.response.data.password){
-                        setAlert(
+                     if(error.response.data.password){
+                        setStatus(
                             <Typography variant="div">
                                 {error.response.data.password.map(error=>{
                                     return(
@@ -49,11 +50,11 @@ export const ChangePassword = () => {
                     }
                 })
         }else{
-            setAlert(<Alert severity="warning">Passwords must be the same</Alert>)
+            setStatus(<Alert severity="warning">Password must be the same!</Alert>)
         }
     }
 
-    return(
+    return (
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
             <Box
@@ -63,14 +64,14 @@ export const ChangePassword = () => {
                     flexDirection: "column",
                     alignItems: "center",
                 }}
-                >
+            >
                 <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography variant="h5">
-                    Change password
+                    Reset your password
                 </Typography>
-                {alert}
+                {status}
                 <Box
                     component="form"
                     onSubmit={handleSubmit}
@@ -81,28 +82,19 @@ export const ChangePassword = () => {
                         margin="normal"
                         required
                         fullWidth
-                        name="old_password"
-                        label="Enter your old password"
+                        name="password"
+                        label="Enter new password"
                         type="password"
-                        id="old_password"
+                        id="password"
                     />
                     <TextField
                         margin="normal"
                         required
                         fullWidth
-                        name="new_password"
-                        label="Enter your new password"
+                        name="password2"
+                        label="Confirm the password"
                         type="password"
-                        id="new_password"
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="new_password2"
-                        label="Confirm your password"
-                        type="password"
-                        id="new_password2"
+                        id="password2"
                     />
                     <Button
                         type="submit"
@@ -110,10 +102,10 @@ export const ChangePassword = () => {
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
                     >
-                        Set new password
+                        Reset your password
                     </Button>
                 </Box>
             </Box>
         </Container>
-    )
-}
+    );
+};

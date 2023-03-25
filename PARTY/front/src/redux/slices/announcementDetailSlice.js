@@ -37,8 +37,6 @@ export const createAnnouncement = createAsyncThunk(
 export const editAnnouncement = createAsyncThunk(
   "announcements/editAnnouncement",
   async (obj, { rejectWithValue }) => {
-    console.log("axios obj:", obj.data);
-    // console.log("uuid: ", obj.slug);
     try {
       const response = await axiosInstance.patch(`api/announcements/${obj.slug}/`, obj.data, {
         headers: {
@@ -48,7 +46,6 @@ export const editAnnouncement = createAsyncThunk(
           Accept: "image/png",
         },
       });
-      console.log("AXIOS - obj to sent: ", response.data);
       return response.obj;
     } catch (error) {
       console.log("Edit announcement error: ", error.message);

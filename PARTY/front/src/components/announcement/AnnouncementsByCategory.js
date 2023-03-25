@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { Box, Grid, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAnnouncements } from "../redux/slices/announcementSlice";
-import { AnnouncementItem } from "./announcement/AnnouncementItem";
-import { AnnouncementSkeleton } from "./skeletons/AnnouncementSkeletons";
+import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
+import { AnnouncementItem } from "./AnnouncementItem";
+import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
 
 export const AnnouncementsByCategory = () => {
   const location = useLocation()

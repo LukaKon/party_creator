@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import {Box, Button, TextField, Grid, Alert} from "@mui/material";
-import {updateProfile} from "../redux/slices/profileSlice";
+import {updateProfile} from "../../redux/slices/profileSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 export const ChangeEmail = () => {

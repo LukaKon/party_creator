@@ -29,7 +29,7 @@ from rest_framework.response import Response
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
-
+    # permission_classes = (AllowAny, )
     serializer_class = serializers.CategorySerializer
     lookup_field = "uuid"
 
@@ -83,11 +83,9 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.AnnouncementDetailSerializer
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
-    # http_method_names = ('get', 'post', 'put', 'patch', 'delete',)
 
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
-        # return [uuid for uuid in qs.split(',')]
         return list(qs.split(','))
 
     def get_permissions(self):
@@ -95,7 +93,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             Instantiates and returns the list of permissions
             that this view requires.
         """
-        print('METHOD: ', self.request.method, IsAuthenticated())
+
         if self.request.method == "GET":
             return [AllowAny()]
         return [IsAuthenticated()]
@@ -109,7 +107,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """ Define custom queryset. """
         main_page = self.request.query_params.get('main_page')
-        categories = self.request.query_params.get('category')
+        announcement_id = self.request.query_params.get('category')
         search = self.request.query_params.get('search')
         submit = self.request.query_params.get('submit')
         queryset = self.queryset
@@ -122,7 +120,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if search:
             search_vector = SearchVector('title', weight='A') + \
-                SearchVector('description', weight='B')
+                            SearchVector('description', weight='B')
             search_query = SearchQuery(search)
 
             queryset = queryset.annotate(
@@ -143,8 +141,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new announcement."""
 
-        # TODO: <-- o co chodzi z tą kropką
-        user = get_user_model().objects .get(email=self.request.user)
+        user = get_user_model().objects.get(email=self.request.user)
 
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
@@ -183,6 +180,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
             )
 
         return Response(status=status.HTTP_201_CREATED)
+
 
     def partial_update(self, request, **kwargs):
         '''Update announcement.'''

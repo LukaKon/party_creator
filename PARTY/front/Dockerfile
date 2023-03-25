@@ -6,7 +6,6 @@ LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Frontend"
 
 WORKDIR /app
-# WORKDIR /home/node/app
 
 # USER react
 
