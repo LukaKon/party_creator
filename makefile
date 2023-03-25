@@ -26,6 +26,10 @@ rest: stop up
 logs:
 	docker compose logs
 
+volume:
+	docker volume inspect party_creator_pgdata
+
+### PYTHON/DJANGO
 flake:
 	docker compose run --rm backend sh -c 'flake8'
 
@@ -41,12 +45,13 @@ makemigrations:
 superuser:
 	docker compose run --rm backend sh -c 'python manage.py createsuperuser'
 
-volume:
-	docker volume inspect party_creator_pgdata
-
 shell:
 	docker compose run --rm backend sh -c 'python manage.py shell_plus'
 #	 docker compose exec backend python3 manage.py shell_plus
+
+### DATABASE
+psql:
+	docker compose run --rm db sh -c 'psql -h db -p $(DB_PORT) -d $(DATABASE_NAME) -U $(DATABASE_USER) -W $(DATABASE_PASSWORD) ' 
 
 dump:
 	docker exec -i postgres_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) pg_dump -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" > dump.sql
@@ -54,9 +59,6 @@ dump:
 
 restore:
 	docker exec -i postgres_db /bin/bash -c "PGPASSWORD=$(DATABASE_PASSWORD) psql -h localhost --username $(DATABASE_USER) $(DATABASE_NAME)" < dump.sql
-
-redtest:
-	docker compose run --rm cache sh -c 'redis-cli ping'
 
 redis:
 	docker exec -it redis_cache redis-cli

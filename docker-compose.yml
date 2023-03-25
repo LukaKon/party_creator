@@ -14,11 +14,11 @@ services:
               python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
-    restart: on-failure
+    restart: always
     volumes:
       - ./PARTY/backend:/app
     ports:
-      - 8000:8000
+      - 127.0.0.1:8000:8000
     networks:
       - party_network
     depends_on:
@@ -32,27 +32,20 @@ services:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-    restart: on-failure
+    restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - 5433:5432
+      - 127.0.0.1:5433:5432
     networks:
       - party_network
 
   cache:
     image: redis:7.0-alpine3.17
     container_name: redis_cache
-#    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
-#    environment:
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_IO_THREADS=2
-#      - REDIS_IO_THREADS_DO_READS=yes
-#      - REDIS_AOF_ENABLE=no
-#      - REDIS_PORT_NUMBER=6379
     restart: always
     ports:
-      - 6379:6379
+      - 127.0.0.1:6379:6379
     networks:
       - party_network
 
@@ -66,7 +59,7 @@ services:
       - .env
     restart: always
     volumes:
-      - ./PARTY/front:/app:ro
+      - ./PARTY/front:/app
     ports:
       - "3000:3000"
     stdin_open: true

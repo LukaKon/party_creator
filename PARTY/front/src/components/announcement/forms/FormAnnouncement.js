@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
@@ -17,10 +17,14 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { fetchCategories } from "../../../redux/slices/categorySlice";
 import { useInput } from "./hooks/useInput";
-// import {formSubmissionHandler} from './formUtils'
-import { createAnnouncement } from "../../../redux/slices/announcementDetailSlice";
+import {
+  createAnnouncement,
+  editAnnouncement,
+} from "../../../redux/slices/announcementDetailSlice";
 import { SelectImages } from "./SelectImages";
 import { UploadedImagesList } from "./UploadedImagesList";
+
+const LOCALHOST = process.env.REACT_LOCALHOST;
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -45,12 +49,14 @@ const getStyle = (category, selectedCategory, theme) => {
 
 export const FormAnnouncement = () => {
   const location = useLocation();
-  // console.log("loctaion: ", location);
   let passedData = null;
   if (location.state) {
     passedData = location.state.entities;
   }
   console.log("DATA: ", passedData);
+  console.log(typeof passedData)
+
+  const navigate = useNavigate();
 
   const {
     value: enteredTitle,
@@ -68,7 +74,10 @@ export const FormAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput((value) => value.trim() !== "", passedData ? passedData.description : "");
+  } = useInput(
+    (value) => value.trim() !== "",
+    passedData ? passedData.description : "",
+  );
 
   const {
     value: selectedCategory,
@@ -79,7 +88,27 @@ export const FormAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput(
     (value) => value.length > 0,
-    passedData ? passedData.category.map((cat) => cat) : [],
+    passedData ? passedData.category.length > 0 ? passedData.category.map((cat) => cat) : [] : [],
+  );
+
+  const {
+    value: selectedImages,
+    isValid: selectedImagesIsValid,
+    hasError: selectedImagesHasError,
+    valueChangeHandler: selectedImagesChangeHandler,
+    inputBlurHandler: selectedImagesBlurHandler,
+    reset: resetSelectedImages,
+  } = useInput(
+    (value) => value.length >= 0,
+      passedData ?
+      passedData.images.length > 0
+      ? passedData.images.map((img) => ({
+          uuid: img.uuid,
+          link: img.image.includes(LOCALHOST) ? img.image : `${LOCALHOST}${img.image}`,
+          is_main: img.is_main,
+          to_delete: false,
+        }))
+      : [] : [],
   );
 
   const {
@@ -92,19 +121,10 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.includes("https://www.youtube.com/"),
     // passedData ? passedData.movies.map((mov) => mov) : []
-    passedData ? passedData.movies[0].movie_url : "",
+    passedData ? passedData.movies.length > 0 ? passedData.movies[0].movie_url : "" : "",
   );
 
-  const [listOfImages, setListOfImages] = useState(
-    passedData
-      ? passedData.images
-      : [
-          {
-            image: "",
-            is_main: false,
-          },
-        ],
-  );
+  const [listOfImages, setListOfImages] = useState(selectedImages);
 
   const theme = useTheme();
 
@@ -118,8 +138,8 @@ export const FormAnnouncement = () => {
     formIsValid = true;
   }
 
-  const formSubmissionHandler = (e) => {
-    e.preventDefault();
+  const formSubmissionHandler = (event) => {
+    event.preventDefault();
 
     if (!enteredTitleIsValid && !enteredDescriptionValid && !selectedCategoryIsValid) {
       return;
@@ -130,27 +150,51 @@ export const FormAnnouncement = () => {
     // necessary data
     formData.append("title", enteredTitle);
     formData.append("description", enteredDescription);
-    formData.append("category", selectedCategory);
+    formData.append(
+      "category",
+      selectedCategory.map((cat) => cat.uuid),
+    );
 
     // additional data
     if (listOfImages) {
-      listOfImages.map((img) => {
-        formData.append("images", img.image);
-        formData.append(img.image.name, img.is_main);
+      // handle uploaded images
+      const uploadedImagesToSend = listOfImages.filter((img) => {
+        return img.to_delete === false;
       });
+      uploadedImagesToSend.map((img) => {
+        formData.append("images", img.blob);
+        formData.append(img.blob, img.is_main);
+      });
+
+      // handle images from backend
+      if (passedData) {
+        const imagesFromBackendToDelete = listOfImages.filter((img) => {
+          return img.to_delete === true && img.hasOwnProperty("uuid");
+        });
+        imagesFromBackendToDelete.map((img) => {
+          formData.append("images", img.uuid);
+        });
+      }
     }
 
     if (enteredMovieUrl) {
       formData.append("movies", enteredMovieUrl);
     }
 
-    dispatch(createAnnouncement(formData));
+    if (passedData) {
+      dispatch(editAnnouncement({ slug: passedData.slug, data: formData }));
+      navigate(`/announcement/${passedData.slug}`);
+    } else {
+      dispatch(createAnnouncement(formData));
+      navigate("/myannouncements");
+    }
 
     resetTitleInput();
     resetDescriptionInput();
-    resetSelectedCategory([]);
+    resetSelectedCategory();
     resetMovieUrl();
-    setListOfImages("");
+    resetSelectedImages();
+    setListOfImages(""); // why ""
   };
 
   useEffect(() => {
@@ -163,9 +207,10 @@ export const FormAnnouncement = () => {
   console.log("IMG before sent: ", listOfImages);
   console.log("MOV before sent: ", enteredMovieUrl);
 
-  let listOfSelectedImages = <Grid item>Add images to announcement :)</Grid>;
+  let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
+
   if (listOfImages.length > 0) {
-    listOfSelectedImages = (
+    listOfAllImages = (
       <Grid>
         <UploadedImagesList
           listOfSelectedImages={listOfImages}
@@ -262,10 +307,10 @@ export const FormAnnouncement = () => {
           </Grid>
 
           <Grid item>
-            <SelectImages value={listOfImages} addImagesToList={setListOfImages} />
+            <SelectImages listOfImages={listOfImages} addImagesToList={setListOfImages} />
           </Grid>
 
-          <Grid item>{listOfSelectedImages}</Grid>
+          <Grid item>{listOfAllImages}</Grid>
 
           <Grid item>
             <TextField

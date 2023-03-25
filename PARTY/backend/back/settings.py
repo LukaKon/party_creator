@@ -5,13 +5,17 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from decouple import Csv, config
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default='localhost', cast=lambda v: [s.strip() for s in v.split(' ')])
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default='localhost',
+    cast=lambda v: [s.strip() for s in v.split(' ')]
+)
 
 # Application definition
 
@@ -66,7 +70,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
-    'http://192.168.122.252:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -75,8 +78,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:3000',
     'https://127.0.0.1:8000',
     'http://127.0.0.1:3000',
-    'https://192.168.122.252:3000',
-    'http://192.168.122.252:3000',
+    'https://192.168.0.50:3000',
+    'http://192.168.0.50:3000',
 ]
 
 ROOT_URLCONF = "back.urls"
@@ -89,9 +92,9 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(
-                        config('REDIS_HOST', "127.0.0.1"),
-                        config('REDIS_PORT', 6379)
-                    )]
+                config('REDIS_HOST', '127.0.0.1'),
+                config('REDIS_PORT', 6379)
+            )]
         }
     }
 }
@@ -229,26 +232,14 @@ SPECTACULAR_SETTINGS = {
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
+    # development only
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 EMAIL_HOST = 'smtp.gmail.com'
-# FIX: where is EMAIL or where should be? add to .env file and remove this file from github
-# print(config("EMAIL_ADDRESS", 'testuje'))
-# EMAIL_FROM = config("EMAIL_ADDRESS")
-# EMAIL_HOST_USER = config("EMAIL_ADDRESS")
-# EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
+EMAIL_FROM = os.getenv("EMAIL_ADDRESS")
+EMAIL_HOST_USER = os.getenv("EMAIL_ADDRESS")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
-
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/1",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient"
-#         },
-#         "KEY_PREFIX": "example"
-#     }
-# }

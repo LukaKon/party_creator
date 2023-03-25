@@ -1,6 +1,11 @@
+import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { ImageListItem } from "@mui/material";
 
 export const ImageItem = (props) => {
+  const { image, uuid, is_main } = props;
+
   const styleIsMain = {
     padding: 1,
     border: 3,
@@ -17,15 +22,21 @@ export const ImageItem = (props) => {
   };
 
   return (
-    <Link to={props.image} underline="none">
-      <ImageListItem key={props.uuid} sx={props.is_main === true ? styleIsMain : styleDefault}>
+    <Link to={image} underline="none">
+      <ImageListItem key={uuid} sx={is_main === true ? styleIsMain : styleDefault}>
         <img
-          src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
-          srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+          src={`${image}?w=164&h=164&fit=crop&auto=format`}
+          srcSet={`${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
           alt="description - make it dynamic"
           loading="lazy"
         />
       </ImageListItem>
     </Link>
   );
+};
+
+ImageItem.propTypes = {
+  image: PropTypes.string,
+  uuid: PropTypes.string,
+  is_main: PropTypes.bool,
 };

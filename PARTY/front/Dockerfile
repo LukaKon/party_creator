@@ -5,7 +5,7 @@ FROM node:18-alpine3.17
 LABEL maintainer="PartyTeam"
 LABEL description="PartyWizard Frontend"
 
-WORKDIR /home/react-user/app
+WORKDIR /app
 # WORKDIR /home/node/app
 
 # USER react
@@ -14,6 +14,7 @@ WORKDIR /home/react-user/app
 # COPY --chown=react:react package.json .
 COPY package.json .
 
+# RUN npm install
 RUN apk add --no-cache --virtual .gyp \
     python3 \
     make \
@@ -21,12 +22,14 @@ RUN apk add --no-cache --virtual .gyp \
     && npm install \
     && apk del .gyp
 
+# RUN adduser --disabled-password --no-create-home react-user
+
 COPY . .
 
 RUN npm run build
 RUN adduser \
     --disabled-password \
     # --no-create-home \
-    react-user 
+    react-user
 
 USER react-user

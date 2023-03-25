@@ -11,7 +11,7 @@ export const fetchAnnouncementDetails = createAsyncThunk(
       console.log("Fetch announcement details error: ", error);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const createAnnouncement = createAsyncThunk(
@@ -31,42 +31,43 @@ export const createAnnouncement = createAsyncThunk(
       console.log("Sent announcement error: ", error.message);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const editAnnouncement = createAsyncThunk(
   "announcements/editAnnouncement",
-  async (data, { rejectWithValue }) => {
+  async (obj, { rejectWithValue }) => {
+    console.log("axios obj:", obj.data);
+    // console.log("uuid: ", obj.slug);
     try {
-      const response = await axiosInstance.patch("api/announcements", data, {
+      const response = await axiosInstance.patch(`api/announcements/${obj.slug}/`, obj.data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-obj",
           "Content-Type": "application/json",
           Accept: "image/jpeg",
           Accept: "image/png",
         },
       });
-      return response.data;
+      console.log("AXIOS - obj to sent: ", response.data);
+      return response.obj;
     } catch (error) {
-      console.log("Edit announcement errror: ", error.message);
-      return rejectWithValue(error.response.data);
+      console.log("Edit announcement error: ", error.message);
+      return rejectWithValue(error.response.obj);
     }
-  }
+  },
 );
 
 export const deleteAnnouncement = createAsyncThunk(
   "announcements/deleteAnnouncement",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.delete(
-        `api/announcements/${data.slug}`
-      );
+      const response = await axiosInstance.delete(`api/announcements/${data.slug}`);
       return response;
     } catch (error) {
       console.log("Delete announcement error:", error.message);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 const announcementDetailsSlice = createSlice({

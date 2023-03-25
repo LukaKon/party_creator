@@ -9,7 +9,8 @@ import { SignUp } from "./SignUp";
 import { ProfileSettings } from "./ProfileSettings";
 import { Profile } from "./Profile";
 import { FormAnnouncement } from "./announcement/forms/FormAnnouncement";
-import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
+// import { AnnouncementDetails } from "./announcement/AnnouncementDetails";
+import { AnnouncementDetails } from "./announcement/details/AnnouncementDetails";
 import { Categories } from "./Categories";
 import { AnnouncementsByCategory } from "./AnnouncementsByCategory";
 import { ResetPassword } from "./ResetPassword";
@@ -23,6 +24,8 @@ import { ActivateNewEmail } from "./ActivateNewEmail";
 import { Chat } from "./chat/Chat";
 import { loged } from "../utils/loged";
 import { Logout } from "./Logout";
+
+// import { Demo } from "./Demo";
 
 export const App = () => {
   const isAuthenticatedFunction = (path, component) => {

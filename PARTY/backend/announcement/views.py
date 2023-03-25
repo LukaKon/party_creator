@@ -3,17 +3,27 @@ Views for announcements APIs.
 """
 from announcement import models, serializers
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.search import (SearchQuery, SearchRank,
-                                            SearchVector)
+from django.contrib.postgres.search import (
+    SearchQuery,
+    SearchRank,
+    SearchVector
+)
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import (OpenApiParameter, OpenApiTypes,
-                                   extend_schema, extend_schema_view)
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiTypes,
+    extend_schema,
+    extend_schema_view
+)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import (AllowAny, IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+)
 from rest_framework.response import Response
 
 
@@ -73,21 +83,22 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.AnnouncementDetailSerializer
     queryset = models.Announcement.objects.all()
     lookup_field = 'slug'
+    # http_method_names = ('get', 'post', 'put', 'patch', 'delete',)
 
     def _params_to_uuid(self, qs):
         """Convert params to list of strings."""
-        return [uuid for uuid in qs.split(',')]
+        # return [uuid for uuid in qs.split(',')]
+        return list(qs.split(','))
 
     def get_permissions(self):
         """
             Instantiates and returns the list of permissions
             that this view requires.
         """
-
+        print('METHOD: ', self.request.method, IsAuthenticated())
         if self.request.method == "GET":
             return [AllowAny()]
-        else:
-            return [IsAuthenticated()]
+        return [IsAuthenticated()]
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -111,7 +122,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if search:
             search_vector = SearchVector('title', weight='A') + \
-                            SearchVector('description', weight='B')
+                SearchVector('description', weight='B')
             search_query = SearchQuery(search)
 
             queryset = queryset.annotate(
@@ -132,13 +143,17 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new announcement."""
 
-        # TODO <-- o co chodzi z tą kropką
+        # TODO: <-- o co chodzi z tą kropką
         user = get_user_model().objects .get(email=self.request.user)
 
-        # categories = self.request.data.getlist('category') # FIX: here should be list of ojects
         categories_uuid = self.request.data.getlist('category')
         movies_url = self.request.data.get('movies')
         images = self.request.data.getlist('images')
+
+        print('IN CREATE:')
+        print('cat: ', categories_uuid)
+        print('mov: ', movies_url)
+        print('img: ', images)
 
         categories = []
         if categories_uuid:
@@ -163,19 +178,29 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if movies_url:
             models.Movie.objects.create(
-              movie_url=movies_url,
-              announcement=announcement,
+                movie_url=movies_url,
+                announcement=announcement,
             )
 
         return Response(status=status.HTTP_201_CREATED)
 
-    def perform_destroy(self, instance):
+    def partial_update(self, request, **kwargs):
+        '''Update announcement.'''
+
+        print('IN UPDATE:')
+        print('request: ', self.request.data)
+        print('kwargs: ', kwargs)
+        return Response(status=status.HTTP_201_CREATED)
+
+    def destroy(self, instance):
         '''Delete selected announcement.'''
         print('instance in delete func: ', instance)
         instance.delete()
 
 
 class FavouriteViewSet(viewsets.ModelViewSet):
+    '''Favourite announcements.'''
+
     serializer_class = serializers.FavouriteSerializer
     permission_classes = [IsAuthenticated, ]
 
@@ -183,7 +208,8 @@ class FavouriteViewSet(viewsets.ModelViewSet):
     def delete(self, request, *args, **kwargs):
         user = self.request.user
         announcement = self.request.data.get("announcement")
-        instance = models.Favourite.objects.get(user=user, announcement=announcement)
+        instance = models.Favourite.objects.get(
+            user=user, announcement=announcement)
         serializer = self.get_serializer(instance)
         data_to_send = serializer.data
         self.perform_destroy(instance)
