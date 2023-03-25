@@ -19,6 +19,8 @@ import { CategoryItem } from "./CategoryItem";
 import { VideoList } from "./VideoList";
 import { ImageItem } from "./ImageItem";
 
+// TODO : verify if logged user is owner of announcement
+
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ export const AnnouncementDetails = () => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
   }, []);
+
 
   useEffect(() => {
     if (entities) {

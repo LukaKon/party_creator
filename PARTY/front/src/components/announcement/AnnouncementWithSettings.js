@@ -33,7 +33,7 @@ export const AnnouncementWithSettings = (props) => {
         console.log(main_image)
         render_image = LOCALHOST + main_image[0].image
     }else {
-        render_image = LOCALHOST + "media/announcement/defaultAnnouncement.jpg";
+        render_image = LOCALHOST + "/media/announcement/defaultAnnouncement.jpg";
     }
 
   const removeAnnouncement = (event, announcementSlug) => {
@@ -72,10 +72,11 @@ export const AnnouncementWithSettings = (props) => {
 
               <Grid container item xs={2}>
                 <Grid item xs={6}>
-                  Ilość polubień: {props.announcement_favourites.length}
+                  Likes: {props.announcement_favourites.length}
                 </Grid>
+                <Grid xs={12}></Grid>
                 <Grid item xs={6}>
-                  Ilość wyświetleń: {props.views.length}
+                  Views: {props.views.length}
                 </Grid>
               </Grid>
             </Grid>
