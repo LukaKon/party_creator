@@ -10,25 +10,25 @@ lists 9 last announcements
 ![image](File1.png)
 
 **Edit form**  
-![image](ss/File 2.png)
+![image](ss/File2.png)
 
 **Search options**
-![image](ss/File 3.png)
+![image](ss/File3.png)
 
 **Profile functions**
-![image](ss/File 4.png)
+![image](ss/File4.png)
 
 **List of my announcements** including options
-![image](ss/File 5.png)
+![image](ss/File5.png)
 
 **Profile settings**
 - avatar change
 - change of login credentials with email confirmation
-![image](ss/File 6.png)
+![image](ss/File6.png)
 
 **Chatting**
 with voice message.
-![image](ss/File 7.png)
+![image](ss/File7.png)
 
 _and more..._
 
