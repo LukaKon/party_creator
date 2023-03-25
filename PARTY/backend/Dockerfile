@@ -10,7 +10,6 @@ COPY ./requirements.doc.txt /tmp/requirements.doc.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY . /app
 WORKDIR /app
-EXPOSE 8000
 
 ARG DEV=false
 
@@ -18,8 +17,6 @@ RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     # installing necessary packages to install psycopg2 from source
     # because this version is more robust/efficient than psycopg2-binary
-    # added gcc, musl-dev ... - is it necessary
-    # apk add gcc musl-dev python3-dev libffi-dev openssl-dev && \
     apk add gcc musl-dev python3-dev libffi-dev openssl-dev && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-build-deps \
@@ -33,9 +30,11 @@ RUN python -m venv /py && \
     apk del .tmp-build-deps && \
     adduser \
     --disabled-password \
-    --no-create-home \
+    # --no-create-home \
     django-user
 
 ENV PATH="/py/bin:$PATH"
+
+RUN chown -R django-user:django-user /home/django-user/app
 
 USER django-user

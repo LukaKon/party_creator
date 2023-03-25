@@ -25,6 +25,7 @@ import { loged } from "../../utils/loged";
 import { Logout } from "../Logout";
 import {MyConversations} from "../chat/MyConversations";
 
+
 export const App = () => {
   const isAuthenticatedFunction = (path, component) => {
     if (loged) {
@@ -43,7 +44,6 @@ export const App = () => {
           <Route path="signup" element={<SignUp />} />
           <Route path="" element={<HomePage />} />
           <Route path="announcement/:slug" element={<AnnouncementDetails />} />
-
           <Route path="*" element={<NotFound />} />
           <Route path="categories" element={<Categories />} />
           <Route path="categories/:categoryName" element={<AnnouncementsByCategory />} />
@@ -52,17 +52,14 @@ export const App = () => {
           <Route path="activate/:uid/:token" element={<ActivateAccount />} />
           <Route path="changeemail/:uid/:newEmail/:token" element={<ActivateNewEmail />} />
           <Route path="search" element={<SearchAnnouncement />} />
-
           {/* in working */}
           <Route path="chat" element={<Chat />} />
-
           {/*/!*Views only for logged users*!/*/}
           {isAuthenticatedFunction("myconversations", <MyConversations />)}
           {isAuthenticatedFunction("profile", <Profile />)}
           {isAuthenticatedFunction("settings", <ProfileSettings />)}
           {isAuthenticatedFunction("addannouncement", <FormAnnouncement />)}
           {isAuthenticatedFunction("editannouncement/:slug", <FormAnnouncement />)}
-
           {/* {isAuthenticatedFunction("addannouncement", <AddAnnouncement />)}
           {isAuthenticatedFunction(
             "editannouncement/:slug",

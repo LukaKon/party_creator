@@ -19,9 +19,10 @@ redis>=4.4.0,<4.5
 six>=1.16.0,<2.0
 
 
+autopep8 >=2.0,<2.1
 blessings>=1.7
 django-shell-plus>=1.1.7
 isort
-flake8>=4.0.1,<4.1
+# flake8>=4.0.1,<4.1
 bpython>=0.22.1
 Markdown>=3.4.1

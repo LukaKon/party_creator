@@ -1,125 +1,23 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { AnnouncementDetailsSkeleton } from "../../components/skeletons/AnnouncementSkeletons";
-import { CreateUpdateDate } from "./CreateUpdateDate";
-import {
-  Box,
-  Button,
-  Grid,
-  ImageList,
-  ImageListItem,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Button, Grid, ImageList, List, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { addViewFunction } from "../../utils/functionalComponents/addViewFunction";
-import { FavouriteButton } from "../../utils/functionalComponents/addFavourite";
-import { fetchProfile } from "../../redux/slices/profileSlice";
+
+import { addViewFunction } from "../../../utils/functionalComponents/addViewFunction";
+import { FavouriteButton } from "../../../utils/functionalComponents/addFavourite";
+import { fetchProfile } from "../../../redux/slices/profileSlice";
 import {
   deleteAnnouncement,
   fetchAnnouncementDetails,
-} from "../../redux/slices/announcementDetailSlice";
-import { loged } from "../../utils/loged";
-
-const ImageItem = (props) => {
-  const styleIsMain = {
-    padding: 1,
-    border: 3,
-    borderColor: "lightgreen",
-    width: 100,
-    height: 100,
-  };
-  const styleDefault = {
-    padding: 1,
-    border: 3,
-    borderColor: "lightred",
-    width: 120,
-    height: 120,
-  };
-
-  return (
-    <Link to={props.image} underline="none">
-      <ImageListItem key={props.uuid} sx={props.is_main === true ? styleIsMain : styleDefault}>
-        <img
-          src={`${props.image}?w=164&h=164&fit=crop&auto=format`}
-          srcSet={`${props.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-          alt="description - make it dynamic"
-          loading="lazy"
-        />
-      </ImageListItem>
-    </Link>
-  );
-};
-
-const CategoryItem = (props) => {
-  return (
-    <Link
-      key={props.uuid}
-      to={"/categories/" + props.get_name}
-      state={{ categoryUuid: props.uuid }}
-    >
-      <ListItem>
-        <ListItemText primary={props.get_name} />
-      </ListItem>
-    </Link>
-  );
-};
-
-const VideoItem = (props) => {
-  const { video_url } = props;
-  const embeddedVideoURL = `https://www.youtube.com/embed/${video_url.slice(-11)}`;
-
-  return (
-    <Grid container>
-      <Grid item>
-        <iframe
-          width="560"
-          height="315"
-          src={embeddedVideoURL}
-          title="YouTube Video Playre"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-        <Typography variant="body2">
-          <a href={video_url} underline="hover">
-            {video_url}
-          </a>
-        </Typography>
-      </Grid>
-    </Grid>
-  );
-};
-
-const VideoList = (props) => {
-  let content = (
-    <Typography variant="body2" color="red">
-      No movies.
-    </Typography>
-  );
-  if (props.listOfVideos.length > 0) {
-    content = (
-      <Grid container>
-        {props.listOfVideos.map((video) => (
-          <Grid item>
-            <VideoItem key={video.uuid} video_url={video.movie_url} />
-          </Grid>
-        ))}
-      </Grid>
-    );
-  }
-  return (
-    <>
-      <Typography variant="body1">Movies:</Typography>
-      <Grid>{content}</Grid>
-    </>
-  );
-};
+} from "../../../redux/slices/announcementDetailSlice";
+import { loged } from "../../../utils/loged";
+import { AnnouncementDetailsSkeleton } from "../../skeletons/AnnouncementSkeletons";
+import { CreateUpdateDate } from "../CreateUpdateDate";
+import { CategoryItem } from "./CategoryItem";
+import { VideoList } from "./VideoList";
+import { ImageItem } from "./ImageItem";
 
 export const AnnouncementDetails = () => {
   const { slug } = useParams();
@@ -162,8 +60,9 @@ export const AnnouncementDetails = () => {
   const handleDeleteButton = (data) => {
     // TODO: finish delete functionality
     // TODO: change status to inactive - don't delete from DB
-    dispatch(deleteAnnouncement(data));
-    navigate("profile");
+    // console.log("######in delete: ", data.slug);
+    dispatch(deleteAnnouncement(data.slug));
+    navigate(`/myannouncements`);
   };
 
   let buttons;

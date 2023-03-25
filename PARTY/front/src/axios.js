@@ -5,8 +5,7 @@ const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const axiosInstance = axios.create({
   baseURL: LOCALHOST,
-  timeout: 50000,
-  // timeout: 5000,
+  timeout: 5000,
   headers: {
     Authorization: localStorage.getItem("access_token")
       ? `JWT ${localStorage.getItem("access_token")}`
