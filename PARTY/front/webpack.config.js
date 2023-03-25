@@ -30,6 +30,7 @@ const config = {
       },
       {
         test: /\.(ts|tsx)$/,
+        // test: /\.tsx$/,
         use: {
           loader: "ts-loader",
         },

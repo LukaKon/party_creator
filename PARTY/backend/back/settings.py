@@ -70,7 +70,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
-    'http://192.168.122.50:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -86,6 +85,7 @@ CSRF_TRUSTED_ORIGINS = [
 ROOT_URLCONF = "back.urls"
 
 ASGI_APPLICATION = "back.asgi.application"
+
 
 CHANNEL_LAYERS = {
     "default": {
@@ -232,7 +232,8 @@ SPECTACULAR_SETTINGS = {
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # development only
+    # development only
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = os.getenv("EMAIL_ADDRESS")

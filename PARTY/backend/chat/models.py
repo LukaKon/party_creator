@@ -11,6 +11,7 @@ from announcement.models import Announcement
 class Conversation(models.Model):
     announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE, related_name="conversation")
     sender = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="sender")
+    recipient = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="recipient")
 
 
 class Message(models.Model):
@@ -32,8 +33,3 @@ class VoiceMessage(models.Model):
             filename_pattern="{app_label:.25}/{model_name:.30}/{uuid:base32}{ext}.mp3"
         )
     )
-
-
-
-
-

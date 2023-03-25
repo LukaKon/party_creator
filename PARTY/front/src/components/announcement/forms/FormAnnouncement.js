@@ -199,7 +199,13 @@ export const FormAnnouncement = () => {
     dispatch(fetchCategories());
   }, []);
 
-  let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
+  console.log("Title before sent: ", enteredTitle);
+  console.log("Description before sent: ", enteredDescription);
+  console.log("CAT before sent: ", selectedCategory);
+  console.log("IMG before sent: ", listOfImages);
+  console.log("MOV before sent: ", enteredMovieUrl);
+
+  let listOfSelectedImages = <Grid item>Add images to announcement :)</Grid>;
   if (listOfImages.length > 0) {
     listOfAllImages = (
       <Grid>
@@ -211,6 +217,7 @@ export const FormAnnouncement = () => {
     );
   }
 
+  // dynamic title depend on type of form: add or edit
   let titleOfForm = "Add announcement:";
   if (passedData) {
     titleOfForm = "Edit announcement:";
