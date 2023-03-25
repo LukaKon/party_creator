@@ -7,7 +7,7 @@
 
 **Homepage**
 lists 9 last announcements
-![image](ss/File 1.png)
+![image](File 1.png)
 
 **Edit form**  
 ![image](ss/File 2.png)
