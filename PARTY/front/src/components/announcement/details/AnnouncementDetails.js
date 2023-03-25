@@ -16,7 +16,7 @@ import { loged } from "../../../utils/loged";
 import { AnnouncementDetailsSkeleton } from "../../skeletons/AnnouncementSkeletons";
 import { CreateUpdateDate } from "../CreateUpdateDate";
 import { CategoryItem } from "./CategoryItem";
-// import { VideoList } from "./VideoList";
+import { VideoList } from "./VideoList";
 import { ImageItem } from "./ImageItem";
 
 export const AnnouncementDetails = () => {
@@ -165,7 +165,7 @@ export const AnnouncementDetails = () => {
             </Grid>
 
             <Grid item xs={8}>
-              {/*<VideoList listOfVideos={entities.movies} />*/}
+              <VideoList listOfVideos={entities.movies} />
             </Grid>
             <Grid item>
               <FavouriteButton
