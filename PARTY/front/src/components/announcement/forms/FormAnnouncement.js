@@ -54,7 +54,7 @@ export const FormAnnouncement = () => {
     passedData = location.state.entities;
   }
   console.log("DATA: ", passedData);
-  console.log(typeof passedData)
+  console.log(typeof passedData);
 
   const navigate = useNavigate();
 
@@ -74,10 +74,7 @@ export const FormAnnouncement = () => {
     valueChangeHandler: descriptionChangedHandler,
     inputBlurHandler: descriptionBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput(
-    (value) => value.trim() !== "",
-    passedData ? passedData.description : "",
-  );
+  } = useInput((value) => value.trim() !== "", passedData ? passedData.description : "");
 
   const {
     value: selectedCategory,
@@ -88,7 +85,7 @@ export const FormAnnouncement = () => {
     reset: resetSelectedCategory,
   } = useInput(
     (value) => value.length > 0,
-    passedData ? passedData.category.length > 0 ? passedData.category.map((cat) => cat) : [] : [],
+    passedData ? (passedData.category.length > 0 ? passedData.category.map((cat) => cat) : []) : [],
   );
 
   const {
@@ -100,15 +97,16 @@ export const FormAnnouncement = () => {
     reset: resetSelectedImages,
   } = useInput(
     (value) => value.length >= 0,
-      passedData ?
-      passedData.images.length > 0
-      ? passedData.images.map((img) => ({
-          uuid: img.uuid,
-          link: img.image.includes(LOCALHOST) ? img.image : `${LOCALHOST}${img.image}`,
-          is_main: img.is_main,
-          to_delete: false,
-        }))
-      : [] : [],
+    passedData
+      ? passedData.images.length > 0
+        ? passedData.images.map((img) => ({
+            uuid: img.uuid,
+            link: img.image.includes(LOCALHOST) ? img.image : `${LOCALHOST}${img.image}`,
+            is_main: img.is_main,
+            to_delete: false,
+          }))
+        : []
+      : [],
   );
 
   const {
@@ -121,7 +119,7 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.includes("https://www.youtube.com/"),
     // passedData ? passedData.movies.map((mov) => mov) : []
-    passedData ? passedData.movies.length > 0 ? passedData.movies[0].movie_url : "" : "",
+    passedData ? (passedData.movies.length > 0 ? passedData.movies[0].movie_url : "") : "",
   );
 
   const [listOfImages, setListOfImages] = useState(selectedImages);
@@ -157,10 +155,17 @@ export const FormAnnouncement = () => {
 
     // additional data
     if (listOfImages) {
+      // check if in the list is one main image (is_main), if not make first main
+      const checkIfOneImageIsMain = listOfImages.some((img) => img.is_main === true);
+      if (!checkIfOneImageIsMain) {
+        listOfImages[0].is_main === true;
+      }
+
       // handle uploaded images
       const uploadedImagesToSend = listOfImages.filter((img) => {
         return img.to_delete === false;
       });
+
       uploadedImagesToSend.map((img) => {
         formData.append("images", img.blob);
         formData.append(img.blob, img.is_main);

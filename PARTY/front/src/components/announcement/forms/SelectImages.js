@@ -37,8 +37,6 @@ export const SelectImages = (props) => {
             return otherImage;
           });
 
-          // console.log("listOfImages: ", listOfImages, "fileArray: ", fileArray);
-
           setSelectedImages([...listOfImages, ...fileArray]);
         }
       }

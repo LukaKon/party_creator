@@ -7,9 +7,6 @@ export const UploadedImagesList = (props) => {
   const { listOfSelectedImages, updateListOfImages } = props;
 
   const deleteImage = (image) => {
-    // const filteredImages = listOfSelectedImages.filter((img) => {
-    //   return image.link !== img.link;
-    // });
     const filteredListOfImages = listOfSelectedImages.map((img) => {
       if (image.link === img.link) {
         return { ...img, to_delete: true };
