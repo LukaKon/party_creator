@@ -68,6 +68,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    'http://0.0.0.0:3000',
+    'http://0.0.0.0:8000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
 ]
@@ -78,8 +80,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:3000',
     'https://127.0.0.1:8000',
     'http://127.0.0.1:3000',
-    'https://192.168.0.50:3000',
-    'http://192.168.0.50:3000',
+    'https://192.168.0.55:3000',
+    'http://192.168.0.55:3000',
+    'http://0.0.0.0:3000',
 ]
 
 ROOT_URLCONF = "back.urls"
