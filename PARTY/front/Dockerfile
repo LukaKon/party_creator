@@ -7,13 +7,9 @@ LABEL description="PartyWizard Frontend"
 
 WORKDIR /app
 
-# USER react
+COPY package.json  .
+COPY package-lock.json .
 
-# RUN chown -R node:node /app
-# COPY --chown=react:react package.json .
-COPY package.json .
-
-# RUN npm install
 RUN apk add --no-cache --virtual .gyp \
     python3 \
     make \
@@ -21,14 +17,15 @@ RUN apk add --no-cache --virtual .gyp \
     && npm install \
     && apk del .gyp
 
-# RUN adduser --disabled-password --no-create-home react-user
-
 COPY . .
 
 RUN npm run build
+
 RUN adduser \
-    --disabled-password \
-    # --no-create-home \
-    react-user
+  --disabled-password \
+  # --no-create-home \
+  react-user
+
+RUN chown -R react-user:react-user /app
 
 USER react-user

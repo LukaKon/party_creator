@@ -107,14 +107,14 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """ Define custom queryset. """
         main_page = self.request.query_params.get('main_page')
-        announcement_id = self.request.query_params.get('category')
+        categories = self.request.query_params.get('category')
         search = self.request.query_params.get('search')
         submit = self.request.query_params.get('submit')
         queryset = self.queryset
 
         if main_page:
             return models.Announcement.objects.main_page_ann()
-        if categories and categories != 'false':    # TODO: why two times categories and why is not defined?
+        if categories and categories != 'false':
             categories_uuid = self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
 
