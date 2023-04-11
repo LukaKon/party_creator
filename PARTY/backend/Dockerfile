@@ -8,8 +8,6 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.doc.txt /tmp/requirements.doc.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
-COPY . /app
-WORKDIR /app
 
 ARG DEV=false
 
@@ -34,6 +32,9 @@ RUN python -m venv /py && \
     django-user
 
 ENV PATH="/py/bin:$PATH"
+
+COPY . /app
+WORKDIR /app
 
 RUN chown -R django-user:django-user /app
 

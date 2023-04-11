@@ -114,7 +114,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if main_page:
             return models.Announcement.objects.main_page_ann()
-        if categories and categories != 'false':
+        if categories and categories != 'false':    # TODO: why two times categories and why is not defined?
             categories_uuid = self._params_to_uuid(categories)
             queryset = queryset.filter(category__uuid__in=categories_uuid)
 
