@@ -181,7 +181,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         return Response(status=status.HTTP_201_CREATED)
 
-
     def partial_update(self, request, **kwargs):
         '''Update announcement.'''
 

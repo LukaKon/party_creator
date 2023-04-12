@@ -23,8 +23,7 @@ import { ActivateNewEmail } from "../accountSettings/ActivateNewEmail";
 import { Chat } from "../chat/Chat";
 import { loged } from "../../utils/loged";
 import { Logout } from "../Logout";
-import {MyConversations} from "../chat/MyConversations";
-
+import { MyConversations } from "../chat/MyConversations";
 
 export const App = () => {
   const isAuthenticatedFunction = (path, component) => {
