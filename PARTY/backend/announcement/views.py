@@ -120,7 +120,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         if search:
             search_vector = SearchVector('title', weight='A') + \
-                            SearchVector('description', weight='B')
+                SearchVector('description', weight='B')
             search_query = SearchQuery(search)
 
             queryset = queryset.annotate(
@@ -144,8 +144,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         user = get_user_model().objects.get(email=self.request.user)
 
         categories_uuid = self.request.data.getlist('category')
-        movies_url = self.request.data.get('movies')
         images = self.request.data.getlist('images')
+        movies_url = self.request.data.get('movies')
 
         print('IN CREATE:')
         print('cat: ', categories_uuid)
@@ -184,9 +184,18 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, **kwargs):
         '''Update announcement.'''
 
+        slug = kwargs['slug']
+        categories_uuid = self.request.data.getlist('category')
+        images = self.request.data.getlist('images')
+        movies_url = self.request.data.get('movies')
+
         print('IN UPDATE:')
-        print('request: ', self.request.data)
-        print('kwargs: ', kwargs)
+        print('slug: ', slug)
+        print('categories uuid: ', categories_uuid)
+        print('images: ', images)
+        print('movies: ', movies_url)
+        # print('request: ', self.request.data)
+        # print('kwargs: ', kwargs)
         return Response(status=status.HTTP_201_CREATED)
 
     def destroy(self, instance):
