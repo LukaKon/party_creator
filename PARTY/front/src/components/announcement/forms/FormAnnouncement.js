@@ -151,11 +151,9 @@ export const FormAnnouncement = () => {
     formData.append("title", enteredTitle);
     formData.append("description", enteredDescription);
 
-    const categories = [...new Set(selectedCategory)]
     formData.append(
       "category",
-      // selectedCategory.map((cat) => cat.uuid),
-      categories.map((cat) => cat.uuid),
+      selectedCategory.map((cat) => cat.uuid),
     );
 
     // FIXME: make it dynamic
