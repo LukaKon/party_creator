@@ -53,8 +53,8 @@ export const FormAnnouncement = () => {
   if (location.state) {
     passedData = location.state.entities;
   }
-  console.log("DATA: ", passedData);
-  console.log(typeof passedData);
+  // console.log("DATA: ", passedData);
+  // console.log(typeof passedData);
 
   const navigate = useNavigate();
 
@@ -86,6 +86,8 @@ export const FormAnnouncement = () => {
   } = useInput(
     (value) => value.length > 0,
     passedData ? (passedData.category.length > 0 ? passedData.category.map((cat) => cat) : []) : [],
+    // passedData ? (passedData.category.length > 0 ? passedData.category : []) : [],
+  // [],
   );
 
   const {
@@ -100,11 +102,11 @@ export const FormAnnouncement = () => {
     passedData
       ? passedData.images.length > 0
         ? passedData.images.map((img) => ({
-            uuid: img.uuid,
-            link: img.image.includes(LOCALHOST) ? img.image : `${LOCALHOST}${img.image}`,
-            is_main: img.is_main,
-            to_delete: false,
-          }))
+          uuid: img.uuid,
+          link: img.image.includes(LOCALHOST) ? img.image : `${LOCALHOST}${img.image}`,
+          is_main: img.is_main,
+          to_delete: false,
+        }))
         : []
       : [],
   );
@@ -148,13 +150,19 @@ export const FormAnnouncement = () => {
     // necessary data
     formData.append("title", enteredTitle);
     formData.append("description", enteredDescription);
+
+    const categories = [...new Set(selectedCategory)]
     formData.append(
       "category",
-      selectedCategory.map((cat) => cat.uuid),
+      // selectedCategory.map((cat) => cat.uuid),
+      categories.map((cat) => cat.uuid),
     );
 
+    // FIXME: make it dynamic
+    formData.append('is_activate', true)
+
     // additional data
-    if (listOfImages) {
+    if (listOfImages.length > 0) {
       // check if in the list is one main image (is_main), if not make first main
       const checkIfOneImageIsMain = listOfImages.some((img) => img.is_main === true);
       if (!checkIfOneImageIsMain) {
@@ -206,11 +214,11 @@ export const FormAnnouncement = () => {
     dispatch(fetchCategories());
   }, []);
 
-  console.log("Title before sent: ", enteredTitle);
-  console.log("Description before sent: ", enteredDescription);
+  // console.log("Title before sent: ", enteredTitle);
+  // console.log("Description before sent: ", enteredDescription);
   console.log("CAT before sent: ", selectedCategory);
-  console.log("IMG before sent: ", listOfImages);
-  console.log("MOV before sent: ", enteredMovieUrl);
+  // console.log("IMG before sent: ", listOfImages);
+  // console.log("MOV before sent: ", enteredMovieUrl);
 
   let listOfAllImages = <Grid>Add images to announcement :)</Grid>;
 
@@ -290,7 +298,8 @@ export const FormAnnouncement = () => {
                 required
                 multiple
                 value={selectedCategory}
-                renderValue={(selected) => selected.map((cat) => cat.get_name).join(", ")}
+                options={selected=>selected.map(cat=>cat.get_name).join(', ')}
+                renderValue={selected=> selectedCategory.map(cat=> cat.get_name).join(', ')}
                 onChange={selectedCategoryChangedHandler}
                 onBlur={selectedCategoryBlurHandler}
                 error={selectedCategoryHasError}

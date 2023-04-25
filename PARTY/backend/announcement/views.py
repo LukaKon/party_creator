@@ -3,27 +3,17 @@ Views for announcements APIs.
 """
 from announcement import models, serializers
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.search import (
-    SearchQuery,
-    SearchRank,
-    SearchVector
-)
+from django.contrib.postgres.search import (SearchQuery, SearchRank,
+                                            SearchVector)
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import (
-    OpenApiParameter,
-    OpenApiTypes,
-    extend_schema,
-    extend_schema_view
-)
+from drf_spectacular.utils import (OpenApiParameter, OpenApiTypes,
+                                   extend_schema, extend_schema_view)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly
-)
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 
 
@@ -184,18 +174,64 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, **kwargs):
         '''Update announcement.'''
 
-        slug = kwargs['slug']
+        announcement = models.Announcement.objects.get()
+        data = self.request.data
+
+        announcement.title = data.get('title', announcement.title)
+        announcement.description = data.get('description', announcement.description)
+        announcement.is_active = data.get('is_active', announcement.is_active)
+
+        print('title: ', announcement.title)
+        print('descr: ', announcement.description)
+        print('is_active: ', announcement.is_active)
+
         categories_uuid = self.request.data.getlist('category')
         images = self.request.data.getlist('images')
         movies_url = self.request.data.get('movies')
 
+        if categories_uuid:
+            categories = []
+            for uuid in categories_uuid[0].split(','):
+                cat = models.Category.objects.get(uuid=uuid)
+                categories.append(cat)
+            announcement.categories = categories
+        else:
+            announcement.categories
+
+        if images:
+            list_of_images = []
+            for image in images:
+                get_is_main = self.request.data.get(image.name)
+                is_main = False
+                if get_is_main == 'true':
+                    is_main = True
+
+                img = models.Image.objects.create(
+                    announcement=announcement,
+                    image=image,
+                    is_main=is_main
+                )
+                list_of_images.append(img)
+            announcement.images = list_of_images
+        else:
+            announcement.images
+
+        if movies_url:
+            models.Movie.objects.create(
+                announcement=announcement,
+                movie_url=movies_url,
+            )
+        else:
+            announcement.movies
+
         print('IN UPDATE:')
-        print('slug: ', slug)
         print('categories uuid: ', categories_uuid)
         print('images: ', images)
         print('movies: ', movies_url)
         # print('request: ', self.request.data)
         # print('kwargs: ', kwargs)
+
+        announcement.save()
         return Response(status=status.HTTP_201_CREATED)
 
     def destroy(self, instance):

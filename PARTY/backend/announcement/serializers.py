@@ -78,6 +78,8 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         model = Announcement
         fields = (
             "id",
+            "uuid",
+            "is_active",
             "title",
             "user",
             "category",
@@ -86,7 +88,6 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "created",
             'updated',
             "slug",
-            "uuid",
             "announcement_favourites",
             "views",
         )
