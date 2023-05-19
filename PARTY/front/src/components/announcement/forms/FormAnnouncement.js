@@ -296,7 +296,6 @@ export const FormAnnouncement = () => {
                 required
                 multiple
                 value={selectedCategory}
-                options={selected=>selected.map(cat=>cat.get_name).join(', ')}
                 renderValue={selected=> selectedCategory.map(cat=> cat.get_name).join(', ')}
                 onChange={selectedCategoryChangedHandler}
                 onBlur={selectedCategoryBlurHandler}
