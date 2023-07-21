@@ -19,11 +19,8 @@ RUN apk add --no-cache --virtual .gyp \
 
 COPY . .
 
-RUN npm run build
-
 RUN adduser \
   --disabled-password \
-  # --no-create-home \
   react-user
 
 RUN chown -R react-user:react-user /app
