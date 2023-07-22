@@ -19,10 +19,10 @@ RUN apk add --no-cache --virtual .gyp \
 
 COPY . .
 
-RUN adduser \
-  --disabled-password \
-  react-user
+# RUN adduser \
+#   --disabled-password \
+#   react-user
 
-RUN chown -R react-user:react-user /app
+# RUN chown -R react-user:react-user /app
 
-USER react-user
+# USER react-user
