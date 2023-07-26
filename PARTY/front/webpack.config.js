@@ -6,14 +6,12 @@ const Dotenv = require("dotenv-webpack");
 const config = {
   mode: "development",
   entry: {
-    // bundle: path.resolve(__dirname, "src/index.ts"),
     bundle: path.resolve(__dirname, "src/index.js"),
   },
 
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name][contenthash].js",
-    // filename: "[name][contenthash].ts",
     clean: true,
     assetModuleFilename: "[name][ext]",
     publicPath: "/",

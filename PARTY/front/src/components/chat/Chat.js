@@ -11,11 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { AudioMessage } from "./AudioMessage";
 import { fetchConversation } from "../../redux/slices/messageSlice";
-import { customStyle } from "../../styles/customStyle";
+// import { customStyle } from "../../styles/customStyle";
 import { fetchProfile } from "../../redux/slices/profileSlice";
 
 const WS = process.env.REACT_WS;
-// const LOCALHOST = process.env.REACT_LOCALHOST;
 
 export const Chat = () => {
   const location = useLocation();
@@ -25,7 +24,7 @@ export const Chat = () => {
   const sellerID = location.state.sellerID;
   const customerID = location.state.customerID;
   const announcementID = location.state.announcementID;
-  const classes = customStyle();
+  // const classes = customStyle();
   const {
     loading: loadingProfile,
     entities: entitiesProfile,
@@ -59,9 +58,11 @@ export const Chat = () => {
 
   const checkStyleUser = (senderEmail) => {
     if (senderEmail === entitiesProfile.email) {
-      return classes.messageRight;
+      // return classes.messageRight;
+      console.log('right')
     } else {
-      return classes.messageLeft;
+      // return classes.messageLeft;
+      console.log('left')
     }
   };
 
@@ -94,7 +95,10 @@ export const Chat = () => {
       messageToShow = <audio controls src={message} />;
     } else {
       messageToShow = (
-        <Typography variant="h6" className={classes.textMessage}>
+        <Typography 
+          variant="h6"
+          /* className={classes.textMessage} */
+        >
           {message}
         </Typography>
       );
@@ -104,11 +108,16 @@ export const Chat = () => {
       <Paper className={style} key={uuid}>
         <Grid container>
           <Grid item>
-            <Typography variant="caption" className={classes.emailMessage}>
+            <Typography
+              variant="caption"
+              /* className={classes.emailMessage} */
+              >
               {user}
             </Typography>
           </Grid>
-          <Grid item className={classes.dateMessage} xs={12}>
+          <Grid item
+              /* className={classes.dateMessage} */
+              xs={12}>
             <Typography variant="caption" align="right">
               {datetime_string}
             </Typography>
