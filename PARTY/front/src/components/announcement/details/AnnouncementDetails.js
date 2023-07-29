@@ -70,6 +70,9 @@ export const AnnouncementDetails = () => {
 
   let buttons;
   // Adding buttons if user is logged
+  console.log('user id: ', userID)
+  console.log('announcement id: ', entities.user)
+  // console.log('announcement: ', entities.user.id)  // TODO: why it is not working??
   if (loged) {
     buttons = (
       <Grid container>
