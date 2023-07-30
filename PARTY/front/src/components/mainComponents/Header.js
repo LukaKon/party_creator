@@ -23,7 +23,8 @@ import { loged } from "../../utils/loged";
 import { v4 as uuidv4 } from "uuid";
 import { SearchBar } from "../Search";
 
-const LOCALHOST = process.env.REACT_LOCALHOST;
+// const LOCALHOST = process.env.REACT_LOCALHOST;
+const LOCALHOST = 'http://127.0.0.1:8000'
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -42,8 +43,6 @@ export const Header = () => {
             loadingProfile === 'initial'
             && entitiesProfile === "initial"
         ){
-       console.log('header loadingprofile', loadingProfile)
-       console.log('Headers')
        dispatch(fetchProfile());
      }
   }, [image]);
@@ -53,8 +52,6 @@ export const Header = () => {
       sessionStorage.setItem("uuid", uuidv4());
     }
   });
-
-
 
   const showAvatar = () => {
     image = LOCALHOST + entitiesProfile.image;

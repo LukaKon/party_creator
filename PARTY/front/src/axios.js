@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Buffer } from "buffer";
 
-const LOCALHOST = process.env.REACT_LOCALHOST;
+// const LOCALHOST = process.env.REACT_LOCALHOST;
+// const LOCALHOST = 'http://127.0.0.1:8000'
+const LOCALHOST = 'http://192.168.1.150:8000'
 
 export const axiosInstance = axios.create({
   baseURL: LOCALHOST,

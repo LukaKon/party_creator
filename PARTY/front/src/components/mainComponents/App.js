@@ -59,11 +59,6 @@ export const App = () => {
           {isAuthenticatedFunction("settings", <ProfileSettings />)}
           {isAuthenticatedFunction("addannouncement", <FormAnnouncement />)}
           {isAuthenticatedFunction("editannouncement/:slug", <FormAnnouncement />)}
-          {/* {isAuthenticatedFunction("addannouncement", <AddAnnouncement />)}
-          {isAuthenticatedFunction(
-            "editannouncement/:slug",
-            <EditAnnouncement />
-          )} */}
           {isAuthenticatedFunction("changepassword", <ChangePassword />)}
           {isAuthenticatedFunction("myannouncements", <MyAnnouncements />)}
           {isAuthenticatedFunction("myfavourites", <MyFavourites />)}

@@ -9,13 +9,14 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", 'secret_key')
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
-    default='localhost',
+    default='*',
     cast=lambda v: [s.strip() for s in v.split(' ')]
 )
+# ALLOWED_HOSTS=['*']
 
 # Application definition
 
@@ -74,6 +75,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://0.0.0.0:8000',
     'http://192.168.1.105:3000',
     'https://192.168.1.105:3000',
+    'http://192.168.1.150:3000',
+    'https://192.168.1.150:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -84,6 +87,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:8000',
     'http://192.168.1.105:3000',
     'https://192.168.1.105:3000',
+    'http://192.168.1.150:3000',
+    'https://192.168.1.150:3000',
     'http://0.0.0.0:3000',
     'https://0.0.0.0:3000',
 ]
@@ -98,7 +103,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(
-                config('REDIS_HOST', '127.0.0.1'),
+                config('REDIS_HOST', '192.168.1.152'),
                 config('REDIS_PORT', 6379)
             )]
         }
@@ -128,10 +133,10 @@ WSGI_APPLICATION = "back.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DATABASE_NAME", "postgres"),
-        "HOST": config("DB_HOST", "127.0.0.1"),
-        "USER": config("DATABASE_USER", "postgres"),
-        "PASSWORD": config("DATABASE_PASSWORD", "postgres"),
+        "NAME": config("DATABASE_NAME", "party"),
+        "HOST": config("DB_HOST", "192.168.1.151"),
+        "USER": config("DATABASE_USER", "party"),
+        "PASSWORD": config("DATABASE_PASSWORD", "password"),
         "PORT": config("DB_PORT", "5432"),
     }
 }

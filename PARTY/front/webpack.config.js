@@ -26,14 +26,14 @@ const config = {
         },
         exclude: /node_modules/,
       },
-      {
-        test: /\.(ts|tsx)$/,
+      // {
+        // test: /\.(ts|tsx)$/,
         // test: /\.tsx$/,
-        use: {
-          loader: "ts-loader",
-        },
-        exclude: /node_modules/,
-      },
+        // use: {
+          // loader: "ts-loader",
+        // },
+        // exclude: /node_modules/,
+      // },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
