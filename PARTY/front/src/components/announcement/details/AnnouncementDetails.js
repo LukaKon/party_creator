@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Button, Grid, ImageList, List, Typography } from "@mui/material";
@@ -27,6 +27,8 @@ export const AnnouncementDetails = () => {
   const navigate = useNavigate();
   const { loading, entities, error } = useSelector((state) => state.announcementDetails);
 
+  const [ownerId, setOwnerId] = useState(null)
+
   useEffect(() => {
     dispatch(fetchAnnouncementDetails(slug));
     dispatch(fetchProfile());
@@ -36,6 +38,9 @@ export const AnnouncementDetails = () => {
   useEffect(() => {
     if (entities) {
       addViewFunction({ announcementID: entities.id, dispatch });
+    }
+    if (entities.user) {
+      setOwnerId(entities.user.id)
     }
   }, [entities]);
 
@@ -69,11 +74,8 @@ export const AnnouncementDetails = () => {
   };
 
   let buttons;
-  // Adding buttons if user is logged
-  console.log('user id: ', userID)
-  console.log('announcement user id: ', entities.user)
-  // console.log('announcement: ', entities.user.id)  // TODO: why it is not working??
-  if (loged) {
+  // Adding buttons if user is logged and is owner of announcement
+  if (userID === ownerId) {
     buttons = (
       <Grid container>
         <Grid item>

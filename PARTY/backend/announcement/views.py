@@ -19,7 +19,6 @@ from rest_framework.response import Response
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """View to manage category APIs."""
-    # permission_classes = (AllowAny, )
     serializer_class = serializers.CategorySerializer
     lookup_field = "uuid"
 
@@ -178,7 +177,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         data = self.request.data
 
         announcement.title = data.get('title', announcement.title)
-        announcement.description = data.get('description', announcement.description)
+        announcement.description = data.get(
+            'description', announcement.description)
         announcement.is_active = data.get('is_active', announcement.is_active)
 
         print('title: ', announcement.title)
@@ -238,6 +238,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         '''Delete selected announcement.'''
         print('instance in delete func: ', instance)
         instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FavouriteViewSet(viewsets.ModelViewSet):
