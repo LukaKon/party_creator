@@ -6,24 +6,24 @@ import { NotFound } from "./NotFound";
 import { HomePage } from "./HomePage";
 import { SignIn } from "../accountSettings/SignIn";
 import { SignUp } from "../accountSettings/SignUp";
+import { Logout } from "../Logout";
+import { ResetPassword } from "../accountSettings/ResetPassword";
+import { ResetPasswordConfirm } from "../accountSettings/ResetPasswordConfirm";
+import { ChangePassword } from "../accountSettings/ChangePassword";
 import { ProfileSettings } from "../accountSettings/ProfileSettings";
 import { Profile } from "../Profile";
+import { ActivateAccount } from "../accountSettings/ActivateAccount";
+import { ActivateNewEmail } from "../accountSettings/ActivateNewEmail";
 import { FormAnnouncement } from "../announcement/forms/FormAnnouncement";
 import { AnnouncementDetails } from "../announcement/details/AnnouncementDetails";
 import { Categories } from "../Categories";
 import { AnnouncementsByCategory } from "../announcement/AnnouncementsByCategory";
-import { ResetPassword } from "../accountSettings/ResetPassword";
-import { ResetPasswordConfirm } from "../accountSettings/ResetPasswordConfirm";
-import { ChangePassword } from "../accountSettings/ChangePassword";
 import { MyAnnouncements } from "../announcement/MyAnnouncements";
 import { MyFavourites } from "../MyFavourites";
 import { SearchAnnouncement } from "../SearchAnnouncement";
-import { ActivateAccount } from "../accountSettings/ActivateAccount";
-import { ActivateNewEmail } from "../accountSettings/ActivateNewEmail";
 import { Chat } from "../chat/Chat";
-import { loged } from "../../utils/loged";
-import { Logout } from "../Logout";
 import { MyConversations } from "../chat/MyConversations";
+import { loged } from "../../utils/loged";
 
 export const App = () => {
   const isAuthenticatedFunction = (path, component) => {
