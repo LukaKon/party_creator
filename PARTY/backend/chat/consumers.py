@@ -9,6 +9,7 @@ from .models import Message, Conversation, VoiceMessage
 
 
 class ChatRoomConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
         self.user = self.scope["user"]
         self.user_id = self.user.id

@@ -51,6 +51,7 @@ const getStyle = (category, selectedCategory, theme) => {
 export const FormAnnouncement = () => {
   const location = useLocation();
   let passedData = null;
+
   if (location.state) {
     passedData = location.state.entities;
   }
@@ -88,7 +89,7 @@ export const FormAnnouncement = () => {
     (value) => value.length > 0,
     passedData ? (passedData.category.length > 0 ? passedData.category.map((cat) => cat) : []) : [],
     // passedData ? (passedData.category.length > 0 ? passedData.category : []) : [],
-  // [],
+    // [],
   );
 
   const {
@@ -297,7 +298,7 @@ export const FormAnnouncement = () => {
                 required
                 multiple
                 value={selectedCategory}
-                renderValue={selected=> selectedCategory.map(cat=> cat.get_name).join(', ')}
+                renderValue={selected => selectedCategory.map(cat => cat.get_name).join(', ')}
                 onChange={selectedCategoryChangedHandler}
                 onBlur={selectedCategoryBlurHandler}
                 error={selectedCategoryHasError}
