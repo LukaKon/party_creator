@@ -16,7 +16,6 @@ ALLOWED_HOSTS = config(
     default='*',
     cast=lambda v: [s.strip() for s in v.split(' ')]
 )
-# ALLOWED_HOSTS=['*']
 
 # Application definition
 

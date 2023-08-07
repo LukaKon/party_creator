@@ -2,8 +2,7 @@ import React from "react";
 import { Avatar, Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
-const LOCALHOST = 'http://127.0.0.1:8000'
+const LOCALHOST = import.meta.env.LOCALHOST
 
 export const ChatConversationPaper = (props) => {
   const conversation = props.conversation
@@ -24,9 +23,7 @@ export const ChatConversationPaper = (props) => {
   } else {
     recipientID = conversation.sender
     console.log('recipient_id in chatpaper else', recipientID)
-
   }
-
 
   if (lastMessage.sender === userEmail) {
     second_interlocutor = lastMessage.recipient

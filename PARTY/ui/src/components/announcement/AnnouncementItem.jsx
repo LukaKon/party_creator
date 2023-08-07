@@ -2,8 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
-const LOCALHOST = 'http://127.0.0.1:8000';
+const LOCALHOST = import.meta.env.LOCALHOST
 
 export const AnnouncementItem = (props) => {
   const navigate = useNavigate();

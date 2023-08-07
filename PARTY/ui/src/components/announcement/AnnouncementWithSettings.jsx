@@ -6,8 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { deleteAnnouncement } from "../../redux/slices/announcementDetailSlice";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
-const LOCALHOST = 'http://127.0.0.1:8000';
+const LOCALHOST = import.meta.env.LOCALHOST
 
 export const AnnouncementWithSettings = (props) => {
   const navigate = useNavigate();

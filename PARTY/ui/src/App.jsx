@@ -14,7 +14,7 @@ import { Profile } from "./components/Profile";
 import { ProfileSettings } from "./components/accountSettings/ProfileSettings";
 import { Categories } from "./components/Categories";
 import { FormAnnouncement } from "./components/announcement/forms/FormAnnouncement";
-import { AnnouncementDetails } from "./components/announcement/details/AnnouncementDetails";
+import { AnnouncementDetails } from "./components/announcement/details/AnnouncementDetails/AnnouncementDetails";
 import { AnnouncementsByCategory } from "./components/announcement/AnnouncementsByCategory";
 import { MyAnnouncements } from './components/announcement/MyAnnouncements'
 import { MyFavourites } from "./components/MyFavourites";

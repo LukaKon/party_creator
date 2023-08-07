@@ -24,8 +24,7 @@ import {
 import { SelectImages } from "./SelectImages";
 import { UploadedImagesList } from "./UploadedImagesList";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
-const LOCALHOST = 'http://127.0.0.1:8000';
+const LOCALHOST = import.meta.env.LOCALHOST
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,6 +50,7 @@ const getStyle = (category, selectedCategory, theme) => {
 export const FormAnnouncement = () => {
   const location = useLocation();
   let passedData = null;
+
   if (location.state) {
     passedData = location.state.entities;
   }
@@ -88,7 +88,7 @@ export const FormAnnouncement = () => {
     (value) => value.length > 0,
     passedData ? (passedData.category.length > 0 ? passedData.category.map((cat) => cat) : []) : [],
     // passedData ? (passedData.category.length > 0 ? passedData.category : []) : [],
-  // [],
+    // [],
   );
 
   const {
@@ -297,7 +297,7 @@ export const FormAnnouncement = () => {
                 required
                 multiple
                 value={selectedCategory}
-                renderValue={selected=> selectedCategory.map(cat=> cat.get_name).join(', ')}
+                renderValue={selected => selectedCategory.map(cat => cat.get_name).join(', ')}
                 onChange={selectedCategoryChangedHandler}
                 onBlur={selectedCategoryBlurHandler}
                 error={selectedCategoryHasError}

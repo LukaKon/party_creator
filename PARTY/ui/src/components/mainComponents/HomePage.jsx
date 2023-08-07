@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAnnouncements } from "../../redux/slices/announcementSlice";
 import { AnnouncementSkeleton } from "../skeletons/AnnouncementSkeletons";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
-const LOCALHOST = 'http://127.0.0.1:8000';
+const LOCALHOST = import.meta.env.LOCALHOST
 
 export const HomePage = () => {
   const { loading, entities, error } = useSelector(

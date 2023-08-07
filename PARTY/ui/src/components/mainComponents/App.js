@@ -9,7 +9,7 @@ import { SignUp } from "../accountSettings/SignUp";
 import { ProfileSettings } from "../accountSettings/ProfileSettings";
 import { Profile } from "../Profile";
 import { FormAnnouncement } from "../announcement/forms/FormAnnouncement";
-import { AnnouncementDetails } from "../announcement/details/AnnouncementDetails";
+import { AnnouncementDetails } from "../announcement/details/AnnouncementDetails/AnnouncementDetails";
 import { Categories } from "../Categories";
 import { AnnouncementsByCategory } from "../announcement/AnnouncementsByCategory";
 import { ResetPassword } from "../accountSettings/ResetPassword";

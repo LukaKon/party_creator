@@ -25,9 +25,9 @@ export const CreateUpdateDate = (props) => {
 		modified = true
 	}
 	return (
-		<Typography variant='caption'>
+		<p>
 			Created: {day} {month} {year} {modified
 				&& `updated: ${update_day} ${update_month} ${update_year}`} by: {entities.user.email}
-		</Typography>
+		</p>
 	)
 }

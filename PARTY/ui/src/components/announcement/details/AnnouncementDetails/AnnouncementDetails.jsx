@@ -5,19 +5,21 @@ import { Box, Button, Grid, ImageList, List, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { addViewFunction } from "../../../utils/functionalComponents/addViewFunction";
-import { FavouriteButton } from "../../../utils/functionalComponents/addFavourite";
-import { fetchProfile } from "../../../redux/slices/profileSlice";
+import styles from '../AnnouncementDetails/AnnouncementDetails.module.css'
+
+import { addViewFunction } from '../../../../utils/functionalComponents/addViewFunction'
+import { FavouriteButton } from "../../../../utils/functionalComponents/addFavourite";
+import { fetchProfile } from "../../../../redux/slices/profileSlice";
 import {
   deleteAnnouncement,
   fetchAnnouncementDetails,
-} from "../../../redux/slices/announcementDetailSlice";
-import { loged } from "../../../utils/loged";
-import { AnnouncementDetailsSkeleton } from "../../skeletons/AnnouncementSkeletons";
-import { CreateUpdateDate } from "../CreateUpdateDate";
-import { CategoryItem } from "./CategoryItem";
-import { VideoList } from "./VideoList";
-import { ImageItem } from "./ImageItem";
+} from "../../../../redux/slices/announcementDetailSlice";
+import { loged } from "../../../../utils/loged";
+import { AnnouncementDetailsSkeleton } from "../../../skeletons/AnnouncementSkeletons";
+import { CreateUpdateDate } from "../../CreateUpdateDate";
+import { CategoryItem } from "../CategoryItem";
+import { VideoList } from "../VideoList";
+import { ImageItem } from "../ImageItem";
 
 // TODO : verify if logged user is owner of announcement
 
@@ -120,38 +122,37 @@ export const AnnouncementDetails = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container direction="column" spacing={5}>
             <Grid item xs={6} rowSpacing={9} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-              <Grid item>
-                <Typography variant="h6">Title: {entities.title}</Typography>
-              </Grid>
+              <div className={styles.title}>
+                <p>{entities.title}</p>
+              </div>
 
-              <Grid item>{buttons}</Grid>
+              <div>{buttons}</div>
 
-              <Grid item>
+              <div className={styles.created}>
                 <CreateUpdateDate entities={entities} />
-              </Grid>
+              </div>
 
-              <Grid item>
-                category/ies:
-                <List
-                  sx={{
-                    width: "100%",
-                    maxWidth: 360,
-                    bgcolor: "background.paper",
-                  }}
-                >
-                  {entities.category.map((cat) => (
-                    <CategoryItem key={cat.uuid} {...cat} />
-                  ))}
-                </List>
-              </Grid>
-
-              <Grid item>
-                <Typography variant="body1">
-                  Description:
+              <div className={styles.description}>
+                <p>
                   {entities.description}
-                </Typography>
-              </Grid>
+                </p>
+              </div>
             </Grid>
+
+            <div className={styles.category}>
+              category/ies:
+              <li
+                sx={{
+                  width: "100%",
+                  maxWidth: 360,
+                  bgcolor: "background.paper",
+                }}
+              >
+                {entities.category.map((cat) => (
+                  <CategoryItem key={cat.uuid} {...cat} />
+                ))}
+              </li>
+            </div>
 
             <Grid item xs={8}>
               Images:

@@ -1,0 +1,28 @@
+.title {
+  font-size: 30px;
+  padding: 20px 5px;
+  text-align: left;
+}
+
+.description {
+  padding: 5px 5px;
+  text-align: left;
+}
+
+.description p {
+  font-size: 18px;
+}
+
+.created {
+  font-size:10px;
+  text-align: left;
+}
+
+.category {
+  text-align: left;
+}
+
+.category li {
+  display: inline;
+  padding: 0 10px;
+}

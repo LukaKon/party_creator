@@ -23,8 +23,7 @@ import { loged } from "../../utils/loged";
 import { v4 as uuidv4 } from "uuid";
 import { SearchBar } from "../Search";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
-const LOCALHOST = 'http://127.0.0.1:8000'
+const LOCALHOST = import.meta.env.LOCALHOST
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -39,12 +38,12 @@ export const Header = () => {
   } = useSelector((state) => state.profile);
 
   useEffect(() => {
-     if(
-            loadingProfile === 'initial'
-            && entitiesProfile === "initial"
-        ){
-       dispatch(fetchProfile());
-     }
+    if (
+      loadingProfile === 'initial'
+      && entitiesProfile === "initial"
+    ) {
+      dispatch(fetchProfile());
+    }
   }, [image]);
 
   useEffect(() => {
@@ -107,8 +106,8 @@ export const Header = () => {
     // if (pageURL === "signout") {
     //   navigate()
     // } else {
-      navigate(pageURL);
-      setAnchorElUser(null);
+    navigate(pageURL);
+    setAnchorElUser(null);
     // }
   };
 
@@ -190,8 +189,8 @@ export const Header = () => {
         <Toolbar disableGutters>
           <Button onClick={() => handleMenu('/')}>
             <Typography noWrap component="div" sx={{ mr: 1 }}>
-              <ImageListItem sx={{width: 50, height:50,objectFit:'contain'}}>
-              <img src={LOCALHOST + '/media/logo.png'} alt="logo"/>
+              <ImageListItem sx={{ width: 50, height: 50, objectFit: 'contain' }}>
+                <img src={LOCALHOST + '/media/logo.png'} alt="logo" />
               </ImageListItem>
             </Typography>
           </Button>

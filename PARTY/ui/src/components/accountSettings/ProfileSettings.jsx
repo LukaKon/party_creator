@@ -4,7 +4,6 @@ import React, {
 } from "react"
 import {
   Grid,
-  Input,
   Button,
   Typography,
 } from "@mui/material";
@@ -18,8 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 import { ChangeEmail } from "./ChangeEmail";
 
-// const LOCALHOST = process.env.REACT_LOCALHOST;
-const LOCALHOST = 'http://127.0.0.1:8000';
+const LOCALHOST = import.meta.env.LOCALHOST
 
 export const ProfileSettings = () => {
   let navigate = useNavigate();
@@ -46,7 +44,6 @@ export const ProfileSettings = () => {
   const Input = styled('input')({
     display: 'none',
   });
-
 
   const upload = (event) => {
     setImage({

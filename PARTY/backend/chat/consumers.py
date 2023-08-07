@@ -9,6 +9,7 @@ from .models import Message, Conversation, VoiceMessage
 
 
 class ChatRoomConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
         self.user = self.scope["user"]
         self.user_id = self.user.id
@@ -19,9 +20,11 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         await self.set_exists_conversation()
 
         if self.seller_id > self.customer_id:
-            self.room_name = str(self.seller_id) + '_' + str(self.customer_id) + '_' + str(self.announcement_id)
+            self.room_name = str(
+                self.seller_id) + '_' + str(self.customer_id) + '_' + str(self.announcement_id)
         else:
-            self.room_name = str(self.customer_id) + '_' + str(self.seller_id) + '_' + str(self.announcement_id)
+            self.room_name = str(self.customer_id) + '_' + \
+                str(self.seller_id) + '_' + str(self.announcement_id)
         await self.channel_layer.group_add(self.room_name, self.channel_name)
         await self.accept()
 
@@ -74,7 +77,8 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def create_message_in_database(self, message):
         try:
-            voice_message_instance = VoiceMessage.objects.get(voice_message=message[message.find('chat'):])
+            voice_message_instance = VoiceMessage.objects.get(
+                voice_message=message[message.find('chat'):])
         except chat.models.VoiceMessage.DoesNotExist:
             voice_message_instance = None
 
