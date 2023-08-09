@@ -25,11 +25,11 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     const decodedToken = (token) => {
       console.log('token: ', token)
-      // let decoding = Buffer.from(token, "base64")
-        // .toString("ascii").split("}");
+      let decoded = window.atob(token.split('.'))
+      // .toString("ascii").split("}");
       // decoding = decoding[1] + "}";
-      // return JSON.parse(decoding);
-      return 'Code in function commented!'
+      return JSON.parse(decoded);
+      // return 'Code in function commented!'
     };
 
     if (typeof error.response === "undefined") {

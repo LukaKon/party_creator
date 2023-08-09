@@ -52,9 +52,9 @@ FIRST_APPS = [
 INSTALLED_APPS = FIRST_APPS + STANDARD_APPS + PROJECT_APPS + ADDITIONAL_APPS
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -95,7 +95,7 @@ CSRF_TRUSTED_ORIGINS = [
 ROOT_URLCONF = "back.urls"
 
 ASGI_APPLICATION = "back.asgi.application"
-
+WSGI_APPLICATION = "back.wsgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
@@ -124,8 +124,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = "back.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
