@@ -22,8 +22,8 @@ services:
     networks:
       - party_network
     depends_on:
-      - db
-      - cache
+      - party_db
+      - party_cache
 
   party_db:
     image: postgres:15-alpine3.17
@@ -64,8 +64,8 @@ services:
       - 0.0.0.0:3000:3000
     stdin_open: true
     depends_on:
-      - backend
-      - db
+      - party_backend
+      - party_db
     networks:
       - party_network
 
