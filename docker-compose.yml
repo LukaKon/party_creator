@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  backend:
+  party_backend:
     build:
       context: ./PARTY/backend
       dockerfile: Dockerfile
@@ -25,7 +25,7 @@ services:
       - db
       - cache
 
-  db:
+  party_db:
     image: postgres:15-alpine3.17
     container_name: postgres_db
     environment:
@@ -40,7 +40,7 @@ services:
     networks:
       - party_network
 
-  cache:
+  party_cache:
     image: redis:7.0-alpine3.17
     container_name: redis_cache
     restart: always
@@ -49,7 +49,7 @@ services:
     networks:
       - party_network
 
-  ui:
+  party_ui:
     container_name: react_ui
     build:
       context: ./PARTY/ui
