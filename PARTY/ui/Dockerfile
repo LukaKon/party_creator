@@ -14,6 +14,7 @@ RUN apk add --no-cache --virtual .gyp \
     python3 \
     make \
     g++ \
+		&& npm install -g vite@latest \
     && npm install \
     && apk del .gyp
 
