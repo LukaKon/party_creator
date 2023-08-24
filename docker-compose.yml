@@ -49,7 +49,7 @@ services:
     networks:
       - party_network
 
-  frontend:
+  ui:
     container_name: react_ui
     build:
       context: ./PARTY/ui
