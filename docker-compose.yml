@@ -54,7 +54,7 @@ services:
     build:
       context: ./PARTY/ui
       dockerfile: Dockerfile
-    command: npm start
+    command: npm run dev
     env_file:
       - .env
     restart: always
