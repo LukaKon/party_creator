@@ -50,16 +50,16 @@ services:
       - party_network
 
   frontend:
-    container_name: react_front
+    container_name: react_ui
     build:
-      context: ./PARTY/front
+      context: ./PARTY/ui
       dockerfile: Dockerfile
     command: npm start
     env_file:
       - .env
     restart: always
     volumes:
-      - ./PARTY/front:/app
+      - ./PARTY/ui:/app
     ports:
       - 0.0.0.0:3000:3000
     stdin_open: true

@@ -1,1 +1,0 @@
-export const loged = localStorage.getItem("access_token")
