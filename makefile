@@ -31,23 +31,23 @@ volume:
 
 ### PYTHON/DJANGO
 flake:
-	docker compose run --rm backend sh -c 'flake8'
+	docker compose run --rm party_backend sh -c 'flake8'
 
 test:
-	docker compose run --rm backend sh -c 'python manage.py test'
+	docker compose run --rm party_backend sh -c 'python manage.py test'
 
 migrate:
-	docker compose run --rm backend sh -c 'python manage.py migrate --noinput'
+	docker compose run --rm party_backend sh -c 'python manage.py migrate --noinput'
 
 makemigrations:
-	docker compose run --rm backend sh -c 'python manage.py makemigrations'
+	docker compose run --rm party_backend sh -c 'python manage.py makemigrations'
 
 superuser:
-	docker compose run --rm backend sh -c 'python manage.py createsuperuser'
+	docker compose run --rm party_backend sh -c 'python manage.py createsuperuser'
 
 shell:
-	docker compose run --rm backend sh -c 'python manage.py shell_plus'
-#	 docker compose exec backend python3 manage.py shell_plus
+	docker compose run --rm party_backend sh -c 'python manage.py shell_plus'
+#	 docker compose exec party_backend python3 manage.py shell_plus
 
 ### DATABASE
 psql:
