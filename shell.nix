@@ -33,5 +33,6 @@ mkShell {
     pip install -r PARTY/backend/requirements.txt
     which python
     echo "Env activated"
+    exec fish
   '';
 }
