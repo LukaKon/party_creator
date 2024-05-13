@@ -1,4 +1,4 @@
-FROM node:20-alpine3.18
+FROM node:20-alpine3.19
 
 # ENV PATH="./node_modules/.bin:$PATH"
 

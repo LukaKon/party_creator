@@ -23,6 +23,7 @@ outputs = { self, nixpkgs }:
           echo "Upgrade pip and install packages..."
           pip install --upgrade pip
           pip install -r PARTY/backend/requirements.txt
+          echo Python version:
           which python
           echo "Env activated"
           exec fish
