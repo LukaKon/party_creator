@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   // host: true,
+
   server: {
     watch: {
       usePolling: true,
@@ -12,6 +13,7 @@ export default defineConfig({
     host: true,
     port: 3000,
   },
+
   // esbuild: {
   // jsxInject: `import React from 'react'`,
   // }
