@@ -49,7 +49,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ("email", "password", "password2", "is_active")
+        fields = (
+            "email",
+            "password",
+            "password2",
+            "is_active",
+        )
         # password 'write_only' - security reason
         # extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
 

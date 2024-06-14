@@ -16,6 +16,8 @@ outputs = { self, nixpkgs }:
         packages = with pkgs; [
           bmake
           python3
+          python311Packages.python-lsp-server
+          nodejs_22
         ];
         shellHook = ''
           echo "Enter to '${name}' env :)"
@@ -26,7 +28,7 @@ outputs = { self, nixpkgs }:
           echo Python version:
           which python
           echo "Env activated"
-          exec fish
+          # exec fish
         '';
       };
     };

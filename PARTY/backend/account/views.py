@@ -2,13 +2,23 @@
 Views for the user API.
 """
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password, get_password_validators
+from django.contrib.auth.password_validation import (
+    validate_password,
+    get_password_validators,
+)
 from django.core.exceptions import ValidationError
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import status, exceptions
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.generics import (
+    CreateAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+)
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.token_blacklist.models import (
@@ -29,18 +39,17 @@ from account.serializers import (
 )
 
 
-class LoginView(TokenObtainPairView):
-    """Create a new auth token for user."""
+# class RegisterView(APIView):
+#     """Create a new user in the system."""
+#     def post(self, request):
+#         pass
 
-    permission_classes = (AllowAny,)
-    serializer_class = MyTokenObtainPairSerializer
-
-
+    
 class RegisterView(CreateAPIView):
     """Create a new user in the system."""
 
     queryset = get_user_model().objects.all()
-    permission_classes = (AllowAny,)
+    # permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
     def perform_create(self, serializer):
@@ -48,6 +57,13 @@ class RegisterView(CreateAPIView):
         email = self.request.data.get("email")
         user = self.queryset.get(email=email)
         activate_account_send_email(self.request, user, email)
+
+
+class LoginView(TokenObtainPairView):
+    """Create a new auth token for user."""
+
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
 
 
 class LogoutAllView(APIView):

@@ -1,6 +1,9 @@
 import back.utils.account as utils
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import (
+    AbstractUser,
+    PermissionsMixin,
+)
 from django.core.mail import send_mail
 from django.db import models
 from django.dispatch import receiver
@@ -16,20 +19,29 @@ upload_to_pattern = FilePattern(
 
 
 class UserManager(BaseUserManager):
-    """User Manager to create a user with email as login field"""
+    """
+    User Manager to create a user with email as login field
+    """
 
     def create_user(self, email, password=None, **kwargs):
-        """Create, save and return a new user."""
+        """
+        Create, save and return a new user.
+        """
+
         if not email:
-            raise ValueError(_("The Email must be set"))
+            raise ValueError(_("The email must be set"))
         email = self.normalize_email(email)
+        email = email.lower()
         user = self.model(email=email, **kwargs)
         user.set_password(password)  # set encrypted password
         user.save(using=self._db)  # support different databases - good practice
         return user
 
     def create_superuser(self, email, password, **kwargs):
-        """Create and return superuser."""
+        """
+        Create and return superuser.
+        """
+
         kwargs.setdefault("is_staff", True)
         kwargs.setdefault("is_superuser", True)
         kwargs.setdefault("is_active", True)
@@ -38,18 +50,29 @@ class UserManager(BaseUserManager):
             raise ValueError(_("Superuser must have is_staff=True."))
         if kwargs.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
-        return self.create_user(email, password, **kwargs)
+
+        user = self.create_superuser(
+            email=email,
+            password=password,
+            **kwargs,
+        )
+        user.save(usring=self._db)
+
+        return user
+        # return self.create_user(email, password, **kwargs)
 
 
-class User(AbstractUser):
+class User(AbstractUser, PermissionsMixin):
     """
-        User with email as a login field. Added flag 'is_moderator' for future.
+    User with email as a login field. Added flag 'is_moderator' for future.
     """
 
     username = None
     email = models.EmailField(_("email address"), unique=True)
     is_moderator = models.BooleanField(default=False)
     is_firma = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     image = utils.stdimage_save_defaultimg(
         null=True,
         blank=True,
@@ -79,7 +102,8 @@ class Firma(models.Model):
 
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
-    email_plaintext_message = f"127.0.0.1:3000/resetpassword/{reset_password_token.key}"
+    # email_plaintext_message = f"127.0.0.1:3000/resetpassword/{reset_password_token.key}"
+    email_plaintext_message = f"0.0.0.0:3000/resetpassword/{reset_password_token.key}"
 
     send_mail(
         # title:
