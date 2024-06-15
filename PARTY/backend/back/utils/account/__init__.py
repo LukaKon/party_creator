@@ -34,10 +34,10 @@ def activate_account_send_email(request, user, to_email):
     email = EmailMessage(mail_subject, message, to=[to_email])
 
     if email.send():
-        print('true')
+        print('email sent')
         print(email.send())
     else:
-        print('else')
+        print('email not sent')
         print(email.send())
 
 
@@ -54,8 +54,8 @@ def change_email_send_email(request, user, new_email):
     email = EmailMessage(mail_subject, message, to=[new_email])
 
     if email.send():
-        print('true')
+        print('email sent')
         print(email.send())
     else:
-        print('else')
+        print('email not sent')
         print(email.send())

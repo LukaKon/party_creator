@@ -39,21 +39,15 @@ from account.serializers import (
 )
 
 
-# class RegisterView(APIView):
-#     """Create a new user in the system."""
-#     def post(self, request):
-#         pass
-
-    
 class RegisterView(CreateAPIView):
     """Create a new user in the system."""
 
     queryset = get_user_model().objects.all()
-    # permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
     def perform_create(self, serializer):
-        serializer.save(is_active=False)
+        serializer.save(is_active=True)
+
         email = self.request.data.get("email")
         user = self.queryset.get(email=email)
         activate_account_send_email(self.request, user, email)
@@ -90,7 +84,8 @@ class GetUserAPI(RetrieveAPIView):
         if self.request.data.get('email') is None:
             queryset = self.model.objects.get(email=self.request.user.email)
         else:
-            queryset = self.model.objects.get(email=self.request.data.get('email'))
+            queryset = self.model.objects.get(
+                email=self.request.data.get('email'))
         return queryset
 
     def post(self, request):
@@ -165,7 +160,8 @@ class ChangePasswordView(UpdateAPIView):
                 validate_password(
                     serializer.data.get("new_password"),
                     user=request.user,
-                    password_validators=get_password_validators(settings.AUTH_PASSWORD_VALIDATORS)
+                    password_validators=get_password_validators(
+                        settings.AUTH_PASSWORD_VALIDATORS)
                 )
             except ValidationError as e:
                 # raise a validation error for the serializer
@@ -217,7 +213,8 @@ class HandleEmailView(APIView):
 
         if change_or_activation == 'change_email':
             new_email_before_decode = request.data.get('new_email')
-            new_email = force_str(urlsafe_base64_decode(new_email_before_decode))
+            new_email = force_str(
+                urlsafe_base64_decode(new_email_before_decode))
             if self.check_user_and_token(user, token) and UpdateUserAPI.check_free_email(new_email):
                 self.change_email(user, new_email)
                 return Response(status=status.HTTP_202_ACCEPTED)

@@ -15,10 +15,17 @@ outputs = { self, nixpkgs }:
       devShells.${system}.default = pkgs.mkShell{
         packages = with pkgs; [
           bmake
+          nodejs_22
+
           python3
           python311Packages.python-lsp-server
-          nodejs_22
+          python311Packages.flake8
+          python311Packages.autopep8
+          python311Packages.isort
+          python311Packages.markdown
+          python311Packages.bpython
         ];
+
         shellHook = ''
           echo "Enter to '${name}' env :)"
           source env/bin/activate

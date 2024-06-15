@@ -1,0 +1,24 @@
+meta {
+  name: login user
+  type: http
+  seq: 2
+}
+
+get {
+  url: localhost:8000/account/login
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: */*
+  Connection: keep-alive
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "lk@lk.lk",
+    "password": "testerpassword"
+  }
+}
