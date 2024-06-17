@@ -55,8 +55,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             "is_moderator",
             "is_firma",
         )
-        # password 'write_only' - security reason
-        # extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
 
     def validate(self, data):
         """Validate and authenticate the user."""
@@ -64,10 +62,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         password2 = data.get("password2")
         errors = []
 
-        # if len(password) < 5:
-            # errors.append("Password is too short (min. 5 chars).")
         if password != password2:
-            errors.append("Password fields didn't match (test).")
+            errors.append("Password fields didn't match.")
 
         if len(errors) > 0:
             raise serializers.ValidationError(errors)

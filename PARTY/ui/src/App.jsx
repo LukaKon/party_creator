@@ -51,7 +51,7 @@ export const App = () => {
           <Route path="activate/:uid/:token" element={<ActivateAccount />} />
           <Route path="changeemail/:uid/:newEmail/:token" element={<ActivateNewEmail />} />
           <Route path="search" element={<SearchAnnouncement />} />
-          {/* in working */}
+          {/* working on */}
           <Route path="chat" element={<Chat />} />
           {/*/!*Views only for logged users*!/*/}
           {isAuthenticatedFunction("myconversations", <MyConversations />)}

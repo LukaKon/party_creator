@@ -1,0 +1,15 @@
+meta {
+  name: get user
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8000/account/tryuser/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4NjUwODU5LCJpYXQiOjE3MTg2NDcyNTksImp0aSI6ImUzODQ5YWVjYzdiYzQ4ODRiNmZmYTA0YWM0ZjQ5NjhkIiwidXNlcl9pZCI6MX0.R5VxEDb1jSCR6C_xwPLTZs3JNXPvklI4-mvZAiG96GY
+}

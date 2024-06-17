@@ -74,10 +74,19 @@ class LogoutAllView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetUserAPI(RetrieveAPIView):
+class RetrieveUserView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        user = UserSerializer(user)
+
+        return Response(user.data, status=status.HTTP_200_OK)
+
+
+class RetrieveProfileView(RetrieveAPIView):
     model = get_user_model()
-    # permission_classes = (IsAuthenticated,)
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -94,7 +103,7 @@ class GetUserAPI(RetrieveAPIView):
         return Response(user_serializer.data)
 
 
-class UpdateUserAPI(UpdateAPIView):
+class UpdateUserView(UpdateAPIView):
     model = get_user_model()
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
@@ -215,7 +224,7 @@ class HandleEmailView(APIView):
             new_email_before_decode = request.data.get('new_email')
             new_email = force_str(
                 urlsafe_base64_decode(new_email_before_decode))
-            if self.check_user_and_token(user, token) and UpdateUserAPI.check_free_email(new_email):
+            if self.check_user_and_token(user, token) and UpdateUserView.check_free_email(new_email):
                 self.change_email(user, new_email)
                 return Response(status=status.HTTP_202_ACCEPTED)
             else:

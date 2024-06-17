@@ -1,12 +1,12 @@
 import axios from "axios";
-// import { Buffer } from "buffer";
 
 // const LOCALHOST = import.meta.env.LOCALHOST
-const LOCALHOST = 'http://192.168.1.150:8000'
+const LOCALHOST = "http://192.168.1.82:8000";
+const TIMEOUT = 5000;
 
 export const axiosInstance = axios.create({
   baseURL: LOCALHOST,
-  timeout: 5000,
+  timeout: TIMEOUT,
   headers: {
     Authorization: localStorage.getItem("access_token")
       ? `JWT ${localStorage.getItem("access_token")}`
@@ -21,11 +21,11 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  function(error) {
+  function (error) {
     const originalRequest = error.config;
     const decodedToken = (token) => {
-      console.log('token: ', token)
-      let decoded = window.atob(token.split('.'))
+      console.log("token: ", token);
+      let decoded = window.atob(token.split("."));
       // .toString("ascii").split("}");
       // decoding = decoding[1] + "}";
       return JSON.parse(decoded);
@@ -35,13 +35,16 @@ axiosInstance.interceptors.response.use(
     if (typeof error.response === "undefined") {
       alert(
         "A server/network error occurred. " +
-        "Looks like CORS might be the problem. " +
-        "Sorry about this - we will get it fixed shortly. Or maybe something eles...",
+          "Looks like CORS might be the problem. " +
+          "Sorry about this - we will get it fixed shortly. Or maybe something eles...",
       );
       return Promise.reject(error);
     }
 
-    if (error.response.status === 401 && originalRequest.url === `${LOCALHOST}token/refresh/`) {
+    if (
+      error.response.status === 401 &&
+      originalRequest.url === `${LOCALHOST}token/refresh/`
+    ) {
       window.location.href = "/signin/";
       return Promise.reject(error);
     }
@@ -69,8 +72,10 @@ axiosInstance.interceptors.response.use(
               localStorage.setItem("access_token", response.data.access);
               localStorage.setItem("refresh_token", response.data.refresh);
 
-              axiosInstance.defaults.headers["Authorization"] = `JWT ${response.data.access}`;
-              originalRequest.headers["Authorization"] = `JWT ${response.data.access}`;
+              axiosInstance.defaults.headers["Authorization"] =
+                `JWT ${response.data.access}`;
+              originalRequest.headers["Authorization"] =
+                `JWT ${response.data.access}`;
 
               return axiosInstance(originalRequest);
             })
