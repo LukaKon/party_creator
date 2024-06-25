@@ -37,7 +37,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[validate_password],
         trim_whitespace=False,
         style={"input_type": "password"},
-        # min_length=5,
     )
     password2 = serializers.CharField(
         write_only=True,
