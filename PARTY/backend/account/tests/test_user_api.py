@@ -10,7 +10,8 @@ from rest_framework.test import APIClient
 
 CREATE_USER_URL = reverse("account:register")
 TOKEN_URL = reverse("account:login")
-USER_URL = reverse("account:GetUser")
+# USER_URL = reverse("account:GetUser")
+USER_URL = reverse("account:get_user")
 
 
 def create_user(**kwargs):
