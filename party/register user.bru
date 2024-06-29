@@ -1,0 +1,27 @@
+meta {
+  name: register user
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/account/register/
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: */*
+  Connection: keep-alive
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "tester8@te.te",
+    "password": "testerpassword",
+    "password2": "testerpassword",
+    "is_firma": "true",
+    "is_moderator": "false"
+  }
+}

@@ -1,4 +1,4 @@
-FROM node:20-alpine3.18
+FROM node:20-alpine3.19
 
 # ENV PATH="./node_modules/.bin:$PATH"
 
@@ -15,8 +15,9 @@ RUN apk add --no-cache --virtual .gyp \
     make \
     g++ \
 		&& npm install -g vite@latest \
-    && npm install \
     && apk del .gyp
+
+RUN npm install
 
 COPY . .
 

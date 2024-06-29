@@ -72,24 +72,20 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://0.0.0.0:3000',
     'http://0.0.0.0:8000',
-    'http://192.168.1.105:3000',
-    'https://192.168.1.105:3000',
-    'http://192.168.1.150:3000',
-    'https://192.168.1.150:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://localhost:3000",
     "http://localhost:3000",
+    "https://localhost:8000",
+    "http://localhost:8000",
     'https://127.0.0.1:3000',
     'http://127.0.0.1:3000',
     'https://127.0.0.1:8000',
-    'http://192.168.1.105:3000',
-    'https://192.168.1.105:3000',
-    'http://192.168.1.150:3000',
-    'https://192.168.1.150:3000',
     'http://0.0.0.0:3000',
     'https://0.0.0.0:3000',
+    'http://0.0.0.0:8000',
+    'https://0.0.0.0:8000',
 ]
 
 ROOT_URLCONF = "back.urls"
@@ -102,7 +98,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(
-                config('REDIS_HOST', '192.168.1.152'),
+                config('REDIS_HOST', '192.168.1.82'),
                 config('REDIS_PORT', 6379)
             )]
         }
@@ -131,7 +127,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": config("DATABASE_NAME", "party"),
-        "HOST": config("DB_HOST", "192.168.1.151"),
+        "HOST": config("DB_HOST", "192.168.1.82"),
         "USER": config("DATABASE_USER", "party"),
         "PASSWORD": config("DATABASE_PASSWORD", "password"),
         "PORT": config("DB_PORT", "5432"),
@@ -148,6 +144,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 5,
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -202,30 +201,30 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    "DEFAULT_PERMISSION_CLASSES": (
-        'rest_framework.permissions.AllowAny',
-    ),
+    # "DEFAULT_PERMISSION_CLASSES": (
+    #     'rest_framework.permissions.AllowAny',
+    # ),
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 5,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=10, minutes=5),
-    # "ACCESS_TOKEN_LIFETIME": timedelta(seconds=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
+    # "ACCESS_TOKEN_LIFETIME": timedelta(hours=10, minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1, minutes=0),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    # "ROTATE_REFRESH_TOKENS": True,
+    # "BLACKLIST_AFTER_ROTATION": True,
 
-    "ALGORITHM": "HS256",
+    # "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": None,
+    # "VERIFYING_KEY": None,
 
     "AUTH_HEADER_TYPES": ("JWT",),
-    "USER_ID_FIELD": "id",  # TODO: -> email?
-    "USER_ID_CLAIM": "user_id",  # TODO: -> email?
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "TOKEN_TYPE_CLAIM": "token_type",
+    # "USER_ID_FIELD": "id",  # TODO: -> email?
+    # "USER_ID_CLAIM": "user_id",  # TODO: -> email?
+    # "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    # "TOKEN_TYPE_CLAIM": "token_type",
 }
 
 SPECTACULAR_SETTINGS = {

@@ -2,13 +2,23 @@
 Views for the user API.
 """
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password, get_password_validators
+from django.contrib.auth.password_validation import (
+    validate_password,
+    get_password_validators,
+)
 from django.core.exceptions import ValidationError
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import status, exceptions
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.generics import (
+    CreateAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+)
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.token_blacklist.models import (
@@ -29,25 +39,25 @@ from account.serializers import (
 )
 
 
+class RegisterView(CreateAPIView):
+    """Create a new user in the system."""
+
+    queryset = get_user_model().objects.all()
+    serializer_class = RegisterSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(is_active=True)
+
+        email = self.request.data.get("email")
+        user = self.queryset.get(email=email)
+        activate_account_send_email(self.request, user, email)
+
+
 class LoginView(TokenObtainPairView):
     """Create a new auth token for user."""
 
     permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
-
-
-class RegisterView(CreateAPIView):
-    """Create a new user in the system."""
-
-    queryset = get_user_model().objects.all()
-    permission_classes = (AllowAny,)
-    serializer_class = RegisterSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(is_active=False)
-        email = self.request.data.get("email")
-        user = self.queryset.get(email=email)
-        activate_account_send_email(self.request, user, email)
 
 
 class LogoutAllView(APIView):
@@ -64,17 +74,27 @@ class LogoutAllView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetUserAPI(RetrieveAPIView):
+class RetrieveUserView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        user = UserSerializer(user)
+
+        return Response(user.data, status=status.HTTP_200_OK)
+
+
+class RetrieveProfileView(RetrieveAPIView):
     model = get_user_model()
-    # permission_classes = (IsAuthenticated,)
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
     def get_queryset(self):
         if self.request.data.get('email') is None:
             queryset = self.model.objects.get(email=self.request.user.email)
         else:
-            queryset = self.model.objects.get(email=self.request.data.get('email'))
+            queryset = self.model.objects.get(
+                email=self.request.data.get('email'))
         return queryset
 
     def post(self, request):
@@ -83,7 +103,7 @@ class GetUserAPI(RetrieveAPIView):
         return Response(user_serializer.data)
 
 
-class UpdateUserAPI(UpdateAPIView):
+class UpdateUserView(UpdateAPIView):
     model = get_user_model()
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
@@ -149,7 +169,8 @@ class ChangePasswordView(UpdateAPIView):
                 validate_password(
                     serializer.data.get("new_password"),
                     user=request.user,
-                    password_validators=get_password_validators(settings.AUTH_PASSWORD_VALIDATORS)
+                    password_validators=get_password_validators(
+                        settings.AUTH_PASSWORD_VALIDATORS)
                 )
             except ValidationError as e:
                 # raise a validation error for the serializer
@@ -201,8 +222,9 @@ class HandleEmailView(APIView):
 
         if change_or_activation == 'change_email':
             new_email_before_decode = request.data.get('new_email')
-            new_email = force_str(urlsafe_base64_decode(new_email_before_decode))
-            if self.check_user_and_token(user, token) and UpdateUserAPI.check_free_email(new_email):
+            new_email = force_str(
+                urlsafe_base64_decode(new_email_before_decode))
+            if self.check_user_and_token(user, token) and UpdateUserView.check_free_email(new_email):
                 self.change_email(user, new_email)
                 return Response(status=status.HTTP_202_ACCEPTED)
             else:

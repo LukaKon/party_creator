@@ -5,6 +5,7 @@ from account.models import User
 from announcement.serializers import AnnouncementDetailSerializer
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.core import exceptions
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -26,7 +27,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     """Serializer for user registration."""
 
     email = serializers.EmailField(
-        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())],
     )
 
     password = serializers.CharField(
@@ -42,29 +44,30 @@ class RegisterSerializer(serializers.ModelSerializer):
         trim_whitespace=False,
         style={"input_type": "password"},
     )
-    # is_active = serializers.BooleanField(
-    #     write_only=True,
-    #     required=True,
-    # )
 
     class Meta:
         model = get_user_model()
-        fields = ("email", "password", "password2", "is_active")
-        # password 'write_only' - security reason
-        # extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
+        fields = (
+            "email",
+            "password",
+            "password2",
+            "is_moderator",
+            "is_firma",
+        )
 
-    def validate(self, attrs):
+    def validate(self, data):
         """Validate and authenticate the user."""
-        if len(attrs.get("password")) < 5:
-            raise serializers.ValidationError(
-                {"password": "Password is too short (min. 5 chars)."}
-            )
-        if attrs["password"] != attrs["password2"]:
-            raise serializers.ValidationError(
-                {"password": "Password fields didn't match."}
-            )
+        password = data.get("password")
+        password2 = data.get("password2")
+        errors = []
 
-        return attrs
+        if password != password2:
+            errors.append("Password fields didn't match.")
+
+        if len(errors) > 0:
+            raise serializers.ValidationError(errors)
+
+        return data
 
     def create(self, validated_data):
         """Create a new user."""
@@ -72,7 +75,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             validated_data["email"],
             validated_data["password"],
         )
-        user.is_active = validated_data['is_active']
+        user.is_firma = validated_data['is_firma']
+        user.is_moderator = validated_data['is_moderator']
         user.save()
         return user
 
@@ -84,7 +88,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'is_firma', 'announcements', 'image', )
+        fields = (
+            'id',
+            'email',
+            'is_firma',
+            'is_moderator',
+            'announcements',
+            'image',
+        )
 
 
 class ChangePasswordSerializer(serializers.Serializer):
